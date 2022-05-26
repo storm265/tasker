@@ -2,20 +2,20 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:todo2/services/supabase/configure.dart';
 
 class SignUpController extends ChangeNotifier {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  var pickedFile = ValueNotifier(XFile(''));
+  var pickedFile = ValueNotifier(XFile('assets/grey_avatar.jpg'));
   final ImagePicker picker = ImagePicker();
 
   String avatarUrl = '';
   String avatarKey = '';
 
   Future<void> signUp(BuildContext context) async {
-    final _supabase = Supabase.instance.client;
-    final response = await _supabase.auth.signUp(
+
+    final response = await supabase.auth.signUp(
       emailController.text,
       passwordController.text,
     );
@@ -25,15 +25,12 @@ class SignUpController extends ChangeNotifier {
       //Please check your email and follow the instructions to verify your email address.
 
     } else {
-      await _supabase
-          .from('users')
-          .insert({
-            'email': emailController.text,
-            'password': passwordController.text,
-            'created_at': DateTime.now().toIso8601String()
-          })
-          .execute();
-          // .then((value) => log(value.error!.message));
+      await supabase.from('users').insert({
+        'email': emailController.text,
+        'password': passwordController.text,
+        'created_at': DateTime.now().toIso8601String()
+      }).execute();
+      // .then((value) => log(value.error!.message));
 
       Navigator.pushNamedAndRemoveUntil(
         context,
@@ -57,10 +54,10 @@ class SignUpController extends ChangeNotifier {
       //   throw "The file is too large. Allowed maximum size is 1 MB.";
       // }
 
-      final uploadRes = await Supabase.instance.client.storage
+      final uploadRes = await supabase.storage
           .from('avatar')
-          .upload(avatarUrl, File(pickedFile.value.path))
-          .then((value) => log(value.error!.message));
+          .upload(pickedFile.value.name, File(pickedFile.value.path))
+          .then((value) => log(value.toString()));
       // .uploadBinary(fileName, bytes, fileOptions: fileOptions)
 
       notifyListeners();
