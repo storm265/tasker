@@ -1,16 +1,26 @@
+
+
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase/supabase.dart' as supabase;
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 class AuthState<T extends StatefulWidget> extends SupabaseAuthState<T> {
   @override
-  void onUnauthenticated() {
-    Navigator.pushNamedAndRemoveUntil(context, '/welcome', (route) => false);
+  void onUnauthenticated() async {
+    final _prefs = await SharedPreferences.getInstance();
+    if (_prefs.getBool('isFirstTime') == null) {
+      await _prefs.setBool('isFirstTime', true);
+      await NavigationService.navigateTo(context, Pages.welcome);
+    } else {
+      await NavigationService.navigateTo(context, Pages.signIn);
+    }
   }
 
   @override
-  void onAuthenticated(supabase.Session session) {
-    Navigator.pushNamedAndRemoveUntil(context, '/workList', (route) => false);
+  void onAuthenticated(supabase.Session session) async {
+    await NavigationService.navigateTo(context, Pages.home);
   }
 
   @override

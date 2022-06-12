@@ -1,46 +1,118 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/controller/auth/sign_up_controller.dart';
-import 'package:todo2/presentation/pages/auth_pages/widgets/arrow_back_widget.dart';
-import 'package:todo2/presentation/pages/auth_pages/widgets/avatar_widget.dart';
-import 'package:todo2/presentation/pages/auth_pages/widgets/sign_in_button_widget.dart';
-import 'package:todo2/presentation/pages/auth_pages/widgets/signup_to_continue_widget.dart';
-import 'widgets/sign_up_button_widget.dart';
-import 'widgets/textfield_widget.dart';
-import 'widgets/welcome_text_widget.dart';
+import 'package:todo2/controller/auth/form_validator_controller.dart';
+import 'package:todo2/controller/auth/auth_controller.dart';
+import 'package:todo2/presentation/widgets/common/appbar_widget.dart';
+import 'package:todo2/presentation/widgets/auth_pages/constants.dart';
+import 'package:todo2/presentation/widgets/auth_pages/widgets/avatar_widget.dart';
+import 'package:todo2/presentation/widgets/auth_pages/widgets/sign_in_button_widget.dart';
+import 'package:todo2/presentation/widgets/auth_pages/widgets/sign_up_button_widget.dart';
+import 'package:todo2/presentation/widgets/auth_pages/widgets/signup_to_continue_widget.dart';
+import 'package:todo2/presentation/widgets/auth_pages/widgets/textfield_widget.dart';
+import 'package:todo2/presentation/widgets/auth_pages/widgets/welcome_text_widget.dart';
+import 'package:todo2/presentation/widgets/common/disabled_glow_single_child_scroll_widget.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({Key? key}) : super(key: key);
+
+  @override
+  State<SignUpPage> createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    _usernameController.dispose();
+    _signUpController.dispose();
+    super.dispose();
+  }
+
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+
   final SignUpController _signUpController = SignUpController();
-  SignUpPage({Key? key}) : super(key: key);
-  final double _left = 25;
+  final _formValidatorController = FormValidatorController();
+  final _formKey = GlobalKey<FormState>();
+  final double _leftPadding = 25;
+  bool _isClicked = true;
   @override
   Widget build(BuildContext context) {
+    final _size = MediaQuery.of(context).size;
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Stack(fit: StackFit.expand, alignment: Alignment.center, children: [
-        const ArrowBackWidget(),
-        const TitleTextWidget(text: 'Welcome'),
-        const SubTitleWidget(text: 'Sign up to continue'),
-        AvatarWidget(),
-        TextFieldWidget(
-            isObsecureText: false,
-            textController: _signUpController.emailController,
-            left: _left,
-            top: 320,
-            labelText: 'Email:',
-            text: 'Username'),
-        TextFieldWidget(
-            isObsecureText: true,
-            textController: _signUpController.passwordController,
-            left: _left,
-            top: 420,
-            labelText: 'Password:',
-            text: 'Password'),
-        SignUpButtonWidget(
-            buttonText: 'Sign Up',
-            height: 550,
-            onPressed: () => _signUpController.signUp(context)),
-        const SignInButtonWidget(buttonText: 'Sign In')
-      ]),
+      appBar: const AppbarWidget(
+        showLeadingButton: true,
+        appBarColor: Colors.white,
+      ),
+      body: DisabledGlowScrollView(
+        child: SizedBox(
+          width: _size.width - minFactor,
+          height: _size.height - minFactor,
+          child: Form(
+            key: _formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            child: Stack(
+              fit: StackFit.expand,
+              alignment: Alignment.center,
+              children: [
+                const TitleTextWidget(text: 'Welcome'),
+                const SubTitleWidget(text: 'Sign up to continue'),
+                AvatarWidget(signUpController: _signUpController),
+                TextFieldWidget(
+                    validateCallback: (text) =>
+                        _formValidatorController.validateEmail(text!),
+                    isObsecureText: false,
+                    textController: _emailController,
+                    left: _leftPadding,
+                    top: 190,
+                    labelText: 'Email:',
+                    text: 'Email'),
+                TextFieldWidget(
+                  validateCallback: (text) =>
+                      _formValidatorController.validatePassword(text!),
+                  isObsecureText: true,
+                  textController: _passwordController,
+                  left: _leftPadding,
+                  top: 280,
+                  labelText: 'Password:',
+                  text: 'Password',
+                ),
+                TextFieldWidget(
+                  validateCallback: (text) =>
+                      _formValidatorController.validateUsername(text!),
+                  isObsecureText: false,
+                  textController: _usernameController,
+                  left: _leftPadding,
+                  top: 380,
+                  labelText: 'Username:',
+                  text: 'Username',
+                ),
+                SignUpButtonWidget(
+                    buttonText: 'Sign Up',
+                    height: 470,
+                    onPressed: _isClicked
+                        ? () async {
+                            if (_formKey.currentState!.validate() &&
+                                !_signUpController.pickedFile.value.path
+                                    .contains('assets')) {
+                              setState(() => _isClicked = false);
+                              await _signUpController.signUp(
+                                context: context,
+                                username: _usernameController.text,
+                                email: _emailController.text,
+                                password: _passwordController.text,
+                              );
+                              setState(() => _isClicked = true);
+                            }
+                          }
+                        : null),
+                const SignInButtonWidget(buttonText: 'Sign In')
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

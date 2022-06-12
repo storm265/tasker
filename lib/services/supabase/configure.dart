@@ -1,20 +1,24 @@
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:todo2/services/error_service/error_service.dart';
+import 'package:todo2/services/supabase/constants.dart';
 
-const supabaseUrl = 'https://loaphbqhspenbaeyhaqr.supabase.co';
-const supabaseAnnonKey =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxvYXBoYnFoc3BlbmJhZXloYXFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NTI2Mzc5NTMsImV4cCI6MTk2ODIxMzk1M30.q35gjhnPgLrkaCeyp4yGYNdc5UBY94Ffvq4sqi2np_A';
-final supabase = Supabase.instance.client;
-Future initSupabase() async {
-  await Supabase.initialize(
-      url: supabaseUrl,
-      anonKey: supabaseAnnonKey,
-      authCallbackUrlHostname: 'login-callback',
+Future<void> initSupabase() async {
+
+  try {
+    final _configuration = SupabaseConfiguration();
+    await Supabase.initialize(
+      url: _configuration.supabaseUrl,
+      anonKey: _configuration.supabaseAnnonKey,
       debug: true,
-      localStorage: SecureLocalStorage());
+      localStorage: SecureLocalStorage(),
+    );
+  } catch (e) {
+    ErrorService.printError('Error in initSupabase: $e');
+  }
 }
 
-// user flutter_secure_storage to persist user session
 class SecureLocalStorage extends LocalStorage {
   SecureLocalStorage()
       : super(

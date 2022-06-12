@@ -19,6 +19,12 @@ dependencies:
   supabase_flutter: ^0.3.1
   image_picker: 
   flutter_secure_storage: 
+  connectivity_plus:
+  shared_preferences:
+  intl:
+  cached_network_image: ^3.2.1
+  simple_gesture_detector:
+  
 
 dev_dependencies:
   flutter_test:
