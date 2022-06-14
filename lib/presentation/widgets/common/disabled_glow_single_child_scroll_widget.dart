@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 
-
-class DisabledGlowScrollView extends StatelessWidget {
+class DisabledGlowWidget extends StatelessWidget {
   final Widget child;
-  const DisabledGlowScrollView({Key? key,required this.child}) : super(key: key);
+  const DisabledGlowWidget({Key? key, required this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,6 +11,6 @@ class DisabledGlowScrollView extends StatelessWidget {
           overscroll.disallowIndicator();
           return true;
         },
-        child:child);
+        child: child);
   }
 }

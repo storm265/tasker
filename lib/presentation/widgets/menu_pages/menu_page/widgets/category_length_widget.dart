@@ -6,9 +6,15 @@ class CategoryLengthWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Positioned(
-        top: 155,
-        left: 20,
-        child: Text('10 tasks',
-            style: TextStyle(color: Colors.black, fontSize: 16)));
+      top: 155,
+      left: 20,
+      child: Text(
+        '10 tasks',
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 16,
+        ),
+      ),
+    );
   }
 }

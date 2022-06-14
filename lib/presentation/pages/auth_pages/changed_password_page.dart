@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/widgets/auth_pages/widgets/signup_to_continue_widget.dart';
 import 'package:todo2/presentation/widgets/auth_pages/widgets/welcome_text_widget.dart';
-import 'package:todo2/presentation/widgets/changed_password_page/text_decorations.dart';
 
 class PasswordChangedPage extends StatelessWidget {
-  PasswordChangedPage({Key? key}) : super(key: key);
-  final _passwordDecorations = TextDecorations();
+  const PasswordChangedPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,14 +13,15 @@ class PasswordChangedPage extends StatelessWidget {
           Positioned(
             top: 160,
             left: 120,
-            child: Image.asset(_passwordDecorations.assetsPath),
+            child: Image.asset('assets/changed_password.png'),
           ),
-          TitleTextWidget(
-            text: _passwordDecorations.resetPassword,
+          const TitleTextWidget(
+            text: 'Succesful!',
             left: 135,
           ),
-          SubTitleWidget(
-            text: _passwordDecorations.passwordChangedText,
+          const SubTitleWidget(
+            text:
+                'You have succesfully change password.\nPlease use your new passwords when logging in.',
             left: 50,
           )
         ],

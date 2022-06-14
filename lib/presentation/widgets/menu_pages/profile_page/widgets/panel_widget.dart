@@ -1,10 +1,7 @@
 import 'dart:developer';
-
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/controller/auth/auth_controller.dart';
 import 'package:todo2/database/repository/user_profile_repository.dart';
-import 'package:todo2/presentation/widgets/auth_pages/widgets/avatar_widget.dart';
 import 'package:todo2/presentation/widgets/menu_pages/profile_page/widgets/panel_widgets/image_widget.dart';
 import 'package:todo2/presentation/widgets/menu_pages/profile_page/widgets/panel_widgets/tasks_text_widget.dart';
 import 'package:todo2/services/supabase/constants.dart';

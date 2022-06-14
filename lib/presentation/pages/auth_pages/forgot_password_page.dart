@@ -29,52 +29,54 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   bool _isClicked = true;
   @override
   Widget build(BuildContext context) {
-    final _size = MediaQuery.of(context).size;
     return Scaffold(
-        appBar: const AppbarWidget(
-          showLeadingButton: true,
-          appBarColor: Colors.white,
-        ),
-        body: DisabledGlowScrollView(
-          child: Form(
-            key: _formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            child: Stack(
-              fit: StackFit.expand,
-              alignment: Alignment.center,
-              children: [
-                const TitleTextWidget(text: 'Forgot Password'),
-                const SubTitleWidget(
-                    text:
-                        'Please enter your email below to recevie\nyour password reset instructions'),
-                TextFieldWidget(
-                    validateCallback: (text) =>
-                        _validatorController.validateEmail(text!),
-                    left: 25,
-                    top: 160,
-                    isObsecureText: false,
-                    textController: _emailController,
-                    labelText: 'Email:',
-                    text: 'Username'),
-                SignUpButtonWidget(
-                  height: 270,
-                  buttonText: 'Send Request',
-                  onPressed: _isClicked
-                      ? () async {
-                          if (_formKey.currentState!.validate()) {
-                            setState(() => _isClicked = false);
-                            await _authRepositoryController.resetPassword(
-                              context: context,
-                              email: _emailController.text,
-                            );
-                          }
-                          setState(() => _isClicked = true);
+      appBar: const AppbarWidget(
+        showLeadingButton: true,
+        appBarColor: Colors.white,
+      ),
+      body: DisabledGlowWidget(
+        child: Form(
+          key: _formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          child: Stack(
+            fit: StackFit.expand,
+            alignment: Alignment.center,
+            children: [
+              const TitleTextWidget(text: 'Forgot Password'),
+              const SubTitleWidget(
+                text:
+                    'Please enter your email below to recevie\nyour password reset instructions',
+              ),
+              TextFieldWidget(
+                validateCallback: (text) =>
+                    _validatorController.validateEmail(text!),
+                left: 25,
+                top: 160,
+                isObsecureText: false,
+                textController: _emailController,
+                labelText: 'Email:',
+                text: 'Username',
+              ),
+              SignUpButtonWidget(
+                height: 270,
+                buttonText: 'Send Request',
+                onPressed: _isClicked
+                    ? () async {
+                        if (_formKey.currentState!.validate()) {
+                          setState(() => _isClicked = false);
+                          await _authRepositoryController.resetPassword(
+                            context: context,
+                            email: _emailController.text,
+                          );
                         }
-                      : null,
-                )
-              ],
-            ),
+                        setState(() => _isClicked = true);
+                      }
+                    : null,
+              )
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

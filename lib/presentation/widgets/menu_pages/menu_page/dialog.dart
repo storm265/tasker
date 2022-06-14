@@ -14,7 +14,7 @@ Future<void> showMaterialDialog(BuildContext context) async {
         'Title',
         style: TextStyle(fontWeight: FontWeight.w300),
       ),
-      content: DisabledGlowScrollView(
+      content: DisabledGlowWidget(
         child: SizedBox(
           height: 230,
           child: Column(
@@ -42,13 +42,13 @@ Future<void> showMaterialDialog(BuildContext context) async {
       actions: <Widget>[
         TextButton(
           onPressed: () async {
-            if (_titleController.text.length >= 2) {
-              await ProjectRepositoryImpl()
-                  .putData(
-                      color: colors[_selectedIndex].value.toString(),
-                      title: _titleController.text)
-                  .then((_) => Navigator.of(context).pop());
-            }
+            (_titleController.text.length >= 2)
+                ? await ProjectRepositoryImpl()
+                    .putData(
+                        color: colors[_selectedIndex].value.toString(),
+                        title: _titleController.text)
+                    .then((_) => Navigator.of(context).pop())
+                : null;
           },
           child: const Text('Add Project'),
         )

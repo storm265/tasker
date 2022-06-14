@@ -34,7 +34,7 @@ class _MenuPageState extends State<MenuPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const AppbarWidget(title: 'Projects', appBarColor: Colors.white),
-      body: DisabledGlowScrollView(
+      body: DisabledGlowWidget(
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Column(

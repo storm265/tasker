@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/database_scheme/user_profile_scheme.dart';

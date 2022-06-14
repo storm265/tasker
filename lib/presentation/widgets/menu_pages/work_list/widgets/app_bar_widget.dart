@@ -13,8 +13,10 @@ class AppBarWorkList extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      backgroundColor: Palette.red,
       systemOverlayStyle: const SystemUiOverlayStyle(
         statusBarColor: Palette.red,
+        systemNavigationBarColor: Colors.black,
         statusBarIconBrightness: Brightness.light,
       ),
       leading: const Icon(null),

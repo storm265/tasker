@@ -11,7 +11,7 @@ abstract class ProjectUserData<T> {
   });
 }
 
-// TODO create db schema
+
 class ProjectUserDataImpl implements ProjectUserData {
   final _projectsTable = SupabaseSource().dbClient.from('projects');
 

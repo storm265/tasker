@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:todo2/presentation/widgets/common/colors.dart';
+import 'package:todo2/presentation/widgets/common/disabled_glow_single_child_scroll_widget.dart';
 import 'package:todo2/presentation/widgets/menu_pages/work_list/widgets/app_bar_widget.dart';
 import 'package:todo2/presentation/widgets/menu_pages/work_list/widgets/calendar_lib/table_calendar.dart';
-import 'package:todo2/presentation/widgets/menu_pages/work_list/widgets/circle_widget.dart';
 import 'package:todo2/presentation/widgets/menu_pages/work_list/widgets/list/list_widget.dart';
-import 'package:todo2/presentation/widgets/menu_pages/work_list/widgets/slidable_widgets/endpane_widget.dart';
-import 'package:todo2/presentation/widgets/menu_pages/work_list/widgets/slidable_widgets/grey_slidable_widget.dart';
 
 class TasksPage extends StatefulWidget {
   const TasksPage({Key? key}) : super(key: key);
@@ -60,11 +56,14 @@ class _TasksPageState extends State<TasksPage>
             child: TabBarView(
               controller: _tabController,
               children: [
-                ListView.builder(
-                  itemCount: 10,
-                  itemBuilder: ((context, index) {
-                    return ListWidget(index: index);
-                  }),
+                DisabledGlowWidget(
+                  child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: 10,
+                    itemBuilder: ((context, index) {
+                      return ListWidget(index: index);
+                    }),
+                  ),
                 ),
                 // month
                 Column(children: const [Text('dadiadhjiajdad ')])

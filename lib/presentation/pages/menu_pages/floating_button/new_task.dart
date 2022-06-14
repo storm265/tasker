@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-
-import 'package:todo2/presentation/widgets/menu_pages/add_button_widget/app_bar.dart';
+import 'package:todo2/controller/main/theme_data_controller.dart';
+import 'package:todo2/presentation/widgets/common/appbar_widget.dart';
 import 'package:todo2/presentation/widgets/menu_pages/add_button_widget/common/confirm_button.dart';
 import 'package:todo2/presentation/widgets/menu_pages/add_button_widget/white_box_widget.dart';
-import 'package:todo2/presentation/widgets/menu_pages/floating_widgets/new_task_widgets/for_in_field_widget.dart';
+import 'package:todo2/presentation/widgets/menu_pages/add_button_widget/widgets/add_task/for_in_field_widget.dart';
 
 class NewTaskPage extends StatelessWidget {
   final _titleController = TextEditingController();
@@ -12,9 +12,14 @@ class NewTaskPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const AppbarWidget(
+        appBarColor: Palette.red,
+        textColor: Colors.white,
+        title: 'New Task',
+        showLeadingButton: true,
+      ),
       body: Stack(
         children: [
-          const AppBarCustom(title: 'New Task'),
           //fake nav bar
           Padding(
             padding: const EdgeInsets.only(top: 605),

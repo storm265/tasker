@@ -87,8 +87,9 @@ class NavigationPage extends StatelessWidget {
             const KeepAlivePage(child: MenuPage()),
             const KeepAlivePage(child: QuickPage()),
             const KeepAlivePage(child: ProfilePage()),
-      
-            NewTaskPage(), AddQuickNote(), AddCheckListPage(),
+            NewTaskPage(),
+             AddQuickNote(),
+             AddCheckListPage(),
           ],
         ),
       ),

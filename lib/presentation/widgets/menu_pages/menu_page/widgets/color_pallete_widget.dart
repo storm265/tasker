@@ -3,10 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 
 // ignore: must_be_immutable
-class ColorPalleteWidget extends StatelessWidget {
+class ColorPalleteWidget extends StatefulWidget {
   int selectedIndex;
   ColorPalleteWidget({Key? key, required this.selectedIndex}) : super(key: key);
 
+  @override
+  State<ColorPalleteWidget> createState() => _ColorPalleteWidgetState();
+}
+
+class _ColorPalleteWidgetState extends State<ColorPalleteWidget> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -16,21 +21,26 @@ class ColorPalleteWidget extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemCount: colors.length,
         shrinkWrap: true,
-        itemBuilder: ((context, index) {
+        itemBuilder: ((_, index) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 6),
-            child: StatefulBuilder(
-              builder: (context, setState) => GestureDetector(
-                onTap: () => setState((() => selectedIndex = index)),
-                child: Container(
-                  width: 48,
-                  height: 48,
-                  child: Icon((selectedIndex == index) ? Icons.done : null,
-                      color: Colors.white),
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: colors[index]),
+            child: GestureDetector(
+              onTap: () => setState(
+                (() {
+                  widget.selectedIndex = index;
+                  // print(widget.selectedIndex);
+                }),
+              ),
+              child: Container(
+                width: 48,
+                height: 48,
+                child: Icon(
+                  (widget.selectedIndex == index) ? Icons.done : null,
+                  color: Colors.white,
                 ),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: colors[index],),
               ),
             ),
           );

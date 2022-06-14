@@ -27,10 +27,11 @@ class SignUpButtonWidget extends StatelessWidget {
         child: Text(
           buttonText,
           style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w300,
-              fontStyle: FontStyle.italic,
-              color: Colors.white),
+            fontSize: 18,
+            fontWeight: FontWeight.w300,
+            fontStyle: FontStyle.italic,
+            color: Colors.white,
+          ),
         ),
       ),
     );

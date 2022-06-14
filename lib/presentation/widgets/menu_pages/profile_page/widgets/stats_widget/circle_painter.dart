@@ -1,29 +1,22 @@
 import 'package:flutter/material.dart';
 
+//Add this CustomPaint widget to the Widget Tree
+
+//Copy this CustomPainter code to the Bottom of the File
 class CirclePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint();
-    Path path = Path();
-
-    // Path number 1
-
-    paint.color = Colors.red;
-    path = Path();
-    path.lineTo(size.width, size.height / 2);
-    path.cubicTo(size.width, size.height * 0.78, size.width * 0.78, size.height,
-        size.width / 2, size.height);
-    path.cubicTo(size.width * 0.22, size.height, 0, size.height * 0.78, 0,
-        size.height / 2);
-    path.cubicTo(
-        0, size.height * 0.22, size.width * 0.22, 0, size.width / 2, 0);
-    path.cubicTo(size.width * 0.78, 0, size.width, size.height * 0.22,
-        size.width, size.height / 2);
-    canvas.drawPath(path, paint);
+    Paint paint_0_stroke = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = size.width * 0.02500000;
+    paint_0_stroke.color = Color(0xffF96060).withOpacity(1.0);
+    paint_0_stroke.strokeCap = StrokeCap.round;
+    canvas.drawCircle(Offset(size.width * 0.5000000, size.height * 0.4938272),
+        size.width * 0.5000000, paint_0_stroke);
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return true;
   }
 }
