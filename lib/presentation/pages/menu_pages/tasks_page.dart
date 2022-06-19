@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/widgets/common/disabled_glow_single_child_scroll_widget.dart';
+import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
 import 'package:todo2/presentation/widgets/menu_pages/work_list/widgets/app_bar_widget.dart';
 import 'package:todo2/presentation/widgets/menu_pages/work_list/widgets/calendar_lib/table_calendar.dart';
 import 'package:todo2/presentation/widgets/menu_pages/work_list/widgets/list/list_widget.dart';
@@ -31,46 +32,51 @@ class _TasksPageState extends State<TasksPage>
   var _calendarFormat = CalendarFormat.week;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBarWorkList(
-        tabController: _tabController,
-      ),
-      body: Column(
-        children: [
-          TableCalendar(
-            calendarFormat: _calendarFormat,
-            onFormatChanged: (format) => _calendarFormat = format,
-            selectedDayPredicate: (day) {
-              return isSameDay(_selectedDay, day);
-            },
-            onDaySelected: (selectedDay, focusedDay) {
-              setState(() {
-                _selectedDay = selectedDay;
-              });
-            },
-            firstDay: DateTime.utc(DateTime.now().year - 1, 1, 1),
-            lastDay: DateTime.utc(2030, 3, 14),
-            focusedDay: _selectedDay,
-          ),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: [
-                DisabledGlowWidget(
-                  child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemCount: 10,
-                    itemBuilder: ((context, index) {
-                      return ListWidget(index: index);
-                    }),
-                  ),
-                ),
-                // month
-                Column(children: const [Text('dadiadhjiajdad ')])
-              ],
+    return WillPopWrapper(
+      child: Scaffold(
+        appBar: AppBarWorkList(
+          tabController: _tabController,
+        ),
+        body: Column(
+          children: [
+            TableCalendar(
+              shouldHideButton: false,
+              calendarFormat: _calendarFormat,
+              onFormatChanged: (format) => setState(() {
+                _calendarFormat = format;
+              }),
+              selectedDayPredicate: (day) {
+                return isSameDay(_selectedDay, day);
+              },
+              onDaySelected: (selectedDay, focusedDay) {
+                setState(() {
+                  _selectedDay = selectedDay;
+                });
+              },
+              firstDay: DateTime.utc(DateTime.now().year - 1, 1, 1),
+              lastDay: DateTime.utc(2030, 3, 14),
+              focusedDay: _selectedDay,
             ),
-          ),
-        ],
+            Expanded(
+              child: TabBarView(
+                controller: _tabController,
+                children: [
+                  DisabledGlowWidget(
+                    child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      itemCount: 10,
+                      itemBuilder: ((context, index) {
+                        return ListWidget(index: index);
+                      }),
+                    ),
+                  ),
+                  // month
+                  Column(children: const [Text('dadiadhjiajdad ')])
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

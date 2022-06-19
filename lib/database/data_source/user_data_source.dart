@@ -1,9 +1,7 @@
-
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 import 'package:todo2/database/database_scheme/user_data_scheme..dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/supabase/constants.dart';
-
 
 abstract class UserDataSource<T> {
   Future<T> insert({
@@ -13,18 +11,19 @@ abstract class UserDataSource<T> {
 }
 
 class UserDataSourceImpl implements UserDataSource {
-  final _supabase = SupabaseSource().dbClient.from('users');
+  final _table = 'users';
+  final _supabase = SupabaseSource().dbClient;
   @override
   Future<supabase.PostgrestResponse<dynamic>> insert({
     required String email,
     required String password,
   }) async {
     try {
-      final _responce = await _supabase.insert({
-        UserDataScheme.uid: SupabaseSource().dbClient.auth.currentUser?.id,
+      final _responce = await _supabase.from(_table).insert({
+        UserDataScheme.uid: _supabase.auth.currentUser?.id,
         UserDataScheme.email: email,
         UserDataScheme.password: password,
-        UserDataScheme.created_at: DateTime.now().toString(),
+        UserDataScheme.createdAt: DateTime.now().toString(),
       }).execute();
       return _responce;
     } catch (e) {

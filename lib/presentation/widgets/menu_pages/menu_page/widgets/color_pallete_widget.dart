@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
-
+import 'package:todo2/controller/add_tasks/color_pallete_controller/color_pallete_controller.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 
 // ignore: must_be_immutable
-class ColorPalleteWidget extends StatefulWidget {
-  int selectedIndex;
-  ColorPalleteWidget({Key? key, required this.selectedIndex}) : super(key: key);
+class ColorPalleteWidget extends StatelessWidget {
+  final ColorPalleteController colorController;
+  const ColorPalleteWidget({Key? key, required this.colorController})
+      : super(key: key);
 
-  @override
-  State<ColorPalleteWidget> createState() => _ColorPalleteWidgetState();
-}
-
-class _ColorPalleteWidgetState extends State<ColorPalleteWidget> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -24,24 +20,27 @@ class _ColorPalleteWidgetState extends State<ColorPalleteWidget> {
         itemBuilder: ((_, index) {
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 6),
-            child: GestureDetector(
-              onTap: () => setState(
-                (() {
-                  widget.selectedIndex = index;
-                  // print(widget.selectedIndex);
-                }),
-              ),
-              child: Container(
-                width: 48,
-                height: 48,
-                child: Icon(
-                  (widget.selectedIndex == index) ? Icons.done : null,
-                  color: Colors.white,
-                ),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: colors[index],),
-              ),
+            child: ValueListenableBuilder(
+              valueListenable: colorController.selectedIndex,
+              builder: (context, value, _) {
+                return GestureDetector(
+                  onTap: () => colorController.changeSelectedIndex(index),
+                  child: Container(
+                    width: 48,
+                    height: 48,
+                    child: Icon(
+                      (colorController.selectedIndex.value == index)
+                          ? Icons.done
+                          : null,
+                      color: Colors.white,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      color: colors[index],
+                    ),
+                  ),
+                );
+              },
             ),
           );
         }),

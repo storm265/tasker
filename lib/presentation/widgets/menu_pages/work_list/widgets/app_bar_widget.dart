@@ -22,11 +22,12 @@ class AppBarWorkList extends StatelessWidget with PreferredSizeWidget {
       leading: const Icon(null),
       actions: [
         Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: GestureDetector(
-              child: const Icon(Icons.tune_outlined),
-              onTap: () => showTasksDialog(context),
-            ))
+          padding: const EdgeInsets.all(8.0),
+          child: GestureDetector(
+            child: const Icon(Icons.tune_outlined),
+            onTap: () => showTasksDialog(context),
+          ),
+        )
       ],
       centerTitle: true,
       title: const Text(

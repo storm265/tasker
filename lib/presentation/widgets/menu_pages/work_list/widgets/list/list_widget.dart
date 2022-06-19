@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:todo2/controller/main/theme_data_controller.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/widgets/menu_pages/work_list/widgets/list/text.dart';
 import 'package:todo2/presentation/widgets/menu_pages/work_list/widgets/list/undone_item_widget.dart';
@@ -30,9 +28,15 @@ class ListWidget extends StatelessWidget {
                   endActionPane: ActionPane(
                     motion: const ScrollMotion(),
                     children: [
-                      EndPageWidget(icon: Icons.edit, onClick: () {}),
+                      EndPageWidget(
+                        icon: Icons.edit,
+                        onClick: () {},
+                      ),
                       const GreySlidableWidget(),
-                      EndPageWidget(icon: Icons.delete, onClick: () {}),
+                      EndPageWidget(
+                        icon: Icons.delete,
+                        onClick: () {},
+                      ),
                     ],
                   ),
                   child: Padding(
@@ -53,7 +57,9 @@ class ListWidget extends StatelessWidget {
                             ),
                           ),
                           const UndoneItemWidget(
-                              subtitle: 'subtitle', title: 'title')
+                            subtitle: 'subtitle',
+                            title: 'title',
+                          )
                         ],
                       ),
                     ),

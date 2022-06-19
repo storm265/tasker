@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:todo2/controller/main/theme_data_controller.dart';
+import 'package:todo2/presentation/pages/navigation_page.dart';
 
 class AppbarWidget extends StatelessWidget with PreferredSizeWidget {
   final String? title;
   final Color appBarColor;
   final Color textColor;
+  final bool shouldUsePopMethod;
   final bool showLeadingButton;
-
+  final Brightness brightness;
   const AppbarWidget({
     Key? key,
     this.title,
+    this.shouldUsePopMethod = false,
     this.showLeadingButton = false,
     this.textColor = Colors.black,
     this.appBarColor = Palette.red,
+    this.brightness = Brightness.light,
   }) : super(key: key);
 
   @override
@@ -22,17 +26,20 @@ class AppbarWidget extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      elevation: 0,
       backgroundColor: appBarColor,
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: appBarColor,
         systemNavigationBarColor: Colors.black,
-        statusBarIconBrightness: Brightness.light,
+        statusBarIconBrightness: brightness,
       ),
       leading: showLeadingButton
           ? Padding(
               padding: const EdgeInsets.only(left: 10),
-              child: InkWell(
-                onTap: () => Navigator.pop(context),
+              child: GestureDetector(
+                onTap: () => shouldUsePopMethod
+                    ? Navigator.pop(context)
+                    : pageController.jumpToPage(0),
                 child: Icon(
                   Icons.arrow_back,
                   size: 30,
@@ -45,12 +52,12 @@ class AppbarWidget extends StatelessWidget with PreferredSizeWidget {
       title: Text(
         title ?? '',
         style: TextStyle(
+          fontStyle: FontStyle.italic,
           color: textColor,
           fontSize: 20,
           fontWeight: FontWeight.w300,
         ),
       ),
-      elevation: 0,
     );
   }
 }

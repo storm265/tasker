@@ -2,16 +2,17 @@
 
 import 'package:todo2/database/database_scheme/user_profile_scheme.dart';
 
-class UsersProfile {
+class UserProfileModel {
   String username, avatar_url, created_at, uid;
-  UsersProfile({
+  UserProfileModel({
     required this.username,
     required this.avatar_url,
     required this.created_at,
     required this.uid,
   });
 
-  factory UsersProfile.fromJson(Map<String, dynamic> json) => UsersProfile(
+  factory UserProfileModel.fromJson(Map<String, dynamic> json) =>
+      UserProfileModel(
         username: json[UserProfileScheme.username] ?? 'empty',
         avatar_url: json[UserProfileScheme.avatarUrl] ?? 'empty',
         created_at: json[UserProfileScheme.createdAt] ?? 'empty',

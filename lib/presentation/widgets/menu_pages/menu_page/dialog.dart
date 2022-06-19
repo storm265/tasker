@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:todo2/controller/add_tasks/color_pallete_controller/color_pallete_controller.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/widgets/common/disabled_glow_single_child_scroll_widget.dart';
 import 'package:todo2/presentation/widgets/menu_pages/menu_page/widgets/color_pallete_widget.dart';
 
 Future<void> showMaterialDialog(BuildContext context) async {
+  final colorPalleteController = ColorPalleteController();
   int _selectedIndex = 0;
   final _titleController = TextEditingController();
   await showDialog(
@@ -34,7 +36,9 @@ Future<void> showMaterialDialog(BuildContext context) async {
                   style: TextStyle(fontWeight: FontWeight.w300),
                 ),
               ),
-              ColorPalleteWidget(selectedIndex: _selectedIndex)
+              ColorPalleteWidget(
+                colorController: colorPalleteController,
+              )
             ],
           ),
         ),

@@ -14,7 +14,7 @@ class ProjectModel {
   factory ProjectModel.fromJson(Map<String, dynamic> json) => ProjectModel(
         title: json[UserDataScheme.title] ?? 'empty',
         color: json[UserDataScheme.color] ?? 'empty',
-        created_at: json[UserDataScheme.created_at] ?? 'empty',
-        owner_id: json[UserDataScheme.owner_id] ?? 'empty',
+        created_at: json[UserDataScheme.createdAt] ?? 'empty',
+        owner_id: json[UserDataScheme.ownerId] ?? 'empty',
       );
 }

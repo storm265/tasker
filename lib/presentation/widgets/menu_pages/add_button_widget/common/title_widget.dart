@@ -5,6 +5,7 @@ import 'package:todo2/presentation/widgets/menu_pages/add_button_widget/common/a
 class TitleWidget extends StatelessWidget {
   final String title;
   final TextEditingController textController;
+
   const TitleWidget({
     Key? key,
     required this.textController,
@@ -33,7 +34,7 @@ class TitleWidget extends StatelessWidget {
             maxLines: 10,
             hintText: 'Enter $title:',
             titleController: textController,
-          )
+          ),
         ],
       ),
     );

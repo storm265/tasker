@@ -2,9 +2,9 @@
 
 import 'dart:core';
 
-class User {
+class UserModel {
   String email, password, created_at, uid;
-  User({
+  UserModel({
     required this.email,
     required this.uid,
     required this.password,

@@ -11,7 +11,6 @@ abstract class ProjectUserData<T> {
   });
 }
 
-
 class ProjectUserDataImpl implements ProjectUserData {
   final _projectsTable = SupabaseSource().dbClient.from('projects');
 
@@ -24,8 +23,8 @@ class ProjectUserDataImpl implements ProjectUserData {
       final _responce = await _projectsTable.insert({
         UserDataScheme.title: title,
         UserDataScheme.color: color,
-        UserDataScheme.owner_id: SupabaseSource().dbClient.auth.currentUser!.id,
-        UserDataScheme.created_at: DateTime.now().toString(),
+        UserDataScheme.ownerId: SupabaseSource().dbClient.auth.currentUser!.id,
+        UserDataScheme.createdAt: DateTime.now().toString(),
       }).execute();
       return _responce;
     } catch (e) {

@@ -7,6 +7,7 @@ import 'package:todo2/presentation/widgets/auth_pages/widgets/signup_to_continue
 import 'package:todo2/presentation/widgets/auth_pages/widgets/textfield_widget.dart';
 import 'package:todo2/presentation/widgets/auth_pages/widgets/welcome_text_widget.dart';
 import 'package:todo2/presentation/widgets/common/disabled_glow_single_child_scroll_widget.dart';
+import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({Key? key}) : super(key: key);
@@ -29,51 +30,54 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   bool _isClicked = true;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const AppbarWidget(
-        showLeadingButton: true,
-        appBarColor: Colors.white,
-      ),
-      body: DisabledGlowWidget(
-        child: Form(
-          key: _formKey,
-          autovalidateMode: AutovalidateMode.onUserInteraction,
-          child: Stack(
-            fit: StackFit.expand,
-            alignment: Alignment.center,
-            children: [
-              const TitleTextWidget(text: 'Forgot Password'),
-              const SubTitleWidget(
-                text:
-                    'Please enter your email below to recevie\nyour password reset instructions',
-              ),
-              TextFieldWidget(
-                validateCallback: (text) =>
-                    _validatorController.validateEmail(text!),
-                left: 25,
-                top: 160,
-                isObsecureText: false,
-                textController: _emailController,
-                labelText: 'Email:',
-                text: 'Username',
-              ),
-              SignUpButtonWidget(
-                height: 270,
-                buttonText: 'Send Request',
-                onPressed: _isClicked
-                    ? () async {
-                        if (_formKey.currentState!.validate()) {
-                          setState(() => _isClicked = false);
-                          await _authRepositoryController.resetPassword(
-                            context: context,
-                            email: _emailController.text,
-                          );
+    return WillPopWrapper(
+      child: Scaffold(
+        appBar: const AppbarWidget(
+          shouldUsePopMethod: true,
+          showLeadingButton: true,
+          appBarColor: Colors.white,
+        ),
+        body: DisabledGlowWidget(
+          child: Form(
+            key: _formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            child: Stack(
+              fit: StackFit.expand,
+              alignment: Alignment.center,
+              children: [
+                const TitleTextWidget(text: 'Forgot Password'),
+                const SubTitleWidget(
+                  text:
+                      'Please enter your email below to recevie\nyour password reset instructions',
+                ),
+                TextFieldWidget(
+                  validateCallback: (text) =>
+                      _validatorController.validateEmail(text!),
+                  left: 25,
+                  top: 160,
+                  isObsecureText: false,
+                  textController: _emailController,
+                  labelText: 'Email:',
+                  text: 'Username',
+                ),
+                SignUpButtonWidget(
+                  height: 270,
+                  buttonText: 'Send Request',
+                  onPressed: _isClicked
+                      ? () async {
+                          if (_formKey.currentState!.validate()) {
+                            setState(() => _isClicked = false);
+                            await _authRepositoryController.resetPassword(
+                              context: context,
+                              email: _emailController.text,
+                            );
+                          }
+                          setState(() => _isClicked = true);
                         }
-                        setState(() => _isClicked = true);
-                      }
-                    : null,
-              )
-            ],
+                      : null,
+                )
+              ],
+            ),
           ),
         ),
       ),

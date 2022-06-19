@@ -1,7 +1,6 @@
 import 'package:todo2/database/data_source/user_data_source.dart';
-import 'package:todo2/model/supabase/user_model.dart';
+import 'package:todo2/database/model/user_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
-
 
 abstract class UserRepository<T> {
   Future<void> insert({
@@ -10,7 +9,7 @@ abstract class UserRepository<T> {
   });
 }
 
-class UserRepositoryImpl implements UserRepository<User> {
+class UserRepositoryImpl implements UserRepository<UserModel> {
   @override
   Future<void> insert({
     required String password,

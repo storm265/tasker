@@ -1,5 +1,5 @@
 import 'package:todo2/database/data_source/user_profile_data_source.dart';
-import 'package:todo2/model/supabase/users_profile_model.dart';
+import 'package:todo2/database/model/users_profile_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/supabase/constants.dart';
 
@@ -12,8 +12,10 @@ abstract class UserProfileRepository<T> {
   });
 }
 
-class UserProfileRepositoryImpl implements UserProfileRepository<UsersProfile> {
+class UserProfileRepositoryImpl
+    implements UserProfileRepository<UserProfileModel> {
   final _userProfileDataSource = UserProfileDataSourceImpl();
+
   final _supabase = SupabaseSource().dbClient.storage.from('avatar');
   @override
   Future<void> insertImg({

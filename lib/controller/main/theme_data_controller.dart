@@ -10,13 +10,13 @@ class ThemeDataController {
         ),
       ),
     ),
-    useMaterial3: false,
-    primarySwatch: Palette.red,
+    primarySwatch: Colors.red,
     bottomAppBarColor: Palette.red,
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
-        backgroundColor: Color(0xFF292E4E),
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.grey),
+      backgroundColor: Color(0xFF292E4E),
+      selectedItemColor: Colors.white,
+      unselectedItemColor: Colors.grey,
+    ),
   );
 }
 

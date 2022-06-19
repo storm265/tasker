@@ -31,10 +31,10 @@ class NavigationService {
         Navigator.pushNamed(context, '/forgotPassword');
         break;
       case Pages.newPassword:
-        Navigator.pushReplacementNamed(context, '/newPassword');
+        Navigator.pushNamedAndRemoveUntil(context, '/newPassword',((_) => false));
         break;
       case Pages.passwordChanged:
-        Navigator.pushReplacementNamed(context, '/passwordChanged');
+        Navigator.pushNamedAndRemoveUntil(context, '/passwordChanged',((_) => false));
         break;
       case Pages.workList:
         Navigator.pushNamed(context, '/workList');

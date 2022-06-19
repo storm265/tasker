@@ -14,24 +14,23 @@ class WhiteBoxWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return DisabledGlowWidget(
         child: SingleChildScrollView(
-      child:  Container(
-          margin: const EdgeInsets.only(left: 25, top: 10),
-          width: 350,
-          height: height,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: const [
-              BoxShadow(
-                color: Color(0xFFDDDDDD),
-                blurRadius: 9,
-                offset: Offset(3, 3),
-              )
-            ],
-            borderRadius: BorderRadius.circular(5),
-          ),
-          child: child,
+      child: Container(
+        margin: const EdgeInsets.only(left: 25, top: 10),
+        width: 350,
+        height: height,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0xFFDDDDDD),
+              blurRadius: 9,
+              offset: Offset(3, 3),
+            )
+          ],
+          borderRadius: BorderRadius.circular(5),
         ),
-      
+        child: child,
+      ),
     ));
   }
 }

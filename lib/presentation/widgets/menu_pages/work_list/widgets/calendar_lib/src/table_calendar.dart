@@ -187,10 +187,11 @@ class TableCalendar<T> extends StatefulWidget {
 
   /// Called when the calendar is created. Exposes its PageController.
   final void Function(PageController pageController)? onCalendarCreated;
-
+final bool shouldHideButton;
   /// Creates a `TableCalendar` widget.
   TableCalendar({
     Key? key,
+    required this.shouldHideButton,
     required DateTime focusedDay,
     required DateTime firstDay,
     required DateTime lastDay,
@@ -361,6 +362,7 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
             valueListenable: _focusedDay,
             builder: (context, value, _) {
               return CalendarHeader(
+                shouldHideButton: widget.shouldHideButton,
                 focusedMonth: value,
                 locale: widget.locale,
                 onFormatButtonTap: (format) {

@@ -28,6 +28,7 @@ class EnterUserWidget extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(left: 15),
             child: TextField(
+              onTap: titleController.clear,
               controller: titleController,
               decoration: const InputDecoration(
                 border: InputBorder.none,

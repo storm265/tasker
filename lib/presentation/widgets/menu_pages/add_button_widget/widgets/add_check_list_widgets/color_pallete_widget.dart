@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:todo2/presentation/widgets/common/colors.dart';
 
+// ignore: must_be_immutable
 class ColorPalleteWidget extends StatelessWidget {
   int selectedIndex;
   ColorPalleteWidget({Key? key, required this.selectedIndex}) : super(key: key);

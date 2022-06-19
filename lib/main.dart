@@ -4,6 +4,7 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/add_checklis
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note_page.dart';
 import 'package:todo2/presentation/pages/auth_pages/sign_in_page.dart';
 import 'package:todo2/presentation/pages/auth_pages/sign_up_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/profile_page.dart';
 import 'package:todo2/services/supabase/splash_page.dart';
 import 'package:todo2/presentation/pages/navigation_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/tasks_page.dart';
@@ -38,10 +39,10 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         title: 'Todo2',
         theme: _themeDataController.themeData,
-          initialRoute: '/',
-       // home: AddQuickNote(),
+        initialRoute: '/',
+       // home: NewTaskPage(),
         routes: {
-            '/': (_) => const SplashPage(),
+           '/': (_) => const SplashPage(),
           '/noConnection': (_) => const NoConnectionPage(),
           '/welcome': (_) => const WelcomePage(),
           '/signUp': (_) => const SignUpPage(),
@@ -52,7 +53,7 @@ class _MyAppState extends State<MyApp> {
           '/home': (_) => NavigationPage(),
           '/workList': (_) => const TasksPage(),
           '/addTask': (_) => NewTaskPage(),
-          '/addNote': (_) => AddQuickNote(),
+          '/addNote': (_) => const AddQuickNote(),
           '/addCheckList': (_) => const AddCheckListPage()
         });
   }

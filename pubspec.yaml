@@ -20,10 +20,10 @@ dependencies:
   image_picker: 
   flutter_secure_storage: 
   connectivity_plus:
-  shared_preferences:
   intl:
   cached_network_image: ^3.2.1
   simple_gesture_detector:
+  percent_indicator: ^4.0.1
   
 
 dev_dependencies:

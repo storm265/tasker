@@ -1,7 +1,4 @@
-
-
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase/supabase.dart' as supabase;
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
@@ -9,13 +6,14 @@ import 'package:todo2/services/navigation_service/navigation_service.dart';
 class AuthState<T extends StatefulWidget> extends SupabaseAuthState<T> {
   @override
   void onUnauthenticated() async {
-    final _prefs = await SharedPreferences.getInstance();
-    if (_prefs.getBool('isFirstTime') == null) {
-      await _prefs.setBool('isFirstTime', true);
-      await NavigationService.navigateTo(context, Pages.welcome);
-    } else {
-      await NavigationService.navigateTo(context, Pages.signIn);
-    }
+    // final _prefs = await SharedPreferences.getInstance();
+    // if (_prefs.getBool('isFirstTime') == null) {
+    //   await _prefs.setBool('isFirstTime', true);
+    //   await NavigationService.navigateTo(context, Pages.welcome);
+    // } else {
+    //   await NavigationService.navigateTo(context, Pages.signIn);
+    // }
+    await NavigationService.navigateTo(context, Pages.welcome);
   }
 
   @override

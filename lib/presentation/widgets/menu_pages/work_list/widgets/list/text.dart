@@ -5,8 +5,11 @@ import 'package:intl/intl.dart';
 class ListDayWidget extends StatelessWidget {
   final int index;
   final DateTime date;
-  const ListDayWidget({Key? key, required this.date, required this.index})
-      : super(key: key);
+  const ListDayWidget({
+    Key? key,
+    required this.date,
+    required this.index,
+  }) : super(key: key);
   String getDay(int index) {
     switch (index) {
       case 0:

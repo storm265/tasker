@@ -10,12 +10,13 @@ import 'opener_button.dart';
 class CalendarHeader extends StatelessWidget {
   final dynamic locale;
   final DateTime focusedMonth;
-
+  final bool shouldHideButton;
   final ValueChanged<CalendarFormat> onFormatButtonTap;
 
   const CalendarHeader({
     Key? key,
     this.locale,
+    required this.shouldHideButton,
     required this.focusedMonth,
     required this.onFormatButtonTap,
   }) : super(key: key);
@@ -35,7 +36,9 @@ class CalendarHeader extends StatelessWidget {
             ),
           ),
         ),
-        IconOpener(onTap: onFormatButtonTap),
+        shouldHideButton
+            ? const SizedBox()
+            : IconOpener(onTap: onFormatButtonTap)
       ],
     );
   }

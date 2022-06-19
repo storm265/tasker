@@ -9,7 +9,7 @@ import 'package:todo2/presentation/pages/menu_pages/tasks_page.dart';
 import 'package:todo2/presentation/widgets/menu_pages/work_list/widgets/floating_button_widget.dart';
 import 'package:todo2/presentation/widgets/menu_pages/work_list/widgets/nav_bar_widget.dart';
 
-final pageController = PageController(initialPage: 0, keepPage: true);
+final pageController = PageController();
 
 class NavigationPage extends StatelessWidget {
   NavigationPage({Key? key}) : super(key: key);
@@ -85,7 +85,7 @@ class NavigationPage extends StatelessWidget {
           children: [
             const KeepAlivePage(child: TasksPage()),
             const KeepAlivePage(child: MenuPage()),
-            const KeepAlivePage(child: QuickPage()),
+             KeepAlivePage(child: QuickPage()),
             const KeepAlivePage(child: ProfilePage()),
             NewTaskPage(),
              AddQuickNote(),

@@ -7,6 +7,7 @@ class AddTextFieldWidget extends StatelessWidget {
   final VoidCallback? onEdiditionCompleteCallback;
   final int? maxLength;
   final int? maxLines;
+
   const AddTextFieldWidget({
     Key? key,
     required this.titleController,
@@ -19,7 +20,15 @@ class AddTextFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      validator: (text) {
+        if (text!.isEmpty) {
+          return 'Please enter text';
+        } else {
+          return null;
+        }
+      },
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       onEditingComplete: onEdiditionCompleteCallback,
       style: const TextStyle(
         fontWeight: FontWeight.w400,
