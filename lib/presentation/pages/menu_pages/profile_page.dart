@@ -27,9 +27,10 @@ class ProfilePage extends StatelessWidget {
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
-                    color: const Color(0xFFE0E0E0).withOpacity(0.5),
-                    blurRadius: 10,
-                    offset: const Offset(0, 2))
+                  color: const Color(0xFFE0E0E0).withOpacity(0.5),
+                  blurRadius: 10,
+                  offset: const Offset(0, 2),
+                )
               ],
               color: const Color(0xFFFFFFFF),
             ),
@@ -42,7 +43,7 @@ class ProfilePage extends StatelessWidget {
                     const Align(
                       alignment: Alignment.topLeft,
                       child: Padding(
-                        padding:  EdgeInsets.all(20),
+                        padding: EdgeInsets.all(20),
                         child: Text(
                           'Stats',
                           style: TextStyle(

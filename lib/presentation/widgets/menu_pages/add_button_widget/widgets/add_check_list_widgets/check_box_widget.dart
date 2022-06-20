@@ -17,45 +17,47 @@ class CheckBoxWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StatefulBuilder(
-        builder: (context, setState) => ListTile(
-            title: Row(
-              children: [
-                Checkbox(value: false, onChanged: (value) {}),
-                (isClicked)
-                    ? SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: SizedBox(
-                          width: 170,
-                          height: 40,
-                          child: AddTextFieldWidget(
-                            titleController: textController,
-                            maxLength: 30,
-                            maxLines: 1,
-                            onTap: () => FocusScope.of(context).requestFocus(),
-                            onEdiditionCompleteCallback: () {
-                              FocusScope.of(context).unfocus();
-                              setState(() {
-                                isClicked = false;
-                                checkBoxController.editItem(
-                                    index, textController.text);
-                              });
-                            },
-                          ),
-                        ))
-                    : GestureDetector(
-                        child:
-                            Text(checkBoxController.checkBoxItems.value[index]),
-                        onTap: () => setState(() => isClicked = !isClicked),
+      builder: (context, setState) => ListTile(
+        title: Row(
+          children: [
+            Checkbox(value: false, onChanged: (value) {}),
+            (isClicked)
+                ? SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: SizedBox(
+                      width: 170,
+                      height: 40,
+                      child: AddTextFieldWidget(
+                        titleController: textController,
+                        maxLength: 30,
+                        maxLines: 1,
+                        onTap: () => FocusScope.of(context).requestFocus(),
+                        onEdiditionCompleteCallback: () {
+                          FocusScope.of(context).unfocus();
+                          setState(() {
+                            isClicked = false;
+                            checkBoxController.editItem(
+                                index, textController.text);
+                          });
+                        },
                       ),
-              ],
-            ),
-            trailing: (index == 0)
-                ? null
-                : IconButton(
-                    onPressed: () {
-                      checkBoxController.removeItem(index);
-                      print(checkBoxController.checkBoxItems.value);
-                    },
-                    icon: const Icon(Icons.delete))));
+                    ))
+                : GestureDetector(
+                    child: Text(checkBoxController.checkBoxItems.value[index]),
+                    onTap: () => setState(() => isClicked = !isClicked),
+                  ),
+          ],
+        ),
+        trailing: (index == 0)
+            ? null
+            : IconButton(
+                onPressed: () {
+                  checkBoxController.removeItem(index);
+                  print(checkBoxController.checkBoxItems.value);
+                },
+                icon: const Icon(Icons.delete),
+              ),
+      ),
+    );
   }
 }

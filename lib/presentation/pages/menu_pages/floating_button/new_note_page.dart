@@ -30,7 +30,7 @@ class _AddQuickNoteState extends State<AddQuickNote> {
   final _formKey = GlobalKey<FormState>();
   final _colorController = ColorPalleteController();
   final descriptionTextController = TextEditingController();
-  final _addNoteRepository = NotesRepositoryImpl();
+  final _addNoteRepository = NoteRepositoryImpl();
   bool _isButtonClicked = true;
 
   @override
@@ -69,7 +69,7 @@ class _AddQuickNoteState extends State<AddQuickNote> {
                             ? () async {
                                 if (_formKey.currentState!.validate()) {
                                   setState(() => _isButtonClicked = false);
-                                  await _addNoteRepository.putNotes(
+                                  await _addNoteRepository.putNote(
                                     color: colors[_colorController
                                             .selectedIndex.value]
                                         .value

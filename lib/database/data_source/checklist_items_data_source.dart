@@ -6,13 +6,12 @@ import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/supabase/constants.dart';
 
 abstract class ChecklistItemsDataSource<T> {
-  Future<T> putChecklistItem({
+  Future<T> putCheckListItem({
     required String content,
     required int checklistId,
     required bool isCompleted,
   });
   Future<T> fetchChecklistItem();
-   
 }
 
 class ChecklistItemsDataSourceImpl implements ChecklistItemsDataSource {
@@ -20,7 +19,7 @@ class ChecklistItemsDataSourceImpl implements ChecklistItemsDataSource {
   final _supabase = SupabaseSource().dbClient;
 
   @override
-  Future<PostgrestResponse<dynamic>> putChecklistItem({
+  Future<PostgrestResponse<dynamic>> putCheckListItem({
     required String content,
     required int checklistId,
     required bool isCompleted,
@@ -38,16 +37,16 @@ class ChecklistItemsDataSourceImpl implements ChecklistItemsDataSource {
     }
     throw Exception('Error in data source putChecklistItem');
   }
-  
+
   @override
-  Future<PostgrestResponse<dynamic>> fetchChecklistItem()async {
+  Future<PostgrestResponse<dynamic>> fetchChecklistItem() async {
     try {
       final _responce = await _supabase
           .from(_table)
-          .select('${CheckListItemsScheme.content},${CheckListItemsScheme.isCompleted},${CheckListItemsScheme.checklistId}')
+          .select(
+              '${CheckListItemsScheme.content},${CheckListItemsScheme.isCompleted},${CheckListItemsScheme.checklistId}')
           .eq(CheckListItemsScheme.ownerId, _supabase.auth.currentUser!.id)
           .execute();
-         
       return _responce;
     } catch (e) {
       ErrorService.printError('Error in fetchNotes() data source:$e');

@@ -4,6 +4,7 @@ import 'package:todo2/controller/auth/auth_controller.dart';
 import 'package:todo2/database/repository/user_profile_repository.dart';
 import 'package:todo2/presentation/widgets/menu_pages/profile_page/widgets/panel_widgets/image_widget.dart';
 import 'package:todo2/presentation/widgets/menu_pages/profile_page/widgets/panel_widgets/tasks_text_widget.dart';
+import 'package:todo2/presentation/widgets/menu_pages/profile_page/widgets/settings_dialog.dart';
 import 'package:todo2/services/supabase/constants.dart';
 
 class PanelWidget extends StatefulWidget {
@@ -34,8 +35,6 @@ class _PanelWidgetState extends State<PanelWidget> {
   Future<void> getUserData() async {
     _image = await _userProfileRepository.fetchAvatar();
     _userName = await _userProfileRepository.fetchUserName();
-    log('username: $_userName');
-    log('image: $_image');
   }
 
   @override
@@ -56,21 +55,8 @@ class _PanelWidgetState extends State<PanelWidget> {
             Positioned(
               left: 290,
               child: IconButton(
-                onPressed: () {},
+                onPressed: () => showSettingsDialog(context),
                 icon: const Icon(Icons.settings),
-              ),
-            ),
-            Positioned(
-              left: 260,
-              child: IconButton(
-                onPressed: _isClicked
-                    ? () async {
-                        setState(() => _isClicked = false);
-                        await _signUpController.signOut(context);
-                        setState(() => _isClicked = true);
-                      }
-                    : null,
-                icon: const Icon(Icons.disabled_by_default_sharp),
               ),
             ),
             Positioned(
@@ -83,10 +69,11 @@ class _PanelWidgetState extends State<PanelWidget> {
                   title: Text(
                     _userName,
                     style: const TextStyle(
-                        fontSize: 18,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w300,
-                        fontStyle: FontStyle.italic),
+                      fontSize: 18,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w300,
+                      fontStyle: FontStyle.italic,
+                    ),
                   ),
                   subtitle: Text(
                     '${SupabaseSource().dbClient.auth.currentUser!.email}',

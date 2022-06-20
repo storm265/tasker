@@ -36,7 +36,7 @@ class _MenuPageState extends State<MenuPage> {
   Widget build(BuildContext context) {
     return WillPopWrapper(
       child: Scaffold(
-        appBar: const AppbarWidget(
+        appBar:  AppbarWidget(
           title: 'Projects',
           appBarColor: Colors.white,
         ),

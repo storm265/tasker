@@ -13,6 +13,7 @@ import 'controller/main/theme_data_controller.dart';
 import 'presentation/pages/auth_pages/changed_password_page.dart';
 import 'presentation/pages/auth_pages/forgot_password_page.dart';
 import 'presentation/pages/menu_pages/floating_button/new_task.dart';
+import 'presentation/pages/menu_pages/quick_page.dart';
 import 'presentation/pages/no_connection_page.dart';
 import 'presentation/pages/auth_pages/reset_password_page.dart';
 import 'presentation/pages/auth_pages/welcome_page.dart';
@@ -39,10 +40,10 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         title: 'Todo2',
         theme: _themeDataController.themeData,
-        initialRoute: '/',
-       // home: NewTaskPage(),
+        //  initialRoute: '/',
+        home: ProfilePage(),
         routes: {
-           '/': (_) => const SplashPage(),
+          //   '/': (_) => const SplashPage(),
           '/noConnection': (_) => const NoConnectionPage(),
           '/welcome': (_) => const WelcomePage(),
           '/signUp': (_) => const SignUpPage(),

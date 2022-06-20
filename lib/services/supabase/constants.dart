@@ -15,7 +15,7 @@ class SupabaseSource {
 
 }
 
-// Works nice 
+
 class SupabaseConfiguration {
   SupabaseConfiguration._internal();
   static final SupabaseConfiguration _instance =

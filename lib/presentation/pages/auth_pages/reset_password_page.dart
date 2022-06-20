@@ -17,7 +17,7 @@ class NewPasswordPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopWrapper(
       child: Scaffold(
-        appBar: const AppbarWidget(
+        appBar:  AppbarWidget(
           showLeadingButton: true,
           appBarColor: Colors.white,
         ),

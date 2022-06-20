@@ -12,7 +12,8 @@ abstract class ProjectUserData<T> {
 }
 
 class ProjectUserDataImpl implements ProjectUserData {
-  final _projectsTable = SupabaseSource().dbClient.from('projects');
+  final _table = 'projects';
+  final _supabase = SupabaseSource().dbClient;
 
   @override
   Future<PostgrestResponse<dynamic>> putData({
@@ -20,10 +21,10 @@ class ProjectUserDataImpl implements ProjectUserData {
     required String title,
   }) async {
     try {
-      final _responce = await _projectsTable.insert({
+      final _responce = await _supabase.from(_table).insert({
         UserDataScheme.title: title,
         UserDataScheme.color: color,
-        UserDataScheme.ownerId: SupabaseSource().dbClient.auth.currentUser!.id,
+        UserDataScheme.ownerId: _supabase.auth.currentUser!.id,
         UserDataScheme.createdAt: DateTime.now().toString(),
       }).execute();
       return _responce;
@@ -36,9 +37,9 @@ class ProjectUserDataImpl implements ProjectUserData {
   @override
   Future<PostgrestResponse<dynamic>> fetchProject() async {
     try {
-      final _responce = await _projectsTable
-          .select('title, color')
-          .eq('owner_id', SupabaseSource().dbClient.auth.currentUser!.id)
+      final _responce = await _supabase.from(_table)
+          .select('${UserDataScheme.title}, ${UserDataScheme.color}')
+          .eq('owner_id', _supabase.auth.currentUser!.id)
           .execute();
       return _responce;
     } catch (e) {

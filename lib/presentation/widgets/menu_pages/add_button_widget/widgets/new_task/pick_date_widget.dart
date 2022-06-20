@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:todo2/controller/add_tasks/add_task/add__task_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task.dart';
 import 'package:todo2/presentation/widgets/menu_pages/add_button_widget/common/confirm_button.dart';
 import 'package:todo2/presentation/widgets/menu_pages/work_list/widgets/calendar_lib/src/shared/utils.dart';
 import 'package:todo2/presentation/widgets/menu_pages/work_list/widgets/calendar_lib/src/table_calendar.dart';
@@ -27,6 +29,7 @@ Future<void> showCalendarDatePicker(BuildContext context) async {
                   onDaySelected: (selectedDay, focusedDay) {
                     setState(() {
                       _selectedDay = selectedDay;
+                      newTaskConroller.pickTime(_selectedDay);
                     });
                   },
                   firstDay: DateTime.utc(DateTime.now().year - 1, 1, 1),
@@ -35,7 +38,7 @@ Future<void> showCalendarDatePicker(BuildContext context) async {
                 ),
                 ConfirmButtonWidget(
                   width: 150,
-                  onPressed: () => print('ok'),
+                  onPressed: () => Navigator.pop(context),
                   title: 'Done',
                 ),
               ],

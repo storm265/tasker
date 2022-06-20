@@ -4,8 +4,8 @@ import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/supabase/constants.dart';
 
 abstract class NotesDataSource<T> {
-  Future<T> fetchNotes();
-  Future<T> putNotes({
+  Future<T> fetchNote();
+  Future<T> putNote({
     required String color,
     required String description,
   });
@@ -14,8 +14,9 @@ abstract class NotesDataSource<T> {
 class NotesDataSourceImpl implements NotesDataSource {
   final _table = 'notes';
   final _supabase = SupabaseSource().dbClient;
+  
   @override
-  Future<PostgrestResponse<dynamic>> fetchNotes() async {
+  Future<PostgrestResponse<dynamic>> fetchNote() async {
     try {
       final _responce = await _supabase
           .from(_table)
@@ -30,7 +31,7 @@ class NotesDataSourceImpl implements NotesDataSource {
   }
 
   @override
-  Future<PostgrestResponse<dynamic>> putNotes({
+  Future<PostgrestResponse<dynamic>> putNote({
     required String color,
     required String description,
   }) async {

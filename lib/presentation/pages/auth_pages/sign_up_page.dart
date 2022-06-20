@@ -43,7 +43,7 @@ class _SignUpPageState extends State<SignUpPage> {
     final _size = MediaQuery.of(context).size;
     return WillPopWrapper(
       child: Scaffold(
-        appBar: const AppbarWidget(
+        appBar:  AppbarWidget(
           shouldUsePopMethod: true,
           showLeadingButton: true,
           appBarColor: Colors.white,

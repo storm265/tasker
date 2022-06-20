@@ -32,7 +32,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Widget build(BuildContext context) {
     return WillPopWrapper(
       child: Scaffold(
-        appBar: const AppbarWidget(
+        appBar:  AppbarWidget(
           shouldUsePopMethod: true,
           showLeadingButton: true,
           appBarColor: Colors.white,

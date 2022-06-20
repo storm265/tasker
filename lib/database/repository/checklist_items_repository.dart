@@ -15,7 +15,7 @@ class ChecklistItemsRepositoryImpl implements ChecklistItemsRepository {
   Future<void> putChecklistItem({required List<String> checkboxItems}) async {
     try {
       for (int i = 0; i < checkboxItems.length; i++) {
-        await _checkListItemDataSource.putChecklistItem(
+        await _checkListItemDataSource.putCheckListItem(
           content: checkboxItems[i],
           checklistId: i,
           isCompleted: false,
@@ -30,19 +30,13 @@ class ChecklistItemsRepositoryImpl implements ChecklistItemsRepository {
   Future<List<CheckListItemModel>> fetchChecklistItem() async {
     try {
       final _responce = await _checkListItemDataSource.fetchChecklistItem();
-      log(_responce.data);
-      return (_responce.data as List<dynamic>)
+      final data = (_responce.data as List<dynamic>)
           .map((json) => CheckListItemModel.fromJson(json))
           .toList();
+      return data;
     } catch (e) {
       ErrorService.printError('Error in fetchChecklistItem() repository:$e');
     }
     throw Exception('Error in fetchChecklistItem() repository');
-  }
-
-  Future<void> getList() async {
-    final _responce = await _checkListItemDataSource.fetchChecklistItem();
-    final data = await _responce.data;
-    log(data.toString());
   }
 }
