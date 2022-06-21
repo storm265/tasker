@@ -44,6 +44,7 @@ class _AddCheckListPageState extends State<AddCheckListPage> {
         textColor: Colors.white,
         title: 'Add Check List',
         showLeadingButton: true,
+        shouldUsePopMethod: true,
       ),
       body: Stack(
         children: [
@@ -98,6 +99,7 @@ class _AddCheckListPageState extends State<AddCheckListPage> {
                     choseColorText,
                     ColorPalleteWidget(
                         colorController: _colorPalleteController),
+                    const SizedBox(height: 40),
                     ConfirmButtonWidget(
                       onPressed: _isClickedButton
                           ? () async {

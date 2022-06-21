@@ -1,20 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/controller/main/system_chromedart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/add_checklist_page.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note_page.dart';
-import 'package:todo2/presentation/pages/auth_pages/sign_in_page.dart';
-import 'package:todo2/presentation/pages/auth_pages/sign_up_page.dart';
-import 'package:todo2/presentation/pages/auth_pages/splash_page.dart';
-import 'package:todo2/presentation/pages/navigation_page.dart';
-import 'package:todo2/presentation/pages/menu_pages/tasks_page.dart';
+import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/supabase/configure.dart';
+import 'package:todo2/services/system_service/system_chrome.dart';
 import 'services/theme_service/theme_data_controller.dart';
-import 'presentation/pages/auth_pages/changed_password_page.dart';
-import 'presentation/pages/auth_pages/forgot_password_page.dart';
-import 'presentation/pages/menu_pages/floating_button/new_task.dart';
-import 'presentation/pages/no_connection_page.dart';
-import 'presentation/pages/auth_pages/reset_password_page.dart';
-import 'presentation/pages/auth_pages/welcome_page.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,21 +29,6 @@ class _MyAppState extends State<MyApp> {
         theme: _themeDataController.themeData,
         initialRoute: '/',
         // home: SignInPage(),
-        routes: {
-             // TODO: should be in Navigation service
-          '/': (_) => const SplashPage(),
-          '/noConnection': (_) => const NoConnectionPage(),
-          '/welcome': (_) => const WelcomePage(),
-          '/signUp': (_) => const SignUpPage(),
-          '/signIn': (_) => const SignInPage(),
-          '/forgotPassword': (_) => const ForgotPasswordPage(),
-          '/newPassword': (_) => NewPasswordPage(),
-          '/passwordChanged': (_) => const PasswordChangedPage(),
-          '/home': (_) => NavigationPage(),
-          '/workList': (_) => const TasksPage(),
-          '/addTask': (_) => NewTaskPage(),
-          '/addNote': (_) => const AddQuickNote(),
-          '/addCheckList': (_) => const AddCheckListPage()
-        });
+        routes: routes);
   }
 }

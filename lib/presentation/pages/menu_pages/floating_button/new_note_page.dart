@@ -28,7 +28,7 @@ class _AddQuickNoteState extends State<AddQuickNote> {
   }
 
   final _formKey = GlobalKey<FormState>();
-    // TODO: has to be inside of Controller
+  // TODO: has to be inside of Controller
   final _colorController = ColorPalleteController();
   final descriptionTextController = TextEditingController();
   final _addNoteRepository = NoteRepositoryImpl();
@@ -42,6 +42,7 @@ class _AddQuickNoteState extends State<AddQuickNote> {
         textColor: Colors.white,
         title: 'Add Note',
         showLeadingButton: true,
+        shouldUsePopMethod: true,
       ),
       body: Stack(
         children: [
@@ -49,10 +50,10 @@ class _AddQuickNoteState extends State<AddQuickNote> {
           WhiteBoxWidget(
             child: Column(
               children: [
-                Form(
-                  key: _formKey,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 15),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15),
+                  child: Form(
+                    key: _formKey,
                     child: TitleWidget(
                       textController: descriptionTextController,
                       title: 'Description',
@@ -64,20 +65,25 @@ class _AddQuickNoteState extends State<AddQuickNote> {
                   children: [
                     choseColorText,
                     ColorPalleteWidget(colorController: _colorController),
+                    const SizedBox(height: 50),
                     ConfirmButtonWidget(
                         title: 'Done',
                         onPressed: _isButtonClicked
                             ? () async {
                                 if (_formKey.currentState!.validate()) {
                                   setState(() => _isButtonClicked = false);
-                                  await _addNoteRepository.putNote(
-                                    color: colors[_colorController
-                                            .selectedIndex.value]
-                                        .value
-                                        .toString(),
-                                    description: descriptionTextController.text,
-                                  );
-                                  pageController.jumpToPage(0);
+                                  await _addNoteRepository
+                                      .putNote(
+                                        color: colors[_colorController
+                                                .selectedIndex.value]
+                                            .value
+                                            .toString(),
+                                        description:
+                                            descriptionTextController.text,
+                                      )
+                                      .then(
+                                          (_) => pageController.jumpToPage(0));
+
                                   setState(() => _isButtonClicked = true);
                                 }
                               }

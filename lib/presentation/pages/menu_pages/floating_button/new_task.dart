@@ -63,6 +63,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
           textColor: Colors.white,
           title: 'New Task',
           showLeadingButton: true,
+          shouldUsePopMethod: true,
         ),
         body: Stack(
           children: [

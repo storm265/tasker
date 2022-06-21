@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:todo2/database/model/projects_model.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 
-
 class TaskListWidget extends StatelessWidget {
   TaskListWidget({Key? key}) : super(key: key);
   final _projectsRepository = ProjectRepositoryImpl();
@@ -16,9 +15,6 @@ class TaskListWidget extends StatelessWidget {
         child: FutureBuilder<List<ProjectModel>>(
           future: _projectsRepository.fetchProject(),
           builder: (_, AsyncSnapshot<List<ProjectModel>> snapshot) {
-            if (snapshot.data == null) {
-              return const CircularProgressIndicator();
-            }
             if (snapshot.data!.isEmpty) {
               return const SizedBox();
             } else if (snapshot.hasData) {
@@ -32,6 +28,10 @@ class TaskListWidget extends StatelessWidget {
                       child: Container(
                         width: 160,
                         height: 100,
+                        decoration: BoxDecoration(
+                          color: Color(int.parse(snapshot.data![index].color!)),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
                         child: ListTile(
                           title: Text(
                             snapshot.data![index].title ?? 'null',
@@ -50,10 +50,6 @@ class TaskListWidget extends StatelessWidget {
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                        ),
-                        decoration: BoxDecoration(
-                          color: Color(int.parse(snapshot.data![index].color!)),
-                          borderRadius: BorderRadius.circular(5),
                         ),
                       ),
                     );

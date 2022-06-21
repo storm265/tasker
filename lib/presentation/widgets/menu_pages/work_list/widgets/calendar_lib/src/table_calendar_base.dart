@@ -73,10 +73,10 @@ class TableCalendarBase extends StatefulWidget {
         super(key: key);
 
   @override
-  _TableCalendarBaseState createState() => _TableCalendarBaseState();
+  TableCalendarBaseState createState() => TableCalendarBaseState();
 }
 
-class _TableCalendarBaseState extends State<TableCalendarBase> {
+class TableCalendarBaseState extends State<TableCalendarBase> {
   late final ValueNotifier<double> _pageHeight;
   late final PageController _pageController;
   late DateTime _focusedDay;

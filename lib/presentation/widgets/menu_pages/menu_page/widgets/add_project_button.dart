@@ -4,25 +4,26 @@ import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/widgets/menu_pages/menu_page/dialog.dart';
 
 class AddProjectButton extends StatelessWidget {
-  const AddProjectButton({Key? key}) : super(key: key);
+  final Function notifyParent;
+  const AddProjectButton({Key? key, required this.notifyParent})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 30, right: 310),
-      child: InkWell(
-        onTap: () async => showMaterialDialog(context),
-        child: Container(
-          width: 80,
-          height: 80,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: ProjectColor.getColor(CategoryColor.blue)),
-          child: const Center(
-            child: Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
+    return InkWell(
+      onTap: () async =>
+          await showMaterialDialog(context).then((_) => notifyParent()),
+      child: Container(
+        width: 80,
+        height: 80,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: ProjectColor.getColor(CategoryColor.blue),
+        ),
+        child: const Center(
+          child: Icon(
+            Icons.add,
+            color: Colors.white,
           ),
         ),
       ),

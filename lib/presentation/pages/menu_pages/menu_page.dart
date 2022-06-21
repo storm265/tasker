@@ -20,16 +20,6 @@ class MenuPage extends StatefulWidget {
 
 class _MenuPageState extends State<MenuPage> {
   final _projectsRepository = ProjectRepositoryImpl();
-  List<ProjectModel> projects = [];
-  @override
-  void initState() {
-    getInitData();
-    super.initState();
-  }
-
-  Future<void> getInitData() async {
-    projects = await _projectsRepository.fetchProject();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,52 +32,59 @@ class _MenuPageState extends State<MenuPage> {
         body: DisabledGlowWidget(
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
-            child: Column(
-              children: [
-                FutureBuilder<List<ProjectModel>>(
-                  future: _projectsRepository.fetchProject(),
-                  builder: (_, AsyncSnapshot<List<ProjectModel>> snapshot) {
-                    if (snapshot.data == null) {
-                      return const CircularProgressIndicator();
-                    }
-                    if (snapshot.data!.isEmpty) {
-                      return const SizedBox();
-                    } else if (snapshot.hasData) {
-                      return GridView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: snapshot.data!.length,
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 5.0,
-                            mainAxisSpacing: 5.0,
-                          ),
-                          itemBuilder: (BuildContext context, index) {
-                            return Container(
-                              width: 140,
-                              height: 180,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.white),
-                              child: Stack(
-                                children: [
-                                  CircleWidget(
-                                      color: snapshot.data![index].color ?? ''),
-                                  CategoryWidget(
-                                      title: snapshot.data![index].title ?? ''),
-                                  const CategoryLengthWidget()
-                                ],
-                              ),
-                            );
-                          });
-                    } else {
-                      return const SizedBox();
-                    }
-                  },
-                ),
-                const AddProjectButton()
-              ],
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                children: [
+                  FutureBuilder<List<ProjectModel>>(
+                    future: _projectsRepository.fetchProject(),
+                    builder: (_, AsyncSnapshot<List<ProjectModel>> snapshot) {
+                      if (snapshot.data == null) {
+                        return const CircularProgressIndicator();
+                      }
+                      if (snapshot.data!.isEmpty) {
+                        return const SizedBox();
+                      } else if (snapshot.hasData) {
+                        return GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: snapshot.data!.length,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 5.0,
+                              mainAxisSpacing: 5.0,
+                            ),
+                            itemBuilder: (BuildContext context, index) {
+                              return Container(
+                                width: 140,
+                                height: 180,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Colors.white),
+                                child: Stack(
+                                  children: [
+                                    CircleWidget(
+                                        color:
+                                            snapshot.data![index].color ?? ''),
+                                    CategoryWidget(
+                                        title:
+                                            snapshot.data![index].title ?? ''),
+                                    const CategoryLengthWidget()
+                                  ],
+                                ),
+                              );
+                            });
+                      } else {
+                        return const SizedBox();
+                      }
+                    },
+                  ),
+                  AddProjectButton(
+                    notifyParent: () => setState(() {}),
+                  )
+                ],
+              ),
             ),
           ),
         ),

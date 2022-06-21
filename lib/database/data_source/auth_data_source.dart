@@ -17,7 +17,7 @@ abstract class AuthDataSource {
   Future updatePassword({required String password});
   Future signOut();
 }
-// TODO: you didn't specified Generic type
+
 // TODO: Inject dependencies
 class AuthDataSourceImpl implements AuthDataSource {
   final SupabaseSource _supabase = SupabaseSource();
@@ -74,7 +74,6 @@ class AuthDataSourceImpl implements AuthDataSource {
     required String password,
   }) {
     try {
-         // TODO: grammar mistake
       final response = _supabase.restApiClient.auth.signUp(
         email,
         password,

@@ -7,6 +7,8 @@ class AddCheckListController extends ChangeNotifier {
   final _checkListItemsRepository = ChecklistItemsRepositoryImpl();
   final _checkListRepository = CheckListsRepositoryImpl();
   final checkBoxItems = ValueNotifier<List<String>>(['Item index 1']);
+
+  
   void addItem(int index) {
     checkBoxItems.value.add('Item index ${index + 1}');
     checkBoxItems.notifyListeners();
