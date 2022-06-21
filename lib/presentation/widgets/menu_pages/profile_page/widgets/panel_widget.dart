@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:todo2/controller/auth/auth_controller.dart';
 import 'package:todo2/database/repository/user_profile_repository.dart';
@@ -18,7 +18,7 @@ class _PanelWidgetState extends State<PanelWidget> {
   final _signUpController = SignUpController();
   final _userProfileRepository = UserProfileRepositoryImpl();
   late String _userName = '', _image = '';
-  bool _isClicked = true;
+  bool isClicked = true;
 
   @override
   void dispose() {
@@ -76,7 +76,7 @@ class _PanelWidgetState extends State<PanelWidget> {
                     ),
                   ),
                   subtitle: Text(
-                    '${SupabaseSource().dbClient.auth.currentUser!.email}',
+                    '${SupabaseSource().restApiClient.auth.currentUser!.email}',
                     style: const TextStyle(
                       fontSize: 16,
                       color: Colors.grey,

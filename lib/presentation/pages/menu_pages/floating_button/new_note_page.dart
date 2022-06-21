@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/controller/add_tasks/color_pallete_controller/color_pallete_controller.dart';
-import 'package:todo2/controller/main/theme_data_controller.dart';
+import 'package:todo2/services/theme_service/theme_data_controller.dart';
 import 'package:todo2/database/repository/notes_repository.dart';
 import 'package:todo2/presentation/pages/navigation_page.dart';
 import 'package:todo2/presentation/widgets/common/appbar_widget.dart';
@@ -28,6 +28,7 @@ class _AddQuickNoteState extends State<AddQuickNote> {
   }
 
   final _formKey = GlobalKey<FormState>();
+    // TODO: has to be inside of Controller
   final _colorController = ColorPalleteController();
   final descriptionTextController = TextEditingController();
   final _addNoteRepository = NoteRepositoryImpl();

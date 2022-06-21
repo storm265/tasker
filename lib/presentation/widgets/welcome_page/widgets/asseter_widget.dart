@@ -17,22 +17,21 @@ class AsseterWidget extends StatelessWidget {
         itemCount: _assetList.length,
         onPageChanged: onChange,
         itemBuilder: (_, index) {
-
-          dynamic _assets = _assetList[index];
+          final assets = _assetList[index];
           return Stack(
             children: [
               Positioned(
                 top: 100,
-                left: _assets.imgLeft,
+                left: assets.imgLeft,
                 child: Image.asset(
-                  '${_assets.assetsPath}${_assets.avatarsTitle}.png',
+                  '${assets.assetsPath}${assets.avatarsTitle}.png',
                 ),
               ),
               Positioned(
                 top: 345,
-                left: _assets.titleTextLeft,
+                left: assets.titleTextLeft,
                 child: Text(
-                  _assets.titleText,
+                  assets.titleText,
                   style: const TextStyle(
                     fontWeight: FontWeight.w300,
                     fontSize: 24,
@@ -41,9 +40,9 @@ class AsseterWidget extends StatelessWidget {
               ),
               Positioned(
                 top: 385,
-                left: _assets.subTextLeft,
+                left: assets.subTextLeft,
                 child: Text(
-                  _assets.subText,
+                  assets.subText,
                   style: const TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 18,

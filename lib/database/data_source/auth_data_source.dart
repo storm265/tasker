@@ -1,24 +1,24 @@
-
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/supabase/constants.dart';
 
-abstract class AuthDataSource<T> {
-  Future<T> signUp({
+abstract class AuthDataSource {
+  Future signUp({
     required String email,
     required String password,
   });
 
-  Future<T> signIn({
+  Future signIn({
     required String email,
     required String password,
   });
 
-  Future<T> resetPasswordForMail({required String email});
-  Future<T> updatePassword({required String password});
-  Future<T> signOut();
+  Future resetPasswordForMail({required String email});
+  Future updatePassword({required String password});
+  Future signOut();
 }
-
+// TODO: you didn't specified Generic type
+// TODO: Inject dependencies
 class AuthDataSourceImpl implements AuthDataSource {
   final SupabaseSource _supabase = SupabaseSource();
   final SupabaseConfiguration _configuration = SupabaseConfiguration();
@@ -28,12 +28,12 @@ class AuthDataSourceImpl implements AuthDataSource {
     required String email,
   }) {
     try {
-      final _responce = _supabase.dbClient.auth.api.resetPasswordForEmail(
+      final responce = _supabase.restApiClient.auth.api.resetPasswordForEmail(
         email,
         options: AuthOptions(redirectTo: _configuration.redirectTo),
       );
 
-      return _responce;
+      return responce;
     } catch (e) {
       ErrorService.printError('Error in resetPasswordForMail() dataSource: $e');
     }
@@ -46,11 +46,11 @@ class AuthDataSourceImpl implements AuthDataSource {
     required String password,
   }) {
     try {
-      final _responce = _supabase.dbClient.auth.signIn(
+      final responce = _supabase.restApiClient.auth.signIn(
         email: email,
         password: password,
       );
-      return _responce;
+      return responce;
     } catch (e) {
       ErrorService.printError('Error in signIn() dataSource: $e');
     }
@@ -60,8 +60,8 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<GotrueResponse> signOut() async {
     try {
-      final _responce = _supabase.dbClient.auth.signOut();
-      return _responce;
+      final responce = _supabase.restApiClient.auth.signOut();
+      return responce;
     } catch (e) {
       ErrorService.printError('Error in signOut() dataSource: $e');
     }
@@ -74,28 +74,30 @@ class AuthDataSourceImpl implements AuthDataSource {
     required String password,
   }) {
     try {
-      final _responce = _supabase.dbClient.auth.signUp(
+         // TODO: grammar mistake
+      final response = _supabase.restApiClient.auth.signUp(
         email,
         password,
       );
-      return _responce;
+      return response;
     } catch (e) {
-      ErrorService.printError('Error in signUp() dataSource: $e');
+     rethrow;
     }
-    return throw Exception('Error in signUp() dataSource');
+  
+    
   }
 
   @override
   Future<GotrueUserResponse> updatePassword({required String password}) async {
     try {
-      final _responce = _supabase.dbClient.auth.api.updateUser(
-        _supabase.dbClient.auth.currentSession!.accessToken,
+      final response = _supabase.restApiClient.auth.api.updateUser(
+        _supabase.restApiClient.auth.currentSession!.accessToken,
         UserAttributes(password: password),
       );
-      return _responce;
+      return response;
     } catch (e) {
-      ErrorService.printError('Error in update password dataSource: $e');
+      rethrow;
     }
-    throw Exception('Error in update password dataSource');
+   
   }
 }

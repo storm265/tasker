@@ -7,10 +7,10 @@ import 'package:todo2/services/supabase/constants.dart';
 Future<void> initSupabase() async {
 
   try {
-    final _configuration = SupabaseConfiguration();
+    final configuration = SupabaseConfiguration();
     await Supabase.initialize(
-      url: _configuration.supabaseUrl,
-      anonKey: _configuration.supabaseAnnonKey,
+      url: configuration.supabaseUrl,
+      anonKey: configuration.supabaseAnnonKey,
       debug: true,
       localStorage: SecureLocalStorage(),
     );

@@ -252,10 +252,10 @@ final bool shouldHideButton;
         super(key: key);
 
   @override
-  _TableCalendarState<T> createState() => _TableCalendarState<T>();
+  TableCalendarState<T> createState() => TableCalendarState<T>();
 }
 
-class _TableCalendarState<T> extends State<TableCalendar<T>> {
+class TableCalendarState<T> extends State<TableCalendar<T>> {
   late final PageController _pageController;
   late final ValueNotifier<DateTime> _focusedDay;
   late RangeSelectionMode _rangeSelectionMode;

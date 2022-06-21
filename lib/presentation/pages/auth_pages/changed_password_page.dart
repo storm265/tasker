@@ -9,6 +9,8 @@ class PasswordChangedPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
+        fit: StackFit.expand,
+        alignment: Alignment.center,
         children: [
           Positioned(
             top: 160,
@@ -25,8 +27,6 @@ class PasswordChangedPage extends StatelessWidget {
             left: 50,
           )
         ],
-        fit: StackFit.expand,
-        alignment: Alignment.center,
       ),
     );
   }

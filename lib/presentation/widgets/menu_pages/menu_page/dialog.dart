@@ -7,8 +7,8 @@ import 'package:todo2/presentation/widgets/menu_pages/menu_page/widgets/color_pa
 
 Future<void> showMaterialDialog(BuildContext context) async {
   final colorPalleteController = ColorPalleteController();
-  int _selectedIndex = 0;
-  final _titleController = TextEditingController();
+  int selectedIndex = 0;
+  final titleController = TextEditingController();
   await showDialog(
     context: context,
     builder: (_) => AlertDialog(
@@ -25,7 +25,7 @@ Future<void> showMaterialDialog(BuildContext context) async {
                 width: 300,
                 height: 50,
                 child: TextField(
-                  controller: _titleController,
+                  controller: titleController,
                 ),
               ),
               const SizedBox(height: 70),
@@ -46,11 +46,11 @@ Future<void> showMaterialDialog(BuildContext context) async {
       actions: <Widget>[
         TextButton(
           onPressed: () async {
-            (_titleController.text.length >= 2)
+            (titleController.text.length >= 2)
                 ? await ProjectRepositoryImpl()
                     .putData(
-                        color: colors[_selectedIndex].value.toString(),
-                        title: _titleController.text)
+                        color: colors[selectedIndex].value.toString(),
+                        title: titleController.text)
                     .then((_) => Navigator.of(context).pop())
                 : null;
           },

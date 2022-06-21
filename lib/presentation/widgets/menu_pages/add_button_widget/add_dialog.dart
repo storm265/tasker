@@ -3,7 +3,7 @@ import 'package:todo2/presentation/pages/navigation_page.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 Future<void> showAddDialog(BuildContext context) async {
-  final List<String> _items = ['Add Task', 'Add Quick Note', 'Add Check List'];
+  final List<String> items = ['Add Task', 'Add Quick Note', 'Add Check List'];
   await showDialog(
     context: context,
     builder: (_) {
@@ -47,7 +47,7 @@ Future<void> showAddDialog(BuildContext context) async {
                   padding: const EdgeInsets.only(top: 25, bottom: 25),
                   child: Center(
                     child: Text(
-                      _items[index],
+                      items[index],
                       style: const TextStyle(
                         fontWeight: FontWeight.w300,
                       ),

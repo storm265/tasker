@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/controller/auth/auth_controller.dart';
-import 'package:todo2/presentation/pages/navigation_page.dart';
-import 'package:todo2/services/navigation_service/navigation_service.dart';
+
 
 Future<void> showSettingsDialog(BuildContext context) async {
-  final _signUpController = SignUpController();
-  final List<String> _items = ['Change password', 'Sign out'];
+  final signUpController = SignUpController();
+  final List<String> items = ['Change password', 'Sign out'];
   await showDialog(
     context: context,
     builder: (_) {
@@ -25,7 +24,7 @@ Future<void> showSettingsDialog(BuildContext context) async {
               );
             },
             scrollDirection: Axis.vertical,
-            itemCount: _items.length,
+            itemCount: items.length,
             shrinkWrap: true,
             itemBuilder: ((_, index) {
               return GestureDetector(
@@ -34,7 +33,7 @@ Future<void> showSettingsDialog(BuildContext context) async {
                     case 0:
                       break;
                     case 1:
-                      await _signUpController.signOut(context);
+                      await signUpController.signOut(context);
                       break;
                   }
                 },
@@ -42,7 +41,7 @@ Future<void> showSettingsDialog(BuildContext context) async {
                   padding: const EdgeInsets.only(top: 25, bottom: 25),
                   child: Center(
                     child: Text(
-                      _items[index],
+                      items[index],
                       style: const TextStyle(
                         fontWeight: FontWeight.w300,
                       ),

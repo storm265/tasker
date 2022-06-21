@@ -40,10 +40,10 @@ class _SignUpPageState extends State<SignUpPage> {
   bool _isClickedSubmitButton = true;
   @override
   Widget build(BuildContext context) {
-    final _size = MediaQuery.of(context).size;
+    final size = MediaQuery.of(context).size;
     return WillPopWrapper(
       child: Scaffold(
-        appBar:  AppbarWidget(
+        appBar: const AppbarWidget(
           shouldUsePopMethod: true,
           showLeadingButton: true,
           appBarColor: Colors.white,
@@ -52,8 +52,8 @@ class _SignUpPageState extends State<SignUpPage> {
         body: DisabledGlowWidget(
           child: SingleChildScrollView(
             child: SizedBox(
-              width: _size.width - minFactor,
-              height: _size.height - minFactor,
+              width: size.width - minFactor,
+              height: size.height - minFactor,
               child: Form(
                 key: _formKey,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -101,7 +101,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                 if (_formKey.currentState!.validate() &&
                                     !_signUpController.pickedFile.value.path
                                         .contains('assets')) {
-                                  setState(() => _isClickedSubmitButton = false);
+                                  setState(
+                                      () => _isClickedSubmitButton = false);
                                   await _signUpController.signUp(
                                     context: context,
                                     username: _usernameController.text,
@@ -112,7 +113,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                 }
                               }
                             : null),
-                               _isClickedSubmitButton ? const CircularProgressIndicator.adaptive() : const SizedBox(),
                     const SignInButtonWidget(buttonText: 'Sign In')
                   ],
                 ),

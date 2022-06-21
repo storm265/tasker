@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/controller/main/system_chrome_controller.dart';
+import 'package:todo2/controller/main/system_chromedart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/add_checklist_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note_page.dart';
 import 'package:todo2/presentation/pages/auth_pages/sign_in_page.dart';
 import 'package:todo2/presentation/pages/auth_pages/sign_up_page.dart';
-import 'package:todo2/presentation/pages/menu_pages/profile_page.dart';
-import 'package:todo2/services/supabase/splash_page.dart';
+import 'package:todo2/presentation/pages/auth_pages/splash_page.dart';
 import 'package:todo2/presentation/pages/navigation_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/tasks_page.dart';
 import 'package:todo2/services/supabase/configure.dart';
-import 'controller/main/theme_data_controller.dart';
+import 'services/theme_service/theme_data_controller.dart';
 import 'presentation/pages/auth_pages/changed_password_page.dart';
 import 'presentation/pages/auth_pages/forgot_password_page.dart';
 import 'presentation/pages/menu_pages/floating_button/new_task.dart';
-import 'presentation/pages/menu_pages/quick_page.dart';
 import 'presentation/pages/no_connection_page.dart';
 import 'presentation/pages/auth_pages/reset_password_page.dart';
 import 'presentation/pages/auth_pages/welcome_page.dart';
@@ -33,17 +31,18 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final _themeDataController = ThemeDataController();
+  final _themeDataController = ThemeDataService();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Todo2',
         theme: _themeDataController.themeData,
-        //  initialRoute: '/',
-        home: ProfilePage(),
+        initialRoute: '/',
+        // home: SignInPage(),
         routes: {
-          //   '/': (_) => const SplashPage(),
+             // TODO: should be in Navigation service
+          '/': (_) => const SplashPage(),
           '/noConnection': (_) => const NoConnectionPage(),
           '/welcome': (_) => const WelcomePage(),
           '/signUp': (_) => const SignUpPage(),

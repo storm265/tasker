@@ -28,7 +28,7 @@ class ColorPalleteWidget extends StatelessWidget {
                   child: Container(
                     width: 48,
                     height: 48,
-                    child: Icon(
+                    child:  Icon(
                       (colorController.selectedIndex.value == index)
                           ? Icons.done
                           : null,

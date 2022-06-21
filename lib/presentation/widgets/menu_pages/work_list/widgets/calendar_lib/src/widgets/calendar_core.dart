@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import '../shared/utils.dart';
 import 'calendar_page.dart';
 
-typedef _OnCalendarPageChanged = void Function(
+typedef OnCalendarPageChanged = void Function(
     int pageIndex, DateTime focusedDay);
 
 class CalendarCore extends StatelessWidget {
@@ -28,7 +28,7 @@ class CalendarCore extends StatelessWidget {
   final StartingDayOfWeek startingDayOfWeek;
   final PageController? pageController;
   final ScrollPhysics? scrollPhysics;
-  final _OnCalendarPageChanged onPageChanged;
+  final OnCalendarPageChanged onPageChanged;
 
   const CalendarCore({
     Key? key,

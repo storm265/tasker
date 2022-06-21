@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/controller/main/theme_data_controller.dart';
+import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 
 class EndPageWidget extends StatelessWidget {

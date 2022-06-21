@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/widgets/menu_pages/add_button_widget/add_dialog.dart';
 
-
 class FloatingButtonWidget extends StatelessWidget {
   const FloatingButtonWidget({Key? key}) : super(key: key);
 
@@ -12,7 +11,6 @@ class FloatingButtonWidget extends StatelessWidget {
       child: Container(
         width: 56,
         height: 56,
-        child: const Icon(Icons.add, color: Colors.white),
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
@@ -21,6 +19,7 @@ class FloatingButtonWidget extends StatelessWidget {
           ),
           shape: BoxShape.circle,
         ),
+        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }

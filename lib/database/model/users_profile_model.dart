@@ -13,9 +13,9 @@ class UserProfileModel {
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) =>
       UserProfileModel(
-        username: json[UserProfileScheme.username] ?? 'empty',
-        avatar_url: json[UserProfileScheme.avatarUrl] ?? 'empty',
-        created_at: json[UserProfileScheme.createdAt] ?? 'empty',
-        uid: json[UserProfileScheme.uid] ?? 'empty',
+        username: json[UserProfileScheme.username],
+        avatar_url: json[UserProfileScheme.avatarUrl],
+        created_at: json[UserProfileScheme.createdAt],
+        uid: json[UserProfileScheme.uid],
       );
 }

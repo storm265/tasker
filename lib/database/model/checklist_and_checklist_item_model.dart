@@ -1,24 +1,28 @@
-class CheckListItemAndCheckListModel {
+import 'package:todo2/database/database_scheme/quick_note_scheme.dart';
+
+class QuickNoteModel {
   int? checklistId;
-  String? title, color, ownerId, content;
+  String? title;
+  String? color;
+  String? ownerId;
+  String? content;
   bool? isCompleted;
 
-  CheckListItemAndCheckListModel({
-     this.checklistId,
-     this.title,
-     this.color,
-     this.ownerId,
-     this.content,
-     this.isCompleted,
+  QuickNoteModel({
+    this.checklistId,
+    this.title,
+    this.color,
+    this.ownerId,
+    this.content,
+    this.isCompleted,
   });
 
-  factory CheckListItemAndCheckListModel.fromJson(Map<String, dynamic> json) =>
-      CheckListItemAndCheckListModel(
-        checklistId: json['checklistId'],
-        title: json['title'],
-        color: json['color'],
-        ownerId: json['ownerId'],
-        content: json['content'],
-        isCompleted: json['isCompleted'],
+  factory QuickNoteModel.fromJson(Map<String, dynamic> json) => QuickNoteModel(
+        checklistId: json[QuickNoteScheme.checklistId],
+        title: json[QuickNoteScheme.title],
+        color: json[QuickNoteScheme.color],
+        ownerId: json[QuickNoteScheme.ownerId],
+        content: json[QuickNoteScheme.content],
+        isCompleted: json[QuickNoteScheme.isCompleted],
       );
 }

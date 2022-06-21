@@ -107,7 +107,7 @@ class SignUpController extends ChangeNotifier {
       if (pickedFile.value.path.contains('assets')) {
         ErrorService.printError('Pick image!');
       } else {
-        await SupabaseSource().dbClient.storage.from('avatar').upload(
+        await SupabaseSource().restApiClient.storage.from('avatar').upload(
               pickedFile.value.name,
               File(pickedFile.value.path),
             );

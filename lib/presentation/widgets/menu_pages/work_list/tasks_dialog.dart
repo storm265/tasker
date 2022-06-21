@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 void showTasksDialog(BuildContext context) {
-  final List<String> _items = [
+  final List<String> items = [
     'Incomplete Tasks',
     'Completed Tasks',
     'All Tasks'
   ];
-  Color _iconColor = Colors.white;
-  bool _isClicked = false;
+  Color iconColor = Colors.white;
+  bool isClicked = false;
   showDialog(
     context: context,
     builder: (_) {
@@ -26,10 +26,10 @@ void showTasksDialog(BuildContext context) {
                 builder: (context, setState) => GestureDetector(
                     onTap: () {
                       setState(() {
-                        _isClicked = !_isClicked;
-                        (_iconColor == Colors.white)
-                            ? _iconColor = Colors.green
-                            : _iconColor = Colors.white;
+                        isClicked = !isClicked;
+                        (iconColor == Colors.white)
+                            ? iconColor = Colors.green
+                            : iconColor = Colors.white;
                       });
                     },
                     child: Padding(
@@ -42,7 +42,7 @@ void showTasksDialog(BuildContext context) {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Text(
-                            _items[index],
+                            items[index],
                             style: const TextStyle(
                               fontWeight: FontWeight.w300,
                             ),
@@ -52,7 +52,7 @@ void showTasksDialog(BuildContext context) {
                           ),
                           Icon(
                             Icons.done,
-                            color: _iconColor,
+                            color: iconColor,
                           ),
                         ],
                       ),

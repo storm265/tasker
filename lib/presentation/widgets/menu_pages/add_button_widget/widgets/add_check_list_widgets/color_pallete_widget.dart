@@ -25,16 +25,16 @@ class ColorPalleteWidget extends StatelessWidget {
                 child: Container(
                   width: 48,
                   height: 48,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: colors[index],
+                  ),
                   child: (selectedIndex == index)
                       ? const Icon(
                           Icons.done,
                           color: Colors.white,
                         )
                       : null,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: colors[index],
-                  ),
                 ),
               ),
             );

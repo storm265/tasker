@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/add_checklist_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task.dart';
@@ -87,9 +89,9 @@ class NavigationPage extends StatelessWidget {
             const KeepAlivePage(child: MenuPage()),
             KeepAlivePage(child: QuickPage()),
             const KeepAlivePage(child: ProfilePage()),
-            NewTaskPage(),
-            AddQuickNote(),
-            AddCheckListPage(),
+           const  NewTaskPage(),
+         const   AddQuickNote(),
+          const  AddCheckListPage(),
           ],
         ),
       ),
@@ -105,10 +107,10 @@ class KeepAlivePage extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _KeepAlivePageState createState() => _KeepAlivePageState();
+  KeepAlivePageState createState() => KeepAlivePageState();
 }
 
-class _KeepAlivePageState extends State<KeepAlivePage>
+class KeepAlivePageState extends State<KeepAlivePage>
     with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {

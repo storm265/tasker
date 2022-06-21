@@ -1,5 +1,5 @@
-// ignore_for_file: constant_identifier_names
 
+  // TODO: UUID not uid
 class CheckListItemsScheme {
   static const content = 'content';
   static const isCompleted = 'is_completed';

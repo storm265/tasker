@@ -1,29 +1,26 @@
 import 'package:todo2/database/data_source/notes_data_source.dart';
 import 'package:todo2/database/model/notes_model.dart';
-import 'package:todo2/services/error_service/error_service.dart';
 
 abstract class NoteRepository<T> {
-  Future<T> fetchNote();
-  Future<T> putNote({
+  Future fetchNote();
+  Future putNote({
     required String color,
     required String description,
   });
 }
 
-class NoteRepositoryImpl implements NoteRepository {
+class NoteRepositoryImpl implements NoteRepository<NotesModel> {
   final _noteDataSource = NotesDataSourceImpl();
   @override
   Future<List<NotesModel>> fetchNote() async {
     try {
-      final _responce = await _noteDataSource.fetchNote();
-
-      return (_responce.data as List<dynamic>)
+      final response = await _noteDataSource.fetchNote();
+      return (response.data as List<dynamic>)
           .map((json) => NotesModel.fromJson(json))
           .toList();
     } catch (e) {
-      ErrorService.printError('Error in fetchNotes() repository:$e');
+      rethrow;
     }
-    throw Exception('Error in fetchNotes() repository');
   }
 
   @override
@@ -37,7 +34,7 @@ class NoteRepositoryImpl implements NoteRepository {
         description: description,
       );
     } catch (e) {
-      ErrorService.printError('Error in fetchNotes() repository:$e');
+      rethrow;
     }
   }
 }

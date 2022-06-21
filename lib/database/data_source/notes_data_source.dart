@@ -1,11 +1,10 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/database_scheme/notes_scheme.dart';
-import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/supabase/constants.dart';
 
-abstract class NotesDataSource<T> {
-  Future<T> fetchNote();
-  Future<T> putNote({
+abstract class NotesDataSource {
+  Future fetchNote();
+  Future putNote({
     required String color,
     required String description,
   });
@@ -13,21 +12,20 @@ abstract class NotesDataSource<T> {
 
 class NotesDataSourceImpl implements NotesDataSource {
   final _table = 'notes';
-  final _supabase = SupabaseSource().dbClient;
-  
+  final _supabase = SupabaseSource().restApiClient;
+
   @override
   Future<PostgrestResponse<dynamic>> fetchNote() async {
     try {
-      final _responce = await _supabase
+      final response = await _supabase
           .from(_table)
           .select('${NotesScheme.description},${NotesScheme.color}')
           .eq(NotesScheme.ownerId, _supabase.auth.currentUser!.id)
           .execute();
-      return _responce;
+      return response;
     } catch (e) {
-      ErrorService.printError('Error in fetchNotes() data source:$e');
+      rethrow;
     }
-    return throw Exception('Error in fetchNotes() data source');
   }
 
   @override
@@ -36,17 +34,16 @@ class NotesDataSourceImpl implements NotesDataSource {
     required String description,
   }) async {
     try {
-      final _responce = await _supabase.from(_table).insert({
+      final response = await _supabase.from(_table).insert({
         NotesScheme.isCompleted: false,
         NotesScheme.color: color,
         NotesScheme.description: description,
         NotesScheme.createdAt: DateTime.now().toString(),
         NotesScheme.ownerId: _supabase.auth.currentUser!.id,
       }).execute();
-      return _responce;
+      return response;
     } catch (e) {
-      ErrorService.printError('Error in putNotes() data source:$e');
+      rethrow;
     }
-    return throw Exception('Error in putNotes() data source');
   }
 }

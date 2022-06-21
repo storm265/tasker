@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ThemeDataController {
+class ThemeDataService {
   final themeData = ThemeData(
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(

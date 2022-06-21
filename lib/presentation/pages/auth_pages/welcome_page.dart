@@ -18,7 +18,8 @@ class _WelcomePageState extends State<WelcomePage> {
   Widget build(BuildContext context) {
     return WillPopWrapper(
       child: Scaffold(
-        body: Stack(
+          body: SafeArea(
+        child: Stack(
           fit: StackFit.expand,
           children: [
             AsseterWidget(
@@ -29,7 +30,7 @@ class _WelcomePageState extends State<WelcomePage> {
             const GetStartedButtonWidget()
           ],
         ),
-      ),
+      )),
     );
   }
 }

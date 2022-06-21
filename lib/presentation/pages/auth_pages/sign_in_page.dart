@@ -38,10 +38,10 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
-    final _size = MediaQuery.of(context).size;
+    final size = MediaQuery.of(context).size;
     return WillPopWrapper(
       child: Scaffold(
-        appBar:  AppbarWidget(
+        appBar: const AppbarWidget(
           shouldUsePopMethod: true,
           showLeadingButton: true,
           appBarColor: Colors.white,
@@ -50,8 +50,8 @@ class _SignInPageState extends State<SignInPage> {
         body: DisabledGlowWidget(
           child: SingleChildScrollView(
             child: SizedBox(
-              width: _size.width - minFactor,
-              height: _size.height - minFactor,
+              width: size.width - minFactor,
+              height: size.height - minFactor,
               child: Form(
                 key: _formKey,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -87,7 +87,8 @@ class _SignInPageState extends State<SignInPage> {
                         onPressed: _isClickedSubmitButton
                             ? () async {
                                 if (_formKey.currentState!.validate()) {
-                                  setState(() => _isClickedSubmitButton = false);
+                                  setState(
+                                      () => _isClickedSubmitButton = false);
                                   await _signInController.signIn(
                                     context: context,
                                     email: _emailController.text,
@@ -97,9 +98,6 @@ class _SignInPageState extends State<SignInPage> {
                                 }
                               }
                             : null),
-                    _isClickedSubmitButton
-                        ? const CircularProgressIndicator.adaptive()
-                        : const SizedBox(),
                     const SignInButtonWidget(buttonText: 'Sign Up'),
                     const ForgotPasswordWidget(),
                   ],

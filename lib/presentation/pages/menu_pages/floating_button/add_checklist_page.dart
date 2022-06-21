@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/controller/add_tasks/add_check_list_controller/add_check_list_cotnroller.dart';
 import 'package:todo2/controller/add_tasks/color_pallete_controller/color_pallete_controller.dart';
-import 'package:todo2/controller/main/theme_data_controller.dart';
+import 'package:todo2/services/theme_service/theme_data_controller.dart';
 import 'package:todo2/presentation/pages/navigation_page.dart';
 import 'package:todo2/presentation/widgets/common/appbar_widget.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
@@ -25,7 +25,7 @@ class _AddCheckListPageState extends State<AddCheckListPage> {
   final _formKey = GlobalKey<FormState>();
   final _titleController = TextEditingController();
   bool _isClickedButton = true;
-  bool _isChecked = false;
+  bool isChecked = false;
   final _colorPalleteController = ColorPalleteController();
   final _checkListController = AddCheckListController();
 
@@ -76,7 +76,7 @@ class _AddCheckListPageState extends State<AddCheckListPage> {
                               children: [
                                 CheckBoxWidget(
                                   checkBoxController: _checkListController,
-                                  isClicked: _isChecked,
+                                  isClicked: isChecked,
                                   index: index,
                                 ),
                                 (index == value.length - 1)

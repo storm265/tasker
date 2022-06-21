@@ -1,9 +1,7 @@
 import 'package:todo2/database/data_source/user_profile_data_source.dart';
-import 'package:todo2/database/model/users_profile_model.dart';
-import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/supabase/constants.dart';
 
-abstract class UserProfileRepository<T> {
+abstract class UserProfileRepository {
   Future<String> fetchUserName();
   Future<String> fetchAvatar();
   Future<void> insertImg({
@@ -12,11 +10,10 @@ abstract class UserProfileRepository<T> {
   });
 }
 
-class UserProfileRepositoryImpl
-    implements UserProfileRepository<UserProfileModel> {
+class UserProfileRepositoryImpl implements UserProfileRepository {
   final _userProfileDataSource = UserProfileDataSourceImpl();
-
-  final _supabase = SupabaseSource().dbClient.storage.from('avatar');
+  final _table = 'avatar';
+  final _supabase = SupabaseSource().restApiClient;
   @override
   Future<void> insertImg({
     required String avatarUrl,
@@ -28,37 +25,31 @@ class UserProfileRepositoryImpl
         username: username,
       );
     } catch (e) {
-      ErrorService.printError(
-          'Error in insertImg() UserProfileRepositoryImpl: $e');
+      rethrow;
     }
   }
 
   @override
   Future<String> fetchUserName() async {
     try {
-      final _responce = await _userProfileDataSource.fetchUserName();
-
-      return _responce.data[0]['username'] as String;
+      final response = await _userProfileDataSource.fetchUserName();
+      return response.data[0]['username'] as String;
     } catch (e) {
-      ErrorService.printError(
-          'Error in fetchUserName() UserProfileRepositoryImpl: $e');
+      rethrow;
     }
-    throw Exception('Error in fetchUserName() UserProfileRepositoryImpl');
   }
 
   @override
   Future<String> fetchAvatar() async {
     try {
-      final _responce = await _userProfileDataSource.fetchAvatar();
-      if (!_responce.hasError) {
-        final _rez = _supabase.getPublicUrl(_responce.data[0]['avatar_url']);
-        final _image = _rez.data;
-        return _image!;
-      }
+      final response = await _userProfileDataSource.fetchAvatar();
+      final imageResponce = _supabase.storage
+          .from(_table)
+          .getPublicUrl(response.data[0]['avatar_url']);
+      final image = imageResponce.data;
+      return image!;
     } catch (e) {
-      ErrorService.printError(
-          'Error in fetchAvatar() UserProfileRepositoryImpl: $e');
+      rethrow;
     }
-    throw Exception('Error in fetchAvatar() UserProfileRepositoryImpl');
   }
 }

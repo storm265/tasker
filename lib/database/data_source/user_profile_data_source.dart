@@ -1,20 +1,18 @@
-
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/database_scheme/user_profile_scheme.dart';
-import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/supabase/constants.dart';
 
-abstract class UserProfileDataSource<T> {
-  Future<T> fetchUserName();
-  Future<T> fetchAvatar();
-  Future<T> insertImg({
+abstract class UserProfileDataSource {
+  Future fetchUserName();
+  Future fetchAvatar();
+  Future insertImg({
     required String avatarUrl,
     required String username,
   });
 }
 
 class UserProfileDataSourceImpl implements UserProfileDataSource {
-  final supabase = SupabaseSource().dbClient;
+  final supabase = SupabaseSource().restApiClient;
   final _table = 'user_profile';
 
   @override
@@ -23,47 +21,44 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
     required String username,
   }) async {
     try {
-      final _responce = await supabase.from(_table).insert({
+      final response = await supabase.from(_table).insert({
         UserProfileScheme.uid: supabase.auth.currentUser!.id,
         UserProfileScheme.avatarUrl: avatarUrl,
         UserProfileScheme.username: username,
         UserProfileScheme.createdAt: DateTime.now().toString(),
       }).execute();
-      return _responce;
+      return response;
     } catch (e) {
-      ErrorService.printError('Error in insertImg() dataSource: $e');
+      rethrow;
     }
-    throw Exception('Error in insertImg() dataSource');
   }
 
   @override
   Future<PostgrestResponse<dynamic>> fetchUserName() async {
     try {
-      final _responce = await supabase
+      final response = await supabase
           .from(_table)
           .select(UserProfileScheme.username)
           .eq(UserProfileScheme.uid, supabase.auth.currentUser!.id)
           .execute();
-      return _responce;
+      return response;
     } catch (e) {
-      ErrorService.printError('Error in fetchUserName() dataSource: $e');
+      rethrow;
     }
-    throw Exception('Error in fetchUserName() dataSource');
   }
 
   @override
   Future<PostgrestResponse<dynamic>> fetchAvatar() async {
     try {
-      final _responce = await SupabaseSource()
-          .dbClient
+      final response = await SupabaseSource()
+          .restApiClient
           .from(_table)
           .select(UserProfileScheme.avatarUrl)
           .eq(UserProfileScheme.uid, supabase.auth.currentUser!.id)
           .execute();
-      return _responce;
+      return response;
     } catch (e) {
-      ErrorService.printError('Error in fetchAvatar() dataSource: $e');
+      rethrow;
     }
-    throw Exception('Error in fetchAvatar() dataSource');
   }
 }

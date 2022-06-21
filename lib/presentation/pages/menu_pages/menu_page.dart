@@ -11,7 +11,6 @@ import 'package:todo2/presentation/widgets/menu_pages/menu_page/widgets/category
 import 'package:todo2/presentation/widgets/menu_pages/menu_page/widgets/category_widget.dart';
 import 'package:todo2/presentation/widgets/menu_pages/menu_page/widgets/circle_widget.dart';
 
-// TODO statefull +
 class MenuPage extends StatefulWidget {
   const MenuPage({Key? key}) : super(key: key);
 
@@ -21,7 +20,7 @@ class MenuPage extends StatefulWidget {
 
 class _MenuPageState extends State<MenuPage> {
   final _projectsRepository = ProjectRepositoryImpl();
-  List<ProjectModel> _projects = [];
+  List<ProjectModel> projects = [];
   @override
   void initState() {
     getInitData();
@@ -29,14 +28,14 @@ class _MenuPageState extends State<MenuPage> {
   }
 
   Future<void> getInitData() async {
-    _projects = await _projectsRepository.fetchProject();
+    projects = await _projectsRepository.fetchProject();
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopWrapper(
       child: Scaffold(
-        appBar:  AppbarWidget(
+        appBar: const AppbarWidget(
           title: 'Projects',
           appBarColor: Colors.white,
         ),

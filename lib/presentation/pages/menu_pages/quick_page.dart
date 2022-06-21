@@ -21,7 +21,7 @@ class QuickPage extends StatelessWidget {
     // List<dynamic> list = await Future.wait(
     //     [_checkListItem.fetchChecklistItem(), _checkList.fetchCheckList()]);
     List<dynamic> list = [
-      CheckListItemAndCheckListModel(
+      QuickNoteModel(
         checklistId: 0,
         title: 'title',
         color: 'color',
@@ -30,9 +30,8 @@ class QuickPage extends StatelessWidget {
         isCompleted: false,
       )
     ];
-    
-    final rez =
-        list.map((e) => CheckListItemAndCheckListModel.fromJson(e)).toList();
+
+    final rez = list.map((e) => QuickNoteModel.fromJson(e)).toList();
     print(rez);
   }
 
@@ -43,11 +42,11 @@ class QuickPage extends StatelessWidget {
           floatingActionButton: FloatingActionButton(
             onPressed: () async => get2Methods(),
           ),
-          appBar:  AppbarWidget(
+          appBar: const AppbarWidget(
             title: 'Quick notes',
             appBarColor: Colors.white,
           ),
-          body: SizedBox()
+          body:const  SizedBox()
           //  FutureBuilder<List<dynamic>>(
           //   initialData: const [],
           //   future: Future.wait([

@@ -33,9 +33,9 @@ class BackgroundWave extends CustomPainter {
     path_0.lineTo(size.width * 0.8893034, size.height * 0.09056602);
     path_0.close();
 
-    Paint _paint0Fill = Paint()..style = PaintingStyle.fill;
-    _paint0Fill.color =  color.withOpacity(0.5);
-    canvas.drawPath(path_0, _paint0Fill);
+    Paint paint0Fill = Paint()..style = PaintingStyle.fill;
+    paint0Fill.color =  color.withOpacity(0.5);
+    canvas.drawPath(path_0, paint0Fill);
   }
 
   @override

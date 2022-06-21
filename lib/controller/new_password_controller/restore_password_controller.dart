@@ -17,19 +17,19 @@ class RestorePasswordController {
       passwordController1.text.length & passwordController2.text.length <= 6;
 
   void validatePassword(BuildContext context) async {
-    String? _message;
+    String? message;
     if (_isPasswordsEmpty) {
-      _message = 'Passwords  cannot be empty';
+      message = 'Passwords  cannot be empty';
     } else if (_isValidPasswordsLength) {
-      _message = 'Passwords must be at least 6 characters long';
+      message = 'Passwords must be at least 6 characters long';
     } else if (!_isPasswordsSame) {
-      _message = 'Passwords are not same';
+      message = 'Passwords are not same';
     } else {
       await updatePassword(context);
     }
-    (_message == null)
+    (message == null)
         ? ''
-        : MessageService.displaySnackbar(context: context, message: _message);
+        : MessageService.displaySnackbar(context: context, message: message);
   }
 
   Future<void> updatePassword(BuildContext context) async {

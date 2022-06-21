@@ -1,50 +1,47 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/database_scheme/checklists_scheme.dart';
-import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/supabase/constants.dart';
 
-abstract class CheckListsDataSource<T> {
-  Future<T> putCheckList({
+abstract class CheckListsDataSource {
+  Future putCheckList({
     required String title,
     required String color,
   });
-  Future<T> fetchCheckList();
+  Future fetchCheckList();
 }
 
 class CheckListsDataSourceImpl extends CheckListsDataSource {
   final _table = 'checklists';
-  final _supabase = SupabaseSource().dbClient;
+  final _supabase = SupabaseSource().restApiClient;
   @override
   Future<PostgrestResponse<dynamic>> putCheckList({
     required String title,
     required String color,
   }) async {
     try {
-      final _responce = await _supabase.from(_table).insert({
+      final response = await _supabase.from(_table).insert({
         CheckListsScheme.title: title,
         CheckListsScheme.color: color,
         CheckListsScheme.createdAt: DateTime.now().toString(),
         CheckListsScheme.ownerId: _supabase.auth.currentUser!.id,
       }).execute();
-      return _responce;
+      return response;
     } catch (e) {
-      ErrorService.printError('Error in data source putCheckList: $e');
+      rethrow;
     }
-    throw Exception('Error in data source putCheckList');
   }
 
   @override
   Future<PostgrestResponse<dynamic>> fetchCheckList() async {
     try {
-      final _responce = await _supabase
+      final response = await _supabase
           .from(_table)
           .select('${CheckListsScheme.title},${CheckListsScheme.color}')
           .eq(CheckListsScheme.ownerId, _supabase.auth.currentUser!.id)
           .execute();
-      return _responce;
+      return response;
     } catch (e) {
-      ErrorService.printError('Error in fetchNotes() data source:$e');
+      rethrow;
     }
-    return throw Exception('Error in fetchNotes() data source');
   }
 }

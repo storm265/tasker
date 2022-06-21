@@ -1,11 +1,10 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/database_scheme/project_user_scheme.dart';
-import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/supabase/constants.dart';
 
-abstract class ProjectUserData<T> {
-  Future<T> fetchProject();
-  Future<T> putData({
+abstract class ProjectUserData {
+  Future fetchProject();
+  Future putData({
     required String color,
     required String title,
   });
@@ -13,7 +12,7 @@ abstract class ProjectUserData<T> {
 
 class ProjectUserDataImpl implements ProjectUserData {
   final _table = 'projects';
-  final _supabase = SupabaseSource().dbClient;
+  final _supabase = SupabaseSource().restApiClient;
 
   @override
   Future<PostgrestResponse<dynamic>> putData({
@@ -21,30 +20,29 @@ class ProjectUserDataImpl implements ProjectUserData {
     required String title,
   }) async {
     try {
-      final _responce = await _supabase.from(_table).insert({
+      final response = await _supabase.from(_table).insert({
         UserDataScheme.title: title,
         UserDataScheme.color: color,
         UserDataScheme.ownerId: _supabase.auth.currentUser!.id,
         UserDataScheme.createdAt: DateTime.now().toString(),
       }).execute();
-      return _responce;
+      return response;
     } catch (e) {
-      ErrorService.printError('putData error dataSource: $e');
+      rethrow;
     }
-    return throw Exception('putData error dataSource ');
   }
 
   @override
   Future<PostgrestResponse<dynamic>> fetchProject() async {
     try {
-      final _responce = await _supabase.from(_table)
+      final response = await _supabase
+          .from(_table)
           .select('${UserDataScheme.title}, ${UserDataScheme.color}')
-          .eq('owner_id', _supabase.auth.currentUser!.id)
+          .eq(UserDataScheme.ownerId, _supabase.auth.currentUser!.id)
           .execute();
-      return _responce;
+      return response;
     } catch (e) {
-      ErrorService.printError('Error in fetchProject() dataSource:  $e');
+      rethrow;
     }
-    return throw Exception('Error in fetchProject() dataSource: ');
   }
 }
