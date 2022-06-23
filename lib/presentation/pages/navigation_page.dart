@@ -1,15 +1,16 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/add_checklist_page.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note_page.dart';
-import 'package:todo2/presentation/pages/menu_pages/menu_page.dart';
-import 'package:todo2/presentation/pages/menu_pages/profile_page.dart';
-import 'package:todo2/presentation/pages/menu_pages/quick_page.dart';
-import 'package:todo2/presentation/pages/menu_pages/tasks_page.dart';
-import 'package:todo2/presentation/widgets/menu_pages/work_list/widgets/floating_button_widget.dart';
-import 'package:todo2/presentation/widgets/menu_pages/work_list/widgets/nav_bar_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/add_check_list/add_checklist_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/new_note_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/widgets/new_task.dart';
+import 'package:todo2/presentation/pages/menu_pages/menu/menu_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/profile/profile_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/tasks_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/widgets/floating_button_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/widgets/nav_bar_widget.dart';
+
 
 final pageController = PageController();
 

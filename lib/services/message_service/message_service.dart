@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// TODO: it makes sense to make it as Extension of ScaffoldMessenger???
 class MessageService {
   static ScaffoldFeatureController<SnackBar, SnackBarClosedReason>
       displaySnackbar({

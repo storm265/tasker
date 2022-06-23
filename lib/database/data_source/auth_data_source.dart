@@ -36,8 +36,8 @@ class AuthDataSourceImpl implements AuthDataSource {
       return responce;
     } catch (e) {
       ErrorService.printError('Error in resetPasswordForMail() dataSource: $e');
+      rethrow;
     }
-    return throw Exception('Error in resetPasswordForMail() dataSource');
   }
 
   @override
@@ -53,8 +53,8 @@ class AuthDataSourceImpl implements AuthDataSource {
       return responce;
     } catch (e) {
       ErrorService.printError('Error in signIn() dataSource: $e');
+      rethrow;
     }
-    return throw Exception('Error in signIn() dataSource');
   }
 
   @override
@@ -64,8 +64,8 @@ class AuthDataSourceImpl implements AuthDataSource {
       return responce;
     } catch (e) {
       ErrorService.printError('Error in signOut() dataSource: $e');
+      rethrow;
     }
-    return throw Exception('Error in signOut() dataSource');
   }
 
   @override
@@ -80,10 +80,9 @@ class AuthDataSourceImpl implements AuthDataSource {
       );
       return response;
     } catch (e) {
-     rethrow;
+      ErrorService.printError('Error in signUp() dataSource: $e');
+      rethrow;
     }
-  
-    
   }
 
   @override
@@ -95,8 +94,8 @@ class AuthDataSourceImpl implements AuthDataSource {
       );
       return response;
     } catch (e) {
+      ErrorService.printError('Error in updatePassword() dataSource: $e');
       rethrow;
     }
-   
   }
 }

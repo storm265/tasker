@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/data_source/auth_data_source.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
@@ -43,6 +42,7 @@ class AuthRepositoryImpl implements AuthRepository {
             context: context, message: response.error!.message.toString());
       }
     } catch (e) {
+      ErrorService.printError('Error in signIn() repository: $e');
       rethrow;
     }
   }
@@ -65,6 +65,7 @@ class AuthRepositoryImpl implements AuthRepository {
         );
       }
     } catch (e) {
+      ErrorService.printError('Error in signUp() repository: $e');
       rethrow;
     }
   }
@@ -72,7 +73,7 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<void> signOut({required BuildContext context}) async {
     try {
-      GotrueResponse response = await _authDataSource.signOut();
+      final response = await _authDataSource.signOut();
       if (response.error != null) {
         MessageService.displaySnackbar(
           context: context,
@@ -80,6 +81,7 @@ class AuthRepositoryImpl implements AuthRepository {
         );
       }
     } catch (e) {
+      ErrorService.printError('Error in signOut() repository: $e');
       rethrow;
     }
   }
@@ -99,6 +101,7 @@ class AuthRepositoryImpl implements AuthRepository {
         );
       }
     } catch (e) {
+      ErrorService.printError('Error in resetPassword() repository: $e');
       rethrow;
     }
   }
@@ -111,6 +114,7 @@ class AuthRepositoryImpl implements AuthRepository {
         ErrorService.printError(response.error!.message);
       }
     } catch (e) {
+      ErrorService.printError('Error in updatePassword() repository: $e');
       rethrow;
     }
   }

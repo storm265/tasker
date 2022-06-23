@@ -1,5 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/database_scheme/notes_scheme.dart';
+import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/supabase/constants.dart';
 
 abstract class NotesDataSource {
@@ -20,10 +21,11 @@ class NotesDataSourceImpl implements NotesDataSource {
       final response = await _supabase
           .from(_table)
           .select('${NotesScheme.description},${NotesScheme.color}')
-          .eq(NotesScheme.ownerId, _supabase.auth.currentUser!.id)
+          .eq(NotesScheme.uuid, _supabase.auth.currentUser!.id)
           .execute();
       return response;
     } catch (e) {
+      ErrorService.printError('Error in fetchNotes() data source:$e');
       rethrow;
     }
   }
@@ -37,12 +39,13 @@ class NotesDataSourceImpl implements NotesDataSource {
       final response = await _supabase.from(_table).insert({
         NotesScheme.isCompleted: false,
         NotesScheme.color: color,
-        NotesScheme.description: description,
-        NotesScheme.createdAt: DateTime.now().toString(),
-        NotesScheme.ownerId: _supabase.auth.currentUser!.id,
+        NotesScheme.description: description,     
+        NotesScheme.uuid: _supabase.auth.currentUser!.id,
+          NotesScheme.createdAt: DateTime.now().toString(),
       }).execute();
       return response;
     } catch (e) {
+      ErrorService.printError('Error in putNote() data source:$e');
       rethrow;
     }
   }

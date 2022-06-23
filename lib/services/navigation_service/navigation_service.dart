@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/auth_pages/changed_password_page.dart';
-import 'package:todo2/presentation/pages/auth_pages/forgot_password_page.dart';
-import 'package:todo2/presentation/pages/auth_pages/reset_password_page.dart';
-import 'package:todo2/presentation/pages/auth_pages/sign_in_page.dart';
-import 'package:todo2/presentation/pages/auth_pages/sign_up_page.dart';
-import 'package:todo2/presentation/pages/auth_pages/splash_page.dart';
-import 'package:todo2/presentation/pages/auth_pages/welcome_page.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/add_checklist_page.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note_page.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task.dart';
-import 'package:todo2/presentation/pages/menu_pages/tasks_page.dart';
+import 'package:todo2/presentation/pages/auth/changed_password_page.dart';
+import 'package:todo2/presentation/pages/auth/forgot_password_page.dart';
+import 'package:todo2/presentation/pages/auth/reser_password/reset_password_page.dart';
+import 'package:todo2/presentation/pages/auth/sign_in_up/sign_in_page.dart';
+import 'package:todo2/presentation/pages/auth/sign_in_up/sign_up_page.dart';
+import 'package:todo2/presentation/pages/auth/splash_page.dart';
+import 'package:todo2/presentation/pages/auth/welcome/welcome_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/add_check_list/add_checklist_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/new_note_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/widgets/new_task.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/tasks_page.dart';
 import 'package:todo2/presentation/pages/navigation_page.dart';
 import 'package:todo2/presentation/pages/no_connection_page.dart';
 

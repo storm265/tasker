@@ -1,5 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/database_scheme/checklists_scheme.dart';
+import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/supabase/constants.dart';
 
 abstract class CheckListsDataSource {
@@ -22,11 +23,12 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
       final response = await _supabase.from(_table).insert({
         CheckListsScheme.title: title,
         CheckListsScheme.color: color,
+        CheckListsScheme.uuid: _supabase.auth.currentUser!.id,
         CheckListsScheme.createdAt: DateTime.now().toString(),
-        CheckListsScheme.ownerId: _supabase.auth.currentUser!.id,
       }).execute();
       return response;
     } catch (e) {
+      ErrorService.printError('Error in data source putChecklistItem: $e');
       rethrow;
     }
   }
@@ -37,10 +39,11 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
       final response = await _supabase
           .from(_table)
           .select('${CheckListsScheme.title},${CheckListsScheme.color}')
-          .eq(CheckListsScheme.ownerId, _supabase.auth.currentUser!.id)
+          .eq(CheckListsScheme.uuid, _supabase.auth.currentUser!.id)
           .execute();
       return response;
     } catch (e) {
+      ErrorService.printError('Error in data source fetchCheckList: $e');
       rethrow;
     }
   }

@@ -1,6 +1,6 @@
-class UserDataScheme {
-  static const String title = 'title';
-  static const String color = 'color';
-  static const String ownerId = 'owner_id';
-  static const String createdAt = 'created_at';
+class ProjectDataScheme {
+  static const title = 'title';
+  static const color = 'color';
+  static const uuid = 'uuid';
+  static const createdAt = 'created_at';
 }

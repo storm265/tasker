@@ -1,9 +1,10 @@
 import 'package:todo2/database/data_source/checklist_items_data_source.dart';
 import 'package:todo2/database/model/checklist_item_model.dart';
+import 'package:todo2/services/error_service/error_service.dart';
 
 abstract class ChecklistItemsRepository<T> {
   Future putChecklistItem({required List<String> checkboxItems});
-  Future fetchChecklistItem();
+  Future fetchCheckListItem();
 }
 
 class ChecklistItemsRepositoryImpl
@@ -20,20 +21,21 @@ class ChecklistItemsRepositoryImpl
         );
       }
     } catch (e) {
+      ErrorService.printError('Error in repository putChecklistItem: $e');
       rethrow;
     }
   }
 
   @override
-  Future<List<CheckListItemModel>> fetchChecklistItem() async {
-    // TODO: why dynamic?
+  Future<List<CheckListItemModel>> fetchCheckListItem() async {
     try {
       final response = await _checkListItemDataSource.fetchChecklistItem();
-      final data = (response.data as List<dynamic>)
+
+      return (response.data as List<dynamic>)
           .map((json) => CheckListItemModel.fromJson(json))
           .toList();
-      return data;
     } catch (e) {
+      ErrorService.printError('Error in fetchChecklistItem() repository:$e');
       rethrow;
     }
   }

@@ -1,18 +1,21 @@
 import 'package:todo2/database/database_scheme/project_user_scheme.dart';
 
 class ProjectModel {
-  final String? title, color, createdAt, ownerId;
-
+  String title;
+  String color;
+  String uuid;
+  String createdAt;
+  
   ProjectModel({
     required this.title,
     required this.color,
     required this.createdAt,
-    required this.ownerId,
+    required this.uuid,
   });
-  factory ProjectModel.fromJson(Map<String, dynamic> json) => ProjectModel(
-        title: json[UserDataScheme.title],
-        color: json[UserDataScheme.color],
-        createdAt: json[UserDataScheme.createdAt],
-        ownerId: json[UserDataScheme.ownerId],
+   factory ProjectModel.fromJson(Map<String, dynamic> json) => ProjectModel(
+        title: json[ProjectDataScheme.title],
+        color: json[ProjectDataScheme.color],
+        createdAt: json[ProjectDataScheme.createdAt],
+        uuid: json[ProjectDataScheme.uuid],
       );
 }

@@ -1,7 +1,7 @@
 class NotesScheme {
-  static String ownerId = 'owner_id';
-  static String description = 'description';
-  static String color = 'color';
-  static String createdAt = 'created_at';
-  static String isCompleted = 'is_completed';
+  static const description = 'description';
+  static const isCompleted = 'is_completed';
+  static const color = 'color';
+  static const uuid = 'uuid';
+  static const createdAt = 'created_at';
 }

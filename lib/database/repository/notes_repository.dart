@@ -1,5 +1,6 @@
 import 'package:todo2/database/data_source/notes_data_source.dart';
 import 'package:todo2/database/model/notes_model.dart';
+import 'package:todo2/services/error_service/error_service.dart';
 
 abstract class NoteRepository<T> {
   Future fetchNote();
@@ -19,6 +20,7 @@ class NoteRepositoryImpl implements NoteRepository<NotesModel> {
           .map((json) => NotesModel.fromJson(json))
           .toList();
     } catch (e) {
+      ErrorService.printError('Error in fetchNotes() repository:$e');
       rethrow;
     }
   }
@@ -34,6 +36,7 @@ class NoteRepositoryImpl implements NoteRepository<NotesModel> {
         description: description,
       );
     } catch (e) {
+      ErrorService.printError('Error in fetchNotes() repository:$e');
       rethrow;
     }
   }

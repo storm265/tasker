@@ -1,19 +1,22 @@
 import 'package:todo2/database/database_scheme/checklists_scheme.dart';
 
 class CheckListModel {
-  int? checklistId;
-  String? title, color, ownerId;
+  String title;
+  String color;
+  String uuid;
+  String createdAt;
 
   CheckListModel({
-    this.checklistId,
-    this.title,
-    this.color,
-    this.ownerId,
+    required this.title,
+    required this.color,
+    required this.uuid,
+    required this.createdAt,
   });
-
+  
   factory CheckListModel.fromJson(Map<String, dynamic> json) => CheckListModel(
         title: json[CheckListsScheme.title],
         color: json[CheckListsScheme.color],
-        ownerId: json[CheckListsScheme.ownerId],
+        uuid: json[CheckListsScheme.uuid],
+        createdAt: json[CheckListsScheme.createdAt],
       );
 }

@@ -1,11 +1,12 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/database_scheme/user_profile_scheme.dart';
+import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/supabase/constants.dart';
 
 abstract class UserProfileDataSource {
   Future fetchUserName();
   Future fetchAvatar();
-  Future insertImg({
+  Future insertUserProfile({
     required String avatarUrl,
     required String username,
   });
@@ -16,19 +17,22 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
   final _table = 'user_profile';
 
   @override
-  Future<PostgrestResponse<dynamic>> insertImg({
+  Future<PostgrestResponse<dynamic>> insertUserProfile({
     required String avatarUrl,
     required String username,
   }) async {
     try {
       final response = await supabase.from(_table).insert({
-        UserProfileScheme.uid: supabase.auth.currentUser!.id,
-        UserProfileScheme.avatarUrl: avatarUrl,
         UserProfileScheme.username: username,
+        UserProfileScheme.avatarUrl: avatarUrl,
+        UserProfileScheme.uuid: supabase.auth.currentUser!.id,
         UserProfileScheme.createdAt: DateTime.now().toString(),
       }).execute();
+
       return response;
     } catch (e) {
+      ErrorService.printError(
+          'Error in UserProfileDataSourceImpl insertImg() dataSource: $e');
       rethrow;
     }
   }
@@ -39,10 +43,12 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
       final response = await supabase
           .from(_table)
           .select(UserProfileScheme.username)
-          .eq(UserProfileScheme.uid, supabase.auth.currentUser!.id)
+          .eq(UserProfileScheme.uuid, supabase.auth.currentUser!.id)
           .execute();
       return response;
     } catch (e) {
+      ErrorService.printError(
+          'Error in UserProfileDataSourceImpl fetchUserName() dataSource: $e');
       rethrow;
     }
   }
@@ -53,11 +59,14 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
       final response = await SupabaseSource()
           .restApiClient
           .from(_table)
-          .select(UserProfileScheme.avatarUrl)
-          .eq(UserProfileScheme.uid, supabase.auth.currentUser!.id)
+          .select('avatar_url')
+          .eq(UserProfileScheme.uuid, supabase.auth.currentUser!.id)
           .execute();
+      
       return response;
-    } catch (e) {
+    } catch (e, t) {
+      ErrorService.printError(
+          'Error in UserProfileDataSourceImpl fetchAvatar() dataSource: $e, trace: $t');
       rethrow;
     }
   }
