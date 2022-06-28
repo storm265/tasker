@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/navigation_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/inherited_navigation_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 Future<void> showAddDialog(BuildContext context) async {
@@ -7,6 +8,8 @@ Future<void> showAddDialog(BuildContext context) async {
   await showDialog(
     context: context,
     builder: (_) {
+      final _inheritedNavigatorConroller =
+          InheritedNavigator.of(context)!.navigationController;
       return AlertDialog(
         contentPadding: const EdgeInsets.all(0),
         content: SizedBox(
@@ -15,11 +18,12 @@ Future<void> showAddDialog(BuildContext context) async {
           child: ListView.separated(
             separatorBuilder: (_, __) {
               return SizedBox(
-                  height: 2,
-                  width: 268,
-                  child: ColoredBox(
-                    color: Colors.grey.withOpacity(0.3),
-                  ));
+                height: 2,
+                width: 268,
+                child: ColoredBox(
+                  color: Colors.grey.withOpacity(0.3),
+                ),
+              );
             },
             scrollDirection: Axis.vertical,
             itemCount: 3,
@@ -34,11 +38,14 @@ Future<void> showAddDialog(BuildContext context) async {
                       break;
                     case 1:
                       Navigator.pop(context);
-                      pageController.jumpToPage(5);
+                      _inheritedNavigatorConroller
+                          .animateToPage(NavigationPages.addQuickNote);
+
                       break;
                     case 2:
                       Navigator.pop(context);
-                      pageController.jumpToPage(6);
+                      _inheritedNavigatorConroller
+                          .animateToPage(NavigationPages.addCheckList);
                       break;
                     default:
                   }

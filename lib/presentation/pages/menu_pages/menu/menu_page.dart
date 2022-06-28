@@ -5,8 +5,9 @@ import 'package:todo2/presentation/pages/menu_pages/menu/widgets/add_project_but
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/category_length_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/category_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/circle_widget.dart';
-import 'package:todo2/presentation/widgets/common/appbar_widget.dart';
-import 'package:todo2/presentation/widgets/common/disabled_glow_single_child_scroll_widget.dart';
+import 'package:todo2/presentation/widgets/common/annotated_region_widget.dart';
+
+import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
 
 class MenuPage extends StatefulWidget {
@@ -22,12 +23,10 @@ class _MenuPageState extends State<MenuPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopWrapper(
-      child: Scaffold(
-        appBar: const AppbarWidget(
-          title: 'Projects',
-          appBarColor: Colors.white,
-        ),
-        body: DisabledGlowWidget(
+      child: AppbarWrapperWidget(
+        title: 'Projects',
+        appBarColor: Colors.white,
+        child: DisabledGlowWidget(
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Padding(
@@ -58,16 +57,15 @@ class _MenuPageState extends State<MenuPage> {
                                 width: 140,
                                 height: 180,
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Colors.white),
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white,
+                                ),
                                 child: Stack(
                                   children: [
                                     CircleWidget(
-                                        color:
-                                            snapshot.data![index].color),
+                                        color: snapshot.data![index].color),
                                     CategoryWidget(
-                                        title:
-                                            snapshot.data![index].title),
+                                        title: snapshot.data![index].title),
                                     const CategoryLengthWidget()
                                   ],
                                 ),

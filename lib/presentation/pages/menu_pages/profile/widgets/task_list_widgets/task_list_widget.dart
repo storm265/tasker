@@ -1,41 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/projects_model.dart';
-import 'package:todo2/database/repository/projects_repository.dart';
+
 
 class TaskListWidget extends StatelessWidget {
-  TaskListWidget({Key? key}) : super(key: key);
-  final _projectsRepository = ProjectRepositoryImpl();
+  final AsyncSnapshot<List<ProjectModel>> snapshot;
+  const TaskListWidget({Key? key,required this.snapshot}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
+    
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 15),
       child: SizedBox(
         width: double.infinity,
         height: 110,
-        child: FutureBuilder<List<ProjectModel>>(
-          initialData: const [],
-          future: _projectsRepository.fetchProject(),
-          builder: (_, AsyncSnapshot<List<ProjectModel>> snapshot) {
-            if (snapshot.data!.isEmpty) {
-              return const SizedBox();
-            } else if (snapshot.hasData) {
-              return ListView.builder(
+        child: ListView.builder(
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
                   itemCount: snapshot.data!.length,
                   itemBuilder: (BuildContext context, index) {
+                    final data = snapshot.data![index];
                     return Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                         width: 160,
                         height: 100,
                         decoration: BoxDecoration(
-                          color: Color(int.parse(snapshot.data![index].color)),
+                          color: Color(int.parse(data.color)),
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: ListTile(
                           title: Text(
-                            snapshot.data![index].title,
+                            data.title,
                             style: const TextStyle(
                               fontSize: 18,
                               fontStyle: FontStyle.italic,
@@ -54,12 +50,7 @@ class TaskListWidget extends StatelessWidget {
                         ),
                       ),
                     );
-                  });
-            } else {
-              return const SizedBox();
-            }
-          },
-        ),
+                  })
       ),
     );
   }

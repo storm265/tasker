@@ -14,6 +14,7 @@ abstract class AuthRepository {
     required BuildContext context,
     required String email,
     required String password,
+    required VoidCallback navigatorCallback,
   });
 
   Future resetPassword({
@@ -32,14 +33,21 @@ class AuthRepositoryImpl implements AuthRepository {
     required BuildContext context,
     required String email,
     required String password,
+    required VoidCallback navigatorCallback,
   }) async {
     try {
-      final response =
-          await _authDataSource.signIn(email: email, password: password);
+      final response = await _authDataSource.signIn(
+        email: email,
+        password: password,
+      );
 
       if (response.error != null) {
         MessageService.displaySnackbar(
-            context: context, message: response.error!.message.toString());
+          context: context,
+          message: response.error!.message.toString(),
+        );
+      } else {
+        navigatorCallback();
       }
     } catch (e) {
       ErrorService.printError('Error in signIn() repository: $e');

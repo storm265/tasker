@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 final fakeNavBar = Padding(
-  padding: const EdgeInsets.only(top: 520),
+  padding: const EdgeInsets.only(top: 525),
   child: Container(
     width: double.infinity,
     height: 80,

@@ -35,9 +35,8 @@ class RestorePasswordController {
   Future<void> updatePassword(BuildContext context) async {
     try {
       _authRepositoryController
-          .updatePassword(password: passwordController1.text)
-          .then((_) =>
-              NavigationService.navigateTo(context, Pages.passwordChanged));
+          .updatePassword(password: passwordController1.text);
+          NavigationService.navigateTo(context, Pages.passwordChanged);
     } catch (e) {
       throw Exception('Error in updatePassword() controller $e');
     }

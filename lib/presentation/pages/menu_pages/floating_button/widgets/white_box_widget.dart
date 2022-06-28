@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/widgets/common/disabled_glow_single_child_scroll_widget.dart';
+import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 
 class WhiteBoxWidget extends StatelessWidget {
   final Widget child;

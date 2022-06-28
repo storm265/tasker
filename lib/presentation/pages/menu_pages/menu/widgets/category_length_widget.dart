@@ -11,7 +11,7 @@ class CategoryLengthWidget extends StatelessWidget {
       child: Text(
         '10 tasks',
         style: TextStyle(
-          color: Colors.black,
+          color: Colors.grey,
           fontSize: 16,
         ),
       ),

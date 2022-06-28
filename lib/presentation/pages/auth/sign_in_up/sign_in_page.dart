@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/auth/sign_in_up/controller/auth_controller.dart';
-import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
-import 'package:todo2/presentation/widgets/common/appbar_widget.dart';
+import 'package:todo2/presentation/pages/auth/sign_in_up/controller/sign_in_controller.dart';
+import 'package:todo2/presentation/widgets/common/annotated_region_widget.dart';
 import 'package:todo2/presentation/pages/auth/widgets/constants.dart';
 import 'package:todo2/presentation/pages/auth/forgot_password/widgets/forgot_password_widget.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/sign_in_button_widget.dart';
@@ -9,7 +8,7 @@ import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/sign_up_button_
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/signup_to_continue_widget.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/textfield_widget.dart';
 import 'package:todo2/presentation/pages/auth/widgets/title_widget.dart';
-import 'package:todo2/presentation/widgets/common/disabled_glow_single_child_scroll_widget.dart';
+import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
 
 class SignInPage extends StatefulWidget {
@@ -20,19 +19,14 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
-  final _signInController = SignUpController();
-  final _formValidatorController = FormValidatorController();
-  final _formKey = GlobalKey<FormState>();
-  final double _left = 25;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
-  bool _isClickedSubmitButton = true;
-
+  final _signInController = SignInController();
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _signInController.dispose();
     super.dispose();
   }
 
@@ -40,20 +34,18 @@ class _SignInPageState extends State<SignInPage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return WillPopWrapper(
-      child: Scaffold(
-        appBar: const AppbarWidget(
-          shouldUsePopMethod: true,
-          showLeadingButton: true,
-          appBarColor: Colors.white,
-          brightness: Brightness.dark,
-        ),
-        body: DisabledGlowWidget(
+      child: AppbarWrapperWidget(
+        shouldUsePopMethod: true,
+        showLeadingButton: true,
+        appBarColor: Colors.white,
+   
+        child: DisabledGlowWidget(
           child: SingleChildScrollView(
             child: SizedBox(
               width: size.width - minFactor,
               height: size.height - minFactor,
               child: Form(
-                key: _formKey,
+                key: _signInController.formKey,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 child: Stack(
                   fit: StackFit.expand,
@@ -62,42 +54,42 @@ class _SignInPageState extends State<SignInPage> {
                     const TitleTextWidget(text: 'Welcome back'),
                     const SubTitleWidget(text: 'Sign in to continue'),
                     TextFieldWidget(
-                      validateCallback: (text) =>
-                          _formValidatorController.validateEmail(text!),
+                      validateCallback: (text) => _signInController
+                          .formValidatorController
+                          .validateEmail(text!),
                       isObsecureText: false,
                       textController: _emailController,
-                      left: _left,
+                      left: _signInController.left,
                       top: 120,
                       labelText: 'Email:',
                       text: 'Username',
                     ),
                     TextFieldWidget(
-                      validateCallback: (text) =>
-                          _formValidatorController.validatePassword(text!),
+                      validateCallback: (text) => _signInController
+                          .formValidatorController
+                          .validatePassword(text!),
                       isObsecureText: true,
                       textController: _passwordController,
-                      left: _left,
+                      left: _signInController.left,
                       top: 220,
                       labelText: 'Password:',
                       text: 'Password',
                     ),
-                    SignUpButtonWidget(
-                        buttonText: 'Sign In',
-                        height: 380,
-                        onPressed: _isClickedSubmitButton
-                            ? () async {
-                                if (_formKey.currentState!.validate()) {
-                                  setState(
-                                      () => _isClickedSubmitButton = false);
-                                  await _signInController.signIn(
-                                    context: context,
-                                    email: _emailController.text,
-                                    password: _passwordController.text,
-                                  );
-                                  setState(() => _isClickedSubmitButton = true);
-                                }
-                              }
-                            : null),
+                    ValueListenableBuilder<bool>(
+                      valueListenable: _signInController.isClickedSubmitButton,
+                      builder: ((context, isClicked, _) => SignUpButtonWidget(
+                            buttonText: 'Sign In',
+                            height: 380,
+                            onPressed: isClicked
+                                ? () async => _signInController.signInValidate(
+                                      context: context,
+                                      emailController: _emailController.text,
+                                      passwordController:
+                                          _passwordController.text,
+                                    )
+                                : null,
+                          )),
+                    ),
                     const SignInButtonWidget(buttonText: 'Sign Up'),
                     const ForgotPasswordWidget(),
                   ],

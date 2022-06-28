@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/pages/auth/changed_password_page.dart';
-import 'package:todo2/presentation/pages/auth/forgot_password_page.dart';
+import 'package:todo2/presentation/pages/auth/forgot_password/forgot_password_page.dart';
 import 'package:todo2/presentation/pages/auth/reser_password/reset_password_page.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/sign_in_page.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/sign_up_page.dart';
@@ -8,9 +8,9 @@ import 'package:todo2/presentation/pages/auth/splash_page.dart';
 import 'package:todo2/presentation/pages/auth/welcome/welcome_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/add_check_list/add_checklist_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/new_note_page.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/widgets/new_task.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/new_task.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_page.dart';
-import 'package:todo2/presentation/pages/navigation_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/navigation/navigation_page.dart';
 import 'package:todo2/presentation/pages/no_connection_page.dart';
 
 enum Pages {
@@ -20,8 +20,9 @@ enum Pages {
   forgotPassword,
   newPassword,
   passwordChanged,
+  updatePassword,
   home,
-  workList,
+  taskList,
   noConnection,
   addNote,
   addCheckList,
@@ -35,20 +36,21 @@ Map<String, Widget Function(BuildContext)> routes = {
   '/signUp': (_) => const SignUpPage(),
   '/signIn': (_) => const SignInPage(),
   '/forgotPassword': (_) => const ForgotPasswordPage(),
-  '/newPassword': (_) => NewPasswordPage(),
+  '/newPassword': (_) => const NewPasswordPage(),
   '/passwordChanged': (_) => const PasswordChangedPage(),
-  '/home': (_) => NavigationPage(),
-  '/workList': (_) => const TasksPage(),
+  '/home': (_) => const NavigationPage(),
+  '/taskList': (_) => const TasksPage(),
   '/addTask': (_) => const NewTaskPage(),
   '/addNote': (_) => const AddQuickNote(),
   '/addCheckList': (_) => const AddCheckListPage()
 };
 
 class NavigationService {
-  static Future<void> navigateTo(BuildContext context, Pages page) async {
+  static Future<void> navigateTo(BuildContext context, Pages page,
+      {Object? arguments}) async {
     switch (page) {
       case Pages.welcome:
-        Navigator.pushNamed(context, '/welcome');
+        Navigator.pushNamedAndRemoveUntil(context, '/welcome', ((_) => false));
         break;
       case Pages.signUp:
         Navigator.pushNamed(context, '/signUp');
@@ -60,14 +62,16 @@ class NavigationService {
         Navigator.pushNamed(context, '/forgotPassword');
         break;
       case Pages.newPassword:
-        Navigator.pushNamedAndRemoveUntil(
-            context, '/newPassword', ((_) => false));
+        Navigator.pushNamed(context, '/newPassword');
         break;
       case Pages.passwordChanged:
         Navigator.pushNamedAndRemoveUntil(
             context, '/passwordChanged', ((_) => false));
         break;
-      case Pages.workList:
+      case Pages.updatePassword:
+        Navigator.pushNamed(context, '/updatePassword', arguments: arguments);
+        break;
+      case Pages.taskList:
         Navigator.pushNamed(context, '/workList');
         break;
       case Pages.home:
@@ -76,7 +80,6 @@ class NavigationService {
       case Pages.noConnection:
         Navigator.pushNamed(context, '/noConnection');
         break;
-
       case Pages.addCheckList:
         Navigator.pushNamed(context, '/addCheckList');
         break;

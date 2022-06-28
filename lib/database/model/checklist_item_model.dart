@@ -2,8 +2,8 @@ import 'package:todo2/database/database_scheme/check_list_items.dart';
 
 class CheckListItemModel {
   String content;
-  String uuid;
-  String createdAt;
+  String? uuid;
+  String? createdAt;
   int checklistId;
   bool isCompleted;
   CheckListItemModel({
@@ -17,8 +17,8 @@ class CheckListItemModel {
       CheckListItemModel(
         content: json[CheckListItemsScheme.content],
         isCompleted: json[CheckListItemsScheme.isCompleted],
-        uuid: json[CheckListItemsScheme.uuid],
+        uuid: json[CheckListItemsScheme.uuid] ?? 'null',
         checklistId: json[CheckListItemsScheme.checklistId],
-        createdAt:  json[CheckListItemsScheme.createdAt]
+        createdAt: json[CheckListItemsScheme.createdAt]?? 'null',
       );
 }

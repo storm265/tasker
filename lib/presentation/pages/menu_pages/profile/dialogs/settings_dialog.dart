@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/auth/sign_in_up/controller/auth_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
 
+import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 Future<void> showSettingsDialog(BuildContext context) async {
-  final signUpController = SignUpController();
-  final List<String> items = ['Change password', 'Sign out'];
+final _profileController =ProfileController();
+  final List<String> items = ['Update password', 'Sign out'];
+  final List<IconData> iconDataItems = [Icons.add, Icons.logout];
   await showDialog(
     context: context,
     builder: (_) {
       return AlertDialog(
         contentPadding: const EdgeInsets.all(0),
         content: SizedBox(
-          height: 140,
+          height: 200,
           width: 270,
           child: ListView.separated(
+            physics: const NeverScrollableScrollPhysics(),
             separatorBuilder: (_, __) {
               return SizedBox(
                 height: 2,
@@ -31,19 +34,29 @@ Future<void> showSettingsDialog(BuildContext context) async {
                 onTap: () async {
                   switch (index) {
                     case 0:
+                      Navigator.pop(context);
+                      await NavigationService.navigateTo(
+                          context, Pages.newPassword,
+                          arguments: true);
                       break;
                     case 1:
-                      await signUpController.signOut(context);
+                      await _profileController.signOut(context);
                       break;
                   }
                 },
                 child: Padding(
                   padding: const EdgeInsets.only(top: 25, bottom: 25),
                   child: Center(
-                    child: Text(
-                      items[index],
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w300,
+                    child: ListTile(
+                      trailing: Icon(
+                        iconDataItems[index],
+                        color: Colors.black,
+                      ),
+                      title: Text(
+                        items[index],
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w300,
+                        ),
                       ),
                     ),
                   ),

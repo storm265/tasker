@@ -1,32 +1,26 @@
+import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
+
 
 class MessageService {
   static ScaffoldFeatureController<SnackBar, SnackBarClosedReason>
       displaySnackbar({
     required BuildContext context,
     required String message,
-    int milliseconds = 1650,
+    int milliseconds = 2000,
   }) {
     return ScaffoldMessenger.of(context).showSnackBar(
-     
       SnackBar(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(12),
-            topRight: Radius.circular(12),
-          ),
-        ),
-        backgroundColor: Colors.black,
-        content: Text(
-          message,
-          style: const TextStyle(fontWeight: FontWeight.w400, fontSize: 15),
+        elevation: 0,
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: Colors.transparent,
+        content: AwesomeSnackbarContent(
+          title: 'Error',
+          message: message,
+          contentType: ContentType.failure,
         ),
         duration: Duration(milliseconds: milliseconds),
       ),
     );
   }
 }
-
-
-
-

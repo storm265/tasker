@@ -3,7 +3,7 @@ import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/color_pallete_widget.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
-import 'package:todo2/presentation/widgets/common/disabled_glow_single_child_scroll_widget.dart';
+import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 
 Future<void> showMaterialDialog(BuildContext context) async {
   final formKey = GlobalKey<FormState>();

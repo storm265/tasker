@@ -9,10 +9,12 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/red_
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/title_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/white_box_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/color_pallete_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/inherited_navigation_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/navigation_controller.dart';
+import 'package:todo2/presentation/widgets/common/annotated_region_widget.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
-import 'package:todo2/presentation/pages/navigation_page.dart';
-import 'package:todo2/presentation/widgets/common/appbar_widget.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
+
 // todo create controller
 class AddCheckListPage extends StatefulWidget {
   const AddCheckListPage({Key? key}) : super(key: key);
@@ -22,32 +24,27 @@ class AddCheckListPage extends StatefulWidget {
 }
 
 class _AddCheckListPageState extends State<AddCheckListPage> {
-  final colorPalleteController = ColorPalleteController();
-  final _formKey = GlobalKey<FormState>();
-  final _titleController = TextEditingController();
-  bool _isClickedButton = true;
-  bool isChecked = false;
-  final _colorPalleteController = ColorPalleteController();
   final _checkListController = AddCheckListController();
+  final _titleController = TextEditingController();
 
   @override
   void dispose() {
-    _colorPalleteController.dispose();
+    _checkListController.dispose();
+    _checkListController.checkBoxItems.dispose();
+    _checkListController.colorPalleteController.dispose();
     _titleController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const AppbarWidget(
-        appBarColor: Palette.red,
-        textColor: Colors.white,
-        title: 'Add Check List',
-        showLeadingButton: true,
-        shouldUsePopMethod: true,
-      ),
-      body: Stack(
+    return AppbarWrapperWidget(
+      appBarColor: Palette.red,
+      textColor: Colors.white,
+      title: 'Add Check List',
+      showLeadingButton: true,
+      shouldUsePopMethod: true,
+      child: Stack(
         children: [
           redAppBar,
           WhiteBoxWidget(
@@ -57,7 +54,7 @@ class _AddCheckListPageState extends State<AddCheckListPage> {
                 ListTile(
                   title: Form(
                     autovalidateMode: AutovalidateMode.onUserInteraction,
-                    key: _formKey,
+                    key: _checkListController.formKey,
                     child: TitleWidget(
                       textController: _titleController,
                       title: 'Title',
@@ -78,13 +75,14 @@ class _AddCheckListPageState extends State<AddCheckListPage> {
                               children: [
                                 CheckBoxWidget(
                                   checkBoxController: _checkListController,
-                                  isClicked: isChecked,
+                                  isClicked: _checkListController.isChecked,
                                   index: index,
                                 ),
                                 (index == value.length - 1)
                                     ? AddItemButton(
                                         onPressed: () =>
-                                            _checkListController.addItem(index))
+                                            _checkListController.addItem(index),
+                                      )
                                     : const SizedBox()
                               ],
                             );
@@ -99,27 +97,22 @@ class _AddCheckListPageState extends State<AddCheckListPage> {
                   children: [
                     choseColorText,
                     ColorPalleteWidget(
-                      colorController: colorPalleteController,
+                      colorController:
+                          _checkListController.colorPalleteController,
                     ),
                     const SizedBox(height: 40),
-                    ConfirmButtonWidget(
-                      onPressed: _isClickedButton
-                          ? () async {
-                              if (_formKey.currentState!.validate()) {
-                                setState(() => _isClickedButton = false);
-                                await _checkListController.putChecklist(
-                                    color: colors[_colorPalleteController
-                                            .selectedIndex.value]
-                                        .value
-                                        .toString(),
-                                    title: _titleController.text);
-                                await _checkListController.putChecklistItem();
-                                pageController.jumpToPage(0);
-                                setState(() => _isClickedButton = true);
-                              }
-                            }
-                          : null,
-                      title: 'Done',
+                    ValueListenableBuilder<bool>(
+                      valueListenable: _checkListController.isClickedButton,
+                      builder: (context, isClicked, child) =>
+                          ConfirmButtonWidget(
+                        title: 'Done',
+                        onPressed: isClicked
+                            ? () async => _checkListController.addCheckList(
+                                  context: context,
+                                  title: _titleController.text,
+                                )
+                            : null,
+                      ),
                     ),
                   ],
                 ),

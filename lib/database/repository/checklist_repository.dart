@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:todo2/database/data_source/checklists_data_source.dart';
 import 'package:todo2/database/model/checklist_model.dart';
@@ -35,7 +34,6 @@ class CheckListsRepositoryImpl extends CheckListsRepository<CheckListModel> {
   Future<List<CheckListModel>> fetchCheckList() async {
     try {
       final response = await _checkListsDataSource.fetchCheckList();
-     
       
       return (response.data as List<dynamic>)
           .map((json) => CheckListModel.fromJson(json))

@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
-import 'package:todo2/database/repository/auth/auth_repository.dart';
-import 'package:todo2/presentation/widgets/common/appbar_widget.dart';
+import 'package:todo2/presentation/pages/auth/forgot_password/controller/forgot_password_controller.dart';
+import 'package:todo2/presentation/widgets/common/annotated_region_widget.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/sign_up_button_widget.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/signup_to_continue_widget.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/textfield_widget.dart';
 import 'package:todo2/presentation/pages/auth/widgets/title_widget.dart';
-import 'package:todo2/presentation/widgets/common/disabled_glow_single_child_scroll_widget.dart';
+import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
-// Add controller
+
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({Key? key}) : super(key: key);
 
@@ -20,26 +19,22 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   @override
   void dispose() {
     _emailController.dispose();
+    _forgotPasswordController.dispose();
     super.dispose();
   }
 
   final TextEditingController _emailController = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
-  final _authRepositoryController = AuthRepositoryImpl();
-  final _validatorController = FormValidatorController();
-  bool _isClicked = true;
+  final _forgotPasswordController = ForgotPasswordController();
   @override
   Widget build(BuildContext context) {
     return WillPopWrapper(
-      child: Scaffold(
-        appBar: const AppbarWidget(
-          shouldUsePopMethod: true,
-          showLeadingButton: true,
-          appBarColor: Colors.white,
-        ),
-        body: DisabledGlowWidget(
+      child: AppbarWrapperWidget(
+        shouldUsePopMethod: true,
+        showLeadingButton: true,
+        appBarColor: Colors.white,
+        child: DisabledGlowWidget(
           child: Form(
-            key: _formKey,
+            key: _forgotPasswordController.formKey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Stack(
               fit: StackFit.expand,
@@ -51,8 +46,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       'Please enter your email below to recevie\nyour password reset instructions',
                 ),
                 TextFieldWidget(
-                  validateCallback: (text) =>
-                      _validatorController.validateEmail(text!),
+                  validateCallback: (text) => _forgotPasswordController
+                      .validatorController
+                      .validateEmail(text!),
                   left: 25,
                   top: 160,
                   isObsecureText: false,
@@ -60,21 +56,18 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   labelText: 'Email:',
                   text: 'Username',
                 ),
-                SignUpButtonWidget(
-                  height: 270,
-                  buttonText: 'Send Request',
-                  onPressed: _isClicked
-                      ? () async {
-                          if (_formKey.currentState!.validate()) {
-                            setState(() => _isClicked = false);
-                            await _authRepositoryController.resetPassword(
+                ValueListenableBuilder<bool>(
+                  valueListenable: _forgotPasswordController.isClickedButton,
+                  builder: (context, isClicked, _) => SignUpButtonWidget(
+                    height: 270,
+                    buttonText: 'Send Request',
+                    onPressed: isClicked
+                        ? () async => _forgotPasswordController.sendEmail(
                               context: context,
                               email: _emailController.text,
-                            );
-                          }
-                          setState(() => _isClicked = true);
-                        }
-                      : null,
+                            )
+                        : null,
+                  ),
                 )
               ],
             ),

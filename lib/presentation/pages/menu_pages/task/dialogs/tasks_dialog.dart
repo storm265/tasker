@@ -24,39 +24,40 @@ void showTasksDialog(BuildContext context) {
             itemBuilder: ((_, index) {
               return StatefulBuilder(
                 builder: (context, setState) => GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isClicked = !isClicked;
-                        (iconColor == Colors.white)
-                            ? iconColor = Colors.green
-                            : iconColor = Colors.white;
-                      });
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        left: 30,
-                        top: 10,
-                        bottom: 10,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            items[index],
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w300,
-                            ),
+                  onTap: () {
+                    setState(() {
+                      isClicked = !isClicked;
+                      (iconColor == Colors.white)
+                          ? iconColor = Colors.green
+                          : iconColor = Colors.white;
+                    });
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      left: 30,
+                      top: 10,
+                      bottom: 10,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          items[index],
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w300,
                           ),
-                          const SizedBox(
-                            width: 40,
-                          ),
-                          Icon(
-                            Icons.done,
-                            color: iconColor,
-                          ),
-                        ],
-                      ),
-                    )),
+                        ),
+                        const SizedBox(
+                          width: 40,
+                        ),
+                        Icon(
+                          Icons.done,
+                          color: iconColor,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               );
             }),
           ),

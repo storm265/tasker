@@ -1,23 +1,20 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/add_task_controller.dart';
 
-class EnterUserWidget extends StatefulWidget {
+final newTaskController = NewTaskController();
+
+class EnterUserWidget extends StatelessWidget {
   TextEditingController titleController;
-  bool showPickUserWidget;
+
   final String text;
   EnterUserWidget({
     Key? key,
     required this.titleController,
     required this.text,
-    required this.showPickUserWidget,
   }) : super(key: key);
 
-  @override
-  State<EnterUserWidget> createState() => _EnterUserWidgetState();
-}
-
-class _EnterUserWidgetState extends State<EnterUserWidget> {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -44,17 +41,15 @@ class _EnterUserWidgetState extends State<EnterUserWidget> {
             padding: const EdgeInsets.only(left: 15),
             child: TextField(
               onTap: () {
-                widget.titleController.clear();
-                setState(() {
-                  widget.showPickUserWidget = true;
-                });
+                titleController.selection = TextSelection(
+                  baseOffset: 0,
+                  extentOffset: titleController.value.text.length,
+                );
+
+                newTaskController.showPickUserWidget(true);
               },
-              controller: widget.titleController,
-              onEditingComplete: () {
-                setState(() {
-                  widget.showPickUserWidget = false;
-                });
-              },
+              controller: titleController,
+              onEditingComplete: ()=>     newTaskController.showPickUserWidget(false),
               decoration: const InputDecoration(
                 border: InputBorder.none,
                 labelStyle: TextStyle(

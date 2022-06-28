@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/services/network_service/network_service.dart';
 import 'package:todo2/services/supabase/auth_state.dart';
+
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
 
@@ -21,6 +22,6 @@ class SplashPageState extends AuthState<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: SizedBox());
+    return const SizedBox();
   }
 }

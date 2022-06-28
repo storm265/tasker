@@ -4,6 +4,7 @@ import 'package:todo2/presentation/pages/auth/welcome/widgets/background_wave_wi
 import 'package:todo2/presentation/pages/auth/welcome/widgets/dots_pager_widget.dart';
 import 'package:todo2/presentation/pages/auth/welcome/widgets/foreground_wave_widget.dart';
 import 'package:todo2/presentation/pages/auth/welcome/widgets/get_started_button.dart';
+import 'package:todo2/presentation/widgets/common/annotated_region_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
 
 class WelcomePage extends StatefulWidget {
@@ -17,8 +18,9 @@ class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
     return WillPopWrapper(
-      child: Scaffold(
-          body: SafeArea(
+      child: AppbarWrapperWidget(
+        showAppBar: false,
+        appBarColor: Colors.white,
         child: Stack(
           fit: StackFit.expand,
           children: [
@@ -30,7 +32,7 @@ class _WelcomePageState extends State<WelcomePage> {
             const GetStartedButtonWidget()
           ],
         ),
-      )),
+      ),
     );
   }
 }

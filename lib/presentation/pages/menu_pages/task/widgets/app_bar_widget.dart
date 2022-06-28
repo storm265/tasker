@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/dialogs/tasks_dialog.dart';
 
@@ -14,11 +13,7 @@ class AppBarWorkList extends StatelessWidget with PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Palette.red,
-      systemOverlayStyle: const SystemUiOverlayStyle(
-        statusBarColor: Palette.red,
-        systemNavigationBarColor: Colors.black,
-        statusBarIconBrightness: Brightness.light,
-      ),
+     
       leading: const Icon(null),
       actions: [
         Padding(

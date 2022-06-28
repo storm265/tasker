@@ -24,6 +24,7 @@ dependencies:
   cached_network_image: ^3.2.1
   simple_gesture_detector:
   percent_indicator: ^4.0.1
+  awesome_snackbar_content: ^0.0.5
   
 
 dev_dependencies:

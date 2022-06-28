@@ -16,6 +16,7 @@ class CategoryWidget extends StatelessWidget {
           color: Colors.black,
           fontSize: 18,
           fontWeight: FontWeight.w300,
+          
         ),
       ),
     );

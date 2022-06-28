@@ -12,7 +12,6 @@ abstract class ChecklistItemsDataSource {
   Future fetchChecklistItem();
 }
 
-// TODO: Inject dependencies
 class ChecklistItemsDataSourceImpl implements ChecklistItemsDataSource {
   final _table = 'checklist_items';
   final _supabase = SupabaseSource().restApiClient;

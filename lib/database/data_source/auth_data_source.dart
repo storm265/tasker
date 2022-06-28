@@ -18,10 +18,9 @@ abstract class AuthDataSource {
   Future signOut();
 }
 
-// TODO: Inject dependencies
 class AuthDataSourceImpl implements AuthDataSource {
-  final SupabaseSource _supabase = SupabaseSource();
-  final SupabaseConfiguration _configuration = SupabaseConfiguration();
+  final _supabase = SupabaseSource();
+  final _configuration = SupabaseConfiguration();
 
   @override
   Future<GotrueJsonResponse> resetPasswordForMail({

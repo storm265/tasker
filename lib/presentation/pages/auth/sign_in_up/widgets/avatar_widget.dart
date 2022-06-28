@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:todo2/presentation/pages/auth/sign_in_up/controller/auth_controller.dart';
+import 'package:todo2/presentation/pages/auth/sign_in_up/controller/sign_up_controller.dart';
 
 class AvatarWidget extends StatelessWidget {
   final SignUpController signUpController;
