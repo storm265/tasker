@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/inherited_navigation_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
@@ -23,11 +22,13 @@ class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
     this.textColor = Colors.black,
     this.appBarColor = Palette.red,
   }) : super(key: key);
+
   @override
   Size get preferredSize => const Size(double.infinity, 60);
+
   @override
   Widget build(BuildContext context) {
-    final _inheritedNavigatorConroller =
+    final inheritedNavigatorConroller =
         InheritedNavigator.of(context)!.navigationController;
 
     return Scaffold(
@@ -41,7 +42,7 @@ class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
                       child: GestureDetector(
                         onTap: () => shouldUsePopMethod
                             ? Navigator.pop(context)
-                            : _inheritedNavigatorConroller
+                            : inheritedNavigatorConroller
                                 .animateToPage(NavigationPages.tasks),
                         child: Icon(
                           Icons.arrow_back,

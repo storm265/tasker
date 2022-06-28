@@ -6,7 +6,7 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/red_
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/title_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/white_box_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/color_pallete_widget.dart';
-import 'package:todo2/presentation/widgets/common/annotated_region_widget.dart';
+import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 class AddQuickNote extends StatefulWidget {

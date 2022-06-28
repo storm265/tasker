@@ -6,6 +6,9 @@ class InheritedNavigator extends InheritedWidget {
       {Key? key, required this.child, required this.navigationController})
       : super(key: key, child: child);
 
+
+
+  // ignore: overridden_fields, annotate_overrides
   final Widget child;
   final NavigationController navigationController;
 

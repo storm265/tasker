@@ -7,7 +7,7 @@ class ProfileInherited extends InheritedWidget {
     required this.child,
     required this.profileController,
   }) : super(key: key, child: child);
-
+  // ignore: overridden_fields, annotate_overrides
   final Widget child;
   final ProfileController profileController;
 

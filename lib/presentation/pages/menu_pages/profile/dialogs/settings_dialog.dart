@@ -4,9 +4,11 @@ import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_c
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 Future<void> showSettingsDialog(BuildContext context) async {
-final _profileController =ProfileController();
+  final profileController = ProfileController();
   final List<String> items = ['Update password', 'Sign out'];
   final List<IconData> iconDataItems = [Icons.add, Icons.logout];
+
+  
   await showDialog(
     context: context,
     builder: (_) {
@@ -40,7 +42,7 @@ final _profileController =ProfileController();
                           arguments: true);
                       break;
                     case 1:
-                      await _profileController.signOut(context);
+                      await profileController.signOut(context);
                       break;
                   }
                 },

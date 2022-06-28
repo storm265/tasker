@@ -8,7 +8,7 @@ class DotsPagerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Positioned(
       top: 425,
-      left: 175,
+      // left: 175,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

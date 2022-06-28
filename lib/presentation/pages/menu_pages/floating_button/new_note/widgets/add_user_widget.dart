@@ -1,12 +1,8 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/users_profile_model.dart';
-
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/add_task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/confirm_button.dart';
-import 'package:todo2/presentation/widgets/common/colors.dart';
-import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 
 class AddUserWidget extends StatefulWidget {
   const AddUserWidget({Key? key}) : super(key: key);
@@ -16,6 +12,12 @@ class AddUserWidget extends StatefulWidget {
 }
 
 class _AddUserWidgetState extends State<AddUserWidget> {
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   final _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
@@ -81,7 +83,12 @@ class _AddUserWidgetState extends State<AddUserWidget> {
                         ? RawMaterialButton(
                             onPressed: () {
                               setState(() {
-                                newTaskConroller.chipTitles.value.add(UserProfileModel(username: 'User $index', avatarUrl: 'avatarUrl', createdAt: 'createdAt',));
+                                newTaskConroller.chipTitles.value
+                                    .add(UserProfileModel(
+                                  username: 'User $index',
+                                  avatarUrl: 'avatarUrl',
+                                  createdAt: 'createdAt',
+                                ));
                                 // newTaskConroller.chipTitles.value.add(
                                 //     'element: ${newTaskConroller.chipTitles.value.length + 1}');
                                 _scrollController.jumpTo(
@@ -144,8 +151,9 @@ Future<void> showUsersDialog(BuildContext context) async {
 }
 
 class AddUserController extends ChangeNotifier {
-  final users = ValueNotifier([UserProfileModel(username: 'user1', avatarUrl: 'url', createdAt: 'now')]);
-  
+  final users = ValueNotifier([
+    UserProfileModel(username: 'user1', avatarUrl: 'url', createdAt: 'now')
+  ]);
 }
 
 final _addUserController = AddUserController();

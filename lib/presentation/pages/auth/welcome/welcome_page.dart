@@ -4,7 +4,7 @@ import 'package:todo2/presentation/pages/auth/welcome/widgets/background_wave_wi
 import 'package:todo2/presentation/pages/auth/welcome/widgets/dots_pager_widget.dart';
 import 'package:todo2/presentation/pages/auth/welcome/widgets/foreground_wave_widget.dart';
 import 'package:todo2/presentation/pages/auth/welcome/widgets/get_started_button.dart';
-import 'package:todo2/presentation/widgets/common/annotated_region_widget.dart';
+import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
 
 class WelcomePage extends StatefulWidget {
@@ -22,6 +22,7 @@ class _WelcomePageState extends State<WelcomePage> {
         showAppBar: false,
         appBarColor: Colors.white,
         child: Stack(
+          alignment: Alignment.center,
           fit: StackFit.expand,
           children: [
             AsseterWidget(
@@ -29,7 +30,7 @@ class _WelcomePageState extends State<WelcomePage> {
             DotsPagerWidget(pageIndex: _pageIndex),
             ForegroundWaveWidget(pageIndex: _pageIndex),
             BackgroundWaveWidget(pageIndex: _pageIndex),
-            const GetStartedButtonWidget()
+            const GetStartedButton()
           ],
         ),
       ),

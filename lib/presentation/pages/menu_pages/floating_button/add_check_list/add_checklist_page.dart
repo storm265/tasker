@@ -3,19 +3,14 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/add_check_li
 import 'package:todo2/presentation/pages/menu_pages/floating_button/add_check_list/widgets/add_item_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/add_check_list/widgets/check_box_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/add_check_list/widgets/chose_color_text.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/confirm_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/red_app_bar.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/title_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/white_box_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/color_pallete_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/inherited_navigation_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/navigation_controller.dart';
-import 'package:todo2/presentation/widgets/common/annotated_region_widget.dart';
+import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
-import 'package:todo2/presentation/widgets/common/colors.dart';
 
-// todo create controller
 class AddCheckListPage extends StatefulWidget {
   const AddCheckListPage({Key? key}) : super(key: key);
 
@@ -92,7 +87,6 @@ class _AddCheckListPageState extends State<AddCheckListPage> {
                     ),
                   ),
                 ),
-                // color pallete
                 Column(
                   children: [
                     choseColorText,

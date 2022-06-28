@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/presentation/pages/auth/reser_password/controller/restore_password_controller.dart';
-import 'package:todo2/presentation/widgets/common/annotated_region_widget.dart';
+import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/sign_up_button_widget.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/signup_to_continue_widget.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/textfield_widget.dart';
@@ -33,7 +33,6 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
         shouldUsePopMethod: true,
         showLeadingButton: true,
         appBarColor: Colors.white,
-    
 
         // TODO maybe a problem
         // resizeToAvoidBottomInset: false,

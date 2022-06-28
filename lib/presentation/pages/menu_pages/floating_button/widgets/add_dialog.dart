@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/inherited_navigation_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 Future<void> showAddDialog(BuildContext context) async {
@@ -8,8 +6,7 @@ Future<void> showAddDialog(BuildContext context) async {
   await showDialog(
     context: context,
     builder: (_) {
-      final _inheritedNavigatorConroller =
-          InheritedNavigator.of(context)!.navigationController;
+    
       return AlertDialog(
         contentPadding: const EdgeInsets.all(0),
         content: SizedBox(
@@ -30,22 +27,23 @@ Future<void> showAddDialog(BuildContext context) async {
             shrinkWrap: true,
             itemBuilder: ((_, index) {
               return GestureDetector(
-                onTap: () {
+                onTap: () async {
                   switch (index) {
                     case 0:
                       Navigator.pop(context);
-                      NavigationService.navigateTo(context, Pages.addTask);
+                      await NavigationService.navigateTo(
+                          context, Pages.addTask);
                       break;
                     case 1:
                       Navigator.pop(context);
-                      _inheritedNavigatorConroller
-                          .animateToPage(NavigationPages.addQuickNote);
+                      await NavigationService.navigateTo(
+                          context, Pages.addNote);
 
                       break;
                     case 2:
                       Navigator.pop(context);
-                      _inheritedNavigatorConroller
-                          .animateToPage(NavigationPages.addCheckList);
+                      await NavigationService.navigateTo(
+                          context, Pages.addCheckList);
                       break;
                     default:
                   }

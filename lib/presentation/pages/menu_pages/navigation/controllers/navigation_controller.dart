@@ -11,7 +11,7 @@ enum NavigationPages {
 }
 
 class NavigationController extends ChangeNotifier {
-  final pageController = PageController();
+  final pageController = PageController(keepPage: true);
   final pageIndex = ValueNotifier<int>(0);
 
   Future<void> animateToPage(NavigationPages page) async {
@@ -29,15 +29,15 @@ class NavigationController extends ChangeNotifier {
       case NavigationPages.profile:
         pageIndex.value = 3;
         break;
-      case NavigationPages.addNewTask:
-        pageIndex.value = 4;
-        break;
-      case NavigationPages.addQuickNote:
-        pageIndex.value = 5;
-        break;
-      case NavigationPages.addCheckList:
-        pageIndex.value = 6;
-        break;
+      // case NavigationPages.addNewTask:
+      //   pageIndex.value = 4;
+      //   break;
+      // case NavigationPages.addQuickNote:
+      //   pageIndex.value = 5;
+      //   break;
+      // case NavigationPages.addCheckList:
+      //   pageIndex.value = 6;
+      //   break;
 
       default:
         pageIndex.value = 0;

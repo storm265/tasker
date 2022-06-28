@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/sign_in_controller.dart';
-import 'package:todo2/presentation/widgets/common/annotated_region_widget.dart';
+import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/pages/auth/widgets/constants.dart';
 import 'package:todo2/presentation/pages/auth/forgot_password/widgets/forgot_password_widget.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/sign_in_button_widget.dart';
@@ -10,6 +10,7 @@ import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/textfield_widge
 import 'package:todo2/presentation/pages/auth/widgets/title_widget.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
+import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -26,6 +27,7 @@ class _SignInPageState extends State<SignInPage> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _signInController.isClickedSubmitButton.dispose();
     _signInController.dispose();
     super.dispose();
   }
@@ -38,7 +40,6 @@ class _SignInPageState extends State<SignInPage> {
         shouldUsePopMethod: true,
         showLeadingButton: true,
         appBarColor: Colors.white,
-   
         child: DisabledGlowWidget(
           child: SingleChildScrollView(
             child: SizedBox(
@@ -81,12 +82,15 @@ class _SignInPageState extends State<SignInPage> {
                             buttonText: 'Sign In',
                             height: 380,
                             onPressed: isClicked
-                                ? () async => _signInController.signInValidate(
+                                ? () async {
+                                    _signInController.signInValidate(
                                       context: context,
                                       emailController: _emailController.text,
                                       passwordController:
                                           _passwordController.text,
-                                    )
+                                    );
+                                 
+                                  }
                                 : null,
                           )),
                     ),

@@ -55,6 +55,7 @@ class SignUpController extends ChangeNotifier {
     required String username,
   }) async {
     try {
+      final navigate = NavigationService.navigateTo(context, Pages.home);
       await _authRepository.signUp(
         context: context,
         email: email,
@@ -66,7 +67,7 @@ class SignUpController extends ChangeNotifier {
         username: username,
       );
       await uploadAvatar();
-      NavigationService.navigateTo(context, Pages.home);
+      await navigate;
     } catch (e) {
       MessageService.displaySnackbar(
           context: context, message: 'signUp error: $e');

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/sign_up_controller.dart';
-import 'package:todo2/presentation/widgets/common/annotated_region_widget.dart';
+import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/pages/auth/widgets/constants.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/avatar_widget.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/sign_in_button_widget.dart';

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/app_bar_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/calendar_lib/table_calendar.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/list/list_widget.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
-
-import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 class TasksPage extends StatefulWidget {
   const TasksPage({Key? key}) : super(key: key);
@@ -17,7 +14,6 @@ class TasksPage extends StatefulWidget {
 class _TasksPageState extends State<TasksPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
@@ -34,51 +30,42 @@ class _TasksPageState extends State<TasksPage>
   var _calendarFormat = CalendarFormat.week;
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-        appBar: AppBarWorkList(
-          tabController: _tabController,
-        ),
-        body: Column(
-          children: [
-            TableCalendar(
-              shouldHideButton: false,
-              calendarFormat: _calendarFormat,
-              onFormatChanged: (format) => setState(() {
-                _calendarFormat = format;
-              }),
-              selectedDayPredicate: (day) {
-                return isSameDay(_selectedDay, day);
-              },
-              onDaySelected: (selectedDay, focusedDay) {
-                setState(() {
-                  _selectedDay = selectedDay;
-                });
-              },
-              firstDay: DateTime.utc(DateTime.now().year - 1, 1, 1),
-              lastDay: DateTime.utc(2030, 3, 14),
-              focusedDay: _selectedDay,
-            ),
-            Expanded(
-              child: TabBarView(
-                controller: _tabController,
-                children: [
-                  DisabledGlowWidget(
-                    child: ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      itemCount: 10,
-                      itemBuilder: ((context, index) {
-                        return ListWidget(index: index);
-                      }),
-                    ),
+    return Scaffold(
+      appBar: AppBarWorkList(
+        tabController: _tabController,
+      ),
+      body: Column(
+        children: [
+          TableCalendar(
+            shouldHideButton: false,
+            calendarFormat: _calendarFormat,
+            onFormatChanged: (format) =>
+                setState(() => _calendarFormat = format),
+            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+            onDaySelected: (selectedDay, focusedDay) =>
+                setState(() => _selectedDay = selectedDay),
+            firstDay: DateTime.utc(DateTime.now().year - 1, 1, 1),
+            lastDay: DateTime.utc(2030, 3, 14),
+            focusedDay: _selectedDay,
+          ),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                DisabledGlowWidget(
+                  child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: 10,
+                    itemBuilder: ((context, index) => ListWidget(index: index)),
                   ),
-                  // month
-                  Column(children: const [Text('dadiadhjiajdad ')])
-                ],
-              ),
+                ),
+                // month
+                Column(children: const [Text('dadiadhjiajdad ')])
+              ],
             ),
-          ],
-        ),
-      
+          ),
+        ],
+      ),
     );
   }
 }

@@ -19,6 +19,7 @@ class ForgotPasswordController extends ChangeNotifier {
         context: context,
         email: email,
       );
+     
     }
     isClickedButton.value = true;
     isClickedButton.notifyListeners();

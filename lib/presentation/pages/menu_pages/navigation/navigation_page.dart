@@ -1,13 +1,11 @@
-// ignore_for_file: must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/add_check_list/add_checklist_page.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/new_note_page.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/new_task.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/menu_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/inherited_navigation_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/status_bar_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/navigation/widgets/keep_alive_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/navigation/widgets/nav_bar_item_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/profile_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_page.dart';
@@ -22,9 +20,9 @@ class NavigationPage extends StatefulWidget {
 }
 
 class _NavigationPageState extends State<NavigationPage> {
-   final _statusBarController = StatusBarController();
+  final _statusBarController = StatusBarController();
 
-   @override
+  @override
   void dispose() {
     _statusBarController.dispose();
     super.dispose();
@@ -32,7 +30,6 @@ class _NavigationPageState extends State<NavigationPage> {
 
   @override
   Widget build(BuildContext context) {
-   
     final inheritedNavigatorConroller =
         InheritedNavigator.of(context)!.navigationController;
     return ValueListenableBuilder(
@@ -47,15 +44,15 @@ class _NavigationPageState extends State<NavigationPage> {
             maintainBottomViewPadding: true,
             bottom: false,
             child: PageView(
+              onPageChanged: (index) => index == 0
+                  ? _statusBarController.setRedStatusMode(true)
+                  : _statusBarController.setRedStatusMode(false),
               controller: inheritedNavigatorConroller.pageController,
               children: [
-                const KeepAlivePage(child: TasksPage()),
-                const KeepAlivePage(child: MenuPage()),
-                KeepAlivePage(child: QuickPage()),
-                const KeepAlivePage(child: ProfilePage()),
-                const NewTaskPage(),
-                const AddQuickNote(),
-                const AddCheckListPage(),
+                const KeepAlivePageWidget(child: TasksPage()),
+                const KeepAlivePageWidget(child: MenuPage()),
+                KeepAlivePageWidget(child: QuickPage()),
+                const KeepAlivePageWidget(child: ProfilePage()),
               ],
             ),
           ),
@@ -64,7 +61,7 @@ class _NavigationPageState extends State<NavigationPage> {
             child: SizedBox(
               height: 60,
               width: double.infinity,
-              child: ValueListenableBuilder(
+              child: ValueListenableBuilder<int>(
                 valueListenable: inheritedNavigatorConroller.pageIndex,
                 builder: (context, pageIndex, _) => Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -73,7 +70,7 @@ class _NavigationPageState extends State<NavigationPage> {
                       onTap: () async {
                         await inheritedNavigatorConroller
                             .animateToPage(NavigationPages.tasks);
-                       _statusBarController.setRedStatusMode(true);
+                        _statusBarController.setRedStatusMode(true);
                       },
                       child: NavBarItem(
                         label: 'Tasks',
@@ -100,7 +97,7 @@ class _NavigationPageState extends State<NavigationPage> {
                       onTap: () async {
                         await inheritedNavigatorConroller
                             .animateToPage(NavigationPages.quick);
-                       _statusBarController.setRedStatusMode(false);
+                        _statusBarController.setRedStatusMode(false);
                       },
                       child: NavBarItem(
                         label: 'Quick',
@@ -129,27 +126,4 @@ class _NavigationPageState extends State<NavigationPage> {
       ),
     );
   }
-}
-
-class KeepAlivePage extends StatefulWidget {
-  final Widget child;
-  const KeepAlivePage({
-    Key? key,
-    required this.child,
-  }) : super(key: key);
-
-  @override
-  KeepAlivePageState createState() => KeepAlivePageState();
-}
-
-class KeepAlivePageState extends State<KeepAlivePage>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    return widget.child;
-  }
-
-  @override
-  bool get wantKeepAlive => true;
 }
