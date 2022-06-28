@@ -7,7 +7,7 @@ class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
   final Widget child;
   final String? title;
   final Color appBarColor;
-  final Color textColor;
+  final Color titleColor;
   final bool shouldUsePopMethod;
   final bool showLeadingButton;
   final bool showAppBar;
@@ -19,7 +19,7 @@ class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
     this.shouldUsePopMethod = false,
     this.showLeadingButton = false,
     this.showAppBar = true,
-    this.textColor = Colors.black,
+    this.titleColor = Colors.black,
     this.appBarColor = Palette.red,
   }) : super(key: key);
 
@@ -47,7 +47,7 @@ class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
                         child: Icon(
                           Icons.arrow_back,
                           size: 30,
-                          color: textColor,
+                          color: titleColor,
                         ),
                       ),
                     )
@@ -57,7 +57,7 @@ class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
                 title ?? '',
                 style: TextStyle(
                   fontStyle: FontStyle.italic,
-                  color: textColor,
+                  color: titleColor,
                   fontSize: 20,
                   fontWeight: FontWeight.w300,
                 ),

@@ -37,9 +37,9 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Todo2',
           theme: _themeDataController.themeData,
-          initialRoute: '/',
-         routes: routes,
-       //   home: NewTaskPage(),
+          // initialRoute: '/',
+          //   routes: routes,
+          home: NewTaskPage(),
         ),
       ),
     );

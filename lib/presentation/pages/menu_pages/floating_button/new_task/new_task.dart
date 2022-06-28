@@ -65,7 +65,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
     return WillPopWrapper(
       child: AppbarWrapperWidget(
         appBarColor: Palette.red,
-        textColor: Colors.white,
+        titleColor: Colors.white,
         title: 'New Task',
         showLeadingButton: true,
         shouldUsePopMethod: true,

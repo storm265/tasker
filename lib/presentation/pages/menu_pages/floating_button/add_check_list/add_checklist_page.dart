@@ -35,7 +35,7 @@ class _AddCheckListPageState extends State<AddCheckListPage> {
   Widget build(BuildContext context) {
     return AppbarWrapperWidget(
       appBarColor: Palette.red,
-      textColor: Colors.white,
+      titleColor: Colors.white,
       title: 'Add Check List',
       showLeadingButton: true,
       shouldUsePopMethod: true,
