@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/database/model/checklist_model.dart';
 
 class TitleWidget extends StatelessWidget {
-  final int index;
   final String title;
-
   const TitleWidget({
     Key? key,
     required this.title,
-    required this.index,
   }) : super(key: key);
 
   @override

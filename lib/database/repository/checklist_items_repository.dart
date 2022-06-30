@@ -19,6 +19,7 @@ class ChecklistItemsRepositoryImpl
           // TODO fix id
           checklistId: 3,
           isCompleted: false,
+          
         );
       }
     } catch (e) {

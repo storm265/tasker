@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/database/model/checklist_model.dart';
 
 class ColorLineWidget extends StatelessWidget {
   final String color;
-  final int index;
   const ColorLineWidget({
     Key? key,
     required this.color,
-    required this.index,
   }) : super(key: key);
 
   @override
@@ -20,7 +17,7 @@ class ColorLineWidget extends StatelessWidget {
         height: 3,
         child: ColoredBox(
           color: Color(
-            int.parse(color[index]),
+            int.parse(color),
           ),
         ),
       ),
