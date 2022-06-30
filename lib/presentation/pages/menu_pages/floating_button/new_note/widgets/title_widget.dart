@@ -6,11 +6,20 @@ class TitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const GreyContainerWidget(
+    return GreyContainerWidget(
       child: Padding(
-        padding: EdgeInsets.only(left: 25, top: 10),
+        padding: const EdgeInsets.only(left: 25, top: 10),
         child: TextField(
-          decoration: InputDecoration(
+          buildCounter: (context,
+                  {required currentLength, required isFocused, maxLength}) =>
+              maxLength == currentLength
+                  ? const Text(
+                      '32/32',
+                      style: TextStyle(color: Colors.red),
+                    )
+                  : null,
+          maxLength: 32,
+          decoration: const InputDecoration(
             hintText: 'Title',
             border: InputBorder.none,
             hintStyle: TextStyle(

@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
           theme: _themeDataController.themeData,
           // initialRoute: '/',
           //   routes: routes,
-          home: NewTaskPage(),
+          home: QuickPage(),
         ),
       ),
     );

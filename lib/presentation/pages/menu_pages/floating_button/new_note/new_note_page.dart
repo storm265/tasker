@@ -31,7 +31,7 @@ class _AddQuickNoteState extends State<AddQuickNote> {
   @override
   Widget build(BuildContext context) {
     return AppbarWrapperWidget(
-      appBarColor: Palette.red,
+      statusBarColor: Palette.red,
       titleColor: Colors.white,
       title: 'Add Note',
       showLeadingButton: true,
@@ -40,42 +40,42 @@ class _AddQuickNoteState extends State<AddQuickNote> {
         children: [
           redAppBar,
           WhiteBoxWidget(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 15),
-                  child: Form(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+              child: Column(
+                children: [
+                  Form(
                     key: _addNoteController.formKey,
                     child: TitleWidget(
                       textController: descriptionTextController,
                       title: 'Description',
                     ),
                   ),
-                ),
-                const SizedBox(height: 100),
-                Column(
-                  children: [
-                    choseColorText,
-                    ColorPalleteWidget(
-                      colorController:
-                          _addNoteController.colorPalleteController,
-                    ),
-                    const SizedBox(height: 50),
-                    ValueListenableBuilder<bool>(
-                      valueListenable: _addNoteController.isButtonClicked,
-                      builder: (context, isClicked, _) => ConfirmButtonWidget(
-                        title: 'Done',
-                        onPressed: isClicked
-                            ? () async => _addNoteController.addNote(
-                                  context: context,
-                                  description: descriptionTextController.text,
-                                )
-                            : null,
+                  const SizedBox(height: 100),
+                  Column(
+                    children: [
+                      choseColorText,
+                      ColorPalleteWidget(
+                        colorController:
+                            _addNoteController.colorPalleteController,
                       ),
-                    ),
-                  ],
-                )
-              ],
+                      const SizedBox(height: 50),
+                      ValueListenableBuilder<bool>(
+                        valueListenable: _addNoteController.isButtonClicked,
+                        builder: (context, isClicked, _) => ConfirmButtonWidget(
+                          title: 'Done',
+                          onPressed: isClicked
+                              ? () async => _addNoteController.addNote(
+                                    context: context,
+                                    description: descriptionTextController.text,
+                                  )
+                              : null,
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
             ),
           ),
         ],

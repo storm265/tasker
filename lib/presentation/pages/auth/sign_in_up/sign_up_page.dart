@@ -40,8 +40,7 @@ class _SignUpPageState extends State<SignUpPage> {
       child: AppbarWrapperWidget(
         shouldUsePopMethod: true,
         showLeadingButton: true,
-        appBarColor: Colors.white,
-       
+        statusBarColor: Colors.white,
         child: DisabledGlowWidget(
           child: SingleChildScrollView(
             child: SizedBox(

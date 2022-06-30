@@ -33,7 +33,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       child: AppbarWrapperWidget(
         shouldUsePopMethod: true,
         showLeadingButton: true,
-        appBarColor: Colors.white,
+        statusBarColor: Colors.white,
         child: DisabledGlowWidget(
           child: Form(
             key: _forgotPasswordController.formKey,
@@ -65,12 +65,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     buttonText: 'Send Request',
                     onPressed: isClicked
                         ? () async {
-                            await _forgotPasswordController
-                                .sendEmail(
-                                  context: context,
-                                  email: _emailController.text,
-                                );
-                               
+                            await _forgotPasswordController.sendEmail(
+                              context: context,
+                              email: _emailController.text,
+                            );
                           }
                         : null,
                   ),

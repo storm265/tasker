@@ -20,7 +20,7 @@ class _WelcomePageState extends State<WelcomePage> {
     return WillPopWrapper(
       child: AppbarWrapperWidget(
         showAppBar: false,
-        appBarColor: Colors.white,
+        statusBarColor: Colors.white,
         child: Stack(
           alignment: Alignment.center,
           fit: StackFit.expand,

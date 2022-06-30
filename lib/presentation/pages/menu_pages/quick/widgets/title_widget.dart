@@ -3,11 +3,11 @@ import 'package:todo2/database/model/checklist_model.dart';
 
 class TitleWidget extends StatelessWidget {
   final int index;
-  final List<CheckListModel> data;
+  final String title;
 
   const TitleWidget({
     Key? key,
-    required this.data,
+    required this.title,
     required this.index,
   }) : super(key: key);
 
@@ -21,7 +21,7 @@ class TitleWidget extends StatelessWidget {
       child: Align(
         alignment: Alignment.centerLeft,
         child: Text(
-          data[index].title,
+         title,
           style: const TextStyle(
             fontWeight: FontWeight.w300,
             fontSize: 16,

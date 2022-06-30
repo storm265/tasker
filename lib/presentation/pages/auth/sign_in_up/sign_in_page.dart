@@ -39,7 +39,7 @@ class _SignInPageState extends State<SignInPage> {
       child: AppbarWrapperWidget(
         shouldUsePopMethod: true,
         showLeadingButton: true,
-        appBarColor: Colors.white,
+        statusBarColor: Colors.white,
         child: DisabledGlowWidget(
           child: SingleChildScrollView(
             child: SizedBox(
@@ -89,7 +89,6 @@ class _SignInPageState extends State<SignInPage> {
                                       passwordController:
                                           _passwordController.text,
                                     );
-                                 
                                   }
                                 : null,
                           )),

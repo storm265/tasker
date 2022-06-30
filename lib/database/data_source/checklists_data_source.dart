@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/database_scheme/checklists_scheme.dart';
 import 'package:todo2/services/error_service/error_service.dart';
@@ -38,7 +40,7 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
     try {
       final response = await _supabase
           .from(_table)
-          .select('${CheckListsScheme.title},${CheckListsScheme.color}')
+          .select('*')
           .eq(CheckListsScheme.uuid, _supabase.auth.currentUser!.id)
           .execute();
       return response;
@@ -47,4 +49,6 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
       rethrow;
     }
   }
+
+ 
 }

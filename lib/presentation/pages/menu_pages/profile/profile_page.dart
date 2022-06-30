@@ -14,8 +14,7 @@ class ProfilePage extends StatelessWidget {
     final inheritedProfile = ProfileInherited.of(context);
     return AppbarWrapperWidget(
       title: 'Profiles',
-      appBarColor: Colors.white,
-
+      statusBarColor: Colors.white,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Column(
@@ -23,7 +22,7 @@ class ProfilePage extends StatelessWidget {
             const ProfileWidget(),
             FutureBuilder<List<ProjectModel>>(
               initialData: const [],
-              future: inheritedProfile.profileController.fetchProfile(),
+              future: inheritedProfile.profileController.fetchProject(),
               builder: (_, AsyncSnapshot<List<ProjectModel>> snapshot) {
                 return snapshot.hasData
                     ? Column(

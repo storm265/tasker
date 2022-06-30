@@ -25,7 +25,7 @@ class _MenuPageState extends State<MenuPage> {
     return WillPopWrapper(
       child: AppbarWrapperWidget(
         title: 'Projects',
-        appBarColor: Colors.white,
+        statusBarColor: Colors.white,
         child: DisabledGlowWidget(
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,

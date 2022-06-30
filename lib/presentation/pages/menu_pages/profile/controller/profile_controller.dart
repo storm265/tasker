@@ -15,8 +15,7 @@ class ProfileController extends ChangeNotifier {
   final userProfileRepository = UserProfileRepositoryImpl();
   late String userName = '', image = '';
 
-
-    Future<void> signOut(BuildContext context) async {
+  Future<void> signOut(BuildContext context) async {
     try {
       await _authRepository.signOut(context: context);
       NavigationService.navigateTo(context, Pages.welcome);
@@ -25,7 +24,7 @@ class ProfileController extends ChangeNotifier {
     }
   }
 
-  Future<List<ProjectModel>> fetchProfile() async {
+  Future<List<ProjectModel>> fetchProject() async {
     try {
       return _projectsRepository.fetchProject();
     } catch (e) {

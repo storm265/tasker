@@ -22,7 +22,6 @@ class SelectUserWidget extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(5),
         color: const Color(0xFFF4F4F4),
-        // color: Colors.red,
       ),
       height: 500,
       width: 365,
@@ -64,8 +63,6 @@ class _NewTaskPageState extends State<NewTaskPage> {
   Widget build(BuildContext context) {
     return WillPopWrapper(
       child: AppbarWrapperWidget(
-        appBarColor: Palette.red,
-        titleColor: Colors.white,
         title: 'New Task',
         showLeadingButton: true,
         shouldUsePopMethod: true,

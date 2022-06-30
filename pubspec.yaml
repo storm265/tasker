@@ -25,6 +25,7 @@ dependencies:
   simple_gesture_detector:
   percent_indicator: ^4.0.1
   awesome_snackbar_content: ^0.0.5
+  file_picker:
   
 
 dev_dependencies:

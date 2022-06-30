@@ -2,13 +2,16 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class CachedAvatarWidget extends StatelessWidget {
-  const CachedAvatarWidget({Key? key, required this.image}) : super(key: key);
   final String image;
+  final double radius;
+
+  const CachedAvatarWidget({Key? key, required this.image, this.radius = 70})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 70,
-      height: 70,
+      width: radius,
+      height: radius,
       child: CachedNetworkImage(
         imageBuilder: (context, imageProvider) {
           return CircleAvatar(

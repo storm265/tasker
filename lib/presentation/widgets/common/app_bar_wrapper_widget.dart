@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/inherited_navigation_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
@@ -6,6 +7,8 @@ import 'package:todo2/services/theme_service/theme_data_controller.dart';
 class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
   final Widget child;
   final String? title;
+  final Brightness brightness;
+  final Color statusBarColor;
   final Color appBarColor;
   final Color titleColor;
   final bool shouldUsePopMethod;
@@ -18,9 +21,11 @@ class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
     this.title,
     this.shouldUsePopMethod = false,
     this.showLeadingButton = false,
+    this.brightness = Brightness.light,
     this.showAppBar = true,
-    this.titleColor = Colors.black,
+    this.titleColor = Colors.white,
     this.appBarColor = Palette.red,
+    this.statusBarColor = Palette.red,
   }) : super(key: key);
 
   @override
@@ -34,8 +39,15 @@ class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
     return Scaffold(
       appBar: showAppBar
           ? AppBar(
+              systemOverlayStyle: SystemUiOverlayStyle(
+                statusBarColor: statusBarColor,
+                // For Android.
+                statusBarIconBrightness: brightness,
+                // For iOS.
+                statusBarBrightness: brightness,
+              ),
               elevation: 0,
-              backgroundColor: appBarColor,
+              backgroundColor: statusBarColor,
               leading: showLeadingButton
                   ? Padding(
                       padding: const EdgeInsets.only(left: 10),

@@ -21,7 +21,7 @@ class _AddUserWidgetState extends State<AddUserWidget> {
   final _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
-    return (newTaskConroller.chipTitles.value.isEmpty)
+    return (newTaskConroller.usersList.value.isEmpty)
         ? Padding(
             padding: const EdgeInsets.only(left: 15, bottom: 20, top: 20),
             child: Row(
@@ -68,7 +68,7 @@ class _AddUserWidgetState extends State<AddUserWidget> {
               controller: _scrollController,
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,
-              itemCount: newTaskConroller.chipTitles.value.length,
+              itemCount: newTaskConroller.usersList.value.length,
               itemBuilder: (context, index) {
                 return Row(
                   children: [
@@ -79,11 +79,11 @@ class _AddUserWidgetState extends State<AddUserWidget> {
                         backgroundColor: Colors.red,
                       ),
                     ),
-                    (index == newTaskConroller.chipTitles.value.length - 1)
+                    (index == newTaskConroller.usersList.value.length - 1)
                         ? RawMaterialButton(
                             onPressed: () {
                               setState(() {
-                                newTaskConroller.chipTitles.value
+                                newTaskConroller.usersList.value
                                     .add(UserProfileModel(
                                   username: 'User $index',
                                   avatarUrl: 'avatarUrl',
