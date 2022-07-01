@@ -10,6 +10,7 @@ abstract class ProjectUserData {
     required String color,
     required String title,
   });
+  
 }
 
 class ProjectUserDataImpl implements ProjectUserData {

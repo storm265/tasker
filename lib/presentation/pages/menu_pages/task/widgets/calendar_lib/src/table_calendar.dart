@@ -1,7 +1,6 @@
 // Copyright 2019 Aleksander Woźniak
 // SPDX-License-Identifier: Apache-2.0
 
-
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:simple_gesture_detector/simple_gesture_detector.dart';
@@ -187,7 +186,8 @@ class TableCalendar<T> extends StatefulWidget {
 
   /// Called when the calendar is created. Exposes its PageController.
   final void Function(PageController pageController)? onCalendarCreated;
-final bool shouldHideButton;
+  final bool shouldHideButton;
+
   /// Creates a `TableCalendar` widget.
   TableCalendar({
     Key? key,
@@ -211,8 +211,8 @@ final bool shouldHideButton;
     this.pageAnimationEnabled = true,
     this.sixWeekMonthsEnforced = false,
     this.shouldFillViewport = false,
-    this.rowHeight = 52.0,
-    this.daysOfWeekHeight = 16.0,
+    this.rowHeight = 45.0, //52
+    this.daysOfWeekHeight = 12.0, //16
     this.formatAnimationDuration = const Duration(milliseconds: 200),
     this.formatAnimationCurve = Curves.linear,
     this.pageAnimationDuration = const Duration(milliseconds: 300),
@@ -299,10 +299,7 @@ class TableCalendarState<T> extends State<TableCalendar<T>> {
       !widget.calendarStyle.outsideDaysVisible &&
       widget.calendarFormat == CalendarFormat.month;
 
-
-
   void _onDayTapped(DateTime day) {
-
     final isOutside = day.month != _focusedDay.value.month;
     if (isOutside && _shouldBlockOutsideDays) {
       return;
@@ -351,8 +348,6 @@ class TableCalendarState<T> extends State<TableCalendar<T>> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -389,8 +384,6 @@ class TableCalendarState<T> extends State<TableCalendar<T>> {
             firstDay: widget.firstDay,
             lastDay: widget.lastDay,
             startingDayOfWeek: widget.startingDayOfWeek,
-            dowDecoration: widget.daysOfWeekStyle.decoration,
-            rowDecoration: widget.calendarStyle.rowDecoration,
             tableBorder: widget.calendarStyle.tableBorder,
             dowVisible: widget.daysOfWeekVisible,
             dowHeight: widget.daysOfWeekHeight,
@@ -403,7 +396,6 @@ class TableCalendarState<T> extends State<TableCalendar<T>> {
             availableCalendarFormats: widget.availableCalendarFormats,
             simpleSwipeConfig: widget.simpleSwipeConfig,
             sixWeekMonthsEnforced: widget.sixWeekMonthsEnforced,
-          
             onPageChanged: (focusedDay) {
               _focusedDay.value = focusedDay;
               widget.onPageChanged?.call(focusedDay);

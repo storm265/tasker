@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/pages/auth/reser_password/reset_password_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/controller_inherited.dart';
 import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/profile_page.dart';
@@ -10,6 +11,7 @@ import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/supabase/configure.dart';
 import 'package:todo2/services/system_service/system_chrome.dart';
 import 'presentation/pages/menu_pages/floating_button/new_note/new_note_page.dart';
+import 'presentation/pages/menu_pages/floating_button/new_task/controller/add_task_controller.dart';
 import 'presentation/pages/menu_pages/floating_button/new_task/new_task.dart';
 import 'presentation/pages/menu_pages/navigation/controllers/inherited_navigation_controller.dart';
 import 'presentation/pages/menu_pages/profile/controller/inherited_profile.dart';
@@ -24,7 +26,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
-
+final _newTaskConroller = AddTaskController();
   final _themeDataController = ThemeDataService();
   final _profileController = ProfileController();
   final _navigationController = NavigationController();
@@ -34,13 +36,16 @@ class MyApp extends StatelessWidget {
       navigationController: _navigationController,
       child: ProfileInherited(
         profileController: _profileController,
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Todo2',
-          theme: _themeDataController.themeData,
-          // initialRoute: '/',
-          //   routes: routes,
-          home: TasksPage(),
+        child: InheritedNewTaskController(
+          addTaskController: _newTaskConroller,
+          child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Todo2',
+            theme: _themeDataController.themeData,
+           initialRoute: '/',
+              routes: routes,
+          //  home: NewTaskPage(),
+          ),
         ),
       ),
     );

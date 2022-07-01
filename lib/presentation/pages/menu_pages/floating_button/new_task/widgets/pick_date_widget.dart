@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/add_task_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/controller_inherited.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/confirm_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/calendar_lib/src/shared/utils.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/calendar_lib/src/table_calendar.dart';
@@ -9,7 +9,7 @@ Future<void> showCalendarDatePicker(BuildContext context) async {
 
   await showDialog(
     context: context,
-    builder: (_) {
+    builder: (_) {    final addTaskController = InheritedNewTaskController.of(context).addTaskController;
       return AlertDialog(
         contentPadding: const EdgeInsets.symmetric(vertical: 10),
         content: SizedBox(
@@ -28,7 +28,7 @@ Future<void> showCalendarDatePicker(BuildContext context) async {
                   onDaySelected: (selecDay, focusedDay) {
                     setState(() {
                       selectedDay = selecDay;
-                      newTaskConroller.pickTime(selectedDay);
+                      addTaskController.pickTime(selectedDay);
                     });
                   },
                   firstDay: DateTime.utc(DateTime.now().year - 1, 1, 1),

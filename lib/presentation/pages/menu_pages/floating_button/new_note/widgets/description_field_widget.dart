@@ -1,14 +1,15 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/add_task_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/controller_inherited.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/widgets/panel_widgets/image_widget.dart';
 
 class DescriptionFieldWidget extends StatelessWidget {
   const DescriptionFieldWidget({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { final addTaskController =
+        InheritedNewTaskController.of(context).addTaskController;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Column(
@@ -40,7 +41,7 @@ class DescriptionFieldWidget extends StatelessWidget {
                 width: 1,
               ),
               borderRadius: BorderRadius.circular(5),
-              color: const Color(0xFFF4F4F4),
+              color: Colors.white,
             ),
             child: SingleChildScrollView(
               child: Column(
@@ -49,15 +50,18 @@ class DescriptionFieldWidget extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(
-                      left: 25,
-                      top: 10,
+                      left: 15,
+                      top: 20,
                     ),
                     child: TextField(
+                      onEditingComplete: () => FocusScope.of(context).unfocus(),
                       maxLength: 512,
-                      buildCounter: (context,
-                              {required currentLength,
-                              required isFocused,
-                              maxLength}) =>
+                      buildCounter: (
+                        context, {
+                        required currentLength,
+                        required isFocused,
+                        maxLength,
+                      }) =>
                           maxLength == currentLength
                               ? const Text(
                                   '512/512',
@@ -67,7 +71,6 @@ class DescriptionFieldWidget extends StatelessWidget {
                       keyboardType: TextInputType.multiline,
                       maxLines: null,
                       decoration: const InputDecoration(
-                        hintText: 'Title',
                         border: InputBorder.none,
                         hintStyle: TextStyle(
                           fontSize: 18,
@@ -85,7 +88,7 @@ class DescriptionFieldWidget extends StatelessWidget {
                       color: const Color(0xFFF8F8F8),
                     ),
                     width: double.infinity,
-                    height: 50,
+                    height: 40,
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Transform.rotate(
@@ -95,7 +98,7 @@ class DescriptionFieldWidget extends StatelessWidget {
                             Icons.attachment_outlined,
                             color: Colors.grey,
                           ),
-                          onPressed: () => newTaskConroller.pickFile(),
+                          onPressed: () => addTaskController.pickFile(),
                         ),
                       ),
                     ),
@@ -105,9 +108,9 @@ class DescriptionFieldWidget extends StatelessWidget {
             ),
           ),
           ValueListenableBuilder<List<PlatformFile>>(
-            valueListenable: newTaskConroller.files,
+            valueListenable: addTaskController.files,
             builder: (context, imgList, value) => FutureBuilder<List<String>>(
-              future: newTaskConroller.fetchCommentInfo(),
+              future: addTaskController.fetchCommentInfo(),
               initialData: const [],
               builder: ((context, AsyncSnapshot<List<String>> snapshot) {
                 if (snapshot.hasData) {
@@ -154,7 +157,7 @@ class DescriptionFieldWidget extends StatelessWidget {
                         ],
                       );
                     },
-                    itemCount: newTaskConroller.files.value.length,
+                    itemCount: addTaskController.files.value.length,
                     shrinkWrap: true,
                   );
                 } else {

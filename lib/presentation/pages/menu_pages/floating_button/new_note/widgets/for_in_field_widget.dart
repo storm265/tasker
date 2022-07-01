@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/add_task_controller.dart';
 
-final newTaskController = NewTaskController();
+final newTaskController = AddTaskController();
 
 class EnterUserWidget extends StatelessWidget {
   TextEditingController titleController;
@@ -49,7 +49,8 @@ class EnterUserWidget extends StatelessWidget {
                 newTaskController.showPickUserWidget(true);
               },
               controller: titleController,
-              onEditingComplete: ()=>     newTaskController.showPickUserWidget(false),
+              onEditingComplete: () =>
+                  newTaskController.showPickUserWidget(false),
               decoration: const InputDecoration(
                 border: InputBorder.none,
                 labelStyle: TextStyle(

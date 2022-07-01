@@ -31,8 +31,9 @@ class CalendarHeader extends StatelessWidget {
           child: Text(
             DateFormat.yMMMM(locale).format(focusedMonth),
             style: const TextStyle(
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: FontWeight.w300,
+              fontStyle: FontStyle.italic,
             ),
           ),
         ),

@@ -3,15 +3,18 @@ import 'dart:developer';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:todo2/database/model/projects_model.dart';
 import 'package:todo2/database/model/users_profile_model.dart';
+import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/user_profile_repository.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 
-final newTaskConroller = NewTaskController();
 
-class NewTaskController extends ChangeNotifier {
+
+class AddTaskController extends ChangeNotifier {
   final files = ValueNotifier<List<PlatformFile>>([]);
   final pickedTime = ValueNotifier<DateTime?>(null);
+  final projects = ValueNotifier<List<ProjectModel>>([]);
 
   XFile? pickedFile = XFile('');
   final picker = ImagePicker();
@@ -21,6 +24,11 @@ class NewTaskController extends ChangeNotifier {
 
   late String userName = '', image = '';
   final userProfileRepository = UserProfileRepositoryImpl();
+
+// Future<List<ProjectModel>> fetchProjects()async{
+//   ProjectRepositoryImpl
+
+// }
 
   void showProjectWidget(bool value) {
     if (isShowProjectWidget.value == false) {
@@ -75,11 +83,12 @@ class NewTaskController extends ChangeNotifier {
       rethrow;
     }
   }
+
   Future<List<String>> fetchCommentInfo() async {
     try {
       image = await userProfileRepository.fetchAvatar();
       userName = await userProfileRepository.fetchUserName();
-      return [image,userName];
+      return [image, userName];
     } catch (e) {
       ErrorService.printError("Error in ProfileController  getUserData() :$e ");
       rethrow;

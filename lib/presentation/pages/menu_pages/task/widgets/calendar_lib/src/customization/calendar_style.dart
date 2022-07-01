@@ -32,12 +32,6 @@ class CalendarStyle {
   /// Margin of single event markers. Affects each marker dot.
   final EdgeInsets markerMargin;
 
-  /// Margin of each individual day cell.
-  final EdgeInsets cellMargin;
-
-  /// Padding of each individual day cell.
-  final EdgeInsets cellPadding;
-
   /// Alignment of each individual day cell.
   final AlignmentGeometry cellAlignment;
 
@@ -102,8 +96,6 @@ class CalendarStyle {
     this.markerMargin = const EdgeInsets.symmetric(horizontal: 0.3),
     this.markersAlignment = Alignment.bottomCenter,
     this.markersMaxCount = 4,
-    this.cellMargin = const EdgeInsets.all(6.0),
-    this.cellPadding = const EdgeInsets.all(0),
     this.cellAlignment = Alignment.center,
     this.rangeHighlightColor = const Color(0xFFBBDDFF),
     this.markerDecoration = const BoxDecoration(

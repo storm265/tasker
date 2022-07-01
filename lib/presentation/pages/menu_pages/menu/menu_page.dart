@@ -36,6 +36,7 @@ class _MenuPageState extends State<MenuPage> {
                   FutureBuilder<List<ProjectModel>>(
                     future: _projectsRepository.fetchProject(),
                     builder: (_, AsyncSnapshot<List<ProjectModel>> snapshot) {
+                    
                       if (snapshot.data == null) {
                         return const CircularProgressIndicator();
                       }
@@ -53,6 +54,7 @@ class _MenuPageState extends State<MenuPage> {
                               mainAxisSpacing: 5.0,
                             ),
                             itemBuilder: (BuildContext context, index) {
+                                final data  = snapshot.data![index];
                               return Container(
                                 width: 140,
                                 height: 180,
@@ -63,9 +65,9 @@ class _MenuPageState extends State<MenuPage> {
                                 child: Stack(
                                   children: [
                                     CircleWidget(
-                                        color: snapshot.data![index].color),
+                                        color: data.color),
                                     CategoryWidget(
-                                        title: snapshot.data![index].title),
+                                        title: data.title),
                                     const CategoryLengthWidget()
                                   ],
                                 ),

@@ -74,8 +74,6 @@ class CalendarCore extends StatelessWidget {
         return CalendarPage(
           visibleDays: visibleDays,
           dowVisible: dowVisible,
-          dowDecoration: dowDecoration,
-          rowDecoration: rowDecoration,
           tableBorder: tableBorder,
           dowBuilder: (context, day) {
             return SizedBox(

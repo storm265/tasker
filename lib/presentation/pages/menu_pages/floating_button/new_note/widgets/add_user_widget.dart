@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/users_profile_model.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/add_task_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/controller_inherited.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/confirm_button.dart';
 
 class AddUserWidget extends StatefulWidget {
@@ -21,7 +21,9 @@ class _AddUserWidgetState extends State<AddUserWidget> {
   final _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
-    return (newTaskConroller.usersList.value.isEmpty)
+    final addTaskController =
+        InheritedNewTaskController.of(context).addTaskController;
+    return (addTaskController.usersList.value.isEmpty)
         ? Padding(
             padding: const EdgeInsets.only(left: 15, bottom: 20, top: 20),
             child: Row(
@@ -68,7 +70,7 @@ class _AddUserWidgetState extends State<AddUserWidget> {
               controller: _scrollController,
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,
-              itemCount: newTaskConroller.usersList.value.length,
+              itemCount: addTaskController.usersList.value.length,
               itemBuilder: (context, index) {
                 return Row(
                   children: [
@@ -79,11 +81,11 @@ class _AddUserWidgetState extends State<AddUserWidget> {
                         backgroundColor: Colors.red,
                       ),
                     ),
-                    (index == newTaskConroller.usersList.value.length - 1)
+                    (index == addTaskController.usersList.value.length - 1)
                         ? RawMaterialButton(
                             onPressed: () {
                               setState(() {
-                                newTaskConroller.usersList.value
+                                addTaskController.usersList.value
                                     .add(UserProfileModel(
                                   username: 'User $index',
                                   avatarUrl: 'avatarUrl',

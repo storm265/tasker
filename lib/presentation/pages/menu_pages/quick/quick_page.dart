@@ -5,10 +5,7 @@ import 'package:todo2/database/model/checklist_item_model.dart';
 import 'package:todo2/database/model/checklist_model.dart';
 import 'package:todo2/database/repository/checklist_items_repository.dart';
 import 'package:todo2/database/repository/checklist_repository.dart';
-import 'package:todo2/presentation/pages/menu_pages/quick/widgets/checkbox_item_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/quick/widgets/color_line_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/note_card.dart';
-import 'package:todo2/presentation/pages/menu_pages/quick/widgets/title_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
@@ -22,7 +19,7 @@ class CheckListLinkedModel {
   });
 }
 
-// create controller
+// TODo create controller
 class QuickPage extends StatelessWidget {
   QuickPage({Key? key}) : super(key: key);
 

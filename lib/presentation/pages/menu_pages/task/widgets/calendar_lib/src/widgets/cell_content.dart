@@ -10,12 +10,9 @@ class CellContent extends StatelessWidget {
   final DateTime day;
   final DateTime focusedDay;
   final dynamic locale;
-
   final bool isSelected;
-
   final bool isOutside;
   final bool isDisabled;
-
   final CalendarStyle calendarStyle;
 
   const CellContent({
@@ -38,22 +35,16 @@ class CellContent extends StatelessWidget {
     Widget? cell;
 
     final text = '${day.day}';
-    final margin = calendarStyle.cellMargin;
-    final padding = calendarStyle.cellPadding;
     final alignment = calendarStyle.cellAlignment;
 
     if (isDisabled) {
       cell = Container(
-        margin: margin,
-        padding: padding,
         decoration: calendarStyle.disabledDecoration,
         alignment: alignment,
         child: Text(text, style: calendarStyle.disabledTextStyle),
       );
     } else if (isSelected) {
       cell = Container(
-        margin: margin,
-        padding: padding,
         //   decoration: calendarStyle.selectedDecoration,
         alignment: alignment,
         child: Text(text, style: calendarStyle.selectedTextStyle),
@@ -63,16 +54,12 @@ class CellContent extends StatelessWidget {
     // is after/before month range
     else if (isOutside) {
       cell = Container(
-        margin: margin,
-        padding: padding,
         decoration: calendarStyle.outsideDecoration,
         alignment: alignment,
         child: Text(text, style: calendarStyle.outsideTextStyle),
       );
     } else {
       cell = Container(
-        margin: margin,
-        padding: padding,
         decoration: calendarStyle.defaultDecoration,
         alignment: alignment,
         child: Text(text, style: calendarStyle.defaultTextStyle),
