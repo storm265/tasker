@@ -16,11 +16,11 @@ class DoneItemWidget extends StatelessWidget {
         child: Icon(Icons.check_circle, color: Palette.red),
       ),
       subtitle: Text(
-        title,
+        subtitle,
         style: const TextStyle(decoration: TextDecoration.lineThrough),
       ),
       title: Text(
-        subtitle,
+        title,
         style: const TextStyle(decoration: TextDecoration.lineThrough),
       ),
     );

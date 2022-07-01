@@ -32,7 +32,8 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
       child: AppbarWrapperWidget(
         shouldUsePopMethod: true,
         showLeadingButton: true,
-        statusBarColor: Colors.white,
+          isRedAppBar: false,
+        // statusBarColor: Colors.white,
 
         // TODO maybe a problem
         // resizeToAvoidBottomInset: false,

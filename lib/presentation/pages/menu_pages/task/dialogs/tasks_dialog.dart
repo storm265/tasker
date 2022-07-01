@@ -25,7 +25,7 @@ void showTasksDialog(BuildContext context) {
               return StatefulBuilder(
                 builder: (context, setState) => GestureDetector(
                   onTap: () {
-                    setState(() {
+                    setState(()  {
                       isClicked = !isClicked;
                       (iconColor == Colors.white)
                           ? iconColor = Colors.green

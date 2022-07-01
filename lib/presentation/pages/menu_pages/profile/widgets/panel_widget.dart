@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/profile/widgets/panel_widgets/panel_decoration.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/widgets/panel_widgets/tasks_text_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/dialogs/settings_dialog.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/widgets/panel_widgets/user_data_widget.dart';
@@ -11,11 +12,13 @@ class ProfileWidget extends StatefulWidget {
   State<ProfileWidget> createState() => _ProfileWidgetState();
 }
 
-class _ProfileWidgetState extends State<ProfileWidget> {
+class _ProfileWidgetState extends State<ProfileWidget>
+    with SingleTickerProviderStateMixin {
   final _profileController = ProfileController();
 
   @override
   void initState() {
+    _profileController.rotateSettingsIcon(ticker: this);
     _profileController.fetchProfileInfo(
         updateStateCallback: () => setState(() {}));
     super.initState();
@@ -23,6 +26,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
 
   @override
   void dispose() {
+    _profileController.iconAnimationController.dispose();
     _profileController.dispose();
     super.dispose();
   }
@@ -30,13 +34,7 @@ class _ProfileWidgetState extends State<ProfileWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        boxShadow: const [
-          BoxShadow(color: Color(0xFFE0E0E0), blurRadius: 10),
-        ],
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(5),
-      ),
+      decoration: panelDecoration,
       height: 200,
       child: Stack(
         children: [
@@ -44,7 +42,13 @@ class _ProfileWidgetState extends State<ProfileWidget> {
             left: 310,
             child: IconButton(
               onPressed: () => showSettingsDialog(context),
-              icon: const Icon(Icons.settings),
+              icon: RotationTransition(
+                turns: Tween(begin: 0.0, end: 1.0)
+                    .animate(_profileController.iconAnimationController),
+                child: const Icon(
+                  Icons.settings,
+                ),
+              ),
             ),
           ),
           UserDataWidget(

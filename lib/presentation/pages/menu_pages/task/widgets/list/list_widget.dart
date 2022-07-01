@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:todo2/database/model/task_model.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/widgets/list/done_item_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/list/text.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/list/undone_item_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/slidable_widgets/endpane_widget.dart';
@@ -8,10 +10,16 @@ import 'package:todo2/presentation/widgets/common/colors.dart';
 
 class ListWidget extends StatelessWidget {
   final int index;
-  const ListWidget({Key? key, required this.index}) : super(key: key);
+  final List<TaskModel> model;
+  const ListWidget({
+    Key? key,
+    required this.index,
+    required this.model,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final data = model[index];
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: Column(
@@ -21,7 +29,7 @@ class ListWidget extends StatelessWidget {
           ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              itemCount: 3,
+              itemCount: model.length,
               itemBuilder: (context, index) {
                 return Slidable(
                   key: const ValueKey(0),
@@ -56,10 +64,15 @@ class ListWidget extends StatelessWidget {
                               ),
                             ),
                           ),
-                          const UndoneItemWidget(
-                            subtitle: 'subtitle',
-                            title: 'title',
-                          )
+                          data.isCompleted
+                              ? DoneItemWidget(
+                                  subtitle: data.dueDate,
+                                  title: data.title,
+                                )
+                              : UndoneItemWidget(
+                                  subtitle: data.dueDate,
+                                  title: data.title,
+                                )
                         ],
                       ),
                     ),

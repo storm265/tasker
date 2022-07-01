@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:todo2/database/model/task_model.dart';
+import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/app_bar_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/calendar_lib/table_calendar.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/list/list_widget.dart';
@@ -53,10 +55,24 @@ class _TasksPageState extends State<TasksPage>
               controller: _tabController,
               children: [
                 DisabledGlowWidget(
-                  child: ListView.builder(
-                    scrollDirection: Axis.vertical,
-                    itemCount: 10,
-                    itemBuilder: ((context, index) => ListWidget(index: index)),
+                  child: FutureBuilder<List<TaskModel>>(
+                    future: ProjectRepositoryImpl().fetchTask(),
+                    initialData: const [],
+                    builder:
+                        (context, AsyncSnapshot<List<TaskModel>> snapshot) {
+                      if (snapshot.hasData) {
+                        return ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: ((context, index) => ListWidget(
+                                index: index,
+                                model: snapshot.data!,
+                              )),
+                        );
+                      } else {
+                        return const CircularProgressIndicator.adaptive();
+                      }
+                    },
                   ),
                 ),
                 // month

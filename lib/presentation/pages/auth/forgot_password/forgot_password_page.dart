@@ -33,7 +33,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       child: AppbarWrapperWidget(
         shouldUsePopMethod: true,
         showLeadingButton: true,
-        statusBarColor: Colors.white,
+          isRedAppBar: false,
+        // statusBarColor: Colors.white,
         child: DisabledGlowWidget(
           child: Form(
             key: _forgotPasswordController.formKey,

@@ -5,6 +5,7 @@ import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_c
 import 'package:todo2/presentation/pages/menu_pages/profile/profile_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/navigation/navigation_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/tasks_page.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/supabase/configure.dart';
 import 'package:todo2/services/system_service/system_chrome.dart';
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
           theme: _themeDataController.themeData,
           // initialRoute: '/',
           //   routes: routes,
-          home: QuickPage(),
+          home: TasksPage(),
         ),
       ),
     );

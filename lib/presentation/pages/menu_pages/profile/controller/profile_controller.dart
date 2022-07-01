@@ -14,11 +14,13 @@ class ProfileController extends ChangeNotifier {
   final supabase = SupabaseSource().restApiClient.auth.currentUser;
   final userProfileRepository = UserProfileRepositoryImpl();
   late String userName = '', image = '';
+  late AnimationController iconAnimationController;
 
   Future<void> signOut(BuildContext context) async {
     try {
+      final pushBack = NavigationService.navigateTo(context, Pages.welcome);
       await _authRepository.signOut(context: context);
-      NavigationService.navigateTo(context, Pages.welcome);
+      pushBack;
     } catch (e) {
       ErrorService.printError('Error in signOut() controller: $e');
     }
@@ -44,5 +46,11 @@ class ProfileController extends ChangeNotifier {
       ErrorService.printError("Error in ProfileController  getUserData() :$e ");
       rethrow;
     }
+  }
+  void rotateSettingsIcon({required TickerProvider ticker}){
+      iconAnimationController = AnimationController(
+      duration: const Duration(milliseconds: 5000),
+      vsync: ticker,
+    )..repeat();
   }
 }

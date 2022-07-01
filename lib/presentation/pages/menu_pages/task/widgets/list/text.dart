@@ -30,7 +30,9 @@ class ListDayWidget extends StatelessWidget {
         '$isToday, ${DateFormat('MMM').format(date)} ${date.day + index}/${date.year}',
         style: const TextStyle(
           fontSize: 14,
-          fontWeight: FontWeight.w300,
+          fontWeight: FontWeight.w400,
+          fontStyle: FontStyle.italic,
+          color: Colors.black54,
         ),
       ),
     );

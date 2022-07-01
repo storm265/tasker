@@ -31,8 +31,7 @@ class _AddQuickNoteState extends State<AddQuickNote> {
   @override
   Widget build(BuildContext context) {
     return AppbarWrapperWidget(
-      statusBarColor: Palette.red,
-      titleColor: Colors.white,
+        isRedAppBar: true,
       title: 'Add Note',
       showLeadingButton: true,
       shouldUsePopMethod: true,

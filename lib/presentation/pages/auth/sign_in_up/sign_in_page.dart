@@ -39,7 +39,8 @@ class _SignInPageState extends State<SignInPage> {
       child: AppbarWrapperWidget(
         shouldUsePopMethod: true,
         showLeadingButton: true,
-        statusBarColor: Colors.white,
+          isRedAppBar: false,
+        // statusBarColor: Colors.white,
         child: DisabledGlowWidget(
           child: SingleChildScrollView(
             child: SizedBox(

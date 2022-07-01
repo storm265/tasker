@@ -60,21 +60,22 @@ class QuickPage extends StatelessWidget {
     return WillPopWrapper(
       child: AppbarWrapperWidget(
         title: 'Quick notes',
-        statusBarColor: Colors.white,
-        titleColor: Colors.black,
-        brightness: Brightness.dark,
+        isRedAppBar: false,
         child: FutureBuilder<List<CheckListLinkedModel>>(
           initialData: const [],
           future: fetchNotes(),
-          builder: ((_, AsyncSnapshot<List<CheckListLinkedModel>> snapshots) {
-            return DisabledGlowWidget(
-              child: ListView.builder(
-                itemCount: snapshots.data!.length,
-                itemBuilder: (context, index) =>
-                    NoteCard(model: snapshots.data!, index: index),
-              ),
-            );
-          }),
+          builder: ((_, AsyncSnapshot<List<CheckListLinkedModel>> snapshots) =>
+              snapshots.hasData
+                  ? DisabledGlowWidget(
+                      child: ListView.builder(
+                        itemCount: snapshots.data!.length,
+                        itemBuilder: (context, index) => NoteCard(
+                          model: snapshots.data!,
+                          index: index,
+                        ),
+                      ),
+                    )
+                  : const CircularProgressIndicator.adaptive()),
         ),
       ),
     );

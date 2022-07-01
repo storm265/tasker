@@ -15,13 +15,12 @@ class UndoneItemWidget extends StatelessWidget {
       leading: Padding(
         padding: const EdgeInsets.all(8.0),
         child: CustomPaint(
-            size: const Size(20, 20),
-            painter: CirclePainter(circleColor:colors[0])),
+          size: const Size(20, 20),
+          painter: CirclePainter(circleColor: colors[0]),
+        ),
       ),
-      subtitle: Text(title),
-      title: Text(
-        subtitle,
-      ),
+      subtitle: Text(subtitle),
+      title: Text(title),
     );
   }
 }

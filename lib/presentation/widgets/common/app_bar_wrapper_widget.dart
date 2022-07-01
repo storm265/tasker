@@ -4,16 +4,29 @@ import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/inher
 import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
+const _whiteBar = SystemUiOverlayStyle(
+  statusBarColor: Colors.white,
+  // For Android.
+  statusBarIconBrightness: Brightness.dark,
+  // For iOS.
+  statusBarBrightness: Brightness.dark,
+);
+
+const _redBar = SystemUiOverlayStyle(
+  statusBarColor: Palette.red,
+  // For Android.
+  statusBarIconBrightness: Brightness.light,
+  // For iOS.
+  statusBarBrightness: Brightness.light,
+);
+
 class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
   final Widget child;
   final String? title;
-  final Brightness brightness;
-  final Color statusBarColor;
-  final Color appBarColor;
-  final Color titleColor;
   final bool shouldUsePopMethod;
   final bool showLeadingButton;
   final bool showAppBar;
+  final bool isRedAppBar;
 
   const AppbarWrapperWidget({
     Key? key,
@@ -21,11 +34,8 @@ class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
     this.title,
     this.shouldUsePopMethod = false,
     this.showLeadingButton = false,
-    this.brightness = Brightness.light,
     this.showAppBar = true,
-    this.titleColor = Colors.white,
-    this.appBarColor = Palette.red,
-    this.statusBarColor = Palette.red,
+    this.isRedAppBar = true,
   }) : super(key: key);
 
   @override
@@ -39,15 +49,9 @@ class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
     return Scaffold(
       appBar: showAppBar
           ? AppBar(
-              systemOverlayStyle: SystemUiOverlayStyle(
-                statusBarColor: statusBarColor,
-                // For Android.
-                statusBarIconBrightness: brightness,
-                // For iOS.
-                statusBarBrightness: brightness,
-              ),
+              systemOverlayStyle: isRedAppBar ? _redBar : _whiteBar,
               elevation: 0,
-              backgroundColor: statusBarColor,
+              backgroundColor: isRedAppBar ? Palette.red : Colors.white,
               leading: showLeadingButton
                   ? Padding(
                       padding: const EdgeInsets.only(left: 10),
@@ -59,7 +63,7 @@ class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
                         child: Icon(
                           Icons.arrow_back,
                           size: 30,
-                          color: titleColor,
+                          color: isRedAppBar ? Colors.white : Colors.black,
                         ),
                       ),
                     )
@@ -69,7 +73,7 @@ class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
                 title ?? '',
                 style: TextStyle(
                   fontStyle: FontStyle.italic,
-                  color: titleColor,
+                  color: isRedAppBar ? Colors.white : Colors.black,
                   fontSize: 20,
                   fontWeight: FontWeight.w300,
                 ),
