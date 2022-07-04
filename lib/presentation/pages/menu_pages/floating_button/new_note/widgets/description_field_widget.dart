@@ -111,7 +111,7 @@ class DescriptionFieldWidget extends StatelessWidget {
             valueListenable: addTaskController.files,
             builder: (context, imgList, value) => FutureBuilder<List<String>>(
               future: addTaskController.fetchCommentInfo(),
-              initialData: const [],
+              initialData: const [''],
               builder: ((context, AsyncSnapshot<List<String>> snapshot) {
                 if (snapshot.hasData) {
                   return ListView.builder(

@@ -3,19 +3,20 @@ import 'package:todo2/database/database_scheme/task_scheme.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/supabase/constants.dart';
 
-abstract class TaskDataSource{
+abstract class TaskDataSource {
   Future fetchTask();
 }
-class TaskDataSourceImpl implements TaskDataSource{
+
+class TaskDataSourceImpl implements TaskDataSource {
   final String _table = 'tasks';
-    final _supabase = SupabaseSource().restApiClient;
+  final _supabase = SupabaseSource().restApiClient;
   @override
-  Future<PostgrestResponse<dynamic>> fetchTask() async{
-       try {
+  Future<PostgrestResponse<dynamic>> fetchTask() async {
+    try {
       final response = await _supabase
           .from(_table)
           .select('*')
-          .eq(TaskScheme.uuid, _supabase.auth.currentUser!.id)
+          .eq(TaskScheme.ownerId, _supabase.auth.currentUser!.id)
           .execute();
       return response;
     } catch (e) {
@@ -24,5 +25,4 @@ class TaskDataSourceImpl implements TaskDataSource{
       rethrow;
     }
   }
-
 }

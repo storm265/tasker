@@ -25,7 +25,7 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
       final response = await _supabase.from(_table).insert({
         CheckListsScheme.title: title,
         CheckListsScheme.color: color,
-        CheckListsScheme.uuid: _supabase.auth.currentUser!.id,
+        CheckListsScheme.ownerId: _supabase.auth.currentUser!.id,
         CheckListsScheme.createdAt: DateTime.now().toString(),
       }).execute();
       return response;
@@ -41,7 +41,7 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
       final response = await _supabase
           .from(_table)
           .select('*')
-          .eq(CheckListsScheme.uuid, _supabase.auth.currentUser!.id)
+          .eq(CheckListsScheme.ownerId, _supabase.auth.currentUser!.id)
           .execute();
       return response;
     } catch (e) {
@@ -49,6 +49,4 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
       rethrow;
     }
   }
-
- 
 }

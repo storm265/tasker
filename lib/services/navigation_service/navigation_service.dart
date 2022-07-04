@@ -40,7 +40,7 @@ Map<String, Widget Function(BuildContext)> routes = {
   '/passwordChanged': (_) => const PasswordChangedPage(),
   '/home': (_) => const NavigationPage(),
   '/taskList': (_) => const TasksPage(),
-  '/addTask': (_) => const NewTaskPage(),
+  '/addTask': (_) => const AddTaskPage(),
   '/addNote': (_) => const AddQuickNote(),
   '/addCheckList': (_) => const AddCheckListPage()
 };

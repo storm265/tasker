@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/database/repository/projects_repository.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/menu/controller/add_project_dialog_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/color_pallete_widget.dart';
-import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 
-Future<void> showMaterialDialog(BuildContext context) async {
-  final formKey = GlobalKey<FormState>();
-  final colorPalleteController = ColorPalleteController();
-  bool isClickedButton = true;
-  final titleController = TextEditingController();
+Future<void> showAddProjectDialog(BuildContext context) async {
+  final addProjectController = AddProjectDialogController();
   await showDialog(
     context: context,
     builder: (_) => AlertDialog(
@@ -28,7 +23,7 @@ Future<void> showMaterialDialog(BuildContext context) async {
                   width: 300,
                   height: 50,
                   child: Form(
-                    key: formKey,
+                    key: addProjectController.formKey,
                     child: TextFormField(
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -39,7 +34,7 @@ Future<void> showMaterialDialog(BuildContext context) async {
                         }
                         return null;
                       },
-                      controller: titleController,
+                      controller: addProjectController.titleController,
                     ),
                   ),
                 ),
@@ -52,37 +47,27 @@ Future<void> showMaterialDialog(BuildContext context) async {
                   ),
                 ),
                 ColorPalleteWidget(
-                  colorController: colorPalleteController
-                )
+                    colorController:
+                        addProjectController.colorPalleteController)
               ],
             ),
           ),
         ),
       ),
       actions: <Widget>[
-        StatefulBuilder(
-          builder: ((context, setState) => TextButton(
-                onPressed: isClickedButton
-                    ? () async {
-                        if (formKey.currentState!.validate()) {
-                          setState(() => isClickedButton = false);
-                          (titleController.text.length >= 2)
-                              ? await ProjectRepositoryImpl()
-                                  .putData(
-                                      color: colors[colorPalleteController
-                                              .selectedIndex.value]
-                                          .value
-                                          .toString(),
-                                      title: titleController.text)
-                                  .then((_) => Navigator.of(context).pop())
-                              : null;
-                          setState(() => isClickedButton = true);
-                        }
-                      }
-                    : null,
-                child: const Text('Add Project'),
-              )),
-        )
+        ValueListenableBuilder<bool>(
+          valueListenable: addProjectController.isClickedButton,
+          builder: (__, isClicked, _) => TextButton(
+            onPressed: () async {
+              isClicked
+                  ? await addProjectController
+                      .validate()
+                      .then((_) => Navigator.of(context).pop())
+                  : null;
+            },
+            child: const Text('Add Project'),
+          ),
+        ),
       ],
     ),
   );

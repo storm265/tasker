@@ -20,17 +20,19 @@ abstract class AuthDataSource {
 
 class AuthDataSourceImpl implements AuthDataSource {
   // TODO  add dependency injection
-  final _supabase = SupabaseSource();
-  final _configuration = SupabaseConfiguration();
+  SupabaseSource supabase;
+  SupabaseConfiguration configuration;
+  
+  AuthDataSourceImpl(this.supabase,this.configuration);
 
   @override
   Future<GotrueJsonResponse> resetPasswordForMail({
     required String email,
   }) {
     try {
-      final responce = _supabase.restApiClient.auth.api.resetPasswordForEmail(
+      final responce = supabase.restApiClient.auth.api.resetPasswordForEmail(
         email,
-        options: AuthOptions(redirectTo: _configuration.redirectTo),
+        options: AuthOptions(redirectTo: configuration.redirectTo),
       );
 
       return responce;
@@ -46,7 +48,7 @@ class AuthDataSourceImpl implements AuthDataSource {
     required String password,
   }) {
     try {
-      final responce = _supabase.restApiClient.auth.signIn(
+      final responce = supabase.restApiClient.auth.signIn(
         email: email,
         password: password,
       );
@@ -60,7 +62,7 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<GotrueResponse> signOut() async {
     try {
-      final responce = _supabase.restApiClient.auth.signOut();
+      final responce = supabase.restApiClient.auth.signOut();
       return responce;
     } catch (e) {
       ErrorService.printError('Error in signOut() dataSource: $e');
@@ -74,7 +76,7 @@ class AuthDataSourceImpl implements AuthDataSource {
     required String password,
   }) {
     try {
-      final response = _supabase.restApiClient.auth.signUp(
+      final response = supabase.restApiClient.auth.signUp(
         email,
         password,
       );
@@ -88,8 +90,8 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<GotrueUserResponse> updatePassword({required String password}) async {
     try {
-      final response = _supabase.restApiClient.auth.api.updateUser(
-        _supabase.restApiClient.auth.currentSession!.accessToken,
+      final response = supabase.restApiClient.auth.api.updateUser(
+        supabase.restApiClient.auth.currentSession!.accessToken,
         UserAttributes(password: password),
       );
       return response;

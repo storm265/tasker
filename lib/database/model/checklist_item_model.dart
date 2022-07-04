@@ -17,7 +17,7 @@ class CheckListItemModel {
       CheckListItemModel(
         content: json[CheckListItemsScheme.content],
         isCompleted: json[CheckListItemsScheme.isCompleted],
-        uuid: json[CheckListItemsScheme.uuid] ?? 'null',
+        uuid: json[CheckListItemsScheme.ownerId] ?? 'null',
         checklistId: json[CheckListItemsScheme.checklistId],
         createdAt: json[CheckListItemsScheme.createdAt]?? 'null',
       );

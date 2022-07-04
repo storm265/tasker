@@ -13,7 +13,7 @@ class AddProjectButton extends StatelessWidget {
       alignment: Alignment.topLeft,
       child: InkWell(
         onTap: () async =>
-            await showMaterialDialog(context).then((_) => notifyParent()),
+            await showAddProjectDialog(context).then((_) => notifyParent()),
         child: Padding(
           padding: const EdgeInsets.only(top: 15),
           child: Container(

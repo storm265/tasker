@@ -9,8 +9,6 @@ import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/user_profile_repository.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 
-
-
 class AddTaskController extends ChangeNotifier {
   final files = ValueNotifier<List<PlatformFile>>([]);
   final pickedTime = ValueNotifier<DateTime?>(null);
@@ -25,23 +23,20 @@ class AddTaskController extends ChangeNotifier {
   late String userName = '', image = '';
   final userProfileRepository = UserProfileRepositoryImpl();
 
-// Future<List<ProjectModel>> fetchProjects()async{
-//   ProjectRepositoryImpl
-
-// }
-
-  void showProjectWidget(bool value) {
+  void showProjectWidget(bool newValue) {
     if (isShowProjectWidget.value == false) {
-      isShowPickUserWidget.value = value;
-      isShowPickUserWidget.notifyListeners();
+      isShowPickUserWidget.value = newValue;
+      notifyListeners();
     }
   }
 
-  void showPickUserWidget(bool value) {
-    if (isShowPickUserWidget.value == false) {
-      isShowPickUserWidget.value = value;
-      isShowPickUserWidget.notifyListeners();
-    }
+  void showPickUserWidget(bool newValue) {
+    // if (isShowPickUserWidget.value == false) {
+
+    //   notifyListeners();
+    // }
+    isShowPickUserWidget.value = newValue;
+    isShowPickUserWidget.notifyListeners();
   }
 
   void pickTime(DateTime pickedTime) {

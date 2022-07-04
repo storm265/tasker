@@ -85,12 +85,13 @@ class _AddUserWidgetState extends State<AddUserWidget> {
                         ? RawMaterialButton(
                             onPressed: () {
                               setState(() {
-                                addTaskController.usersList.value
-                                    .add(UserProfileModel(
-                                  username: 'User $index',
-                                  avatarUrl: 'avatarUrl',
-                                  createdAt: 'createdAt',
-                                ));
+                                // TODO refactor push to controller
+                                // addTaskController.usersList.value
+                                //     .add(UserProfileModel(
+                                //   username: 'User $index',
+                                //   avatarUrl: 'avatarUrl',
+                                //   createdAt: 'createdAt',
+                                // ));
                                 // newTaskConroller.chipTitles.value.add(
                                 //     'element: ${newTaskConroller.chipTitles.value.length + 1}');
                                 _scrollController.jumpTo(
@@ -154,7 +155,7 @@ Future<void> showUsersDialog(BuildContext context) async {
 
 class AddUserController extends ChangeNotifier {
   final users = ValueNotifier([
-    UserProfileModel(username: 'user1', avatarUrl: 'url', createdAt: 'now')
+    //UserProfileModel(username: 'user1', avatarUrl: 'url', createdAt: 'now')
   ]);
 }
 

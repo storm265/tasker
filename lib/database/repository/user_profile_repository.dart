@@ -1,12 +1,15 @@
+import 'dart:developer';
 
-
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/data_source/user_profile_data_source.dart';
+import 'package:todo2/database/model/users_profile_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/supabase/constants.dart';
 
 abstract class UserProfileRepository {
   Future<String> fetchUserName();
   Future<String> fetchAvatar();
+  Future fetchUserWhere({required String userName});
   Future<void> insertProfile({
     required String avatarUrl,
     required String username,
@@ -61,4 +64,19 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
       rethrow;
     }
   }
+
+  @override
+  Future<List<UserProfileModel>> fetchUserWhere({required String userName}) async {
+    try {
+      final response = await _userProfileDataSource.fetchUserWhere(userName: userName);
+      return (response.data as List<dynamic>)
+          .map((json) => UserProfileModel.fromJson(json))
+          .toList();
+          
+    } catch (e) {
+      ErrorService.printError('Error in fetchUser() repository:$e');
+      rethrow;
+    }
+  }
+
 }

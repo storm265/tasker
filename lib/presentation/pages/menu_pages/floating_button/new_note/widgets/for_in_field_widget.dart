@@ -7,10 +7,11 @@ final newTaskController = AddTaskController();
 
 class EnterUserWidget extends StatelessWidget {
   TextEditingController titleController;
-
+final Function(String)? onChanged;
   final String text;
   EnterUserWidget({
     Key? key,
+    required this.onChanged,
     required this.titleController,
     required this.text,
   }) : super(key: key);
@@ -19,11 +20,11 @@ class EnterUserWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Padding(
-          padding: EdgeInsets.only(right: 5),
+         Padding(
+          padding:const EdgeInsets.only(right: 5),
           child: Text(
-            'For',
-            style: TextStyle(
+            text,
+            style:const TextStyle(
               fontWeight: FontWeight.w300,
               fontSize: 18,
               fontStyle: FontStyle.italic,
@@ -40,6 +41,8 @@ class EnterUserWidget extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(left: 15),
             child: TextField(
+
+              onChanged: onChanged,
               onTap: () {
                 titleController.selection = TextSelection(
                   baseOffset: 0,

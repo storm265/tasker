@@ -7,9 +7,8 @@ class TaskModel {
   int assignedTo;
   bool isCompleted;
   int projectId;
-  int ownerId;
+  String ownerId;
   String createdAt;
-  String uuid;
 
   TaskModel({
     required this.title,
@@ -20,8 +19,6 @@ class TaskModel {
     required this.projectId,
     required this.ownerId,
     required this.createdAt,
-    required this.uuid,
-    
   });
   factory TaskModel.fromJson(Map<String, dynamic> json) => TaskModel(
         title: json[TaskScheme.title],
@@ -32,6 +29,5 @@ class TaskModel {
         projectId: json[TaskScheme.projectId],
         ownerId: json[TaskScheme.ownerId],
         createdAt: json[TaskScheme.createdAt],
-         uuid: json[TaskScheme.uuid],
       );
 }

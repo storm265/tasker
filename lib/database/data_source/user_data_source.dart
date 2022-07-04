@@ -5,7 +5,9 @@ import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/supabase/constants.dart';
 
 abstract class UserDataSource {
-  Future insert({
+  Future fetchUser();
+  // Future fetchUserId();
+  Future insertUser({
     required String email,
     required String password,
   });
@@ -15,7 +17,7 @@ class UserDataSourceImpl implements UserDataSource {
   final _table = 'user';
   final _supabase = SupabaseSource().restApiClient;
   @override
-  Future<supabase.PostgrestResponse<dynamic>> insert({
+  Future<supabase.PostgrestResponse<dynamic>> insertUser({
     required String email,
     required String password,
   }) async {
@@ -23,7 +25,7 @@ class UserDataSourceImpl implements UserDataSource {
       final response = await _supabase.from(_table).insert({
         UserDataScheme.email: email,
         UserDataScheme.password: password,
-        UserDataScheme.uuid: _supabase.auth.currentUser?.id,
+        UserDataScheme.ownerId: _supabase.auth.currentUser?.id,
         UserDataScheme.createdAt: DateTime.now().toString(),
       }).execute();
       return response;
@@ -32,4 +34,34 @@ class UserDataSourceImpl implements UserDataSource {
       rethrow;
     }
   }
+
+  @override
+  Future<supabase.PostgrestResponse<dynamic>> fetchUser() async {
+    try {
+      final response = await _supabase
+          .from(_table)
+          .select('*')
+          .eq(UserDataScheme.id, _supabase.auth.currentUser!.id)
+          .execute();
+      return response;
+    } catch (e) {
+      ErrorService.printError('Error in fetchUser() dataSource: $e');
+      rethrow;
+    }
+  }
+
+  // @override
+  // Future<int> fetchUserId() async {
+  //   try {
+  //     final response = await _supabase
+  //         .from(_table)
+  //         .select(UserDataScheme.id)
+  //         .eq(UserDataScheme.id, _supabase.auth.currentUser!.id)
+  //         .execute();
+  //     return response.data[0]['id'];
+  //   } catch (e) {
+  //     ErrorService.printError('Error in fetchAvatar() fetchUserId: $e');
+  //     rethrow;
+  //   }
+  // }
 }

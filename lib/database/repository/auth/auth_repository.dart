@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/auth_data_source.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
+import 'package:todo2/services/supabase/constants.dart';
 
 abstract class AuthRepository {
   Future signUp({
@@ -27,7 +28,9 @@ abstract class AuthRepository {
 }
 
 class AuthRepositoryImpl implements AuthRepository {
-  final _authDataSource = AuthDataSourceImpl();
+  final _authDataSource =
+      AuthDataSourceImpl(SupabaseSource(), SupabaseConfiguration());
+      
   @override
   Future<void> signIn({
     required BuildContext context,

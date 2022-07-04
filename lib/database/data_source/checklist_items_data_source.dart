@@ -27,7 +27,7 @@ class ChecklistItemsDataSourceImpl implements ChecklistItemsDataSource {
         CheckListItemsScheme.content: content,
         CheckListItemsScheme.checklistId: checklistId,
         CheckListItemsScheme.isCompleted: isCompleted,
-        CheckListItemsScheme.uuid: _supabase.auth.currentUser!.id,
+        CheckListItemsScheme.ownerId: _supabase.auth.currentUser!.id,
         CheckListItemsScheme.createdAt: DateTime.now().toString(),
       }).execute();
       return response;
@@ -44,7 +44,7 @@ class ChecklistItemsDataSourceImpl implements ChecklistItemsDataSource {
           .from(_table)
           .select(
               '${CheckListItemsScheme.content},${CheckListItemsScheme.isCompleted},${CheckListItemsScheme.checklistId}')
-          .eq(CheckListItemsScheme.uuid, _supabase.auth.currentUser!.id)
+          .eq(CheckListItemsScheme.ownerId, _supabase.auth.currentUser!.id)
           .execute();
       return response;
     } catch (e) {

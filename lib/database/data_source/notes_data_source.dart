@@ -21,7 +21,7 @@ class NotesDataSourceImpl implements NotesDataSource {
       final response = await _supabase
           .from(_table)
           .select('${NotesScheme.description},${NotesScheme.color}')
-          .eq(NotesScheme.uuid, _supabase.auth.currentUser!.id)
+          .eq(NotesScheme.ownerId, _supabase.auth.currentUser!.id)
           .execute();
       return response;
     } catch (e) {
@@ -39,9 +39,9 @@ class NotesDataSourceImpl implements NotesDataSource {
       final response = await _supabase.from(_table).insert({
         NotesScheme.isCompleted: false,
         NotesScheme.color: color,
-        NotesScheme.description: description,     
-        NotesScheme.uuid: _supabase.auth.currentUser!.id,
-          NotesScheme.createdAt: DateTime.now().toString(),
+        NotesScheme.description: description,
+        NotesScheme.ownerId: _supabase.auth.currentUser!.id,
+        NotesScheme.createdAt: DateTime.now().toString(),
       }).execute();
       return response;
     } catch (e) {

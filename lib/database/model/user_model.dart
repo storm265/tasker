@@ -3,12 +3,12 @@ import 'dart:core';
 class UserModel {
   String email;
   String password;
-  String uuid;
+  String ownerId;
   String createdAt;
-  
+
   UserModel({
     required this.email,
-    required this.uuid,
+    required this.ownerId,
     required this.password,
     required this.createdAt,
   });

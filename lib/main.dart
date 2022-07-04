@@ -26,7 +26,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
-final _newTaskConroller = AddTaskController();
+  final _newTaskConroller = AddTaskController();
   final _themeDataController = ThemeDataService();
   final _profileController = ProfileController();
   final _navigationController = NavigationController();
@@ -42,9 +42,9 @@ final _newTaskConroller = AddTaskController();
             debugShowCheckedModeBanner: false,
             title: 'Todo2',
             theme: _themeDataController.themeData,
-           initialRoute: '/',
-              routes: routes,
-          //  home: NewTaskPage(),
+            //  initialRoute: '/',
+            // routes: routes,
+            home: AddTaskPage(),
           ),
         ),
       ),
