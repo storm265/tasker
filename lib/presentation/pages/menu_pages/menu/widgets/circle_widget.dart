@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-class CircleWidget extends StatelessWidget {
+class DoubleCircleWidget extends StatelessWidget {
   final String color;
-  const CircleWidget({Key? key, required this.color}) : super(key: key);
+  const DoubleCircleWidget({Key? key, required this.color}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

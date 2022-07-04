@@ -2,15 +2,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/add_task_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/new_task.dart';
 
 final newTaskController = AddTaskController();
 
 class EnterUserWidget extends StatelessWidget {
   TextEditingController titleController;
-final Function(String)? onChanged;
+  final Function(String)? onChanged;
+  final bool isForFieldActive;
   final String text;
   EnterUserWidget({
     Key? key,
+    required this.isForFieldActive,
     required this.onChanged,
     required this.titleController,
     required this.text,
@@ -20,11 +23,11 @@ final Function(String)? onChanged;
   Widget build(BuildContext context) {
     return Row(
       children: [
-         Padding(
-          padding:const EdgeInsets.only(right: 5),
+        Padding(
+          padding: const EdgeInsets.only(right: 5),
           child: Text(
             text,
-            style:const TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.w300,
               fontSize: 18,
               fontStyle: FontStyle.italic,
@@ -41,7 +44,6 @@ final Function(String)? onChanged;
           child: Padding(
             padding: const EdgeInsets.only(left: 15),
             child: TextField(
-
               onChanged: onChanged,
               onTap: () {
                 titleController.selection = TextSelection(
@@ -49,11 +51,13 @@ final Function(String)? onChanged;
                   extentOffset: titleController.value.text.length,
                 );
 
-                newTaskController.showPickUserWidget(true);
+                isForFieldActive
+                    ? newTaskController.changePanelStatus(newStatus: InputFieldStatus.showForPanel)
+                    :  newTaskController.changePanelStatus(newStatus: InputFieldStatus.showInPanel);
               },
               controller: titleController,
               onEditingComplete: () =>
-                  newTaskController.showPickUserWidget(false),
+                 newTaskController.changePanelStatus(newStatus: InputFieldStatus.hide),
               decoration: const InputDecoration(
                 border: InputBorder.none,
                 labelStyle: TextStyle(

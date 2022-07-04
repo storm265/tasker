@@ -8,7 +8,8 @@ class DescriptionFieldWidget extends StatelessWidget {
   const DescriptionFieldWidget({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) { final addTaskController =
+  Widget build(BuildContext context) {
+    final addTaskController =
         InheritedNewTaskController.of(context).addTaskController;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -98,7 +99,8 @@ class DescriptionFieldWidget extends StatelessWidget {
                             Icons.attachment_outlined,
                             color: Colors.grey,
                           ),
-                          onPressed: () => addTaskController.pickFile(),
+                          onPressed: () =>
+                              addTaskController.pickFile(context: context),
                         ),
                       ),
                     ),

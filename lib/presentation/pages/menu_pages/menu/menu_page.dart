@@ -25,7 +25,7 @@ class _MenuPageState extends State<MenuPage> {
     return WillPopWrapper(
       child: AppbarWrapperWidget(
         title: 'Projects',
-         isRedAppBar: false,
+        isRedAppBar: false,
         child: DisabledGlowWidget(
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
@@ -36,7 +36,7 @@ class _MenuPageState extends State<MenuPage> {
                   FutureBuilder<List<ProjectModel>>(
                     future: _projectsRepository.fetchProject(),
                     builder: (_, AsyncSnapshot<List<ProjectModel>> snapshot) {
-                    
+                      // TODo refactor
                       if (snapshot.data == null) {
                         return const CircularProgressIndicator();
                       }
@@ -54,7 +54,7 @@ class _MenuPageState extends State<MenuPage> {
                               mainAxisSpacing: 5.0,
                             ),
                             itemBuilder: (BuildContext context, index) {
-                                final data  = snapshot.data![index];
+                              final data = snapshot.data![index];
                               return Container(
                                 width: 140,
                                 height: 180,
@@ -64,10 +64,8 @@ class _MenuPageState extends State<MenuPage> {
                                 ),
                                 child: Stack(
                                   children: [
-                                    CircleWidget(
-                                        color: data.color),
-                                    CategoryWidget(
-                                        title: data.title),
+                                    DoubleCircleWidget(color: data.color),
+                                    CategoryWidget(title: data.title),
                                     const CategoryLengthWidget()
                                   ],
                                 ),
