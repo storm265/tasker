@@ -21,16 +21,14 @@ class AddTaskController extends ChangeNotifier {
 
   final isShowPickUserWidget = ValueNotifier(false);
   final isShowProjectWidget = ValueNotifier(false);
-final status = ValueNotifier<InputFieldStatus>(InputFieldStatus.hide);
+  final panelStatus = ValueNotifier<InputFieldStatus>(InputFieldStatus.hide);
   late String userName = '', image = '';
   final userProfileRepository = UserProfileRepositoryImpl();
 
-
-void changePanelStatus({required InputFieldStatus newStatus}){
-  status.value = newStatus;
-  status.notifyListeners();
-}
-
+  void changePanelStatus({required InputFieldStatus newStatus}) {
+    panelStatus.value = newStatus;
+    panelStatus.notifyListeners();
+  }
 
   void pickTime(DateTime newTime) {
     pickedTime.value = newTime;
@@ -51,7 +49,7 @@ void changePanelStatus({required InputFieldStatus newStatus}){
       if (result!.files.first.size >= maxSize) {
         result.files.clear();
         MessageService.displaySnackbar(
-            context: context, message: 'You cant put huge file');      
+            context: context, message: 'You cant put huge file');
       } else {
         PlatformFile file = result.files.first;
         files.value.add(file);

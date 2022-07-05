@@ -23,8 +23,8 @@ import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
 import 'package:todo2/services/supabase/constants.dart';
 
 enum InputFieldStatus {
-  showForPanel,
-  showInPanel,
+  showUserPanel,
+  showProjectPanel,
   hide,
 }
 
@@ -33,6 +33,7 @@ final _inTextController = TextEditingController(text: 'Project');
 
 class SelectUserWidget extends StatelessWidget {
   UserProfileModel? selectedModel;
+  ProjectModel? selectedProject;
   Future<List<UserProfileModel>> fetchUsers({required String userName}) async {
     try {
       final response = await SupabaseSource()
@@ -64,6 +65,7 @@ class SelectUserWidget extends StatelessWidget {
             '%$title%',
           )
           .execute();
+      log(response.data.toString());
       return (response.data as List<dynamic>)
           .map((json) => ProjectModel.fromJson(json))
           .toList();
@@ -85,82 +87,78 @@ class SelectUserWidget extends StatelessWidget {
         height: 500,
         width: 365,
         child: ValueListenableBuilder<InputFieldStatus>(
-          valueListenable: newTaskController.status,
+          valueListenable: newTaskController.panelStatus,
           builder: (context, status, _) {
             switch (status) {
               case InputFieldStatus.hide:
                 return const SizedBox();
-              case InputFieldStatus.showForPanel:
+              case InputFieldStatus.showUserPanel:
                 return FutureBuilder<List<UserProfileModel>>(
                   initialData: const [],
                   future: fetchUsers(userName: _forTextController.text),
                   builder: (context,
                       AsyncSnapshot<List<UserProfileModel>> snapshot) {
-                    if (snapshot.data!.isEmpty) {
-                      return const Center(
-                          child: CircularProgressIndicator.adaptive());
-                    } else {
-                      return ListView.builder(
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index) {
-                          final avatar = SupabaseSource()
-                                  .restApiClient
-                                  .storage
-                                  .from('avatar')
-                                  .getPublicUrl(snapshot.data![0].avatarUrl)
-                                  .data ??
-                              '';
-                          return InkWell(
-                            onTap: () {
-                              selectedModel = snapshot.data![index];
-                              _forTextController.text = selectedModel!.username;
-                              FocusScope.of(context).unfocus();
-                              newTaskController.changePanelStatus(
-                                  newStatus: InputFieldStatus.hide);
+                    return (snapshot.hasError || !snapshot.hasData)
+                        ? const Center(
+                            child: CircularProgressIndicator.adaptive())
+                        : ListView.builder(
+                            itemCount: snapshot.data!.length,
+                            itemBuilder: (context, index) {
+                              final avatar = SupabaseSource()
+                                      .restApiClient
+                                      .storage
+                                      .from('avatar')
+                                      .getPublicUrl(snapshot.data![0].avatarUrl)
+                                      .data ??
+                                  '';
+                              return InkWell(
+                                onTap: () {
+                                  selectedModel = snapshot.data![index];
+                                  _forTextController.text =
+                                      selectedModel!.username;
+                                  FocusScope.of(context).unfocus();
+                                  newTaskController.changePanelStatus(
+                                      newStatus: InputFieldStatus.hide);
+                                },
+                                child: ListTile(
+                                  leading: CircleAvatar(
+                                      backgroundImage: NetworkImage(avatar)),
+                                  title: Text(snapshot.data![index].username),
+                                  subtitle: Text('Stephenchow@company.com'),
+                                ),
+                              );
                             },
-                            child: ListTile(
-                              leading: CircleAvatar(
-                                  backgroundImage: NetworkImage(avatar)),
-                              title: Text(snapshot.data![index].username),
-                              subtitle: Text('Stephenchow@company.com'),
-                            ),
                           );
-                        },
-                      );
-                    }
                   },
                 );
-              case InputFieldStatus.showInPanel:
+              case InputFieldStatus.showProjectPanel:
                 return FutureBuilder<List<ProjectModel>>(
                   initialData: const [],
-                  future: fetchProjects(title: _forTextController.text),
+                  future: fetchProjects(title: _inTextController.text),
                   builder:
                       (context, AsyncSnapshot<List<ProjectModel>> snapshot) {
-                    log(snapshot.data.toString());
-                    if (snapshot.data!.isEmpty) {
-                      return const Center(
-                          child: CircularProgressIndicator.adaptive());
-                    } else {
-                      return ListView.builder(
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              // selectedModel = snapshot.data![index];
-                              // _inTextController.text = selectedModel!.username;
-                              FocusScope.of(context).unfocus();
-                              newTaskController.changePanelStatus(
-                                  newStatus: InputFieldStatus.hide);
-                            },
-                            child: ListTile(
-                              leading: DoubleCircleWidget(
-                                  color: snapshot.data![index].title),
-                              title: Text(snapshot.data![index].title),
-                            ),
-                          );
-                        },
-                      );
-                    }
+                    return ListView.builder(
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        final data = snapshot.data![index];
+                        return InkWell(
+                          onTap: () {
+                            selectedProject = data;
+                            _inTextController.text = selectedProject!.title;
+   
+                            FocusScope.of(context).unfocus();
+                            newTaskController.changePanelStatus(
+                                newStatus: InputFieldStatus.hide);
+                          },
+                          child: ListTile(
+                            leading: DoubleCircleWidget(
+                                color: data.color, isUsePositioned: false,),
+                            title: Text(data.title),
+                            subtitle: Text(data.createdAt),
+                          ),
+                        );
+                      },
+                    );
                   },
                 );
             }
@@ -213,17 +211,17 @@ class _AddTaskPageState extends State<AddTaskPage> {
                         children: [
                           EnterUserWidget(
                             isForFieldActive: true,
-                            onChanged: (value) {
-                              setState(() {});
-                            },
+                            onChanged: (value) async => await Future.delayed(
+                                const Duration(milliseconds: 500),
+                                () => setState(() {})),
                             titleController: _forTextController,
                             text: 'For',
                           ),
                           EnterUserWidget(
                             isForFieldActive: false,
-                            onChanged: (value) {
-                              setState(() {});
-                            },
+                            onChanged: (value) async => await Future.delayed(
+                                const Duration(milliseconds: 500),
+                                () => setState(() {})),
                             titleController: _inTextController,
                             text: 'In',
                           )
@@ -231,7 +229,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       ),
                     ),
                     ValueListenableBuilder<InputFieldStatus>(
-                        valueListenable: newTaskController.status,
+                        valueListenable: newTaskController.panelStatus,
                         builder: (_, value, __) {
                           return (value != InputFieldStatus.hide)
                               ? SelectUserWidget()

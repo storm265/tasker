@@ -23,12 +23,12 @@ class ProjectUserDataImpl implements ProjectUserData {
     required String title,
   }) async {
     try {
-      int projectId = await getId();
+     // int projectId = await getId();
       final response = await _supabase.from(_table).insert({
         ProjectDataScheme.title: title,
         ProjectDataScheme.color: color,
         ProjectDataScheme.uuid: _supabase.auth.currentUser!.id ,
-        ProjectDataScheme.ownerId:projectId + 1,
+       // ProjectDataScheme.uuid:projectId + 1,
         ProjectDataScheme.createdAt: DateTime.now().toString(),
       }).execute();
 
@@ -46,7 +46,7 @@ class ProjectUserDataImpl implements ProjectUserData {
       final response = await _supabase
           .from(_table)
           .select('*')
-          .eq(ProjectDataScheme.ownerId, _supabase.auth.currentUser!.id)
+          .eq(ProjectDataScheme.uuid, _supabase.auth.currentUser!.id)
           .execute();
       return response;
     } catch (e) {

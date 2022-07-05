@@ -52,12 +52,14 @@ class EnterUserWidget extends StatelessWidget {
                 );
 
                 isForFieldActive
-                    ? newTaskController.changePanelStatus(newStatus: InputFieldStatus.showForPanel)
-                    :  newTaskController.changePanelStatus(newStatus: InputFieldStatus.showInPanel);
+                    ? newTaskController.changePanelStatus(
+                        newStatus: InputFieldStatus.showUserPanel)
+                    : newTaskController.changePanelStatus(
+                        newStatus: InputFieldStatus.showProjectPanel);
               },
               controller: titleController,
-              onEditingComplete: () =>
-                 newTaskController.changePanelStatus(newStatus: InputFieldStatus.hide),
+              onEditingComplete: () => newTaskController.changePanelStatus(
+                  newStatus: InputFieldStatus.hide),
               decoration: const InputDecoration(
                 border: InputBorder.none,
                 labelStyle: TextStyle(
