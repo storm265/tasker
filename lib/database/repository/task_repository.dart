@@ -12,7 +12,7 @@ abstract class TaskRepository<T> {
   // });
 }
 
-class ProjectRepositoryImpl implements TaskRepository {
+class TaskRepositoryImpl implements TaskRepository {
   final _taskDataSource = TaskDataSourceImpl();
   @override
   Future<List<TaskModel>> fetchTask() async {

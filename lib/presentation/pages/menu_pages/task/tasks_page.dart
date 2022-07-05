@@ -16,6 +16,7 @@ class TasksPage extends StatefulWidget {
 class _TasksPageState extends State<TasksPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  late final taskController = TaskRepositoryImpl();
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
@@ -56,7 +57,7 @@ class _TasksPageState extends State<TasksPage>
               children: [
                 DisabledGlowWidget(
                   child: FutureBuilder<List<TaskModel>>(
-                    future: ProjectRepositoryImpl().fetchTask(),
+                    future: taskController.fetchTask(),
                     initialData: const [],
                     builder:
                         (context, AsyncSnapshot<List<TaskModel>> snapshot) {

@@ -5,12 +5,13 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/con
 import 'package:todo2/presentation/pages/menu_pages/profile/widgets/panel_widgets/image_widget.dart';
 
 class DescriptionFieldWidget extends StatelessWidget {
-  const DescriptionFieldWidget({Key? key}) : super(key: key);
+  final TextEditingController descriptionController;
+  const DescriptionFieldWidget({Key? key, required this.descriptionController})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final addTaskController =
-        InheritedNewTaskController.of(context).addTaskController;
+   final newTaskController = InheritedNewTaskController.of(context).addTaskController;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Column(
@@ -55,6 +56,7 @@ class DescriptionFieldWidget extends StatelessWidget {
                       top: 20,
                     ),
                     child: TextField(
+                      controller: descriptionController,
                       onEditingComplete: () => FocusScope.of(context).unfocus(),
                       maxLength: 512,
                       buildCounter: (
@@ -100,7 +102,7 @@ class DescriptionFieldWidget extends StatelessWidget {
                             color: Colors.grey,
                           ),
                           onPressed: () =>
-                              addTaskController.pickFile(context: context),
+                              newTaskController.pickFile(context: context),
                         ),
                       ),
                     ),
@@ -110,9 +112,9 @@ class DescriptionFieldWidget extends StatelessWidget {
             ),
           ),
           ValueListenableBuilder<List<PlatformFile>>(
-            valueListenable: addTaskController.files,
+            valueListenable: newTaskController.files,
             builder: (context, imgList, value) => FutureBuilder<List<String>>(
-              future: addTaskController.fetchCommentInfo(),
+              future: newTaskController.fetchCommentInfo(),
               initialData: const [''],
               builder: ((context, AsyncSnapshot<List<String>> snapshot) {
                 if (snapshot.hasData) {
@@ -159,7 +161,7 @@ class DescriptionFieldWidget extends StatelessWidget {
                         ],
                       );
                     },
-                    itemCount: addTaskController.files.value.length,
+                    itemCount: newTaskController.files.value.length,
                     shrinkWrap: true,
                   );
                 } else {

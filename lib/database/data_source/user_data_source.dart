@@ -11,6 +11,7 @@ abstract class UserDataSource {
     required String email,
     required String password,
   });
+  Future fetchEmail();
 }
 
 class UserDataSourceImpl implements UserDataSource {
@@ -50,6 +51,21 @@ class UserDataSourceImpl implements UserDataSource {
     }
   }
 
+
+ @override
+  Future<supabase.PostgrestResponse<dynamic>> fetchEmail() async {
+    try {
+      final response = await _supabase
+          .from(_table)
+          .select('email')
+          .execute();
+      return response;
+    } catch (e) {
+      ErrorService.printError('Error in fetchEmail() dataSource: $e');
+      rethrow;
+    }
+  }
+  
   // @override
   // Future<int> fetchUserId() async {
   //   try {

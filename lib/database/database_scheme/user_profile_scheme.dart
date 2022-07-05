@@ -1,4 +1,5 @@
 class UserProfileScheme {
+  static const email = 'email';
   static const username = 'username';
   static const avatarUrl = 'avatar_url';
   static const uuid = 'uuid';

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/widgets/grey_container.dart';
 
 class TitleWidget extends StatelessWidget {
-  const TitleWidget({Key? key}) : super(key: key);
+  final TextEditingController titleController;
+  const TitleWidget({Key? key, required this.titleController}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -10,6 +11,7 @@ class TitleWidget extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(left: 25, top: 10),
         child: TextField(
+          controller: titleController,
           buildCounter: (context,
                   {required currentLength, required isFocused, maxLength}) =>
               maxLength == currentLength

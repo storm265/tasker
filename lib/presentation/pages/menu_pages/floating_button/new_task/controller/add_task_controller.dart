@@ -5,13 +5,27 @@ import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:todo2/database/model/projects_model.dart';
 import 'package:todo2/database/model/users_profile_model.dart';
+import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/user_profile_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/new_task.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
+enum InputFieldStatus {
+  showUserPanel,
+  showProjectPanel,
+  hide,
+}
 
 class AddTaskController extends ChangeNotifier {
+
+    final controllerProject =ProjectRepositoryImpl();
+  final controllerUserProfile =UserProfileRepositoryImpl();
+
+final forTextController = TextEditingController(text: 'Assignee');
+final inTextController = TextEditingController(text: 'Project');
+
+
   final files = ValueNotifier<List<PlatformFile>>([]);
   final pickedTime = ValueNotifier<DateTime?>(null);
   final projects = ValueNotifier<List<ProjectModel>>([]);

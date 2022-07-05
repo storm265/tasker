@@ -13,6 +13,7 @@ abstract class UserProfileDataSource {
     required String username,
   });
   fetchUserWhere({required String userName});
+  fetchUsers({required String userName});
 }
 
 class UserProfileDataSourceImpl implements UserProfileDataSource {
@@ -83,6 +84,26 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
     } catch (e, t) {
       ErrorService.printError(
           'Error in UserProfileDataSourceImpl fetchAvatar() dataSource: $e, trace: $t');
+      rethrow;
+    }
+  }
+ 
+ @override
+  Future<PostgrestResponse<dynamic>> fetchUsers({required String userName}) async {
+    try {
+      final response = await SupabaseSource()
+          .restApiClient
+          .from(_table)
+          .select('*')
+          .ilike(
+            UserProfileScheme.username,
+            '%$userName%',
+          )
+          .execute();
+   
+      return response;
+    } catch (e) {
+      ErrorService.printError('Error in dataSource fetchUsers():  $e');
       rethrow;
     }
   }
