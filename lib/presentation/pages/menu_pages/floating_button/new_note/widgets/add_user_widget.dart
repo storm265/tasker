@@ -1,8 +1,12 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:todo2/database/model/users_profile_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/add_task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/controller_inherited.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/confirm_button.dart';
+import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
+import 'package:todo2/services/supabase/constants.dart';
+import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 class AddUserWidget extends StatefulWidget {
   const AddUserWidget({Key? key}) : super(key: key);
@@ -13,26 +17,23 @@ class AddUserWidget extends StatefulWidget {
 
 class _AddUserWidgetState extends State<AddUserWidget> {
   late final AddTaskController _addTaskController;
-  late  final _scrollController = ScrollController();
+  late final _scrollController = ScrollController();
   @override
-  void initState() {
+  void didChangeDependencies() {
     _addTaskController =
         InheritedNewTaskController.of(context).addTaskController;
-    super.initState();
+    super.didChangeDependencies();
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
-    // TODO careful!
-    _addTaskController.dispose();
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return (_addTaskController.usersList.value.isEmpty)
+    return (_addTaskController.selectedUsers.value.isEmpty)
         ? Padding(
             padding: const EdgeInsets.only(left: 15, bottom: 20, top: 20),
             child: Row(
@@ -57,11 +58,8 @@ class _AddUserWidgetState extends State<AddUserWidget> {
                 ),
                 RawMaterialButton(
                   elevation: 0,
-                  onPressed: () {
-                    showUsersDialog(context);
-                    // setState(() => newTaskConroller.chipTitles.value.add(
-                    //     'element: ${newTaskConroller.chipTitles.value.length + 1}'));
-                  },
+                  onPressed: () => showDialog(
+                      context: context, builder: (_) => AddUserDialog()),
                   fillColor: Colors.grey.withOpacity(0.5),
                   shape: const CircleBorder(),
                   child: const Icon(
@@ -79,44 +77,49 @@ class _AddUserWidgetState extends State<AddUserWidget> {
               controller: _scrollController,
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,
-              itemCount: _addTaskController.usersList.value.length,
+              itemCount: _addTaskController.selectedUsers.value.length,
               itemBuilder: (context, index) {
-                return Row(
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 3),
-                      child: CircleAvatar(
-                        radius: 17,
-                        backgroundColor: Colors.red,
+                return ValueListenableBuilder<List<UserProfileModel>>(
+                  valueListenable: _addTaskController.selectedUsers,
+                  builder: (_, users, __) => Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 3),
+                        child: Text(users[index].username),
+                        // child: CircleAvatar(
+                        //   radius: 17,
+                        //   backgroundColor: Colors.red,
+                        // ),
                       ),
-                    ),
-                    (index == _addTaskController.usersList.value.length - 1)
-                        ? RawMaterialButton(
-                            onPressed: () {
-                              setState(() {
-                                // TODO refactor push to controller
-                                // addTaskController.usersList.value
-                                //     .add(UserProfileModel(
-                                //   username: 'User $index',
-                                //   avatarUrl: 'avatarUrl',
-                                //   createdAt: 'createdAt',
-                                // ));
-                                // newTaskConroller.chipTitles.value.add(
-                                //     'element: ${newTaskConroller.chipTitles.value.length + 1}');
-                                _scrollController.jumpTo(
-                                    _scrollController.position.maxScrollExtent +
-                                        20);
-                              });
-                            },
-                            fillColor: Colors.grey.withOpacity(0.5),
-                            shape: const CircleBorder(),
-                            child: const Icon(
-                              Icons.add,
-                              color: Colors.white,
-                            ),
-                          )
-                        : const SizedBox(),
-                  ],
+                      (index ==
+                              _addTaskController.selectedUsers.value.length - 1)
+                          ? RawMaterialButton(
+                              onPressed: () {
+                                setState(() {
+                                  // TODO refactor push to controller
+                                  // addTaskController.usersList.value
+                                  //     .add(UserProfileModel(
+                                  //   username: 'User $index',
+                                  //   avatarUrl: 'avatarUrl',
+                                  //   createdAt: 'createdAt',
+                                  // ));
+                                  // newTaskConroller.chipTitles.value.add(
+                                  //     'element: ${newTaskConroller.chipTitles.value.length + 1}');
+                                  _scrollController.jumpTo(_scrollController
+                                          .position.maxScrollExtent +
+                                      20);
+                                });
+                              },
+                              fillColor: Colors.grey.withOpacity(0.5),
+                              shape: const CircleBorder(),
+                              child: const Icon(
+                                Icons.add,
+                                color: Colors.white,
+                              ),
+                            )
+                          : const SizedBox(),
+                    ],
+                  ),
                 );
               },
             ),
@@ -124,31 +127,74 @@ class _AddUserWidgetState extends State<AddUserWidget> {
   }
 }
 
-Future<void> showUsersDialog(BuildContext context) async {
-  await showDialog(
-    context: context,
-    builder: (_) {
-      return AlertDialog(
-        contentPadding: const EdgeInsets.symmetric(vertical: 10),
-        content: SizedBox(
-          height: 400,
-          width: 200,
-          child: Column(
+class AddUserDialog extends StatelessWidget {
+  AddUserDialog({Key? key}) : super(key: key);
+
+  final userTextController = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    final newTaskController =
+        InheritedNewTaskController.of(context).addTaskController;
+
+    return AlertDialog(
+      contentPadding: const EdgeInsets.symmetric(vertical: 10),
+      content: SizedBox(
+        height: 400,
+        width: 200,
+        child: StatefulBuilder(
+          builder: (context, setState) => Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              // Expanded(
-              //   child: DisabledGlowWidget(
-              //     child: ValueListenableBuilder<Map>(
-              //       valueListenable: _addUserController.users,
-              //       builder: (context, users, _) => ListView.builder(
-              //         shrinkWrap: true,
-              //         itemCount: 12,
-              //         itemBuilder: (context, index) =>
-              //             UserListWidget(index: index),
-              //       ),
-              //     ),
-              //   ),
-              // ),
+              SizedBox(
+                width: 180,
+                height: 35,
+                child: TextField(
+                  onChanged: (value) async => Future.delayed(
+                      const Duration(milliseconds: 600), () => setState(() {})),
+                  controller: userTextController,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.search),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(
+                        color: Palette.red,
+                        width: 2,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: DisabledGlowWidget(
+                  child: FutureBuilder<List<UserProfileModel>>(
+                    initialData: const [],
+                    future: newTaskController.controllerUserProfile
+                        .fetchUsers(userName: userTextController.text),
+                    builder: (context,
+                        AsyncSnapshot<List<UserProfileModel>> snapshot) {
+                      return (snapshot.hasError || !snapshot.hasData)
+                          ? const Center(
+                              child: CircularProgressIndicator.adaptive())
+                          : ListView.builder(
+                              itemCount: snapshot.data!.length,
+                              itemBuilder: (context, index) {
+                                final data = snapshot.data![index];
+                                // final avatar = SupabaseSource()
+                                //         .restApiClient
+                                //         .storage
+                                //         .from('avatar')
+                                //         .getPublicUrl(
+                                //             snapshot.data![0].avatarUrl)
+                                //         .data ??
+                                //     '';
+                                return UserItemWidget(data: data);
+                              },
+                            );
+                    },
+                  ),
+                ),
+              ),
               ConfirmButtonWidget(
                 width: 150,
                 onPressed: () => Navigator.pop(context),
@@ -157,50 +203,57 @@ Future<void> showUsersDialog(BuildContext context) async {
             ],
           ),
         ),
-      );
-    },
-  );
+      ),
+    );
+  }
 }
 
-class AddUserController extends ChangeNotifier {
-  final users = ValueNotifier([
-    //UserProfileModel(username: 'user1', avatarUrl: 'url', createdAt: 'now')
-  ]);
-}
+bool isSelected = false;
 
-final _addUserController = AddUserController();
-
-class UserListWidget extends StatefulWidget {
-  int index;
-  UserListWidget({Key? key, required this.index}) : super(key: key);
+class UserItemWidget extends StatefulWidget {
+  UserProfileModel data;
+  UserItemWidget({Key? key, required this.data}) : super(key: key);
 
   @override
-  State<UserListWidget> createState() => _UserListWidgetState();
+  State<UserItemWidget> createState() => _UserItemWidgetState();
 }
 
-class _UserListWidgetState extends State<UserListWidget> {
-  bool isSelected = false;
-
+class _UserItemWidgetState extends State<UserItemWidget> {
   @override
   Widget build(BuildContext context) {
+    final newTaskController =
+        InheritedNewTaskController.of(context).addTaskController;
     return ListTile(
-      title: const Text('Alex Punani'),
-      subtitle: const Text('peter4533@mail.ru'),
-      leading: const CircleAvatar(
-        radius: 20,
-      ),
+      // leading: CircleAvatar(
+      //     backgroundImage: NetworkImage(avatar)),
+      title: Text(widget.data.username),
       trailing: IconButton(
         onPressed: () {
           setState(() {
             isSelected = !isSelected;
-            // _addUserController.changeUser(
-            //     _addUserController.users.value.keys.toList()[widget.index],
-            //     isSelected);
+            if (isSelected) {
+              newTaskController.addUser(widget.data);
+              print(newTaskController.selectedUsers.value);
+              //  newTaskController.forTextController.text =
+              //     selectedModel!.username;
+              // newTaskController
+              //     .selectedUser.value = data;
+              // newTaskController
+              //     .selectedUsers.value
+              //     .add(newTaskController
+              //         .selectedUser.value);
+              // print(newTaskController
+              //     .selectedUsers);
+              // TODO fix it using controller
+              // selectedModel = data;
+
+            }
           });
-          log(_addUserController.users.value.toString());
         },
-        icon: const Icon(Icons.done),
-        color: isSelected ? Colors.green : Colors.grey,
+        icon: const Icon(
+          Icons.done,
+        ),
+        color: isSelected ? Palette.red : Colors.grey,
       ),
     );
   }

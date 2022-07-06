@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:todo2/database/repository/user_profile_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/widgets/add_user_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/widgets/description_field_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/widgets/for_in_field_widget.dart';
@@ -14,7 +14,7 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/red_
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/white_box_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
-
+import 'package:todo2/services/supabase/update_token_service.dart';
 
 class AddTaskPage extends StatefulWidget {
   const AddTaskPage({Key? key}) : super(key: key);
@@ -24,9 +24,17 @@ class AddTaskPage extends StatefulWidget {
 }
 
 class _AddTaskPageState extends State<AddTaskPage> {
-  final newTaskController = AddTaskController();
+  late final AddTaskController newTaskController;
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
+
+  @override
+  void didChangeDependencies() {
+    newTaskController =
+        InheritedNewTaskController.of(context).addTaskController;
+    super.didChangeDependencies();
+  }
+
   @override
   void dispose() {
     newTaskController.dispose();
@@ -40,13 +48,12 @@ class _AddTaskPageState extends State<AddTaskPage> {
     newTaskController.pickedTime.dispose();
     newTaskController.files.dispose();
     newTaskController.projects.dispose();
-    newTaskController.usersList.dispose();
+    newTaskController.selectedUsers.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-   final newTaskController = InheritedNewTaskController.of(context).addTaskController;
     return WillPopWrapper(
       child: AppbarWrapperWidget(
         title: 'New Task',
@@ -77,7 +84,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                             onChanged: (value) async => await Future.delayed(
                                 const Duration(milliseconds: 500),
                                 () => setState(() {})),
-                            titleController: newTaskController.forTextController,
+                            titleController:
+                                newTaskController.forTextController,
                             text: 'For',
                           ),
                           EnterUserWidget(
@@ -92,32 +100,32 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       ),
                     ),
                     ValueListenableBuilder<InputFieldStatus>(
-                        valueListenable: newTaskController.panelStatus,
-                        builder: (_, value, __) {
-                          return (value != InputFieldStatus.hide)
-                              ? SelectUserWidget()
-                              : Column(
-                                  children: [
-                                    TitleWidget(
-                                        titleController: titleController),
-                                    DescriptionFieldWidget(
-                                        descriptionController:
-                                            descriptionController),
-                                    const PickTimeFieldWidget(),
-                                   const  AddUserWidget(
-                                      ),
-                                    ConfirmButtonWidget(
-                                        title: 'Add Task',
-                                        onPressed: () async {
-                                          // NavigationService.navigateTo(
-                                          //   context,
-                                          //   Pages.taskList,
-                                          // );
-                                          print(titleController.text);
-                                        }),
-                                  ],
-                                );
-                        }),
+                      valueListenable: newTaskController.panelStatus,
+                      builder: (_, value, __) {
+                        return (value != InputFieldStatus.hide)
+                            ? SelectUserWidget()
+                            : Column(
+                                children: [
+                                  TitleWidget(titleController: titleController),
+                                  DescriptionFieldWidget(
+                                      descriptionController:
+                                          descriptionController),
+                                  const PickTimeFieldWidget(),
+                                  const AddUserWidget(),
+                                  ConfirmButtonWidget(
+                                    title: 'Add Task',
+                                    onPressed: () async {
+                                      updateToken();
+                                      // NavigationService.navigateTo(
+                                      //   context,
+                                      //   Pages.taskList,
+                                      // );
+                                    },
+                                  ),
+                                ],
+                              );
+                      },
+                    ),
                   ],
                 ),
               ),

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 import 'package:todo2/database/database_scheme/user_data_scheme..dart';
 import 'package:todo2/services/error_service/error_service.dart';
@@ -29,6 +31,9 @@ class UserDataSourceImpl implements UserDataSource {
         UserDataScheme.ownerId: _supabase.auth.currentUser?.id,
         UserDataScheme.createdAt: DateTime.now().toString(),
       }).execute();
+      if (response.hasError) {
+        log(response.error!.message);
+      }
       return response;
     } catch (e) {
       ErrorService.printError('Error in insert() dataSource: $e');
@@ -44,6 +49,9 @@ class UserDataSourceImpl implements UserDataSource {
           .select('*')
           .eq(UserDataScheme.id, _supabase.auth.currentUser!.id)
           .execute();
+      if (response.hasError) {
+        log(response.error!.message);
+      }
       return response;
     } catch (e) {
       ErrorService.printError('Error in fetchUser() dataSource: $e');
@@ -51,21 +59,21 @@ class UserDataSourceImpl implements UserDataSource {
     }
   }
 
-
- @override
+  @override
   Future<supabase.PostgrestResponse<dynamic>> fetchEmail() async {
     try {
-      final response = await _supabase
-          .from(_table)
-          .select('email')
-          .execute();
+      final response =
+          await _supabase.from(_table).select(UserDataScheme.email).execute();
+      if (response.hasError) {
+        log(response.error!.message);
+      }
       return response;
     } catch (e) {
       ErrorService.printError('Error in fetchEmail() dataSource: $e');
       rethrow;
     }
   }
-  
+
   // @override
   // Future<int> fetchUserId() async {
   //   try {

@@ -1,16 +1,13 @@
-import 'dart:developer';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:todo2/database/model/projects_model.dart';
 import 'package:todo2/database/model/users_profile_model.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
-import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/user_profile_repository.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/new_task.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
+
 enum InputFieldStatus {
   showUserPanel,
   showProjectPanel,
@@ -18,13 +15,17 @@ enum InputFieldStatus {
 }
 
 class AddTaskController extends ChangeNotifier {
+  final controllerProject = ProjectRepositoryImpl();
+  final controllerUserProfile = UserProfileRepositoryImpl();
 
-    final controllerProject =ProjectRepositoryImpl();
-  final controllerUserProfile =UserProfileRepositoryImpl();
+final  selectedUsers = ValueNotifier<  List<UserProfileModel>>([]);
+void addUser(UserProfileModel chipTitle) {
+    selectedUsers.value.add(chipTitle);
+    selectedUsers.notifyListeners();
+  }
 
-final forTextController = TextEditingController(text: 'Assignee');
-final inTextController = TextEditingController(text: 'Project');
-
+  final forTextController = TextEditingController(text: 'Assignee');
+  final inTextController = TextEditingController(text: 'Project');
 
   final files = ValueNotifier<List<PlatformFile>>([]);
   final pickedTime = ValueNotifier<DateTime?>(null);
@@ -49,11 +50,7 @@ final inTextController = TextEditingController(text: 'Project');
     pickedTime.notifyListeners();
   }
 
-  final usersList = ValueNotifier<List<UserProfileModel>>([]);
-  void addChip(UserProfileModel chipTitle) {
-    usersList.value.add(chipTitle);
-    usersList.notifyListeners();
-  }
+ 
 
   Future<void> pickFile({required BuildContext context}) async {
     const int maxSize = 26214400;

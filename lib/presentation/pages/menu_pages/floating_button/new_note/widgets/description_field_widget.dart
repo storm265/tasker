@@ -11,7 +11,8 @@ class DescriptionFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   final newTaskController = InheritedNewTaskController.of(context).addTaskController;
+    final newTaskController =
+        InheritedNewTaskController.of(context).addTaskController;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Column(
@@ -115,9 +116,11 @@ class DescriptionFieldWidget extends StatelessWidget {
             valueListenable: newTaskController.files,
             builder: (context, imgList, value) => FutureBuilder<List<String>>(
               future: newTaskController.fetchCommentInfo(),
-              initialData: const [''],
+              initialData: const [],
               builder: ((context, AsyncSnapshot<List<String>> snapshot) {
-                if (snapshot.hasData) {
+                if (!snapshot.hasData) {
+                  return const SizedBox();
+                } else if (snapshot.hasData) {
                   return ListView.builder(
                     itemBuilder: (context, index) {
                       final dateNow = DateTime.now();

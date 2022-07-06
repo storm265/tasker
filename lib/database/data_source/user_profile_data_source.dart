@@ -1,3 +1,4 @@
+import 'dart:developer';
 
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/database_scheme/user_profile_scheme.dart';
@@ -5,7 +6,6 @@ import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/supabase/constants.dart';
 
 abstract class UserProfileDataSource {
-
   Future fetchUserName();
   Future fetchAvatar();
   Future insertUserProfile({
@@ -32,7 +32,9 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
         UserProfileScheme.uuid: _supabase.auth.currentUser!.id,
         UserProfileScheme.createdAt: DateTime.now().toString(),
       }).execute();
-
+      if (response.hasError) {
+        log(response.error!.message);
+      }
       return response;
     } catch (e) {
       ErrorService.printError(
@@ -41,11 +43,18 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
     }
   }
 
- 
   @override
-  Future<PostgrestResponse<dynamic>> fetchUserWhere({required String userName}) async {
+  Future<PostgrestResponse<dynamic>> fetchUserWhere(
+      {required String userName}) async {
     try {
-      final response = await _supabase.from(_table).select('*').eq('username', userName).execute();
+      final response = await _supabase
+          .from(_table)
+          .select('*')
+          .eq('username', userName)
+          .execute();
+      if (response.hasError) {
+        log(response.error!.message);
+      }
       return response;
     } catch (e) {
       ErrorService.printError(
@@ -63,6 +72,9 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
           .select(UserProfileScheme.username)
           .eq(UserProfileScheme.uuid, _supabase.auth.currentUser!.id)
           .execute();
+      if (response.hasError) {
+        log(response.error!.message);
+      }
       return response;
     } catch (e) {
       ErrorService.printError(
@@ -79,7 +91,9 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
           .select('avatar_url')
           .eq(UserProfileScheme.uuid, _supabase.auth.currentUser!.id)
           .execute();
-
+      if (response.hasError) {
+        log(response.error!.message);
+      }
       return response;
     } catch (e, t) {
       ErrorService.printError(
@@ -87,9 +101,10 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
       rethrow;
     }
   }
- 
- @override
-  Future<PostgrestResponse<dynamic>> fetchUsers({required String userName}) async {
+
+  @override
+  Future<PostgrestResponse<dynamic>> fetchUsers(
+      {required String userName}) async {
     try {
       final response = await SupabaseSource()
           .restApiClient
@@ -100,10 +115,13 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
             '%$userName%',
           )
           .execute();
-   
+      if (response.hasError) {
+        log(response.error!.message);
+      }
+
       return response;
     } catch (e) {
-      ErrorService.printError('Error in dataSource fetchUsers():  $e');
+      ErrorService.printError(' Error in dataSource fetchUsers():  $e');
       rethrow;
     }
   }

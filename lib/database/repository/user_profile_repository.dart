@@ -1,3 +1,4 @@
+import 'dart:developer';
 
 import 'package:todo2/database/data_source/user_profile_data_source.dart';
 import 'package:todo2/database/database_scheme/user_profile_scheme.dart';
@@ -14,7 +15,6 @@ abstract class UserProfileRepository {
     required String username,
   });
   fetchUsers({required String userName});
-
 }
 
 class UserProfileRepositoryImpl implements UserProfileRepository {
@@ -67,22 +67,26 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
   }
 
   @override
-  Future<List<UserProfileModel>> fetchUserWhere({required String userName}) async {
+  Future<List<UserProfileModel>> fetchUserWhere(
+      {required String userName}) async {
     try {
-      final response = await _userProfileDataSource.fetchUserWhere(userName: userName);
+      final response =
+          await _userProfileDataSource.fetchUserWhere(userName: userName);
+      log(response.data.toString());
       return (response.data as List<dynamic>)
           .map((json) => UserProfileModel.fromJson(json))
           .toList();
-          
     } catch (e) {
       ErrorService.printError('Error in fetchUserWhere() repository:$e');
       rethrow;
     }
   }
 
- Future<List<UserProfileModel>> fetchUsers({required String userName}) async {
+  @override
+  Future<List<UserProfileModel>> fetchUsers({required String userName}) async {
     try {
-      final response = await _userProfileDataSource.fetchUsers(userName:userName );
+      final response =
+          await _userProfileDataSource.fetchUsers(userName: userName);
 
       return (response.data as List<dynamic>)
           .map((json) => UserProfileModel.fromJson(json))
@@ -92,5 +96,4 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
       rethrow;
     }
   }
-
 }

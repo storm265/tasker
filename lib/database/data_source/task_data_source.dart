@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/database_scheme/task_scheme.dart';
 import 'package:todo2/services/error_service/error_service.dart';
@@ -18,6 +20,9 @@ class TaskDataSourceImpl implements TaskDataSource {
           .select('*')
           .eq(TaskScheme.ownerId, _supabase.auth.currentUser!.id)
           .execute();
+      if (response.hasError) {
+        log(response.error!.message);
+      }
       return response;
     } catch (e) {
       ErrorService.printError(
