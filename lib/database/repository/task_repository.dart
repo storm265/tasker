@@ -6,10 +6,13 @@ import 'package:todo2/services/error_service/error_service.dart';
 
 abstract class TaskRepository<T> {
   Future fetchTask();
-  // Future putData({
-  //   required String color,
-  //   required String title,
-  // });
+  Future putTask({
+    required String title,
+    required String description,
+    required String assignedTo,
+    required int projectId,
+    required DateTime dueDate,
+  });
 }
 
 class TaskRepositoryImpl implements TaskRepository {
@@ -27,6 +30,31 @@ class TaskRepositoryImpl implements TaskRepository {
     } catch (e) {
       ErrorService.printError(
           'Error in ProjectRepositoryImpl fetchProject() repository $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> putTask({
+    required String title,
+    required String description,
+    required String assignedTo,
+    required int projectId,
+    required DateTime dueDate,
+  }) async {
+    try {
+      final response = await _taskDataSource.putTask(
+        title: title,
+        assignedTo: assignedTo,
+        description: description,
+        dueDate: dueDate,
+        projectId: projectId,
+      );
+      if (response.hasError) {
+        log(response.error!.message);
+      }
+    } catch (e) {
+      ErrorService.printError('Error in  ProjectRepositoryImpl putTask(): $e');
       rethrow;
     }
   }

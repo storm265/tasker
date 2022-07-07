@@ -2,13 +2,17 @@ import 'dart:developer';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:todo2/database/model/projects_model.dart';
 import 'package:todo2/database/model/users_profile_model.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
+import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/user_profile_repository.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
+import 'package:todo2/services/navigation_service/navigation_service.dart';
+import 'package:todo2/services/supabase/constants.dart';
 
 enum InputFieldStatus {
   showUserPanel,
@@ -17,15 +21,16 @@ enum InputFieldStatus {
 }
 
 class AddTaskController extends ChangeNotifier {
-  ProjectRepositoryImpl controllerProject;
-  UserProfileRepositoryImpl controllerUserProfile;
+  ProjectRepositoryImpl projectrepository;
   UserProfileRepositoryImpl userProfileRepository;
+  TaskRepositoryImpl taskRepository;
+  final _supabase = SupabaseSource().restApiClient;
   final formKey = GlobalKey<FormState>();
 
   AddTaskController({
-    required this.controllerProject,
-    required this.controllerUserProfile,
+    required this.projectrepository,
     required this.userProfileRepository,
+    required this.taskRepository,
   });
 
   final selectedUsers = ValueNotifier<List<UserProfileModel>>([]);
@@ -45,11 +50,10 @@ class AddTaskController extends ChangeNotifier {
     selectedUsers.notifyListeners();
   }
 
-  final forTextController = TextEditingController(text: 'Assignee');
-  final inTextController = TextEditingController(text: 'Project');
+  final userTextController = TextEditingController(text: 'Assignee');
+  final projectTextController = TextEditingController(text: 'Project');
 
   final files = ValueNotifier<List<PlatformFile>>([]);
-  final pickedTime = ValueNotifier<DateTime?>(null);
 
   final pickedUser = ValueNotifier<UserProfileModel>(
     UserProfileModel(avatarUrl: '', createdAt: '', username: '', uuid: ''),
@@ -58,41 +62,41 @@ class AddTaskController extends ChangeNotifier {
   void pickUser(
       {required UserProfileModel newUser, required BuildContext context}) {
     pickedUser.value = newUser;
-    forTextController.text = pickedUser.value.username;
+    userTextController.text = pickedUser.value.username;
     pickedUser.notifyListeners();
     log(pickedUser.value.toString());
     FocusScope.of(context).unfocus();
     changePanelStatus(newStatus: InputFieldStatus.hide);
   }
 
-  final pickerProject = ValueNotifier<ProjectModel>(
+  final pickedProject = ValueNotifier<ProjectModel>(
     ProjectModel(color: '', createdAt: '', title: '', uuid: ''),
   );
 
-  void pickProject(
-      {required ProjectModel newProject, required BuildContext context}) {
-    pickerProject.value = newProject;
-    inTextController.text = pickerProject.value.title;
-    pickerProject.notifyListeners();
-    log(pickerProject.value.toString());
+  void pickProject({
+    required ProjectModel newProject,
+    required BuildContext context,
+  }) {
+    pickedProject.value = newProject;
+    projectTextController.text = pickedProject.value.title;
+    pickedProject.notifyListeners();
+    log(pickedProject.value.toString());
     FocusScope.of(context).unfocus();
     changePanelStatus(newStatus: InputFieldStatus.hide);
   }
 
-  XFile? pickedFile = XFile('');
-  final picker = ImagePicker();
+  final isClickedAddTask = ValueNotifier<bool>(true);
 
   final isShowPickUserWidget = ValueNotifier(false);
   final isShowProjectWidget = ValueNotifier(false);
   final panelStatus = ValueNotifier<InputFieldStatus>(InputFieldStatus.hide);
-
-  late String userName = '', image = '';
 
   void changePanelStatus({required InputFieldStatus newStatus}) {
     panelStatus.value = newStatus;
     panelStatus.notifyListeners();
   }
 
+  final pickedTime = ValueNotifier<DateTime?>(null);
   void pickTime({required DateTime newTime}) {
     pickedTime.value = newTime;
     pickedTime.notifyListeners();
@@ -118,6 +122,7 @@ class AddTaskController extends ChangeNotifier {
     }
   }
 
+  late String userName = '', image = '';
   Future<List<String>> fetchCommentInfo() async {
     try {
       image = await userProfileRepository.fetchAvatar();
@@ -129,16 +134,64 @@ class AddTaskController extends ChangeNotifier {
     }
   }
 
+// validation
+
+  Future<void> validate({
+    required BuildContext context,
+    required String title,
+    required String description,
+  }) async {
+    try {
+      if (formKey.currentState!.validate()) {
+        isClickedAddTask.value = false;
+        isClickedAddTask.notifyListeners();
+        
+        await putTask(
+          description: description,
+          title: title,
+        );
+
+        isClickedAddTask.value = true;
+        isClickedAddTask.notifyListeners();
+
+        //  disposeAll();
+
+      }
+    } catch (e) {
+      ErrorService.printError('Validation error : $e');
+    }
+  }
+
+  Future<void> putTask({
+    required String title,
+    required String description,
+  }) async {
+    try {
+      int id = await projectrepository.fetchProjectId(
+          project: pickedProject.value.title);
+      await taskRepository.putTask(
+        title: title,
+        description: description,
+        assignedTo: _supabase.auth.currentUser!.id,
+        projectId: id, // looks like its id?
+        dueDate: pickedTime.value!,
+      );
+    } catch (e) {
+      ErrorService.printError('Error in add task controller putTask(): $e');
+    }
+  }
+
   void disposeAll() {
     selectedUsers.dispose();
     pickedUser.dispose();
-    pickerProject.dispose();
-    forTextController.dispose();
-    inTextController.dispose();
+    pickedProject.dispose();
+    userTextController.dispose();
+    projectTextController.dispose();
     isShowPickUserWidget.dispose();
     isShowProjectWidget.dispose();
     panelStatus.dispose();
     pickedTime.dispose();
     files.dispose();
+    isClickedAddTask.dispose();
   }
 }

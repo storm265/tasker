@@ -13,6 +13,7 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/red_
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/white_box_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
+import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 class AddTaskPage extends StatefulWidget {
   const AddTaskPage({Key? key}) : super(key: key);
@@ -51,74 +52,92 @@ class _AddTaskPageState extends State<AddTaskPage> {
             children: [
               redAppBar,
               fakeNavBar,
-              WhiteBoxWidget(
-                height: 570,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 30),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          EnterUserWidget(
-                            isForFieldActive: true,
-                            onChanged: (value) async {
-                              await Future.delayed(
+              Form(
+                key: newTaskController.formKey,
+                child: WhiteBoxWidget(
+                  height: 570,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 30),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            EnterUserWidget(
+                              isForFieldActive: true,
+                              onChanged: (value) async {
+                                await Future.delayed(
+                                    const Duration(milliseconds: 500),
+                                    () => setState(() {}));
+                              },
+                              titleController:
+                                  newTaskController.userTextController,
+                              text: 'For',
+                            ),
+                            EnterUserWidget(
+                              isForFieldActive: false,
+                              onChanged: (value) async => await Future.delayed(
                                   const Duration(milliseconds: 500),
-                                  () => setState(() {}));
-                            },
-                            titleController:
-                                newTaskController.forTextController,
-                            text: 'For',
-                          ),
-                          EnterUserWidget(
-                            isForFieldActive: false,
-                            onChanged: (value) async => await Future.delayed(
-                                const Duration(milliseconds: 500),
-                                () => setState(() {})),
-                            titleController: newTaskController.inTextController,
-                            text: 'In',
-                          )
-                        ],
+                                  () => setState(() {})),
+                              titleController:
+                                  newTaskController.projectTextController,
+                              text: 'In',
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                    ValueListenableBuilder<InputFieldStatus>(
-                      valueListenable: newTaskController.panelStatus,
-                      builder: (_, value, __) {
-                        return (value != InputFieldStatus.hide)
-                            // not updating if const
-                            ? SelectPanelWidget()
-                            : Column(
-                                children: [
-                                  TitleWidget(titleController: titleController),
-                                  DescriptionFieldWidget(
+                      ValueListenableBuilder<InputFieldStatus>(
+                        valueListenable: newTaskController.panelStatus,
+                        builder: (_, value, __) {
+                          return (value != InputFieldStatus.hide)
+                              // not updating if const
+                              ? SelectPanelWidget()
+                              : Column(
+                                  children: [
+                                    TitleWidget(
+                                      titleController: titleController,
+                                    ),
+                                    DescriptionFieldWidget(
                                       descriptionController:
-                                          descriptionController),
-                                  const PickTimeFieldWidget(),
-                                  const AddUserWidget(),
-                                  ConfirmButtonWidget(
-                                    title: 'Add Task',
-                                    onPressed: () async {
-                                      if (newTaskController
-                                          .formKey.currentState!
-                                          .validate()) {
-                                        print('can validate');
-                                      }
-
-                                      // NavigationService.navigateTo(
-                                      //   context,
-                                      //   Pages.taskList,
-                                      // );
-                                      // newTaskController.disposeAll();
-                                      // newTaskController.dispose();
-                                    },
-                                  ),
-                                ],
-                              );
-                      },
-                    ),
-                  ],
+                                          descriptionController,
+                                    ),
+                                    const PickTimeFieldWidget(),
+                                    const AddUserWidget(),
+                                    ValueListenableBuilder<bool>(
+                                      valueListenable:
+                                          newTaskController.isClickedAddTask,
+                                      builder: (_, isClicked, __) =>
+                                          ConfirmButtonWidget(
+                                        title: 'Add Task',
+                                        onPressed: isClicked
+                                            ? () async {
+                                                newTaskController
+                                                    .validate(
+                                                      context: context,
+                                                      title:
+                                                          titleController.text,
+                                                      description:
+                                                          descriptionController
+                                                              .text,
+                                                    );
+                                                    // without then
+                                                    // .then((_) =>
+                                                    //     NavigationService
+                                                    //         .navigateTo(
+                                                    //       context,
+                                                    //       Pages.taskList,
+                                                    //     ));
+                                              }
+                                            : null,
+                                      ),
+                                    ),
+                                  ],
+                                );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],

@@ -25,7 +25,7 @@ class UserPanelPickerWidget extends StatelessWidget {
         InheritedNewTaskController.of(context).addTaskController;
     return FutureBuilder<List<UserProfileModel>>(
       initialData: const [],
-      future: fetchUsers(userName: newTaskController.forTextController.text),
+      future: fetchUsers(userName: newTaskController.userTextController.text),
       builder: (context, AsyncSnapshot<List<UserProfileModel>> snapshot) {
         return (snapshot.hasError || !snapshot.hasData)
             ? const Center(child: CircularProgressIndicator.adaptive())

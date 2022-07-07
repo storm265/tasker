@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:todo2/database/data_source/projects_user_data_source.dart';
+import 'package:todo2/database/database_scheme/project_user_scheme.dart';
 import 'package:todo2/database/model/projects_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 
@@ -10,6 +11,8 @@ abstract class ProjectRepository<T> {
     required String color,
     required String title,
   });
+  Future fetchProjectId({required String project});
+  Future fetchProjectsWhere({required String title});
 }
 
 class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
@@ -51,9 +54,11 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
     }
   }
 
-  Future<List<ProjectModel>> fetchProjects({required String title}) async {
+  @override
+  Future<List<ProjectModel>> fetchProjectsWhere({required String title}) async {
     try {
-      final response = await _projectDataSource.fetchProjects(title: title);
+      final response =
+          await _projectDataSource.fetchProjectsWhere(title: title);
       if (response.hasError) {
         log(response.error!.message);
       }
@@ -61,7 +66,21 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
           .map((json) => ProjectModel.fromJson(json))
           .toList();
     } catch (e) {
-      ErrorService.printError('Error in ------ fetchProjects() ------ $e');
+      ErrorService.printError(
+          'Error in ProjectRepositoryImpl fetchProjectsWhere() : $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<int> fetchProjectId({required String project}) async {
+    try {
+      final response =
+          await _projectDataSource.fetchProjectId(project: project);
+      return response.data[0][ProjectDataScheme.id];
+    } catch (e) {
+      ErrorService.printError(
+          'Error in ProjectRepositoryImpl fetchProjectId() : $e');
       rethrow;
     }
   }

@@ -10,7 +10,8 @@ abstract class ProjectUserData {
     required String color,
     required String title,
   });
-  Future fetchProjects({required String title});
+  Future fetchProjectsWhere({required String title});
+  Future fetchProjectId({required String project});
 }
 
 class ProjectUserDataImpl implements ProjectUserData {
@@ -56,27 +57,29 @@ class ProjectUserDataImpl implements ProjectUserData {
     }
   }
 
-  // @override
-  // Future<int> getId() async {
-  //   try {
-  //     final response = await _supabase
-  //         .from(_table)
-  //         .select('*')
-  //         .eq(ProjectDataScheme.uuid, _supabase.auth.currentUser!.id)
-  //         .execute();
-  //     return response.data[0]['owner_id'];
-  //   } catch (e) {
-  //     ErrorService.printError(
-  //         'Error in ProjectUserDataImpl fetchProject() dataSource:  $e');
-  //     rethrow;
-  //   }
-  // }
-
-   @override
-     Future<PostgrestResponse<dynamic>> fetchProjects({required String title}) async {
+  @override
+  Future<PostgrestResponse<dynamic>> fetchProjectId(
+      {required String project}) async {
     try {
       final response = await _supabase
-         
+          .from(_table)
+          .select('*')
+          .eq(ProjectDataScheme.uuid, _supabase.auth.currentUser!.id)
+          .eq(ProjectDataScheme.title, project)
+          .execute();
+      return response;
+    } catch (e) {
+      ErrorService.printError(
+          'Error in ProjectUserDataImpl fetchProject() dataSource:  $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<PostgrestResponse<dynamic>> fetchProjectsWhere(
+      {required String title}) async {
+    try {
+      final response = await _supabase
           .from(_table)
           .select('*')
           .ilike(

@@ -14,7 +14,7 @@ class TitleWidget extends StatelessWidget {
         child: TextFormField(
           validator: (text) {
             if (text == null || text.isEmpty) {
-              return 'Please enter description text';
+              return 'Please enter title text';
             }
             return null;
           },

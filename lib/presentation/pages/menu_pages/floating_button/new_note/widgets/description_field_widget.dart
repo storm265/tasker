@@ -56,7 +56,13 @@ class DescriptionFieldWidget extends StatelessWidget {
                       left: 15,
                       top: 20,
                     ),
-                    child: TextField(
+                    child: TextFormField(
+                      validator: (text) {
+                        if (text == null || text.isEmpty) {
+                          return 'Please enter description text';
+                        }
+                        return null;
+                      },
                       controller: descriptionController,
                       onEditingComplete: () => FocusScope.of(context).unfocus(),
                       maxLength: 512,

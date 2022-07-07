@@ -65,7 +65,7 @@ class AddUserDialog extends StatelessWidget {
                 child: DisabledGlowWidget(
                   child: FutureBuilder<List<UserProfileModel>>(
                     initialData: const [],
-                    future: newTaskController.controllerUserProfile
+                    future: newTaskController.userProfileRepository
                         .fetchUsers(userName: userTextController.text),
                     builder: (context,
                         AsyncSnapshot<List<UserProfileModel>> snapshot) {
