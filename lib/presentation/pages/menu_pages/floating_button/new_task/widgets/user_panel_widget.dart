@@ -1,11 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/users_profile_model.dart';
+import 'package:todo2/database/repository/user_profile_repository.dart';
+import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/add_task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/controller_inherited.dart';
 import 'package:todo2/services/supabase/constants.dart';
 
 class UserPanelPickerWidget extends StatelessWidget {
-  const UserPanelPickerWidget({Key? key}) : super(key: key);
+  UserPanelPickerWidget({Key? key}) : super(key: key);
+
+  List<String> emails = [];
+  List<UserProfileModel> users = [];
+
+  Future<List<UserProfileModel>> fetchUsers({required String userName}) async {
+    emails = await UserRepositoryImpl().fetchEmail();
+    users = await UserProfileRepositoryImpl().fetchUsers(userName: userName);
+
+    return users;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,8 +25,7 @@ class UserPanelPickerWidget extends StatelessWidget {
         InheritedNewTaskController.of(context).addTaskController;
     return FutureBuilder<List<UserProfileModel>>(
       initialData: const [],
-      future: newTaskController.controllerUserProfile
-          .fetchUsers(userName: newTaskController.forTextController.text),
+      future: fetchUsers(userName: newTaskController.forTextController.text),
       builder: (context, AsyncSnapshot<List<UserProfileModel>> snapshot) {
         return (snapshot.hasError || !snapshot.hasData)
             ? const Center(child: CircularProgressIndicator.adaptive())
@@ -26,7 +37,7 @@ class UserPanelPickerWidget extends StatelessWidget {
                           .restApiClient
                           .storage
                           .from('avatar')
-                          .getPublicUrl(snapshot.data![0].avatarUrl)
+                          .getPublicUrl(snapshot.data![index].avatarUrl)
                           .data ??
                       '';
                   return InkWell(
@@ -36,12 +47,14 @@ class UserPanelPickerWidget extends StatelessWidget {
                           newStatus: InputFieldStatus.hide);
                     },
                     child: ListTile(
-                      onTap: () => newTaskController.pickUser(newUser: data),
+                      onTap: () => newTaskController.pickUser(
+                        newUser: data,
+                        context: context,
+                      ),
                       leading:
                           CircleAvatar(backgroundImage: NetworkImage(avatar)),
                       title: Text(data.username),
-                      // TODO fix it
-                      //subtitle: Text(emailResponce[index]),
+                      subtitle: Text(emails[index]),
                     ),
                   );
                 },

@@ -27,7 +27,10 @@ class ProjectPanelPickerWidget extends StatelessWidget {
                     newStatus: InputFieldStatus.hide);
               },
               child: ListTile(
-                onTap: () => newTaskController.pickProject(newProject: data),
+                onTap: () => newTaskController.pickProject(
+                  newProject: data,
+                  context: context,
+                ),
                 leading: DoubleCircleWidget(
                   color: data.color,
                   isUsePositioned: false,

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:todo2/database/data_source/notes_data_source.dart';
 import 'package:todo2/database/model/notes_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
@@ -16,6 +18,9 @@ class NoteRepositoryImpl implements NoteRepository<NotesModel> {
   Future<List<NotesModel>> fetchNote() async {
     try {
       final response = await _noteDataSource.fetchNote();
+      if (response.hasError) {
+        log(response.error!.message);
+      }
       return (response.data as List<dynamic>)
           .map((json) => NotesModel.fromJson(json))
           .toList();
@@ -31,10 +36,13 @@ class NoteRepositoryImpl implements NoteRepository<NotesModel> {
     required String description,
   }) async {
     try {
-      await _noteDataSource.putNote(
+      final response = await _noteDataSource.putNote(
         color: color,
         description: description,
       );
+      if (response.hasError) {
+        log(response.error!.message);
+      }
     } catch (e) {
       ErrorService.printError('Error in fetchNotes() repository:$e');
       rethrow;

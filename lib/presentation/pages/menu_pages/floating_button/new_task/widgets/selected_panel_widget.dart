@@ -25,9 +25,11 @@ class SelectPanelWidget extends StatelessWidget {
             case InputFieldStatus.hide:
               return const SizedBox();
             case InputFieldStatus.showUserPanel:
-              return const UserPanelPickerWidget();
+              // TODO not updating if const
+              return  UserPanelPickerWidget();
             case InputFieldStatus.showProjectPanel:
-              return const ProjectPanelPickerWidget();
+            // TODO not updating if const
+              return ProjectPanelPickerWidget();
           }
         },
       ),

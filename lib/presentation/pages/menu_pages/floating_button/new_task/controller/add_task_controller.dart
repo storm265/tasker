@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
@@ -53,20 +55,28 @@ class AddTaskController extends ChangeNotifier {
     UserProfileModel(avatarUrl: '', createdAt: '', username: '', uuid: ''),
   );
 
-  void pickUser({required UserProfileModel newUser}) {
+  void pickUser(
+      {required UserProfileModel newUser, required BuildContext context}) {
     pickedUser.value = newUser;
-    forTextController.text = pickedUser.value.toString();
+    forTextController.text = pickedUser.value.username;
     pickedUser.notifyListeners();
+    log(pickedUser.value.toString());
+    FocusScope.of(context).unfocus();
+    changePanelStatus(newStatus: InputFieldStatus.hide);
   }
 
   final pickerProject = ValueNotifier<ProjectModel>(
     ProjectModel(color: '', createdAt: '', title: '', uuid: ''),
   );
 
-  void pickProject({required ProjectModel newProject}) {
+  void pickProject(
+      {required ProjectModel newProject, required BuildContext context}) {
     pickerProject.value = newProject;
-    inTextController.text = pickerProject.value.toString();
+    inTextController.text = pickerProject.value.title;
     pickerProject.notifyListeners();
+    log(pickerProject.value.toString());
+    FocusScope.of(context).unfocus();
+    changePanelStatus(newStatus: InputFieldStatus.hide);
   }
 
   XFile? pickedFile = XFile('');

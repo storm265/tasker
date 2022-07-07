@@ -1,7 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/add_check_list/controller/add_check_list_cotnroller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/add_check_list/controller/add_check_list_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/add_text_field.dart';
 
 class CheckBoxWidget extends StatelessWidget {

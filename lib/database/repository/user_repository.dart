@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/database_scheme/user_profile_scheme.dart';
 import 'package:todo2/database/model/users_profile_model.dart';
@@ -20,10 +22,13 @@ class UserRepositoryImpl implements UserRepository {
     required String email,
   }) async {
     try {
-      await _userRepository.insertUser(
+      final response = await _userRepository.insertUser(
         email: email,
         password: password,
       );
+      if (response.hasError) {
+        log(response.error!.message);
+      }
     } catch (e) {
       ErrorService.printError('Error in insert() UserRepositoryImpl: $e');
       rethrow;
@@ -34,6 +39,9 @@ class UserRepositoryImpl implements UserRepository {
   Future<List<UserProfileModel>> fetchUser() async {
     try {
       final response = await _userRepository.fetchUser();
+      if (response.hasError) {
+        log(response.error!.message);
+      }
       return (response.data as List<dynamic>)
           .map((json) => UserProfileModel.fromJson(json))
           .toList();
@@ -48,11 +56,12 @@ class UserRepositoryImpl implements UserRepository {
     try {
       List<String> emails = [];
       final response = await _userRepository.fetchEmail();
-
+      if (response.hasError) {
+        log(response.error!.message);
+      }
       for (var i = 0; i < response.data.length; i++) {
         emails.add(response.data[i][UserProfileScheme.email] as String);
       }
-
       return emails;
     } catch (e) {
       ErrorService.printError(

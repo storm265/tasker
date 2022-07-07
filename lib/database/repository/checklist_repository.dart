@@ -1,3 +1,4 @@
+import 'dart:developer';
 
 import 'package:todo2/database/data_source/checklists_data_source.dart';
 import 'package:todo2/database/model/checklist_model.dart';
@@ -19,10 +20,13 @@ class CheckListsRepositoryImpl extends CheckListsRepository<CheckListModel> {
     required String color,
   }) async {
     try {
-      await _checkListsDataSource.putCheckList(
+      final response = await _checkListsDataSource.putCheckList(
         color: color,
         title: title,
       );
+      if (response.hasError) {
+        log(response.error!.message);
+      }
     } catch (e) {
       ErrorService.printError(
           'Error in CheckListsRepositoryImpl putCheckList(): $e');
@@ -34,7 +38,9 @@ class CheckListsRepositoryImpl extends CheckListsRepository<CheckListModel> {
   Future<List<CheckListModel>> fetchCheckList() async {
     try {
       final response = await _checkListsDataSource.fetchCheckList();
-      
+      if (response.hasError) {
+        log(response.error!.message);
+      }
       return (response.data as List<dynamic>)
           .map((json) => CheckListModel.fromJson(json))
           .toList();

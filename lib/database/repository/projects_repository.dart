@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:todo2/database/data_source/projects_user_data_source.dart';
 import 'package:todo2/database/model/projects_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
@@ -16,7 +18,9 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
   Future<List<ProjectModel>> fetchProject() async {
     try {
       final response = await _projectDataSource.fetchMyProjects();
-
+      if (response.hasError) {
+        log(response.error!.message);
+      }
       return (response.data as List<dynamic>)
           .map((json) => ProjectModel.fromJson(json))
           .toList();
@@ -33,10 +37,13 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
     required String title,
   }) async {
     try {
-      await _projectDataSource.putData(
+      final response = await _projectDataSource.putData(
         color: color,
         title: title,
       );
+      if (response.hasError) {
+        log(response.error!.message);
+      }
     } catch (e) {
       ErrorService.printError(
           'Error in ProjectRepositoryImpl putData() repository $e');
@@ -44,9 +51,12 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
     }
   }
 
-   Future<List<ProjectModel>> fetchProjects({required String title}) async {
+  Future<List<ProjectModel>> fetchProjects({required String title}) async {
     try {
       final response = await _projectDataSource.fetchProjects(title: title);
+      if (response.hasError) {
+        log(response.error!.message);
+      }
       return (response.data as List<dynamic>)
           .map((json) => ProjectModel.fromJson(json))
           .toList();

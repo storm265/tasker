@@ -22,21 +22,11 @@ class AddTaskPage extends StatefulWidget {
 }
 
 class _AddTaskPageState extends State<AddTaskPage> {
-  late final AddTaskController newTaskController;
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
 
   @override
-  void didChangeDependencies() {
-    newTaskController =
-        InheritedNewTaskController.of(context).addTaskController;
-    super.didChangeDependencies();
-  }
-
-  @override
   void dispose() {
-    newTaskController.disposeAll();
-    newTaskController.dispose();
     titleController.dispose();
     descriptionController.dispose();
     super.dispose();
@@ -44,94 +34,95 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   @override
   Widget build(BuildContext context) {
+    final newTaskController =
+        InheritedNewTaskController.of(context).addTaskController;
     return WillPopWrapper(
       child: AppbarWrapperWidget(
         title: 'New Task',
         showLeadingButton: true,
         shouldUsePopMethod: true,
-        child: Stack(
-          children: [
-            redAppBar,
-            fakeNavBar,
-            GestureDetector(
-              onTap: () {
-                FocusScope.of(context).unfocus();
-                newTaskController.changePanelStatus(
-                    newStatus: InputFieldStatus.hide);
-              },
-              child: WhiteBoxWidget(
+        child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+            newTaskController.changePanelStatus(
+                newStatus: InputFieldStatus.hide);
+          },
+          child: Stack(
+            children: [
+              redAppBar,
+              fakeNavBar,
+              WhiteBoxWidget(
                 height: 570,
-                child: Form(
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  key: newTaskController.formKey,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 30),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            EnterUserWidget(
-                              isForFieldActive: true,
-                              onChanged: (value) async => await Future.delayed(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 30),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          EnterUserWidget(
+                            isForFieldActive: true,
+                            onChanged: (value) async {
+                              await Future.delayed(
                                   const Duration(milliseconds: 500),
-                                  () => setState(() {})),
-                              titleController:
-                                  newTaskController.forTextController,
-                              text: 'For',
-                            ),
-                            EnterUserWidget(
-                              isForFieldActive: false,
-                              onChanged: (value) async => await Future.delayed(
-                                  const Duration(milliseconds: 500),
-                                  () => setState(() {})),
-                              titleController:
-                                  newTaskController.inTextController,
-                              text: 'In',
-                            )
-                          ],
-                        ),
+                                  () => setState(() {}));
+                            },
+                            titleController:
+                                newTaskController.forTextController,
+                            text: 'For',
+                          ),
+                          EnterUserWidget(
+                            isForFieldActive: false,
+                            onChanged: (value) async => await Future.delayed(
+                                const Duration(milliseconds: 500),
+                                () => setState(() {})),
+                            titleController: newTaskController.inTextController,
+                            text: 'In',
+                          )
+                        ],
                       ),
-                      ValueListenableBuilder<InputFieldStatus>(
-                        valueListenable: newTaskController.panelStatus,
-                        builder: (_, value, __) {
-                          return (value != InputFieldStatus.hide)
-                              ? const SelectPanelWidget()
-                              : Column(
-                                  children: [
-                                    TitleWidget(
-                                        titleController: titleController),
-                                    DescriptionFieldWidget(
-                                        descriptionController:
-                                            descriptionController),
-                                    const PickTimeFieldWidget(),
-                                    const AddUserWidget(),
-                                    ConfirmButtonWidget(
-                                      title: 'Add Task',
-                                      onPressed: () async {
-                                        if (newTaskController
-                                            .formKey.currentState!
-                                            .validate()) {
-                                          print('can validate');
-                                        }
+                    ),
+                    ValueListenableBuilder<InputFieldStatus>(
+                      valueListenable: newTaskController.panelStatus,
+                      builder: (_, value, __) {
+                        return (value != InputFieldStatus.hide)
+                            // not updating if const
+                            ? SelectPanelWidget()
+                            : Column(
+                                children: [
+                                  TitleWidget(titleController: titleController),
+                                  DescriptionFieldWidget(
+                                      descriptionController:
+                                          descriptionController),
+                                  const PickTimeFieldWidget(),
+                                  const AddUserWidget(),
+                                  ConfirmButtonWidget(
+                                    title: 'Add Task',
+                                    onPressed: () async {
+                                      if (newTaskController
+                                          .formKey.currentState!
+                                          .validate()) {
+                                        print('can validate');
+                                      }
 
-                                        // NavigationService.navigateTo(
-                                        //   context,
-                                        //   Pages.taskList,
-                                        // );
-                                      },
-                                    ),
-                                  ],
-                                );
-                        },
-                      ),
-                    ],
-                  ),
+                                      // NavigationService.navigateTo(
+                                      //   context,
+                                      //   Pages.taskList,
+                                      // );
+                                      // newTaskController.disposeAll();
+                                      // newTaskController.dispose();
+                                    },
+                                  ),
+                                ],
+                              );
+                      },
+                    ),
+                  ],
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

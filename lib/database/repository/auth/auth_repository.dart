@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/auth_data_source.dart';
 import 'package:todo2/services/error_service/error_service.dart';
@@ -43,7 +45,6 @@ class AuthRepositoryImpl implements AuthRepository {
         email: email,
         password: password,
       );
-
       if (response.error != null) {
         MessageService.displaySnackbar(
           context: context,

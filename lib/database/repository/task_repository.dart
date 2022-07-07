@@ -18,7 +18,9 @@ class TaskRepositoryImpl implements TaskRepository {
   Future<List<TaskModel>> fetchTask() async {
     try {
       final response = await _taskDataSource.fetchTask();
-      log(response.data.toString());
+      if (response.hasError) {
+        log(response.error!.message);
+      }
       return (response.data as List<dynamic>)
           .map((json) => TaskModel.fromJson(json))
           .toList();

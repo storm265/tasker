@@ -9,7 +9,7 @@ import 'package:todo2/services/supabase/constants.dart';
 abstract class UserProfileRepository {
   Future<String> fetchUserName();
   Future<String> fetchAvatar();
-  Future fetchUserWhere({required String userName});
+
   Future<void> insertProfile({
     required String avatarUrl,
     required String username,
@@ -27,10 +27,13 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
     required String username,
   }) async {
     try {
-      await _userProfileDataSource.insertUserProfile(
+      final response = await _userProfileDataSource.insertUserProfile(
         avatarUrl: avatarUrl,
         username: username,
       );
+      if (response.hasError) {
+        log(response.error!.message);
+      }
     } catch (e) {
       ErrorService.printError(
           'Error in insertImg() UserProfileRepositoryImpl: $e');
@@ -42,6 +45,9 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
   Future<String> fetchUserName() async {
     try {
       final response = await _userProfileDataSource.fetchUserName();
+      if (response.hasError) {
+        log(response.error!.message);
+      }
       return response.data[0][UserProfileScheme.username] as String;
     } catch (e) {
       ErrorService.printError(
@@ -54,6 +60,9 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
   Future<String> fetchAvatar() async {
     try {
       final response = await _userProfileDataSource.fetchAvatar();
+      if (response.hasError) {
+        log(response.error!.message);
+      }
       final imageResponce = _supabase.storage
           .from(_storage)
           .getPublicUrl(response.data[0][UserProfileScheme.avatarUrl]);
@@ -67,27 +76,13 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
   }
 
   @override
-  Future<List<UserProfileModel>> fetchUserWhere(
-      {required String userName}) async {
-    try {
-      final response =
-          await _userProfileDataSource.fetchUserWhere(userName: userName);
-      log(response.data.toString());
-      return (response.data as List<dynamic>)
-          .map((json) => UserProfileModel.fromJson(json))
-          .toList();
-    } catch (e) {
-      ErrorService.printError('Error in fetchUserWhere() repository:$e');
-      rethrow;
-    }
-  }
-
-  @override
   Future<List<UserProfileModel>> fetchUsers({required String userName}) async {
     try {
       final response =
           await _userProfileDataSource.fetchUsers(userName: userName);
-
+      if (response.hasError) {
+        log(response.error!.message);
+      }
       return (response.data as List<dynamic>)
           .map((json) => UserProfileModel.fromJson(json))
           .toList();

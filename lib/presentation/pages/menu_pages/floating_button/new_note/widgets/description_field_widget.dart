@@ -129,7 +129,7 @@ class DescriptionFieldWidget extends StatelessWidget {
                           ListTile(
                             leading: CachedAvatarWidget(
                               radius: 40,
-                              image: snapshot.data![0],
+                              image: snapshot.data![index],
                             ),
                             title: Text(snapshot.data![1]),
                             subtitle: Text(
