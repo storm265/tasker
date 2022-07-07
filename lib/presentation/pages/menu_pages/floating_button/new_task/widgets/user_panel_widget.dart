@@ -31,15 +31,12 @@ class UserPanelPickerWidget extends StatelessWidget {
                       '';
                   return InkWell(
                     onTap: () {
-                      // TODO fix it using controller
-                      // selectedModel = data;
-                      // newTaskController.forTextController.text =
-                      //     selectedModel!.username;
                       FocusScope.of(context).unfocus();
                       newTaskController.changePanelStatus(
                           newStatus: InputFieldStatus.hide);
                     },
                     child: ListTile(
+                      onTap: () => newTaskController.pickUser(newUser: data),
                       leading:
                           CircleAvatar(backgroundImage: NetworkImage(avatar)),
                       title: Text(data.username),

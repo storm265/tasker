@@ -5,4 +5,5 @@ class CheckListsScheme {
   static const title = 'title';
   static const color = 'color';
   static const createdAt = 'created_at';
+  static const uuid = 'uuid';
 }

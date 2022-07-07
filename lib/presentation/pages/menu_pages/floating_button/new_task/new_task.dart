@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/database/repository/user_profile_repository.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/widgets/add_user_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/widgets/add_member_widget/add_member_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/widgets/description_field_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/widgets/for_in_field_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/widgets/title_widget.dart';
@@ -14,7 +13,6 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/red_
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/white_box_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
-import 'package:todo2/services/supabase/update_token_service.dart';
 
 class AddTaskPage extends StatefulWidget {
   const AddTaskPage({Key? key}) : super(key: key);
@@ -37,18 +35,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   @override
   void dispose() {
+    newTaskController.disposeAll();
     newTaskController.dispose();
-    newTaskController.forTextController.dispose();
-    newTaskController.inTextController.dispose();
     titleController.dispose();
     descriptionController.dispose();
-    newTaskController.isShowPickUserWidget.dispose();
-    newTaskController.isShowProjectWidget.dispose();
-    newTaskController.panelStatus.dispose();
-    newTaskController.pickedTime.dispose();
-    newTaskController.files.dispose();
-    newTaskController.projects.dispose();
-    newTaskController.selectedUsers.dispose();
     super.dispose();
   }
 
@@ -71,62 +61,73 @@ class _AddTaskPageState extends State<AddTaskPage> {
               },
               child: WhiteBoxWidget(
                 height: 570,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 30),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          EnterUserWidget(
-                            isForFieldActive: true,
-                            onChanged: (value) async => await Future.delayed(
-                                const Duration(milliseconds: 500),
-                                () => setState(() {})),
-                            titleController:
-                                newTaskController.forTextController,
-                            text: 'For',
-                          ),
-                          EnterUserWidget(
-                            isForFieldActive: false,
-                            onChanged: (value) async => await Future.delayed(
-                                const Duration(milliseconds: 500),
-                                () => setState(() {})),
-                            titleController: newTaskController.inTextController,
-                            text: 'In',
-                          )
-                        ],
+                child: Form(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  key: newTaskController.formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 30),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            EnterUserWidget(
+                              isForFieldActive: true,
+                              onChanged: (value) async => await Future.delayed(
+                                  const Duration(milliseconds: 500),
+                                  () => setState(() {})),
+                              titleController:
+                                  newTaskController.forTextController,
+                              text: 'For',
+                            ),
+                            EnterUserWidget(
+                              isForFieldActive: false,
+                              onChanged: (value) async => await Future.delayed(
+                                  const Duration(milliseconds: 500),
+                                  () => setState(() {})),
+                              titleController:
+                                  newTaskController.inTextController,
+                              text: 'In',
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                    ValueListenableBuilder<InputFieldStatus>(
-                      valueListenable: newTaskController.panelStatus,
-                      builder: (_, value, __) {
-                        return (value != InputFieldStatus.hide)
-                            ? SelectUserWidget()
-                            : Column(
-                                children: [
-                                  TitleWidget(titleController: titleController),
-                                  DescriptionFieldWidget(
-                                      descriptionController:
-                                          descriptionController),
-                                  const PickTimeFieldWidget(),
-                                  const AddUserWidget(),
-                                  ConfirmButtonWidget(
-                                    title: 'Add Task',
-                                    onPressed: () async {
-                                      updateToken();
-                                      // NavigationService.navigateTo(
-                                      //   context,
-                                      //   Pages.taskList,
-                                      // );
-                                    },
-                                  ),
-                                ],
-                              );
-                      },
-                    ),
-                  ],
+                      ValueListenableBuilder<InputFieldStatus>(
+                        valueListenable: newTaskController.panelStatus,
+                        builder: (_, value, __) {
+                          return (value != InputFieldStatus.hide)
+                              ? const SelectPanelWidget()
+                              : Column(
+                                  children: [
+                                    TitleWidget(
+                                        titleController: titleController),
+                                    DescriptionFieldWidget(
+                                        descriptionController:
+                                            descriptionController),
+                                    const PickTimeFieldWidget(),
+                                    const AddUserWidget(),
+                                    ConfirmButtonWidget(
+                                      title: 'Add Task',
+                                      onPressed: () async {
+                                        if (newTaskController
+                                            .formKey.currentState!
+                                            .validate()) {
+                                          print('can validate');
+                                        }
+
+                                        // NavigationService.navigateTo(
+                                        //   context,
+                                        //   Pages.taskList,
+                                        // );
+                                      },
+                                    ),
+                                  ],
+                                );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

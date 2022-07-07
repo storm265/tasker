@@ -42,6 +42,7 @@ class QuickPage extends StatelessWidget {
       List<CheckListItemModel> itemModel = [];
       CheckListModel model = checkList[i];
       for (int j = 0; j < items.length; j++) {
+        // TODO fix it 
         if (model.ownerId == items[j].checklistId) {
           itemModel.add(items[j]);
         }

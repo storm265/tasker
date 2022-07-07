@@ -19,7 +19,7 @@ class EnterUserWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-     final  newTaskController =
+    final newTaskController =
         InheritedNewTaskController.of(context).addTaskController;
     return Row(
       children: [
@@ -43,7 +43,16 @@ class EnterUserWidget extends StatelessWidget {
           ),
           child: Padding(
             padding: const EdgeInsets.only(left: 15),
-            child: TextField(
+            child: TextFormField(
+              validator: (text) {
+                if (text == 'Assignee' || text == 'Project') {
+                  return 'Pick data!';
+                }
+                if (text == null || text.isEmpty) {
+                  return 'Pick data!';
+                }
+                return null;
+              },
               onChanged: onChanged,
               onTap: () {
                 titleController.selection = TextSelection(

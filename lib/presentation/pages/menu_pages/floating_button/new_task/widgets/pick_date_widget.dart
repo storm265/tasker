@@ -9,7 +9,9 @@ Future<void> showCalendarDatePicker(BuildContext context) async {
 
   await showDialog(
     context: context,
-    builder: (_) {    final addTaskController = InheritedNewTaskController.of(context).addTaskController;
+    builder: (_) {
+      final addTaskController =
+          InheritedNewTaskController.of(context).addTaskController;
       return AlertDialog(
         contentPadding: const EdgeInsets.symmetric(vertical: 10),
         content: SizedBox(
@@ -28,7 +30,7 @@ Future<void> showCalendarDatePicker(BuildContext context) async {
                   onDaySelected: (selecDay, focusedDay) {
                     setState(() {
                       selectedDay = selecDay;
-                      addTaskController.pickTime(selectedDay);
+                      addTaskController.pickTime(newTime: selectedDay);
                     });
                   },
                   firstDay: DateTime.utc(DateTime.now().year - 1, 1, 1),

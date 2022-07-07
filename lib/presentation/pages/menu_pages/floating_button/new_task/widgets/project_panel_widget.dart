@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:todo2/database/model/projects_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/add_task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/controller_inherited.dart';
@@ -24,15 +22,12 @@ class ProjectPanelPickerWidget extends StatelessWidget {
             final data = snapshot.data![index];
             return InkWell(
               onTap: () {
-                // TODO use controller
-                // selectedProject = data;
-                // newTaskController.inTextController.text = selectedProject!.title;
-
                 FocusScope.of(context).unfocus();
                 newTaskController.changePanelStatus(
                     newStatus: InputFieldStatus.hide);
               },
               child: ListTile(
+                onTap: () => newTaskController.pickProject(newProject: data),
                 leading: DoubleCircleWidget(
                   color: data.color,
                   isUsePositioned: false,

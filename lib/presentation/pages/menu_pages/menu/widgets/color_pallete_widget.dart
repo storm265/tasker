@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
-// TODO remove constructor
+
 class ColorPalleteWidget extends StatelessWidget {
   final ColorPalleteController colorController;
   const ColorPalleteWidget({Key? key, required this.colorController})

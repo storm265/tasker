@@ -7,7 +7,6 @@ import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/textfield_widge
 import 'package:todo2/presentation/pages/auth/widgets/title_widget.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
-import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({Key? key}) : super(key: key);
@@ -34,7 +33,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         shouldUsePopMethod: true,
         showLeadingButton: true,
           isRedAppBar: false,
-        // statusBarColor: Colors.white,
         child: DisabledGlowWidget(
           child: Form(
             key: _forgotPasswordController.formKey,

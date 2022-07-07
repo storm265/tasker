@@ -3,14 +3,21 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/wid
 
 class TitleWidget extends StatelessWidget {
   final TextEditingController titleController;
-  const TitleWidget({Key? key, required this.titleController}) : super(key: key);
+  const TitleWidget({Key? key, required this.titleController})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GreyContainerWidget(
       child: Padding(
         padding: const EdgeInsets.only(left: 25, top: 10),
-        child: TextField(
+        child: TextFormField(
+          validator: (text) {
+            if (text == null || text.isEmpty) {
+              return 'Please enter description text';
+            }
+            return null;
+          },
           controller: titleController,
           buildCounter: (context,
                   {required currentLength, required isFocused, maxLength}) =>

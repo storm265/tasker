@@ -15,12 +15,31 @@ enum InputFieldStatus {
 }
 
 class AddTaskController extends ChangeNotifier {
-  final controllerProject = ProjectRepositoryImpl();
-  final controllerUserProfile = UserProfileRepositoryImpl();
+  ProjectRepositoryImpl controllerProject;
+  UserProfileRepositoryImpl controllerUserProfile;
+  UserProfileRepositoryImpl userProfileRepository;
+  final formKey = GlobalKey<FormState>();
 
-final  selectedUsers = ValueNotifier<  List<UserProfileModel>>([]);
-void addUser(UserProfileModel chipTitle) {
+  AddTaskController({
+    required this.controllerProject,
+    required this.controllerUserProfile,
+    required this.userProfileRepository,
+  });
+
+  final selectedUsers = ValueNotifier<List<UserProfileModel>>([]);
+
+  void addMember({required UserProfileModel chipTitle}) {
     selectedUsers.value.add(chipTitle);
+    selectedUsers.notifyListeners();
+  }
+
+  void removeMember({required int index}) {
+    selectedUsers.value.removeAt(index);
+    selectedUsers.notifyListeners();
+  }
+
+  void clearMemberList() {
+    selectedUsers.value.clear();
     selectedUsers.notifyListeners();
   }
 
@@ -29,7 +48,26 @@ void addUser(UserProfileModel chipTitle) {
 
   final files = ValueNotifier<List<PlatformFile>>([]);
   final pickedTime = ValueNotifier<DateTime?>(null);
-  final projects = ValueNotifier<List<ProjectModel>>([]);
+
+  final pickedUser = ValueNotifier<UserProfileModel>(
+    UserProfileModel(avatarUrl: '', createdAt: '', username: '', uuid: ''),
+  );
+
+  void pickUser({required UserProfileModel newUser}) {
+    pickedUser.value = newUser;
+    forTextController.text = pickedUser.value.toString();
+    pickedUser.notifyListeners();
+  }
+
+  final pickerProject = ValueNotifier<ProjectModel>(
+    ProjectModel(color: '', createdAt: '', title: '', uuid: ''),
+  );
+
+  void pickProject({required ProjectModel newProject}) {
+    pickerProject.value = newProject;
+    inTextController.text = pickerProject.value.toString();
+    pickerProject.notifyListeners();
+  }
 
   XFile? pickedFile = XFile('');
   final picker = ImagePicker();
@@ -37,20 +75,18 @@ void addUser(UserProfileModel chipTitle) {
   final isShowPickUserWidget = ValueNotifier(false);
   final isShowProjectWidget = ValueNotifier(false);
   final panelStatus = ValueNotifier<InputFieldStatus>(InputFieldStatus.hide);
+
   late String userName = '', image = '';
-  final userProfileRepository = UserProfileRepositoryImpl();
 
   void changePanelStatus({required InputFieldStatus newStatus}) {
     panelStatus.value = newStatus;
     panelStatus.notifyListeners();
   }
 
-  void pickTime(DateTime newTime) {
+  void pickTime({required DateTime newTime}) {
     pickedTime.value = newTime;
     pickedTime.notifyListeners();
   }
-
- 
 
   Future<void> pickFile({required BuildContext context}) async {
     const int maxSize = 26214400;
@@ -81,5 +117,18 @@ void addUser(UserProfileModel chipTitle) {
       ErrorService.printError("Error in ProfileController  getUserData() :$e ");
       rethrow;
     }
+  }
+
+  void disposeAll() {
+    selectedUsers.dispose();
+    pickedUser.dispose();
+    pickerProject.dispose();
+    forTextController.dispose();
+    inTextController.dispose();
+    isShowPickUserWidget.dispose();
+    isShowProjectWidget.dispose();
+    panelStatus.dispose();
+    pickedTime.dispose();
+    files.dispose();
   }
 }

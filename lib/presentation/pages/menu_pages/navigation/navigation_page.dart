@@ -5,7 +5,6 @@ import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/inher
 import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/status_bar_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/navigation/widgets/keep_alive_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/navigation/widgets/nav_bar_item_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/profile_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_page.dart';
