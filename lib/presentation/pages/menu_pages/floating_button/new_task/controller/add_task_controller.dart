@@ -195,3 +195,5 @@ class AddTaskController extends ChangeNotifier {
     isClickedAddTask.dispose();
   }
 }
+
+class PanelController {}

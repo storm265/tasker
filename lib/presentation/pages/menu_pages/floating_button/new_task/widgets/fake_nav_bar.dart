@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
 
-final fakeNavBar = Padding(
-  padding: const EdgeInsets.only(top: 525),
-  child: Container(
-    width: double.infinity,
-    height: 80,
-    color: const Color(0xFF292E4E),
-  ),
-);
+class FakeNavBarWidget extends StatelessWidget {
+
+  const FakeNavBarWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Container(
+        width: double.infinity,
+        height: 80,
+        color: const Color(0xFF292E4E),
+      ),
+    );
+  }
+}

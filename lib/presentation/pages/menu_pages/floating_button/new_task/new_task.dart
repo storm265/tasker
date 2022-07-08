@@ -51,7 +51,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
           child: Stack(
             children: [
               redAppBar,
-              fakeNavBar,
+              const FakeNavBarWidget(),
               Form(
                 key: newTaskController.formKey,
                 child: WhiteBoxWidget(
@@ -112,22 +112,20 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                         title: 'Add Task',
                                         onPressed: isClicked
                                             ? () async {
-                                                newTaskController
-                                                    .validate(
-                                                      context: context,
-                                                      title:
-                                                          titleController.text,
-                                                      description:
-                                                          descriptionController
-                                                              .text,
-                                                    );
-                                                    // without then
-                                                    // .then((_) =>
-                                                    //     NavigationService
-                                                    //         .navigateTo(
-                                                    //       context,
-                                                    //       Pages.taskList,
-                                                    //     ));
+                                                newTaskController.validate(
+                                                  context: context,
+                                                  title: titleController.text,
+                                                  description:
+                                                      descriptionController
+                                                          .text,
+                                                );
+                                                // without then
+                                                // .then((_) =>
+                                                //     NavigationService
+                                                //         .navigateTo(
+                                                //       context,
+                                                //       Pages.taskList,
+                                                //     ));
                                               }
                                             : null,
                                       ),

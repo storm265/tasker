@@ -24,6 +24,7 @@ import 'presentation/pages/menu_pages/floating_button/new_task/controller/add_ta
 import 'presentation/pages/menu_pages/floating_button/new_task/new_task.dart';
 import 'presentation/pages/menu_pages/navigation/controllers/inherited_navigation_controller.dart';
 import 'presentation/pages/menu_pages/profile/controller/inherited_profile.dart';
+import 'presentation/pages/menu_pages/task/detailed_page/detailed_task.dart';
 import 'services/theme_service/theme_data_controller.dart';
 
 void main() async {
@@ -61,7 +62,7 @@ class MyApp extends StatelessWidget {
             theme: _themeDataController.themeData,
             //  initialRoute: '/',
             // routes: routes,
-            home: AddTaskPage(),
+            home: DetailedTaskPage(),
           ),
         ),
       ),

@@ -46,6 +46,7 @@ flutter:
     - assets/nav_bar_icons/
     - assets/work_list/
     - assets/grey_avatar.jpg
+    - assets/detailed_task/
 
 
 
