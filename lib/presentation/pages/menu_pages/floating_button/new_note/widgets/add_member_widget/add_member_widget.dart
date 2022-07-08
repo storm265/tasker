@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:todo2/database/database_scheme/storage_scheme.dart';
 import 'package:todo2/database/model/users_profile_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/widgets/add_member_widget/add_member_dialog.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/add_task_controller.dart';
+
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/controller_inherited.dart';
 import 'package:todo2/services/supabase/constants.dart';
 
@@ -26,7 +27,7 @@ class _AddUserWidgetState extends State<AddUserWidget> {
     final addTaskController =
         InheritedNewTaskController.of(context).addTaskController;
     return ValueListenableBuilder<List<UserProfileModel>>(
-      valueListenable: addTaskController.selectedUsers,
+      valueListenable: addTaskController.taskMembers,
       builder: (_, users, __) => (users.isEmpty)
           ? Padding(
               padding: const EdgeInsets.only(left: 15, bottom: 20, top: 20),
@@ -76,7 +77,7 @@ class _AddUserWidgetState extends State<AddUserWidget> {
                   final avatar = SupabaseSource()
                           .restApiClient
                           .storage
-                          .from('avatar')
+                          .from(StorageScheme.avatar)
                           .getPublicUrl(users[index].avatarUrl)
                           .data ??
                       '';
@@ -88,7 +89,7 @@ class _AddUserWidgetState extends State<AddUserWidget> {
                           radius: 17,
                           backgroundColor: Colors.red,
                           backgroundImage: NetworkImage(avatar),
-                          child: Text(users[index].username),
+                          // child: Text(users[index].username),
                         ),
                       ),
                       (index == users.length - 1)

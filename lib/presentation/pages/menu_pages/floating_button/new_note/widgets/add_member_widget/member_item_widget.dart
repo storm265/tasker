@@ -7,8 +7,13 @@ import 'package:todo2/services/theme_service/theme_data_controller.dart';
 class UserItemWidget extends StatefulWidget {
   final int index;
   final UserProfileModel data;
-  const UserItemWidget({Key? key, required this.data, required this.index})
-      : super(key: key);
+  final String email;
+  const UserItemWidget({
+    Key? key,
+    required this.data,
+    required this.index,
+    required this.email,
+  }) : super(key: key);
 
   @override
   State<UserItemWidget> createState() => _UserItemWidgetState();
@@ -21,10 +26,11 @@ class _UserItemWidgetState extends State<UserItemWidget> {
     final newTaskController =
         InheritedNewTaskController.of(context).addTaskController;
     return ListTile(
-      leading: CachedAvatarWidget(
-        image: widget.data.avatarUrl,
-      ),
+      // leading: CachedAvatarWidget(
+      //   image: widget.data.avatarUrl,
+      // ),
       title: Text(widget.data.username),
+      subtitle: Text(widget.email),
       trailing: IconButton(
         onPressed: () {
           setState(() {

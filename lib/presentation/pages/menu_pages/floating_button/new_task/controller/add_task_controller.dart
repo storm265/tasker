@@ -33,21 +33,21 @@ class AddTaskController extends ChangeNotifier {
     required this.taskRepository,
   });
 
-  final selectedUsers = ValueNotifier<List<UserProfileModel>>([]);
+  final taskMembers = ValueNotifier<List<UserProfileModel>>([]);
 
   void addMember({required UserProfileModel chipTitle}) {
-    selectedUsers.value.add(chipTitle);
-    selectedUsers.notifyListeners();
+    taskMembers.value.add(chipTitle);
+    taskMembers.notifyListeners();
   }
 
   void removeMember({required int index}) {
-    selectedUsers.value.removeAt(index);
-    selectedUsers.notifyListeners();
+    taskMembers.value.removeAt(index);
+    taskMembers.notifyListeners();
   }
 
   void clearMemberList() {
-    selectedUsers.value.clear();
-    selectedUsers.notifyListeners();
+    taskMembers.value.clear();
+    taskMembers.notifyListeners();
   }
 
   final userTextController = TextEditingController(text: 'Assignee');
@@ -145,7 +145,7 @@ class AddTaskController extends ChangeNotifier {
       if (formKey.currentState!.validate()) {
         isClickedAddTask.value = false;
         isClickedAddTask.notifyListeners();
-        
+
         await putTask(
           description: description,
           title: title,
@@ -182,7 +182,7 @@ class AddTaskController extends ChangeNotifier {
   }
 
   void disposeAll() {
-    selectedUsers.dispose();
+    taskMembers.dispose();
     pickedUser.dispose();
     pickedProject.dispose();
     userTextController.dispose();

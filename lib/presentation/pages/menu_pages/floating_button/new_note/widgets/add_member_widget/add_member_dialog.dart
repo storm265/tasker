@@ -1,15 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:todo2/database/database_scheme/storage_scheme.dart';
 import 'package:todo2/database/model/users_profile_model.dart';
+import 'package:todo2/database/repository/user_profile_repository.dart';
+import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/widgets/add_member_widget/member_item_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/controller_inherited.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/confirm_button.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
+import 'package:todo2/services/supabase/constants.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 class AddUserDialog extends StatelessWidget {
   AddUserDialog({Key? key}) : super(key: key);
 
   final userTextController = TextEditingController();
+
+  // TODO remove dublication
+  List<String> emails = [];
+  List<UserProfileModel> users = [];
+
+  Future<List<UserProfileModel>> fetchUsers({required String userName}) async {
+    emails = await UserRepositoryImpl().fetchEmail();
+    users = await UserProfileRepositoryImpl().fetchUsers(userName: userName);
+
+    return users;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,8 +80,7 @@ class AddUserDialog extends StatelessWidget {
                 child: DisabledGlowWidget(
                   child: FutureBuilder<List<UserProfileModel>>(
                     initialData: const [],
-                    future: newTaskController.userProfileRepository
-                        .fetchUsers(userName: userTextController.text),
+                    future: fetchUsers(userName: userTextController.text),
                     builder: (context,
                         AsyncSnapshot<List<UserProfileModel>> snapshot) {
                       return (snapshot.hasError || !snapshot.hasData)
@@ -76,15 +90,13 @@ class AddUserDialog extends StatelessWidget {
                               itemCount: snapshot.data!.length,
                               itemBuilder: (context, index) {
                                 final data = snapshot.data![index];
-                                // final avatar = SupabaseSource()
-                                //         .restApiClient
-                                //         .storage
-                                //         .from('avatar')
-                                //         .getPublicUrl(
-                                //             snapshot.data![0].avatarUrl)
-                                //         .data ??
-                                //     '';
-                                return UserItemWidget(data: data, index: index);
+                              
+
+                                return UserItemWidget(
+                                  data: data,
+                                  index: index,
+                                  email: emails[index],
+                                );
                               },
                             );
                     },

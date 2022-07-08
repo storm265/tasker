@@ -9,6 +9,7 @@ import 'package:todo2/services/supabase/constants.dart';
 class UserPanelPickerWidget extends StatelessWidget {
   UserPanelPickerWidget({Key? key}) : super(key: key);
 
+// TODO remove dublication
   List<String> emails = [];
   List<UserProfileModel> users = [];
 
