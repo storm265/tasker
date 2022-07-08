@@ -40,7 +40,7 @@ class _AddCheckListPageState extends State<AddCheckListPage> {
       shouldUsePopMethod: true,
       child: Stack(
         children: [
-          redAppBar,
+       const  FakeAppBar(),
           WhiteBoxWidget(
             height: 550,
             child: Column(

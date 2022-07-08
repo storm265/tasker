@@ -36,7 +36,7 @@ class _AddQuickNoteState extends State<AddQuickNote> {
       shouldUsePopMethod: true,
       child: Stack(
         children: [
-          redAppBar,
+         const  FakeAppBar(),
           WhiteBoxWidget(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),

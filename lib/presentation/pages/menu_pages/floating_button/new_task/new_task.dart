@@ -50,7 +50,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
           },
           child: Stack(
             children: [
-              redAppBar,
+              const FakeAppBar(),
               const FakeNavBarWidget(),
               Form(
                 key: newTaskController.formKey,
