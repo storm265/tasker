@@ -25,7 +25,7 @@ class TaskCardWidget extends StatelessWidget {
                 width: 5,
                 height: 25,
                 child: ColoredBox(
-                  color: data.isCompleted ? colors[0] : Colors.red,
+                  color: data.isCompleted ? Colors.red : colors[0],
                 ),
               ),
             ),
@@ -35,9 +35,12 @@ class TaskCardWidget extends StatelessWidget {
                       padding: EdgeInsets.all(8.0),
                       child: Icon(Icons.check_circle, color: Palette.red),
                     )
-                  : CustomPaint(
-                      size: const Size(20, 20),
-                      painter: CirclePainter(circleColor: colors[0]),
+                  : Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CustomPaint(
+                        size: const Size(20, 20),
+                        painter: CirclePainter(circleColor: colors[0]),
+                      ),
                     ),
               subtitle: Text(
                 '${date.hour}:${date.minute} $isAm',

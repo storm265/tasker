@@ -10,7 +10,7 @@ abstract class TaskDataSource {
   Future putTask({
     required String title,
     required String description,
-    required String assignedTo,
+    required int assignedTo,
     required int projectId,
     required DateTime dueDate,
   });
@@ -43,7 +43,7 @@ class TaskDataSourceImpl implements TaskDataSource {
   Future<PostgrestResponse<dynamic>> putTask({
     required String title,
     required String description,
-    required String assignedTo,
+    required int assignedTo,
     required int projectId,
     required DateTime dueDate,
   }) async {

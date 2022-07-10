@@ -1,9 +1,6 @@
 import 'dart:developer';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:todo2/database/model/projects_model.dart';
 import 'package:todo2/database/model/users_profile_model.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
@@ -11,7 +8,7 @@ import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/user_profile_repository.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
-import 'package:todo2/services/navigation_service/navigation_service.dart';
+
 import 'package:todo2/services/supabase/constants.dart';
 
 enum InputFieldStatus {
@@ -59,8 +56,10 @@ class AddTaskController extends ChangeNotifier {
     UserProfileModel(avatarUrl: '', createdAt: '', username: '', uuid: ''),
   );
 
-  void pickUser(
-      {required UserProfileModel newUser, required BuildContext context}) {
+  void pickUser({
+    required UserProfileModel newUser,
+    required BuildContext context,
+  }) {
     pickedUser.value = newUser;
     userTextController.text = pickedUser.value.username;
     pickedUser.notifyListeners();
@@ -172,7 +171,8 @@ class AddTaskController extends ChangeNotifier {
       await taskRepository.putTask(
         title: title,
         description: description,
-        assignedTo: _supabase.auth.currentUser!.id,
+        // TODO fix id
+        assignedTo: 4,
         projectId: id, // looks like its id?
         dueDate: pickedTime.value!,
       );

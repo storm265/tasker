@@ -23,7 +23,7 @@ class DetailedItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(vertical: 2),
       child: ListTile(
         leading: (leading == null)
             ? Image.asset('$assetsPath/$imageIcon.png')

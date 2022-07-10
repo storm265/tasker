@@ -19,8 +19,9 @@ class ConfirmButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-          fixedSize: Size(width, height), primary: color),
+      style: ButtonStyle(
+          minimumSize: MaterialStateProperty.all<Size>(Size(width, height)),
+          backgroundColor: MaterialStateProperty.all<Color>(color)),
       onPressed: onPressed,
       child: Text(
         title,

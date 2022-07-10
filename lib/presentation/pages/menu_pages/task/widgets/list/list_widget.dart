@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:todo2/database/model/task_model.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/detailed_page/detailed_task.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/list/task_item_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/list/text.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/slidable_widgets/endpane_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/slidable_widgets/grey_slidable_widget.dart';
-
 
 class ListWidget extends StatelessWidget {
   final int index;
@@ -46,7 +46,13 @@ class ListWidget extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: TaskCardWidget(data: data),
+                  child: GestureDetector(
+                    onTap: () => showDialog(
+                      context: context,
+                      builder: (context) => const DetailedTaskPage(),
+                    ),
+                    child: TaskCardWidget(data: data),
+                  ),
                 );
               }),
         ],

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/task_model.dart';
 import 'package:todo2/database/repository/task_repository.dart';
@@ -21,6 +23,7 @@ class _TasksPageState extends State<TasksPage>
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
     super.initState();
+    log(taskController.fetchTask().toString());
   }
 
   @override
@@ -59,21 +62,20 @@ class _TasksPageState extends State<TasksPage>
                   child: FutureBuilder<List<TaskModel>>(
                     future: taskController.fetchTask(),
                     initialData: const [],
-                    builder:
-                        (context, AsyncSnapshot<List<TaskModel>> snapshot) {
-                      if (snapshot.hasData) {
-                        return ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          itemCount: snapshot.data!.length,
-                          itemBuilder: ((context, index) => ListWidget(
-                                index: index,
-                                model: snapshot.data!,
-                              )),
-                        );
-                      } else {
-                        return const CircularProgressIndicator.adaptive();
-                      }
-                    },
+                    builder: (context,
+                            AsyncSnapshot<List<TaskModel>> snapshot) =>
+                        snapshot.hasData
+                            ? ListView.builder(
+                                scrollDirection: Axis.vertical,
+                                itemCount: snapshot.data!.length,
+                                itemBuilder: ((context, index) => ListWidget(
+                                      index: index,
+                                      model: snapshot.data!,
+                                    )),
+                              )
+                            : const Center(
+                                child: CircularProgressIndicator.adaptive(),
+                              ),
                   ),
                 ),
                 // month

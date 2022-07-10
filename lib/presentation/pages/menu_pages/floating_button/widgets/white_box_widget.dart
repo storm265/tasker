@@ -4,9 +4,13 @@ import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.da
 class WhiteBoxWidget extends StatelessWidget {
   final Widget child;
   final double height;
+  final double width;
+  final ScrollController? scrollController;
   const WhiteBoxWidget({
     Key? key,
     required this.child,
+    this.scrollController,
+    this.width = 350,
     this.height = 468,
   }) : super(key: key);
 
@@ -28,9 +32,11 @@ class WhiteBoxWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
       ),
       child: DisabledGlowWidget(
-          child: SingleChildScrollView(
-        child: child,
-      )),
+        child: SingleChildScrollView(
+          controller: scrollController,
+          child: child,
+        ),
+      ),
     );
   }
 }

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:todo2/database/model/projects_model.dart';
@@ -44,7 +43,7 @@ class StatsWidget extends StatelessWidget {
                     ),
                     SizedBox(
                       width: double.infinity,
-                      height: 110,
+                      height: 120,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount: snapshot.data!.length,

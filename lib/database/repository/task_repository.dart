@@ -9,7 +9,7 @@ abstract class TaskRepository<T> {
   Future putTask({
     required String title,
     required String description,
-    required String assignedTo,
+    required int assignedTo,
     required int projectId,
     required DateTime dueDate,
   });
@@ -29,7 +29,7 @@ class TaskRepositoryImpl implements TaskRepository {
           .toList();
     } catch (e) {
       ErrorService.printError(
-          'Error in ProjectRepositoryImpl fetchProject() repository $e');
+          'Error in ProjectRepositoryImpl fetchTask() repository $e');
       rethrow;
     }
   }
@@ -38,7 +38,7 @@ class TaskRepositoryImpl implements TaskRepository {
   Future<void> putTask({
     required String title,
     required String description,
-    required String assignedTo,
+    required int assignedTo,
     required int projectId,
     required DateTime dueDate,
   }) async {

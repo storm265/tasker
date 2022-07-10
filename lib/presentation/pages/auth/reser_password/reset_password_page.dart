@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:todo2/database/repository/auth/auth_repository.dart';
 import 'package:todo2/presentation/pages/auth/reser_password/controller/restore_password_controller.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/sign_up_button_widget.dart';
@@ -16,12 +18,14 @@ class NewPasswordPage extends StatefulWidget {
 }
 
 class _NewPasswordPageState extends State<NewPasswordPage> {
-  final _restorePasswordController = RestorePasswordController();
+  final _restorePasswordController =
+      RestorePasswordController(authRepositoryController: AuthRepositoryImpl());
 
   @override
   void dispose() {
     _restorePasswordController.passwordController1.dispose();
     _restorePasswordController.passwordController2.dispose();
+
     super.dispose();
   }
 
@@ -32,7 +36,7 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
       child: AppbarWrapperWidget(
         shouldUsePopMethod: true,
         showLeadingButton: true,
-          isRedAppBar: false,
+        isRedAppBar: false,
         // statusBarColor: Colors.white,
 
         // TODO maybe a problem
@@ -74,7 +78,7 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                           buttonText: 'Change password',
                           height: 350,
                           onPressed: () => _restorePasswordController
-                              .validatePassword(context),
+                              .validatePassword(context: context),
                         ),
                       ],
                     );
@@ -116,12 +120,17 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                     labelText: 'Enter your confirm password',
                     text: 'Confirm password',
                   ),
-                  SignUpButtonWidget(
-                    buttonText: 'Update password',
-                    height: 350,
-                    onPressed: () =>
-                        _restorePasswordController.validatePassword(context),
-                  ),
+                  ValueListenableBuilder<bool>(
+                    valueListenable: _restorePasswordController.isClickedSubmit,
+                    builder: (_, isClicked, __) => SignUpButtonWidget(
+                      buttonText: 'Update password',
+                      height: 350,
+                      onPressed: isClicked
+                          ? () => _restorePasswordController.validatePassword(
+                              context: context)
+                          : null,
+                    ),
+                  )
                 ],
               ),
       ),

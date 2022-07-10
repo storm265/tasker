@@ -120,12 +120,11 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                                           .text,
                                                 );
                                                 // without then
-                                                // .then((_) =>
-                                                //     NavigationService
-                                                //         .navigateTo(
-                                                //       context,
-                                                //       Pages.taskList,
-                                                //     ));
+
+                                                NavigationService.navigateTo(
+                                                  context,
+                                                  Pages.taskList,
+                                                );
                                               }
                                             : null,
                                       ),

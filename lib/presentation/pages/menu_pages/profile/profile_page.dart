@@ -14,7 +14,6 @@ class ProfilePage extends StatelessWidget {
     final inheritedProfile = ProfileInherited.of(context);
     return AppbarWrapperWidget(
       title: 'Profiles',
-     
       isRedAppBar: false,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
