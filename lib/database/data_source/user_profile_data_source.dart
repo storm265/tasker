@@ -6,6 +6,7 @@ import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/supabase/constants.dart';
 
 abstract class UserProfileDataSource {
+    Future fetchUserId();
   Future fetchUserName();
   Future fetchAvatar();
   Future insertUserProfile({
@@ -19,6 +20,23 @@ abstract class UserProfileDataSource {
 class UserProfileDataSourceImpl implements UserProfileDataSource {
   final _supabase = SupabaseSource().restApiClient;
   final _table = 'user_profile';
+
+
+@override
+  Future<int> fetchUserId() async {
+    try {
+      final response = await _supabase
+          .from(_table)
+          .select(UserProfileScheme.id)
+          .eq(UserProfileScheme.uuid, _supabase.auth.currentUser!.id)
+          .execute();
+      return response.data[0]['id'];
+    } catch (e) {
+      ErrorService.printError('Error in fetchAvatar() fetchUserId: $e');
+      rethrow;
+    }
+  }
+
 
   @override
   Future<PostgrestResponse<dynamic>> insertUserProfile({
@@ -125,4 +143,5 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
       rethrow;
     }
   }
+
 }

@@ -3,7 +3,9 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
+import 'package:todo2/database/repository/task_attachment_repository.dart';
 import 'package:todo2/database/repository/task_repository.dart';
+import 'package:todo2/database/repository/tasks_member_repository.dart';
 import 'package:todo2/database/repository/user_profile_repository.dart';
 import 'package:todo2/presentation/pages/auth/reser_password/reset_password_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/controller_inherited.dart';
@@ -40,9 +42,11 @@ class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
 
   final _newTaskConroller = AddTaskController(
+    tasksMembers: TasksMembersRepositoryImpl(),
     taskRepository: TaskRepositoryImpl(),
-    projectrepository: ProjectRepositoryImpl(),
+    projectRepository: ProjectRepositoryImpl(),
     userProfileRepository: UserProfileRepositoryImpl(),
+    taskAttachment: TaskAttachmentRepositoryImpl(),
   );
 
   final _themeDataController = ThemeDataService();
@@ -61,9 +65,9 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'Todo2',
             theme: _themeDataController.themeData,
-            // initialRoute: '/',
-            // routes: routes,
-            home: AddTaskPage(),
+           initialRoute: '/',
+            routes: routes,
+          //  home: AddTaskPage(),
           ),
         ),
       ),

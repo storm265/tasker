@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:todo2/database/repository/auth/auth_repository.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
+import 'package:todo2/services/message_service/message_service.dart';
 
 class ForgotPasswordController extends ChangeNotifier {
   final formKey = GlobalKey<FormState>();
@@ -19,6 +20,7 @@ class ForgotPasswordController extends ChangeNotifier {
         context: context,
         email: email,
       );
+      MessageService.displaySnackbar(context: context, message: 'Check your email.');
     }
     isClickedButton.value = true;
     isClickedButton.notifyListeners();

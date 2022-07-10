@@ -13,7 +13,7 @@ class ProjectPanelPickerWidget extends StatelessWidget {
         InheritedNewTaskController.of(context).addTaskController;
     return FutureBuilder<List<ProjectModel>>(
       initialData: const [],
-      future: newTaskController.projectrepository.fetchProjectsWhere(
+      future: newTaskController.projectRepository.fetchProjectsWhere(
           title: newTaskController.projectTextController.text),
       builder: (context, AsyncSnapshot<List<ProjectModel>> snapshot) {
         return ListView.builder(

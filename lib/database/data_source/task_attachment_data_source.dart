@@ -8,7 +8,7 @@ import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/supabase/constants.dart';
 
 abstract class TaskAttachmentsDataSource {
-  Future putAttachment({required String url});
+  Future putAttachment(      {required String url,required int taskId});
   Future uploadFile({required String path, required File file});
   Future fetchAttachment();
   Future fetchAvatar();
@@ -20,11 +20,11 @@ class TaskAttachmentsDataSourceImpl implements TaskAttachmentsDataSource {
 
   @override
   Future<PostgrestResponse<dynamic>> putAttachment(
-      {required String url}) async {
+      {required String url,required int taskId}) async {
     try {
       final response = await _supabase.from(_table).insert({
         TaskAttachmentsScheme.url: url,
-        TaskAttachmentsScheme.taskId: _supabase.auth.currentUser!.id,
+        TaskAttachmentsScheme.taskId: taskId,
         TaskAttachmentsScheme.createdAt: DateTime.now().toString()
       }).execute();
       if (response.hasError) {

@@ -4,7 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:todo2/database/model/projects_model.dart';
 import 'package:todo2/database/model/users_profile_model.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
+import 'package:todo2/database/repository/task_attachment_repository.dart';
 import 'package:todo2/database/repository/task_repository.dart';
+import 'package:todo2/database/repository/tasks_member_repository.dart';
 import 'package:todo2/database/repository/user_profile_repository.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
@@ -18,16 +20,21 @@ enum InputFieldStatus {
 }
 
 class AddTaskController extends ChangeNotifier {
-  ProjectRepositoryImpl projectrepository;
+  ProjectRepositoryImpl projectRepository;
   UserProfileRepositoryImpl userProfileRepository;
   TaskRepositoryImpl taskRepository;
+  TaskAttachmentRepositoryImpl taskAttachment;
+  TasksMembersRepositoryImpl tasksMembers;
+
   final _supabase = SupabaseSource().restApiClient;
   final formKey = GlobalKey<FormState>();
 
   AddTaskController({
-    required this.projectrepository,
+    required this.projectRepository,
     required this.userProfileRepository,
     required this.taskRepository,
+    required this.taskAttachment,
+    required this.tasksMembers,
   });
 
   final taskMembers = ValueNotifier<List<UserProfileModel>>([]);
@@ -114,6 +121,7 @@ class AddTaskController extends ChangeNotifier {
         PlatformFile file = result.files.first;
         files.value.add(file);
       }
+      log(files.value[0].path.toString());
       files.notifyListeners();
     } catch (e) {
       ErrorService.printError('pickAvatar error: $e');
@@ -166,16 +174,28 @@ class AddTaskController extends ChangeNotifier {
     required String description,
   }) async {
     try {
-      int id = await projectrepository.fetchProjectId(
+      int userId = await userProfileRepository.fetchId();
+      int projectId = await projectRepository.fetchProjectId(
           project: pickedProject.value.title);
+
       await taskRepository.putTask(
         title: title,
         description: description,
-        // TODO fix id
-        assignedTo: 4,
-        projectId: id, // looks like its id?
+        assignedTo: userId,
+        projectId: projectId,
         dueDate: pickedTime.value!,
       );
+      int currentProjectId = await taskRepository.fetchTaskId(title: title);
+      // push attachment
+      for (int i = 0; i < files.value.length; i++) {
+        await taskAttachment.putAttachment(
+            url: files.value[i].name, taskId: currentProjectId);
+      }
+      //TODO fix it
+      // task members
+      for(int i=0; i<taskMembers.value.length;i++){
+tasksMembers.putMember();
+      }
     } catch (e) {
       ErrorService.printError('Error in add task controller putTask(): $e');
     }

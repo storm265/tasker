@@ -21,7 +21,8 @@ class AddUserDialog extends StatelessWidget {
 
   Future<List<UserProfileModel>> fetchUsers({required String userName}) async {
     emails = await UserRepositoryImpl().fetchEmail();
-    users = await UserProfileRepositoryImpl().fetchUsers(userName: userName);
+    users =
+        await UserProfileRepositoryImpl().fetchUsersWhere(userName: userName);
 
     return users;
   }
@@ -90,7 +91,6 @@ class AddUserDialog extends StatelessWidget {
                               itemCount: snapshot.data!.length,
                               itemBuilder: (context, index) {
                                 final data = snapshot.data![index];
-                              
 
                                 return UserItemWidget(
                                   data: data,

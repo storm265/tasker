@@ -15,7 +15,8 @@ class UserPanelPickerWidget extends StatelessWidget {
 
   Future<List<UserProfileModel>> fetchUsers({required String userName}) async {
     emails = await UserRepositoryImpl().fetchEmail();
-    users = await UserProfileRepositoryImpl().fetchUsers(userName: userName);
+    users =
+        await UserProfileRepositoryImpl().fetchUsersWhere(userName: userName);
 
     return users;
   }

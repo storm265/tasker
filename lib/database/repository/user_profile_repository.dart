@@ -9,12 +9,12 @@ import 'package:todo2/services/supabase/constants.dart';
 abstract class UserProfileRepository {
   Future<String> fetchUserName();
   Future<String> fetchAvatar();
-
+  Future fetchId();
   Future<void> insertProfile({
     required String avatarUrl,
     required String username,
   });
-  fetchUsers({required String userName});
+  fetchUsersWhere({required String userName});
 }
 
 class UserProfileRepositoryImpl implements UserProfileRepository {
@@ -76,7 +76,8 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
   }
 
   @override
-  Future<List<UserProfileModel>> fetchUsers({required String userName}) async {
+  Future<List<UserProfileModel>> fetchUsersWhere(
+      {required String userName}) async {
     try {
       final response =
           await _userProfileDataSource.fetchUsers(userName: userName);
@@ -88,6 +89,19 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
           .toList();
     } catch (e) {
       ErrorService.printError('Error in repository fetchUsers(): $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<int> fetchId() async {
+    try {
+      final response = await _userProfileDataSource.fetchUserId();
+
+      return response;
+    } catch (e) {
+      ErrorService.printError(
+          'Error in fetchAvatar() UserProfileRepositoryImpl: $e');
       rethrow;
     }
   }

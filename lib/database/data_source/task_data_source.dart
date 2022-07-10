@@ -14,6 +14,7 @@ abstract class TaskDataSource {
     required int projectId,
     required DateTime dueDate,
   });
+ Future fetchTaskId({required String title});
 }
 
 class TaskDataSourceImpl implements TaskDataSource {
@@ -26,6 +27,25 @@ class TaskDataSourceImpl implements TaskDataSource {
           .from(_table)
           .select('*')
           .eq(TaskScheme.ownerId, _supabase.auth.currentUser!.id)
+          .execute();
+      if (response.hasError) {
+        log(response.error!.message);
+      }
+      return response;
+    } catch (e) {
+      ErrorService.printError(
+          'Error in ProjectUserDataImpl fetchProject() dataSource:  $e');
+      rethrow;
+    }
+  }
+
+   @override
+  Future<PostgrestResponse<dynamic>> fetchTaskId({required String title}) async {
+    try {
+      final response = await _supabase
+          .from(_table)
+          .select(TaskScheme.id)
+          .eq(TaskScheme.ownerId, _supabase.auth.currentUser!.id).eq(TaskScheme.title, title)
           .execute();
       if (response.hasError) {
         log(response.error!.message);

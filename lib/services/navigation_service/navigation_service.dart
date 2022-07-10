@@ -37,6 +37,8 @@ Map<String, Widget Function(BuildContext)> routes = {
   '/signIn': (_) => const SignInPage(),
   '/forgotPassword': (_) => const ForgotPasswordPage(),
   '/newPassword': (_) => const NewPasswordPage(),
+  // TODO fix it 
+  '/updatePassword': (_) => const NewPasswordPage(),
   '/passwordChanged': (_) => const PasswordChangedPage(),
   '/home': (_) => const NavigationPage(),
   '/taskList': (_) => const TasksPage(),

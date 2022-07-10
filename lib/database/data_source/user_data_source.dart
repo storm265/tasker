@@ -8,7 +8,7 @@ import 'package:todo2/services/supabase/constants.dart';
 
 abstract class UserDataSource {
   Future fetchUser();
-  // Future fetchUserId();
+
   Future insertUser({
     required String email,
     required String password,
@@ -19,6 +19,7 @@ abstract class UserDataSource {
 class UserDataSourceImpl implements UserDataSource {
   final _table = 'user';
   final _supabase = SupabaseSource().restApiClient;
+
   @override
   Future<supabase.PostgrestResponse<dynamic>> insertUser({
     required String email,
@@ -74,18 +75,5 @@ class UserDataSourceImpl implements UserDataSource {
     }
   }
 
-  // @override
-  // Future<int> fetchUserId() async {
-  //   try {
-  //     final response = await _supabase
-  //         .from(_table)
-  //         .select(UserDataScheme.id)
-  //         .eq(UserDataScheme.id, _supabase.auth.currentUser!.id)
-  //         .execute();
-  //     return response.data[0]['id'];
-  //   } catch (e) {
-  //     ErrorService.printError('Error in fetchAvatar() fetchUserId: $e');
-  //     rethrow;
-  //   }
-  // }
+  
 }

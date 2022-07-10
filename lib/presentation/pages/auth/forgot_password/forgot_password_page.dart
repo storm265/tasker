@@ -7,6 +7,7 @@ import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/textfield_widge
 import 'package:todo2/presentation/pages/auth/widgets/title_widget.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
+import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({Key? key}) : super(key: key);
@@ -32,7 +33,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       child: AppbarWrapperWidget(
         shouldUsePopMethod: true,
         showLeadingButton: true,
-          isRedAppBar: false,
+        isRedAppBar: false,
         child: DisabledGlowWidget(
           child: Form(
             key: _forgotPasswordController.formKey,
@@ -64,10 +65,18 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     buttonText: 'Send Request',
                     onPressed: isClicked
                         ? () async {
-                            await _forgotPasswordController.sendEmail(
-                              context: context,
-                              email: _emailController.text,
-                            );
+                            await _forgotPasswordController
+                                .sendEmail(
+                                  context: context,
+                                  email: _emailController.text,
+                                )
+                                .then((_) => NavigationService.navigateTo(
+                                      context,
+                                      Pages.updatePassword,
+                                      arguments: true,
+                                    ));
+
+                            ;
                           }
                         : null,
                   ),

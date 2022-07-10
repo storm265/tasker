@@ -1,4 +1,5 @@
 class TaskScheme {
+  static const String id = 'id';
   static const String title = 'title';
   static const String dueDate = 'due_date';
   static const String description = 'description';

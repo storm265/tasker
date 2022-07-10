@@ -1,4 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:todo2/database/data_source/task_data_source.dart';
+import 'package:todo2/database/data_source/user_data_source.dart';
+import 'package:todo2/database/data_source/user_profile_data_source.dart';
+import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/widgets/add_member_widget/add_member_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/widgets/description_field_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/widgets/for_in_field_widget.dart';
@@ -112,19 +118,19 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                         title: 'Add Task',
                                         onPressed: isClicked
                                             ? () async {
-                                                newTaskController.validate(
-                                                  context: context,
-                                                  title: titleController.text,
-                                                  description:
-                                                      descriptionController
-                                                          .text,
-                                                );
-                                                // without then
+                                              
+                                                // newTaskController.validate(
+                                                //   context: context,
+                                                //   title: titleController.text,
+                                                //   description:
+                                                //       descriptionController
+                                                //           .text,
+                                                // );
 
-                                                NavigationService.navigateTo(
-                                                  context,
-                                                  Pages.taskList,
-                                                );
+                                                // NavigationService.navigateTo(
+                                                //   context,
+                                                //   Pages.taskList,
+                                                // );
                                               }
                                             : null,
                                       ),

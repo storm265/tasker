@@ -1,11 +1,28 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:todo2/database/repository/user_profile_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/controller_inherited.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/widgets/panel_widgets/image_widget.dart';
 
-class AttachementWidget extends StatelessWidget {
+class AttachementWidget extends StatefulWidget {
   const AttachementWidget({Key? key}) : super(key: key);
+
+  @override
+  State<AttachementWidget> createState() => _AttachementWidgetState();
+}
+
+class _AttachementWidgetState extends State<AttachementWidget> {
+  late String userName;
+  @override
+  void initState() {
+    fetchUserName();
+    super.initState();
+  }
+
+  void fetchUserName() async {
+    userName = await UserProfileRepositoryImpl().fetchUserName();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,13 +31,14 @@ class AttachementWidget extends StatelessWidget {
     return ValueListenableBuilder<List<PlatformFile>>(
       valueListenable: newTaskController.files,
       builder: (context, imgList, value) => FutureBuilder<List<String>>(
-        //   future: newTaskController.fetchCommentInfo(),
+        future: newTaskController.fetchCommentInfo(),
         initialData: const [],
         builder: ((context, AsyncSnapshot<List<String>> snapshot) {
           if (!snapshot.hasData) {
             return const SizedBox();
           } else if (snapshot.hasData) {
             return ListView.builder(
+              physics: const NeverScrollableScrollPhysics(),
               itemBuilder: (context, index) {
                 final dateNow = DateTime.now();
 
@@ -31,7 +49,7 @@ class AttachementWidget extends StatelessWidget {
                         radius: 40,
                         image: snapshot.data![index],
                       ),
-                      title: Text(snapshot.data![1]),
+                      title: Text(userName),
                       subtitle: Text(
                           '${dateNow.day}/${dateNow.month}/${dateNow.year}'),
                     ),
