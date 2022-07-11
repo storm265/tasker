@@ -9,7 +9,7 @@ class GetStartedButton extends StatelessWidget {
     return Align(
       alignment: Alignment.bottomCenter,
       child: Padding(
-        padding: const EdgeInsets.only(bottom: 40),
+        padding: const EdgeInsets.only(bottom: 55),
         child: InkWell(
           onTap: () => NavigationService.navigateTo(context, Pages.signUp),
           child: Container(

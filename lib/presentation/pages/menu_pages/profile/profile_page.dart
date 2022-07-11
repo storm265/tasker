@@ -4,7 +4,7 @@ import 'package:todo2/presentation/pages/menu_pages/profile/controller/inherited
 import 'package:todo2/presentation/pages/menu_pages/profile/widgets/stats_widget/stats_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/widgets/task_list_widgets/task_list_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/profile/widgets/panel_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/profile/widgets/profile_widget.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -21,20 +21,20 @@ class ProfilePage extends StatelessWidget {
         child: Column(
           children: [
             const ProfileWidget(),
-            FutureBuilder<List<ProjectModel>>(
-              initialData: const [],
-              future: inheritedProfile.profileController.fetchProject(),
-              builder: (_, AsyncSnapshot<List<ProjectModel>> snapshot) {
-                return snapshot.hasData
-                    ? Column(
-                        children: [
-                          TaskListWidget(snapshot: snapshot),
-                          StatsWidget(snapshot: snapshot),
-                        ],
-                      )
-                    : const SizedBox();
-              },
-            ),
+            // FutureBuilder<List<ProjectModel>>(
+            //   initialData: const [],
+            //   future: inheritedProfile.profileController.fetchProject(),
+            //   builder: (_, AsyncSnapshot<List<ProjectModel>> snapshot) {
+            //     return snapshot.hasData
+            //         ? Column(
+            //             children: [
+            //               TaskListWidget(snapshot: snapshot),
+            //               StatsWidget(snapshot: snapshot),
+            //             ],
+            //           )
+            //         : const SizedBox();
+            //   },
+            // ),
           ],
         ),
       ),

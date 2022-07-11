@@ -8,6 +8,7 @@ import 'package:todo2/presentation/pages/menu_pages/task/widgets/app_bar_widget.
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/calendar_lib/table_calendar.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/list/list_widget.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
+import 'package:todo2/services/message_service/message_service.dart';
 
 class TasksPage extends StatefulWidget {
   const TasksPage({Key? key}) : super(key: key);
@@ -37,11 +38,9 @@ class _TasksPageState extends State<TasksPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // floatingActionButton:
-      //     FloatingActionButton(onPressed: () => showSettingsDialog(context)),
-      // appBar: AppBarWorkList(
-      //   tabController: _tabController,
-      // ),
+      appBar: AppBarWorkList(
+        tabController: _tabController,
+      ),
       body: Column(
         children: [
           TableCalendar(
@@ -66,7 +65,6 @@ class _TasksPageState extends State<TasksPage>
                       initialData: const [],
                       builder:
                           (context, AsyncSnapshot<List<TaskModel>> snapshot) {
-                       
                         if (snapshot.data!.isEmpty) {
                           return const Center(
                             child: Text(

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class MessageService {
@@ -5,16 +7,28 @@ class MessageService {
       displaySnackbar({
     required BuildContext context,
     required String message,
-    int milliseconds = 2000,
+    int milliseconds = 2500,
   }) {
+
     return ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         elevation: 0,
+        margin: const EdgeInsets.only(
+          bottom: 500,
+        ),
         behavior: SnackBarBehavior.floating,
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
-        backgroundColor: Colors.black,
-        content: Text(message),
+        backgroundColor: Colors.transparent,
+        content: Container(
+          width: double.infinity,
+          height: 50,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            color: Colors.black.withOpacity(0.8),
+          ),
+          child: Center(
+            child: Text(message),
+          ),
+        ),
         duration: Duration(milliseconds: milliseconds),
       ),
     );

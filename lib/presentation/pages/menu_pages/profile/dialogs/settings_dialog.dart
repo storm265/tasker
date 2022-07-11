@@ -5,10 +5,9 @@ import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 Future<void> showSettingsDialog(BuildContext context) async {
   final profileController = ProfileController();
-  final List<String> items = ['Update password', 'Sign out'];
-  final List<IconData> iconDataItems = [Icons.add, Icons.logout];
+  final List<String> items = ['Update avatar', 'Update password', 'Sign out'];
+  final List<IconData> iconDataItems = [Icons.image, Icons.add, Icons.logout];
 
-  
   await showDialog(
     context: context,
     builder: (_) {
@@ -36,12 +35,17 @@ Future<void> showSettingsDialog(BuildContext context) async {
                 onTap: () async {
                   switch (index) {
                     case 0:
-                      Navigator.pop(context);
-                      await NavigationService.navigateTo(
-                          context, Pages.newPassword,
-                          arguments: true);
                       break;
                     case 1:
+                      Navigator.pop(context);
+                      await NavigationService.navigateTo(
+                        context,
+                        Pages.newPassword,
+                        arguments: true,
+                      );
+
+                      break;
+                    case 2:
                       await profileController.signOut(context);
                       break;
                   }

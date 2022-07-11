@@ -13,6 +13,10 @@ class CachedAvatarWidget extends StatelessWidget {
       width: radius,
       height: radius,
       child: CachedNetworkImage(
+      memCacheHeight: 300,
+      memCacheWidth: 300,
+      maxWidthDiskCache: 300,
+      maxHeightDiskCache: 300,
         imageBuilder: (context, imageProvider) {
           return CircleAvatar(
             radius: 10,

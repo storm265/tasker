@@ -5,7 +5,7 @@ class UserDataWidget extends StatelessWidget {
   final String avatarImage;
   final String email;
   final String nickname;
-  
+
   const UserDataWidget({
     Key? key,
     required this.avatarImage,
@@ -21,7 +21,7 @@ class UserDataWidget extends StatelessWidget {
         width: 300,
         height: 70,
         child: ListTile(
-          leading: CachedAvatarWidget(image: avatarImage),
+           leading: avatarImage!='' ? CachedAvatarWidget(image: avatarImage) : const CircularProgressIndicator.adaptive(),   
           title: Text(
             nickname,
             style: const TextStyle(
