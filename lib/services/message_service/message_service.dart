@@ -1,6 +1,4 @@
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:flutter/material.dart';
-
 
 class MessageService {
   static ScaffoldFeatureController<SnackBar, SnackBarClosedReason>
@@ -13,12 +11,10 @@ class MessageService {
       SnackBar(
         elevation: 0,
         behavior: SnackBarBehavior.floating,
-        backgroundColor: Colors.transparent,
-        content: AwesomeSnackbarContent(
-          title: 'Error',
-          message: message,
-          contentType: ContentType.failure,
-        ),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
+        backgroundColor: Colors.black,
+        content: Text(message),
         duration: Duration(milliseconds: milliseconds),
       ),
     );

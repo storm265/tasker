@@ -18,38 +18,40 @@ class AsseterWidget extends StatelessWidget {
         onPageChanged: onChange,
         itemBuilder: (_, index) {
           final assets = _assetList[index];
-          return Stack(
-            children: [
-              Positioned(
-                top: 100,
-                left: assets.imgLeft,
-                child: Image.asset(
-                  '${assets.assetsPath}${assets.avatarsTitle}.png',
-                ),
-              ),
-              Positioned(
-                top: 345,
-                left: assets.titleTextLeft,
-                child: Text(
-                  assets.titleText,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w300,
-                    fontSize: 24,
+          return Align(
+            alignment: Alignment.center,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Image.asset(
+                    '${assets.assetsPath}${assets.avatarsTitle}.png',
                   ),
                 ),
-              ),
-              Positioned(
-                top: 385,
-                left: assets.subTextLeft,
-                child: Text(
-                  assets.subText,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 18,
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Text(
+                    assets.titleText,
+                    style: TextStyle(
+                      color: Colors.black.withOpacity(0.6),
+                      fontWeight: FontWeight.w300,
+                      fontStyle: FontStyle.italic,
+                      fontSize: 24,
+                    ),
                   ),
                 ),
-              ),
-            ],
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Text(
+                    assets.subText,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           );
         },
       ),

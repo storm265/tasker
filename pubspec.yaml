@@ -21,17 +21,15 @@ dependencies:
   flutter_secure_storage: 
   connectivity_plus:
   intl:
-  cached_network_image: ^3.2.1
+  cached_network_image: 
   simple_gesture_detector:
-  percent_indicator: ^4.0.1
-  awesome_snackbar_content: ^0.0.5
+  percent_indicator:
   file_picker:
   
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
   flutter_lints:
   flutter_native_splash:
 

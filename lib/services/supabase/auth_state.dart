@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 
-
 class AuthState<T extends StatefulWidget> extends SupabaseAuthState<T> {
   @override
   void onUnauthenticated() async {
@@ -11,7 +10,7 @@ class AuthState<T extends StatefulWidget> extends SupabaseAuthState<T> {
 
   @override
   void onAuthenticated(Session session) async {
-    await NavigationService.navigateTo(context, Pages.home);
+     await NavigationService.navigateTo(context, Pages.home);
   }
 
   @override

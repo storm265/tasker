@@ -9,11 +9,11 @@ class BackgroundWaveWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      top: 455,
+    return Align(
+      alignment: Alignment.bottomCenter,
       child: CustomPaint(
         painter: BackgroundWave(color: WaveColors.backgroundColors[pageIndex]),
-        size: const Size(500, 230),
+        size: const Size(500, 250),
       ),
     );
   }

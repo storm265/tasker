@@ -10,11 +10,11 @@ class ForegroundWaveWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      top: 450,
+    return Align(
+      alignment: Alignment.bottomCenter,
       child: CustomPaint(
         painter: ForegroundWave(color: WaveColors.backgroundColors[pageIndex]),
-        size: const Size(500, 300),
+        size: const Size(500, 240),
       ),
     );
   }

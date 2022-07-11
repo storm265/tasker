@@ -22,6 +22,7 @@ import 'package:todo2/services/supabase/constants.dart';
 import 'package:todo2/services/supabase/update_token_service.dart';
 import 'package:todo2/services/system_service/system_chrome.dart';
 import 'presentation/pages/auth/changed_password_page.dart';
+import 'presentation/pages/auth/welcome/welcome_page.dart';
 import 'presentation/pages/menu_pages/floating_button/new_note/new_note_page.dart';
 import 'presentation/pages/menu_pages/floating_button/new_task/controller/add_task_controller.dart';
 import 'presentation/pages/menu_pages/floating_button/new_task/new_task.dart';
@@ -65,9 +66,8 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'Todo2',
             theme: _themeDataController.themeData,
-           initialRoute: '/',
+            initialRoute: '/',
             routes: routes,
-          //  home: AddTaskPage(),
           ),
         ),
       ),

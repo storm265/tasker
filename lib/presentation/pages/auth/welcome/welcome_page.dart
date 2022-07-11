@@ -19,14 +19,15 @@ class _WelcomePageState extends State<WelcomePage> {
   Widget build(BuildContext context) {
     return WillPopWrapper(
       child: AppbarWrapperWidget(
-        showAppBar: false,
+        showAppBar: true,
         isRedAppBar: false,
         child: Stack(
           alignment: Alignment.center,
           fit: StackFit.expand,
           children: [
             AsseterWidget(
-                onChange: (index) => setState(() => _pageIndex = index)),
+              onChange: (index) => setState(() => _pageIndex = index),
+            ),
             DotsPagerWidget(pageIndex: _pageIndex),
             ForegroundWaveWidget(pageIndex: _pageIndex),
             BackgroundWaveWidget(pageIndex: _pageIndex),

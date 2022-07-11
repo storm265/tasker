@@ -13,7 +13,6 @@ class SplashPageState extends AuthState<SplashPage> {
   @override
   void initState() {
     super.initState();
-
     NetworkService().checkConnection(context, () => recoverSupabaseSession());
   }
 

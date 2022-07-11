@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/task_model.dart';
 import 'package:todo2/database/repository/task_repository.dart';
+import 'package:todo2/presentation/pages/menu_pages/profile/dialogs/settings_dialog.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/app_bar_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/calendar_lib/table_calendar.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/list/list_widget.dart';
@@ -23,7 +24,6 @@ class _TasksPageState extends State<TasksPage>
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
     super.initState();
-    log(taskController.fetchTask().toString());
   }
 
   @override
@@ -37,9 +37,11 @@ class _TasksPageState extends State<TasksPage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarWorkList(
-        tabController: _tabController,
-      ),
+      // floatingActionButton:
+      //     FloatingActionButton(onPressed: () => showSettingsDialog(context)),
+      // appBar: AppBarWorkList(
+      //   tabController: _tabController,
+      // ),
       body: Column(
         children: [
           TableCalendar(
@@ -60,23 +62,34 @@ class _TasksPageState extends State<TasksPage>
               children: [
                 DisabledGlowWidget(
                   child: FutureBuilder<List<TaskModel>>(
-                    future: taskController.fetchTask(),
-                    initialData: const [],
-                    builder: (context,
-                            AsyncSnapshot<List<TaskModel>> snapshot) =>
-                        snapshot.hasData
-                            ? ListView.builder(
-                                scrollDirection: Axis.vertical,
-                                itemCount: snapshot.data!.length,
-                                itemBuilder: ((context, index) => ListWidget(
-                                      index: index,
-                                      model: snapshot.data!,
-                                    )),
-                              )
-                            : const Center(
-                                child: CircularProgressIndicator.adaptive(),
-                              ),
-                  ),
+                      future: taskController.fetchTask(),
+                      initialData: const [],
+                      builder:
+                          (context, AsyncSnapshot<List<TaskModel>> snapshot) {
+                       
+                        if (snapshot.data!.isEmpty) {
+                          return const Center(
+                            child: Text(
+                              'No tasks',
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 20),
+                            ),
+                          );
+                        } else if (snapshot.hasData) {
+                          return ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            itemCount: snapshot.data!.length,
+                            itemBuilder: ((context, index) => ListWidget(
+                                  index: index,
+                                  model: snapshot.data!,
+                                )),
+                          );
+                        } else {
+                          return const Center(
+                            child: CircularProgressIndicator.adaptive(),
+                          );
+                        }
+                      }),
                 ),
                 // month
                 Column(children: const [Text('dadiadhjiajdad ')])
