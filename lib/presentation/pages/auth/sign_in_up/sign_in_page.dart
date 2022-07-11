@@ -11,7 +11,6 @@ import 'package:todo2/presentation/pages/auth/widgets/title_widget.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
 
-
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
 
@@ -39,7 +38,7 @@ class _SignInPageState extends State<SignInPage> {
       child: AppbarWrapperWidget(
         shouldUsePopMethod: true,
         showLeadingButton: true,
-          isRedAppBar: false,
+        isRedAppBar: false,
         // statusBarColor: Colors.white,
         child: DisabledGlowWidget(
           child: SingleChildScrollView(

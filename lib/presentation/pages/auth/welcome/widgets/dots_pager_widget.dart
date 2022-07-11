@@ -6,33 +6,37 @@ class DotsPagerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      top: 400,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 5, right: 5),
-            child: CircleAvatar(
-              backgroundColor: (pageIndex == 0) ? Colors.black : Colors.black45,
-              radius: 5,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 5, right: 5),
-            child: CircleAvatar(
-              backgroundColor: (pageIndex == 1) ? Colors.black : Colors.black45,
-              radius: 5,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 5, right: 5),
-            child: CircleAvatar(
-              backgroundColor: (pageIndex == 2) ? Colors.black : Colors.black45,
-              radius: 5,
-            ),
-          ),
-        ],
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 60),
+        child: ListView.builder(
+          shrinkWrap: true,
+          scrollDirection: Axis.horizontal,
+          itemCount: 3,
+          itemBuilder: (context, index) =>
+              DotItemWidget(index: index, pageIndex: pageIndex),
+        ),
+      ),
+    );
+  }
+}
+
+class DotItemWidget extends StatelessWidget {
+  final int pageIndex;
+  final int index;
+  const DotItemWidget({
+    Key? key,
+    required this.index,
+    required this.pageIndex,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 5, right: 5),
+      child: CircleAvatar(
+        backgroundColor: (index == pageIndex) ? Colors.black : Colors.grey,
+        radius: 5,
       ),
     );
   }

@@ -6,30 +6,30 @@ class ForegroundWave extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     Path path_0 = Path();
-    path_0.moveTo(size.width * 0.0006925253, size.height * 0.09419704);
+    path_0.moveTo(size.width * 0.00069, size.height * 0.094);
     path_0.cubicTo(
-        size.width * 0.0006925253,
-        size.height * 0.09419704,
-        size.width * 0.3018453,
-        size.height * 0.2122333,
-        size.width * 0.5607627,
-        size.height * 0.06438741);
+        size.width * 0.00069,
+        size.height * 0.094,
+        size.width * 0.30,
+        size.height * 0.21,
+        size.width * 0.56,
+        size.height * 0.064);
     path_0.cubicTo(
-        size.width * 0.8196773,
-        size.height * -0.08345815,
-        size.width * 0.9334187,
-        size.height * 0.07796259,
+        size.width * 0.8,
+        size.height * -0.08,
+        size.width * 0.93,
+        size.height * 0.077,
         size.width * 1.011877,
-        size.height * 0.01867215);
+        size.height * 0.018);
     path_0.cubicTo(
         size.width * 1.090333,
-        size.height * -0.04061815,
+        size.height * -0.040,
         size.width * 1.020312,
-        size.height * 1.168867,
+        size.height * 1.168,
         size.width * 1.020312,
-        size.height * 1.168867);
+        size.height * 1.168);
 
-    path_0.lineTo(size.width * -0.06454987, size.height * 1.168867);
+    path_0.lineTo(size.width * -0.06454987, size.height * 1.168);
 
     path_0.close();
 
