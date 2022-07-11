@@ -21,6 +21,7 @@ class AddTextFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      maxLength: maxLength,
       validator: (text) {
         if (text!.isEmpty) {
           return 'Please enter text';

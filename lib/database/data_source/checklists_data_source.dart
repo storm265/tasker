@@ -8,6 +8,7 @@ abstract class CheckListsDataSource {
     required String title,
     required String color,
   });
+  Future fetchCheckId({required String title});
   Future fetchCheckList();
 }
 
@@ -44,6 +45,23 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
       return response;
     } catch (e) {
       ErrorService.printError('Error in data source fetchCheckList: $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<int> fetchCheckId({required String title}) async {
+    try {
+      final response = await _supabase
+          .from(_table)
+          .select(CheckListsScheme.id)
+          .eq(CheckListsScheme.ownerId, _supabase.auth.currentUser!.id)
+          .eq(CheckListsScheme.title, title)
+          .execute();
+      return response.data[0][CheckListsScheme.id];
+    } catch (e) {
+      ErrorService.printError(
+          'Error in CheckListsDataSourceImpl fetchCheckId: $e');
       rethrow;
     }
   }

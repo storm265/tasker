@@ -81,7 +81,11 @@ class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
               ),
             )
           : null,
-      body: SafeArea(child: child),
+      body: SafeArea(
+        maintainBottomViewPadding: true,
+        bottom: false,
+        child: child,
+      ),
     );
   }
 }

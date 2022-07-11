@@ -10,6 +10,7 @@ abstract class CheckListsRepository<T> {
     required String color,
   });
   Future fetchCheckList();
+ Future fetchCheckListId({required String title});
 }
 
 class CheckListsRepositoryImpl extends CheckListsRepository<CheckListModel> {
@@ -44,6 +45,18 @@ class CheckListsRepositoryImpl extends CheckListsRepository<CheckListModel> {
       return (response.data as List<dynamic>)
           .map((json) => CheckListModel.fromJson(json))
           .toList();
+    } catch (e) {
+      ErrorService.printError('Error in fetchNotes() repository:$e');
+      rethrow;
+    }
+  }
+
+   @override
+  Future<int> fetchCheckListId({required String title}) async {
+    try {
+      int  id = await _checkListsDataSource.fetchCheckId(title: title);
+     
+      return id;
     } catch (e) {
       ErrorService.printError('Error in fetchNotes() repository:$e');
       rethrow;

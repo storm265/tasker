@@ -19,10 +19,7 @@ class CheckListLinkedModel {
   });
 }
 
-// TODo create controller
-class QuickPage extends StatelessWidget {
-  QuickPage({Key? key}) : super(key: key);
-
+class CheckListLinkedController {
   final _checkListItem = ChecklistItemsRepositoryImpl();
   final _checkList = CheckListsRepositoryImpl();
 
@@ -42,7 +39,6 @@ class QuickPage extends StatelessWidget {
       List<CheckListItemModel> itemModel = [];
       CheckListModel model = checkList[i];
       for (int j = 0; j < items.length; j++) {
-        // TODO fix it
         if (model.id == items[j].checklistId) {
           itemModel.add(items[j]);
         }
@@ -52,6 +48,12 @@ class QuickPage extends StatelessWidget {
     }
     return models;
   }
+}
+
+// TODo create controller
+class QuickPage extends StatelessWidget {
+  QuickPage({Key? key}) : super(key: key);
+  final controller = CheckListLinkedController();
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +63,7 @@ class QuickPage extends StatelessWidget {
         isRedAppBar: false,
         child: FutureBuilder<List<CheckListLinkedModel>>(
           initialData: const [],
-          future: fetchNotes(),
+          future: controller.fetchNotes(),
           builder: ((_, AsyncSnapshot<List<CheckListLinkedModel>> snapshots) =>
               snapshots.hasData
                   ? DisabledGlowWidget(

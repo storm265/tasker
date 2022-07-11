@@ -24,26 +24,24 @@ class CheckBoxWidget extends StatelessWidget {
           children: [
             Checkbox(value: false, onChanged: (value) {}),
             (isClicked)
-                ? SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: SizedBox(
-                      width: 170,
-                      height: 40,
-                      child: AddTextFieldWidget(
-                        titleController: textController,
-                        maxLength: 30,
-                        maxLines: 1,
-                        onTap: () => FocusScope.of(context).requestFocus(),
-                        onEdiditionCompleteCallback: () {
-                          FocusScope.of(context).unfocus();
-                          setState(() {
-                            isClicked = false;
-                            checkBoxController.editItem(
-                                index, textController.text);
-                          });
-                        },
-                      ),
-                    ))
+                ? SizedBox(
+                    width: 170,
+                    height: 40,
+                    child: AddTextFieldWidget(
+                      titleController: textController,
+                      maxLength: 512,
+                      maxLines: 1,
+                      onTap: () => FocusScope.of(context).requestFocus(),
+                      onEdiditionCompleteCallback: () {
+                        FocusScope.of(context).unfocus();
+                        setState(() {
+                          isClicked = false;
+                          checkBoxController.editItem(
+                              index, textController.text);
+                        });
+                      },
+                    ),
+                  )
                 : GestureDetector(
                     child: Text(checkBoxController.checkBoxItems.value[index]),
                     onTap: () => setState(() => isClicked = !isClicked),

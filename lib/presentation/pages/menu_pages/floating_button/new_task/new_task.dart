@@ -119,18 +119,15 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                         onPressed: isClicked
                                             ? () async {
                                               
-                                                // newTaskController.validate(
-                                                //   context: context,
-                                                //   title: titleController.text,
-                                                //   description:
-                                                //       descriptionController
-                                                //           .text,
-                                                // );
+                                               await newTaskController.validate(
+                                                  context: context,
+                                                  title: titleController.text,
+                                                  description:
+                                                      descriptionController
+                                                          .text,
+                                                );
 
-                                                // NavigationService.navigateTo(
-                                                //   context,
-                                                //   Pages.taskList,
-                                                // );
+                                             
                                               }
                                             : null,
                                       ),

@@ -5,7 +5,7 @@ import 'package:todo2/database/model/checklist_item_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 
 abstract class ChecklistItemsRepository<T> {
-  Future putChecklistItem({required List<String> checkboxItems});
+  Future putChecklistItem({required List<String> checkboxItems, required int id}) ;
   Future fetchCheckListItem();
 }
 
@@ -13,13 +13,13 @@ class ChecklistItemsRepositoryImpl
     implements ChecklistItemsRepository<CheckListItemModel> {
   final _checkListItemDataSource = ChecklistItemsDataSourceImpl();
   @override
-  Future<void> putChecklistItem({required List<String> checkboxItems}) async {
+  Future<void> putChecklistItem({required List<String> checkboxItems, required int id}) async {
     try {
       for (int i = 0; i < checkboxItems.length; i++) {
         await _checkListItemDataSource.putCheckListItem(
           content: checkboxItems[i],
           // TODO fix id
-          checklistId: 3,
+          checklistId: id,
           isCompleted: false,
         );
       }

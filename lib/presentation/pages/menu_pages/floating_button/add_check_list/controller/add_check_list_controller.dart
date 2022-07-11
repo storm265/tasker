@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:todo2/database/repository/checklist_items_repository.dart';
 import 'package:todo2/database/repository/checklist_repository.dart';
@@ -6,6 +8,7 @@ import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/inher
 import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/error_service/error_service.dart';
+import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 class AddCheckListController extends ChangeNotifier {
   final _checkListItemsRepository = ChecklistItemsRepositoryImpl();
@@ -22,8 +25,8 @@ class AddCheckListController extends ChangeNotifier {
     required BuildContext context,
     required String title,
   }) async {
-    final inheritedNavigatorConroller =
-        InheritedNavigator.of(context)!.navigationController;
+    // final inheritedNavigatorConroller =
+    //     InheritedNavigator.of(context)!.navigationController;
 
     if (formKey.currentState!.validate()) {
       isClickedButton.value = false;
@@ -33,8 +36,10 @@ class AddCheckListController extends ChangeNotifier {
               .value
               .toString(),
           title: title);
-      await putChecklistItem();
-      await inheritedNavigatorConroller.animateToPage(NavigationPages.tasks);
+      await putChecklistItem()
+          .then((_) => NavigationService.navigateTo(context, Pages.home));
+      // await inheritedNavigatorConroller.animateToPage(NavigationPages.tasks);
+
       isClickedButton.value = true;
       isClickedButton.notifyListeners();
     }
@@ -60,18 +65,21 @@ class AddCheckListController extends ChangeNotifier {
   Future<void> putChecklistItem() async {
     try {
       await _checkListItemsRepository.putChecklistItem(
-          checkboxItems: checkBoxItems.value);
+          id: id, checkboxItems: checkBoxItems.value);
     } catch (e) {
       ErrorService.printError('Error in repository putChecklistItem: $e');
     }
   }
 
+  int id = 0;
   Future<void> putChecklist({
     required String color,
     required String title,
   }) async {
     try {
       await _checkListRepository.putCheckList(title: title, color: color);
+      id = await CheckListsRepositoryImpl().fetchCheckListId(title: title);
+      log(id.toString());
     } catch (e) {
       ErrorService.printError('Error in repository putChecklistItem: $e');
     }

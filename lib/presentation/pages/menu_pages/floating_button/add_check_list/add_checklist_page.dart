@@ -9,7 +9,7 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/titl
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/white_box_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/color_pallete_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
-
+import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 class AddCheckListPage extends StatefulWidget {
   const AddCheckListPage({Key? key}) : super(key: key);
@@ -40,7 +40,7 @@ class _AddCheckListPageState extends State<AddCheckListPage> {
       shouldUsePopMethod: true,
       child: Stack(
         children: [
-       const  FakeAppBar(),
+          const FakeAppBar(),
           WhiteBoxWidget(
             height: 550,
             child: Column(
@@ -50,6 +50,7 @@ class _AddCheckListPageState extends State<AddCheckListPage> {
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     key: _checkListController.formKey,
                     child: TitleWidget(
+
                       textController: _titleController,
                       title: 'Title',
                     ),
@@ -100,10 +101,15 @@ class _AddCheckListPageState extends State<AddCheckListPage> {
                           ConfirmButtonWidget(
                         title: 'Done',
                         onPressed: isClicked
-                            ? () async => _checkListController.addCheckList(
-                                  context: context,
-                                  title: _titleController.text,
-                                )
+                            ? () async {
+                                _checkListController
+                                    .addCheckList(
+                                      
+                                      context: context,
+                                      title: _titleController.text,
+                                    );
+                                 
+                              }
                             : null,
                       ),
                     ),

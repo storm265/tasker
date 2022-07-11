@@ -20,8 +20,8 @@ class _AddQuickNoteState extends State<AddQuickNote> {
   void dispose() {
     descriptionTextController.dispose();
     _addNoteController.colorPalleteController.dispose();
-    _addNoteController.isButtonClicked.dispose();
-    _addNoteController.dispose();
+    // _addNoteController.isButtonClicked.dispose();
+    //  _addNoteController.dispose();
     super.dispose();
   }
 
@@ -36,7 +36,7 @@ class _AddQuickNoteState extends State<AddQuickNote> {
       shouldUsePopMethod: true,
       child: Stack(
         children: [
-         const  FakeAppBar(),
+          const FakeAppBar(),
           WhiteBoxWidget(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),

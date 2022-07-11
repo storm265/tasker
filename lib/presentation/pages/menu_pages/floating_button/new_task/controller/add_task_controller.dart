@@ -10,6 +10,7 @@ import 'package:todo2/database/repository/tasks_member_repository.dart';
 import 'package:todo2/database/repository/user_profile_repository.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
+import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 import 'package:todo2/services/supabase/constants.dart';
 
@@ -152,11 +153,14 @@ class AddTaskController extends ChangeNotifier {
       if (formKey.currentState!.validate()) {
         isClickedAddTask.value = false;
         isClickedAddTask.notifyListeners();
-
+// TODo remove navigation
         await putTask(
           description: description,
           title: title,
-        );
+        ).then((value) => NavigationService.navigateTo(
+              context,
+              Pages.home,
+            ));
 
         isClickedAddTask.value = true;
         isClickedAddTask.notifyListeners();
@@ -193,8 +197,8 @@ class AddTaskController extends ChangeNotifier {
       }
       //TODO fix it
       // task members
-      for(int i=0; i<taskMembers.value.length;i++){
-tasksMembers.putMember();
+      for (int i = 0; i < taskMembers.value.length; i++) {
+        tasksMembers.putMember();
       }
     } catch (e) {
       ErrorService.printError('Error in add task controller putTask(): $e');

@@ -15,14 +15,16 @@ class NewNoteController extends ChangeNotifier {
     required String description,
   }) async {
     if (formKey.currentState!.validate()) {
-      final pushBack = Navigator.pop(context);
       isButtonClicked.value = false;
       isButtonClicked.notifyListeners();
-      await addNoteRepository.putNote(
-        color: '${colors[colorPalleteController.selectedIndex.value].value}',
-        description: description,
-      );
-      pushBack;
+      await addNoteRepository
+          .putNote(
+            context: context,
+            color:
+                '${colors[colorPalleteController.selectedIndex.value].value}',
+            description: description,
+          )
+          .then((value) => Navigator.pop(context));
 
       isButtonClicked.value = true;
       isButtonClicked.notifyListeners();

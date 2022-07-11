@@ -20,17 +20,24 @@ class NavigationPage extends StatefulWidget {
 
 class _NavigationPageState extends State<NavigationPage> {
   final _statusBarController = StatusBarController();
+  late NavigationController inheritedNavigatorConroller;
+
+  @override
+  void didChangeDependencies() {
+    inheritedNavigatorConroller =
+        InheritedNavigator.of(context)!.navigationController;
+    super.didChangeDependencies();
+  }
 
   @override
   void dispose() {
     _statusBarController.dispose();
+    //inheritedNavigatorConroller.pageController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final inheritedNavigatorConroller =
-        InheritedNavigator.of(context)!.navigationController;
     return ValueListenableBuilder(
       valueListenable: _statusBarController.isRedStatusBar,
       builder: (context, isRed, _) => AnnotatedRegion<SystemUiOverlayStyle>(
@@ -46,7 +53,7 @@ class _NavigationPageState extends State<NavigationPage> {
               onPageChanged: (index) => index == 0
                   ? _statusBarController.setRedStatusMode(true)
                   : _statusBarController.setRedStatusMode(false),
-              controller: inheritedNavigatorConroller.pageController,
+              controller: pageController,
               children: [
                 const KeepAlivePageWidget(child: TasksPage()),
                 const KeepAlivePageWidget(child: MenuPage()),

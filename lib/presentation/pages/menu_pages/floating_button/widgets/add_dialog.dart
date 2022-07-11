@@ -6,7 +6,6 @@ Future<void> showAddDialog(BuildContext context) async {
   await showDialog(
     context: context,
     builder: (_) {
-    
       return AlertDialog(
         contentPadding: const EdgeInsets.all(0),
         content: SizedBox(
@@ -26,30 +25,30 @@ Future<void> showAddDialog(BuildContext context) async {
             itemCount: 3,
             shrinkWrap: true,
             itemBuilder: ((_, index) {
-              return GestureDetector(
-                onTap: () async {
-                  switch (index) {
-                    case 0:
-                      Navigator.pop(context);
-                      await NavigationService.navigateTo(
-                          context, Pages.addTask);
-                      break;
-                    case 1:
-                      Navigator.pop(context);
-                      await NavigationService.navigateTo(
-                          context, Pages.addNote);
+              return Padding(
+                padding: const EdgeInsets.only(top: 25, bottom: 25),
+                child: GestureDetector(
+                  onTap: () async {
+                    switch (index) {
+                      case 0:
+                        Navigator.pop(context);
+                        await NavigationService.navigateTo(
+                            context, Pages.addTask);
+                        break;
+                      case 1:
+                        Navigator.pop(context);
+                        await NavigationService.navigateTo(
+                            context, Pages.addNote);
 
-                      break;
-                    case 2:
-                      Navigator.pop(context);
-                      await NavigationService.navigateTo(
-                          context, Pages.addCheckList);
-                      break;
-                    default:
-                  }
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 25, bottom: 25),
+                        break;
+                      case 2:
+                        Navigator.pop(context);
+                        await NavigationService.navigateTo(
+                            context, Pages.addCheckList);
+                        break;
+                      default:
+                    }
+                  },
                   child: Center(
                     child: Text(
                       items[index],
