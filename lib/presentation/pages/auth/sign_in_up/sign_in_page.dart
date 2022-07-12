@@ -78,6 +78,7 @@ class _SignInPageState extends State<SignInPage> {
                                     .validatePassword(password: text!),
                                 isEmail: false,
                                 textController: _passwordController,
+                                isObcecure: true,
                                 labelText: 'Password:',
                                 text: 'Password',
                               ),
@@ -89,7 +90,7 @@ class _SignInPageState extends State<SignInPage> {
                           valueListenable:
                               _signInController.isClickedSubmitButton,
                           builder: ((context, isClicked, _) =>
-                              SignUpButtonWidget(
+                              SubmitUpButtonWidget(
                                 buttonText: 'Sign In',
                                 top: 170,
                                 onPressed: isClicked

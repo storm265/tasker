@@ -35,11 +35,12 @@ class _ProfileWidgetState extends State<ProfileWidget>
   Widget build(BuildContext context) {
     return Container(
       decoration: panelDecoration,
+      width: double.infinity,
       height: 200,
       child: Stack(
         children: [
-          Positioned(
-            left: 310,
+          Align(
+            alignment: Alignment.topRight,
             child: IconButton(
               onPressed: () => showSettingsDialog(context),
               icon: RotationTransition(
@@ -57,12 +58,12 @@ class _ProfileWidgetState extends State<ProfileWidget>
             nickname: _profileController.userName,
           ),
           const TasksTextWidget(
-            left: 30,
+      
             title: '120',
             subtitle: 'Create Tasks',
           ),
           const TasksTextWidget(
-            left: 180,
+        
             title: '999',
             subtitle: 'Completed Tasks',
           ),

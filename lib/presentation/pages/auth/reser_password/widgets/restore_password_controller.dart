@@ -48,7 +48,7 @@ class RestorePasswordWidget extends StatelessWidget {
                   ],
                 ),
               ),
-              SignUpButtonWidget(
+              SubmitUpButtonWidget(
                 buttonText: 'Change password',
                 top: 350,
                 onPressed: () =>

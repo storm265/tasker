@@ -21,6 +21,7 @@ class AsseterWidget extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Image.asset(
                   '${assets.assetsPath}${assets.avatarsTitle}.png',
+                  height: 230,
                 ),
               ),
               Padding(

@@ -4,6 +4,7 @@ class TextFieldWidget extends StatelessWidget {
   final TextEditingController textController;
   final String text, labelText;
   final bool isEmail;
+  final isObcecure;
   final double top;
   final Function(String? text)? validateCallback;
   const TextFieldWidget({
@@ -12,6 +13,7 @@ class TextFieldWidget extends StatelessWidget {
     required this.labelText,
     required this.textController,
     required this.text,
+    final this.isObcecure=false,
     this.top = 0,
     required this.isEmail,
   }) : super(key: key);
@@ -36,7 +38,7 @@ class TextFieldWidget extends StatelessWidget {
             keyboardType:
                 isEmail ? TextInputType.emailAddress : TextInputType.text,
             validator: (value) => validateCallback!(value),
-            obscureText: isEmail,
+            obscureText: isObcecure,
             controller: textController,
             decoration: InputDecoration(hintText: labelText),
           ),

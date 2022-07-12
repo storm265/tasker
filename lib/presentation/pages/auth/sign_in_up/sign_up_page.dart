@@ -91,6 +91,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     .validateUsername(username: text!),
                                 isEmail: false,
                                 textController: _usernameController,
+                                isObcecure: true,
                                 labelText: 'Username:',
                                 text: 'Username',
                               ),
@@ -98,7 +99,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 valueListenable:
                                     _signUpController.isClickedSubmitButton,
                                 builder: (context, isClicked, _) =>
-                                    SignUpButtonWidget(
+                                    SubmitUpButtonWidget(
                                   buttonText: 'Sign Up',
                                   onPressed: isClicked
                                       ? () async =>

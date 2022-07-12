@@ -20,21 +20,21 @@ class ProfilePage extends StatelessWidget {
         child: Column(
           children: [
             const ProfileWidget(),
-            // FutureBuilder<List<ProjectModel>>(
-            //   initialData: const [],
-            //   future: inheritedProfile.profileController
-            //       .fetchProject(context: context),
-            //   builder: (_, AsyncSnapshot<List<ProjectModel>> snapshot) {
-            //     return snapshot.hasData
-            //         ? Column(
-            //             children: [
-            //               TaskListWidget(snapshot: snapshot),
-            //               StatsWidget(snapshot: snapshot),
-            //             ],
-            //           )
-            //         : const SizedBox();
-            //   },
-            // ),
+            FutureBuilder<List<ProjectModel>>(
+              initialData: const [],
+              future: inheritedProfile.profileController
+                  .fetchProject(context: context),
+              builder: (_, AsyncSnapshot<List<ProjectModel>> snapshot) {
+                return snapshot.hasData
+                    ? Column(
+                        children: [
+                          TaskListWidget(snapshot: snapshot),
+                          StatsWidget(snapshot: snapshot),
+                        ],
+                      )
+                    : const SizedBox();
+              },
+            ),
           ],
         ),
       ),
