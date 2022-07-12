@@ -3,17 +3,17 @@ import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 class SignInButtonWidget extends StatelessWidget {
   final String buttonText;
-  final double height;
+  final double bottom;
   const SignInButtonWidget(
-      {Key? key, required this.buttonText, this.height = 470})
+      {Key? key, required this.buttonText, this.bottom = 470})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: height),
+      padding: EdgeInsets.only(bottom: bottom),
       child: Align(
-        alignment: Alignment.center,
+        alignment: Alignment.bottomCenter,
         child: TextButton(
           onPressed: () async => (buttonText == 'Sign In')
               ? await NavigationService.navigateTo(context, Pages.signIn)

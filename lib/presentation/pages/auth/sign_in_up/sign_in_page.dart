@@ -66,7 +66,7 @@ class _SignInPageState extends State<SignInPage> {
                               TextFieldWidget(
                                 validateCallback: (text) => _signInController
                                     .formValidatorController
-                                    .validateEmail(text!),
+                                    .validateEmail(email: text!),
                                 isEmail: false,
                                 textController: _emailController,
                                 labelText: 'Email:',
@@ -75,8 +75,8 @@ class _SignInPageState extends State<SignInPage> {
                               TextFieldWidget(
                                 validateCallback: (text) => _signInController
                                     .formValidatorController
-                                    .validatePassword(text!),
-                                isEmail: true,
+                                    .validatePassword(password: text!),
+                                isEmail: false,
                                 textController: _passwordController,
                                 labelText: 'Password:',
                                 text: 'Password',
@@ -84,13 +84,14 @@ class _SignInPageState extends State<SignInPage> {
                             ],
                           ),
                         ),
+                        const ForgotPasswordWidget(),
                         ValueListenableBuilder<bool>(
                           valueListenable:
                               _signInController.isClickedSubmitButton,
                           builder: ((context, isClicked, _) =>
                               SignUpButtonWidget(
                                 buttonText: 'Sign In',
-                                height: 250,
+                                top: 170,
                                 onPressed: isClicked
                                     ? () async {
                                         _signInController.signInValidate(
@@ -104,8 +105,10 @@ class _SignInPageState extends State<SignInPage> {
                                     : null,
                               )),
                         ),
-                        const SignInButtonWidget(buttonText: 'Sign Up'),
-                        const ForgotPasswordWidget(),
+                        const SignInButtonWidget(
+                          buttonText: 'Sign Up',
+                          bottom: 80,
+                        ),
                       ],
                     ),
                   ),

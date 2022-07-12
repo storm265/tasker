@@ -8,53 +8,47 @@ class AsseterWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return NotificationListener<OverscrollIndicatorNotification>(
-      onNotification: (overScroll) {
-        overScroll.disallowIndicator();
-        return true;
+    return PageView.builder(
+      itemCount: _assetList.length,
+      onPageChanged: onChange,
+      itemBuilder: (_, index) {
+        final assets = _assetList[index];
+        return Align(
+          alignment: Alignment.center,
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.asset(
+                  '${assets.assetsPath}${assets.avatarsTitle}.png',
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Text(
+                  assets.titleText,
+                  style: TextStyle(
+                    color: Colors.black.withOpacity(0.6),
+                    fontWeight: FontWeight.w300,
+                    fontStyle: FontStyle.italic,
+                    fontSize: 24,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Text(
+                  assets.subText,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
       },
-      child: PageView.builder(
-        itemCount: _assetList.length,
-        onPageChanged: onChange,
-        itemBuilder: (_, index) {
-          final assets = _assetList[index];
-          return Align(
-            alignment: Alignment.center,
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Image.asset(
-                    '${assets.assetsPath}${assets.avatarsTitle}.png',
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Text(
-                    assets.titleText,
-                    style: TextStyle(
-                      color: Colors.black.withOpacity(0.6),
-                      fontWeight: FontWeight.w300,
-                      fontStyle: FontStyle.italic,
-                      fontSize: 24,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Text(
-                    assets.subText,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
     );
   }
 }

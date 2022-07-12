@@ -65,20 +65,21 @@ class _SignUpPageState extends State<SignUpPage> {
                           padding: const EdgeInsets.only(top: 200),
                           child: Wrap(
                             alignment: WrapAlignment.center,
-                            runSpacing: 25,
+                            runSpacing: 20,
                             children: [
-                              TextFieldWidget(
-                                  validateCallback: (text) => _signUpController
-                                      .formValidatorController
-                                      .validateEmail(text!),
-                                  isEmail: false,
-                                  textController: _emailController,
-                                  labelText: 'Email:',
-                                  text: 'Email'),
                               TextFieldWidget(
                                 validateCallback: (text) => _signUpController
                                     .formValidatorController
-                                    .validatePassword(text!),
+                                    .validateEmail(email: text!),
+                                isEmail: false,
+                                textController: _emailController,
+                                labelText: 'Email:',
+                                text: 'Email',
+                              ),
+                              TextFieldWidget(
+                                validateCallback: (text) => _signUpController
+                                    .formValidatorController
+                                    .validatePassword(password: text!),
                                 isEmail: true,
                                 textController: _passwordController,
                                 labelText: 'Password:',
@@ -87,22 +88,18 @@ class _SignUpPageState extends State<SignUpPage> {
                               TextFieldWidget(
                                 validateCallback: (text) => _signUpController
                                     .formValidatorController
-                                    .validateUsername(text!),
+                                    .validateUsername(username: text!),
                                 isEmail: false,
                                 textController: _usernameController,
                                 labelText: 'Username:',
                                 text: 'Username',
                               ),
-                            ],
-                          ),
-                        ),
-                        ValueListenableBuilder<bool>(
-                            valueListenable:
-                                _signUpController.isClickedSubmitButton,
-                            builder: (context, isClicked, _) =>
-                                SignUpButtonWidget(
+                              ValueListenableBuilder<bool>(
+                                valueListenable:
+                                    _signUpController.isClickedSubmitButton,
+                                builder: (context, isClicked, _) =>
+                                    SignUpButtonWidget(
                                   buttonText: 'Sign Up',
-                                  //  height: 470,
                                   onPressed: isClicked
                                       ? () async =>
                                           _signUpController.signUpValidate(
@@ -112,8 +109,15 @@ class _SignUpPageState extends State<SignUpPage> {
                                             password: _passwordController.text,
                                           )
                                       : null,
-                                )),
-                        const SignInButtonWidget(buttonText: 'Sign In')
+                                ),
+                              ),
+                              const SignInButtonWidget(
+                                buttonText: 'Sign In',
+                                bottom: 0,
+                              )
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),

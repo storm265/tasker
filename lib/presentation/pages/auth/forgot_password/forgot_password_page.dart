@@ -55,7 +55,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     top: 140,
                     validateCallback: (text) => _forgotPasswordController
                         .validatorController
-                        .validateEmail(text!),
+                        .validateEmail(email: text!),
                     isEmail: false,
                     textController: _emailController,
                     labelText: 'Email:',
@@ -65,7 +65,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     valueListenable: _forgotPasswordController.isClickedButton,
                     builder: (context, isClicked, _) => SignUpButtonWidget(
                       alignment: Alignment.topCenter,
-                      height: 250,
+                      top: 250,
                       buttonText: 'Send Request',
                       onPressed: isClicked
                           ? () async {

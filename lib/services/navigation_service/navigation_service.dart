@@ -37,7 +37,7 @@ Map<String, Widget Function(BuildContext)> routes = {
   '/signIn': (_) => const SignInPage(),
   '/forgotPassword': (_) => const ForgotPasswordPage(),
   '/newPassword': (_) => const NewPasswordPage(),
-  // TODO fix it 
+  // TODO fix it
   '/updatePassword': (_) => const NewPasswordPage(),
   '/passwordChanged': (_) => const PasswordChangedPage(),
   '/home': (_) => const NavigationPage(),
@@ -76,8 +76,10 @@ class NavigationService {
       case Pages.taskList:
         Navigator.pushNamed(context, '/workList');
         break;
+      // todo ! careful
       case Pages.home:
-        Navigator.pushNamed(context, '/home');
+        Navigator.pushNamedAndRemoveUntil(context, '/home', ((_) => false));
+        //  Navigator.pushNamed(context, '/home');
         break;
       case Pages.noConnection:
         Navigator.pushNamed(context, '/noConnection');

@@ -30,18 +30,15 @@ class TextFieldWidget extends StatelessWidget {
               color: Colors.black,
             ),
           ),
-          SizedBox(
-            width: 350,
-            height: 50,
-            child: TextFormField(
-              keyboardType: isEmail
-                  ? TextInputType.emailAddress
-                  : TextInputType.visiblePassword,
-              validator: (value) => validateCallback!(value),
-              obscureText: isEmail,
-              controller: textController,
-              decoration: InputDecoration(hintText: labelText),
-            ),
+          TextFormField(
+            scrollPhysics: const NeverScrollableScrollPhysics(),
+            scrollPadding: const EdgeInsets.all(0),
+            keyboardType:
+                isEmail ? TextInputType.emailAddress : TextInputType.text,
+            validator: (value) => validateCallback!(value),
+            obscureText: isEmail,
+            controller: textController,
+            decoration: InputDecoration(hintText: labelText),
           ),
         ],
       ),
