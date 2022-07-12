@@ -14,10 +14,9 @@ Future<void> showSettingsDialog(BuildContext context) async {
       return AlertDialog(
         contentPadding: const EdgeInsets.all(0),
         content: SizedBox(
-          height: 200,
+          height: 320,
           width: 270,
           child: ListView.separated(
-            physics: const NeverScrollableScrollPhysics(),
             separatorBuilder: (_, __) {
               return SizedBox(
                 height: 2,

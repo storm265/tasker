@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/pages/auth/forgot_password/controller/forgot_password_controller.dart';
+import 'package:todo2/presentation/pages/auth/reser_password/controller/padding_constant.dart';
+import 'package:todo2/presentation/pages/auth/widgets/unfocus_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/sign_up_button_widget.dart';
-import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/signup_to_continue_widget.dart';
+import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/subtitle_widget.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/textfield_widget.dart';
 import 'package:todo2/presentation/pages/auth/widgets/title_widget.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
@@ -34,54 +36,55 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         shouldUsePopMethod: true,
         showLeadingButton: true,
         isRedAppBar: false,
-        child: DisabledGlowWidget(
-          child: Form(
-            key: _forgotPasswordController.formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            child: Stack(
-              fit: StackFit.expand,
-              alignment: Alignment.center,
-              children: [
-                const TitleTextWidget(text: 'Forgot Password'),
-                const SubTitleWidget(
-                  text:
-                      'Please enter your email below to recevie\nyour password reset instructions',
-                ),
-                TextFieldWidget(
-                  validateCallback: (text) => _forgotPasswordController
-                      .validatorController
-                      .validateEmail(text!),
-                  left: 25,
-                  top: 160,
-                  isObsecureText: false,
-                  textController: _emailController,
-                  labelText: 'Email:',
-                  text: 'Username',
-                ),
-                ValueListenableBuilder<bool>(
-                  valueListenable: _forgotPasswordController.isClickedButton,
-                  builder: (context, isClicked, _) => SignUpButtonWidget(
-                    height: 270,
-                    buttonText: 'Send Request',
-                    onPressed: isClicked
-                        ? () async {
-                            await _forgotPasswordController
-                                .sendEmail(
-                                  context: context,
-                                  email: _emailController.text,
-                                )
-                                .then((_) => NavigationService.navigateTo(
-                                      context,
-                                      Pages.updatePassword,
-                                      arguments: true,
-                                    ));
-
-                            ;
-                          }
-                        : null,
+        child: Form(
+          key: _forgotPasswordController.formKey,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          child: UnfocusWidget(
+            child: Padding(
+              padding: const EdgeInsets.all(paddingAll),
+              child: Stack(
+                fit: StackFit.expand,
+                alignment: Alignment.center,
+                children: [
+                  const TitleTextWidget(text: 'Forgot Password'),
+                  const SubTitleWidget(
+                    text:
+                        'Please enter your email below to recevie\nyour password reset instructions',
                   ),
-                )
-              ],
+                  TextFieldWidget(
+                    top: 140,
+                    validateCallback: (text) => _forgotPasswordController
+                        .validatorController
+                        .validateEmail(text!),
+                    isEmail: false,
+                    textController: _emailController,
+                    labelText: 'Email:',
+                    text: 'Username',
+                  ),
+                  ValueListenableBuilder<bool>(
+                    valueListenable: _forgotPasswordController.isClickedButton,
+                    builder: (context, isClicked, _) => SignUpButtonWidget(
+                      alignment: Alignment.topCenter,
+                      height: 250,
+                      buttonText: 'Send Request',
+                      onPressed: isClicked
+                          ? () async {
+                              await _forgotPasswordController.sendEmail(
+                                context: context,
+                                email: _emailController.text,
+                                navigationCallback: () =>
+                                    NavigationService.navigateTo(
+                                  context,
+                                  Pages.updatePassword,
+                                  arguments: true,
+                                ),
+                              );
+                            }
+                          : null,
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),

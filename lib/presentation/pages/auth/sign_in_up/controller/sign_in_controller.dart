@@ -25,7 +25,7 @@ class SignInController extends ChangeNotifier {
         email: emailController,
         password: passwordController,
       );
-      
+
       isClickedSubmitButton.value = true;
       isClickedSubmitButton.notifyListeners();
     }

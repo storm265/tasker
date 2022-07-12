@@ -68,7 +68,7 @@ class _DetailedTaskPageState extends State<DetailedTaskPage> {
                                 itemBuilder: (context, index) {
                                   switch (index) {
                                     case 0:
-                                      return DetailedItemWidget(
+                                      return const DetailedItemWidget(
                                         leading: CircleAvatar(
                                           backgroundColor: Colors.red,
                                           radius: 20,
@@ -78,14 +78,14 @@ class _DetailedTaskPageState extends State<DetailedTaskPage> {
                                       );
 
                                     case 1:
-                                      return DetailedItemWidget(
+                                      return  const DetailedItemWidget(
                                         imageIcon: 'calendar',
                                         title: 'Due Date',
                                         subtitle: 'Aug 5,2018',
                                       );
 
                                     case 2:
-                                      return DetailedItemWidget(
+                                      return const DetailedItemWidget(
                                         isBlackColor: true,
                                         imageIcon: 'description',
                                         title: 'Decription',
@@ -194,7 +194,7 @@ class _DetailedTaskPageState extends State<DetailedTaskPage> {
                               ? () async {
                                   detailedController
                                       .isSubmitButtonClicked.value = false;
-                                  await Future.delayed(Duration(seconds: 2));
+                                  await Future.delayed(const Duration(seconds: 2));
                                   detailedController
                                       .isSubmitButtonClicked.value = true;
                                   // without then

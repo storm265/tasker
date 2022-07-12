@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/pages/auth/changed_password_page.dart';
 import 'package:todo2/presentation/pages/auth/forgot_password/forgot_password_page.dart';
-import 'package:todo2/presentation/pages/auth/reser_password/reset_password_page.dart';
+import 'package:todo2/presentation/pages/auth/reser_password/new_password_page.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/sign_in_page.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/sign_up_page.dart';
 import 'package:todo2/presentation/pages/auth/splash_page.dart';

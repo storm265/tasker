@@ -3,25 +3,23 @@ import 'package:flutter/material.dart';
 class TextFieldWidget extends StatelessWidget {
   final TextEditingController textController;
   final String text, labelText;
-  final double left, top;
-  final bool isObsecureText;
+  final bool isEmail;
+  final double top;
   final Function(String? text)? validateCallback;
-  const TextFieldWidget(
-      {Key? key,
-      required this.left,
-      required this.validateCallback,
-      required this.top,
-      required this.labelText,
-      required this.textController,
-      required this.text,
-      required this.isObsecureText})
-      : super(key: key);
+  const TextFieldWidget({
+    Key? key,
+    required this.validateCallback,
+    required this.labelText,
+    required this.textController,
+    required this.text,
+    this.top = 0,
+    required this.isEmail,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      left: left,
-      top: top,
+    return Padding(
+      padding: EdgeInsets.only(top: top),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -36,8 +34,11 @@ class TextFieldWidget extends StatelessWidget {
             width: 350,
             height: 50,
             child: TextFormField(
+              keyboardType: isEmail
+                  ? TextInputType.emailAddress
+                  : TextInputType.visiblePassword,
               validator: (value) => validateCallback!(value),
-              obscureText: isObsecureText,
+              obscureText: isEmail,
               controller: textController,
               decoration: InputDecoration(hintText: labelText),
             ),

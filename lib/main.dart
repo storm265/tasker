@@ -7,7 +7,7 @@ import 'package:todo2/database/repository/task_attachment_repository.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/tasks_member_repository.dart';
 import 'package:todo2/database/repository/user_profile_repository.dart';
-import 'package:todo2/presentation/pages/auth/reser_password/reset_password_page.dart';
+import 'package:todo2/presentation/pages/auth/reser_password/new_password_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/controller_inherited.dart';
 import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
@@ -66,9 +66,9 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'Todo2',
             theme: _themeDataController.themeData,
-              initialRoute: '/',
-             routes: routes,
-           // home: ProfilePage(),
+           initialRoute: '/',
+            routes: routes,
+       //    home: ProfilePage(),
           ),
         ),
       ),

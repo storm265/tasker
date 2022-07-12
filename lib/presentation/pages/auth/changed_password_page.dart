@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/signup_to_continue_widget.dart';
+import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/subtitle_widget.dart';
 import 'package:todo2/presentation/pages/auth/widgets/title_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
@@ -37,12 +37,12 @@ class _PasswordChangedPageState extends State<PasswordChangedPage> {
           ),
           const TitleTextWidget(
             text: 'Succesful!',
-            left: 135,
+            //  left: 135,
           ),
           const SubTitleWidget(
             text:
                 'You have succesfully change password.\nPlease use your new passwords when logging in.',
-            left: 50,
+            // left: 50,
           )
         ],
       ),

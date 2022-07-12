@@ -5,7 +5,6 @@ import 'package:todo2/presentation/pages/menu_pages/profile/widgets/stats_widget
 import 'package:todo2/presentation/pages/menu_pages/profile/widgets/task_list_widgets/task_list_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/widgets/profile_widget.dart';
-import 'package:todo2/services/message_service/message_service.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -23,7 +22,8 @@ class ProfilePage extends StatelessWidget {
             const ProfileWidget(),
             // FutureBuilder<List<ProjectModel>>(
             //   initialData: const [],
-            //   future: inheritedProfile.profileController.fetchProject(),
+            //   future: inheritedProfile.profileController
+            //       .fetchProject(context: context),
             //   builder: (_, AsyncSnapshot<List<ProjectModel>> snapshot) {
             //     return snapshot.hasData
             //         ? Column(

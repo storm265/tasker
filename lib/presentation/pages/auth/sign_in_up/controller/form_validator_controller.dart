@@ -1,13 +1,10 @@
+import 'package:email_validator/email_validator.dart';
+
 class FormValidatorController {
   String? validateEmail(String email) {
-      const String pattern =
-      r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
-      r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
-      r"{0,253}[a-zA-Z0-9])?)*$";
-        final RegExp regex = RegExp(pattern);
-    if (email.isEmpty ) {
+    if (email.isEmpty) {
       return 'Email is cannot be empty';
-    } else if (!regex.hasMatch(email)) {
+    } else if (!EmailValidator.validate(email)) {
       return 'Incorrect email';
     } else {
       return null;
@@ -33,5 +30,4 @@ class FormValidatorController {
       return null;
     }
   }
-  
 }

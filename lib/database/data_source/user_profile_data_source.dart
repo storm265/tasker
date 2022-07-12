@@ -6,23 +6,22 @@ import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/supabase/constants.dart';
 
 abstract class UserProfileDataSource {
-    Future fetchUserId();
+  Future fetchUserId();
   Future fetchUserName();
   Future fetchAvatar();
   Future insertUserProfile({
     required String avatarUrl,
     required String username,
   });
-  fetchUserWhere({required String userName});
-  fetchUsers({required String userName});
+  Future fetchUsersWhere({required String userName});
+  Future updateAvatar({required String avatarUrl});
 }
 
 class UserProfileDataSourceImpl implements UserProfileDataSource {
   final _supabase = SupabaseSource().restApiClient;
   final _table = 'user_profile';
 
-
-@override
+  @override
   Future<int> fetchUserId() async {
     try {
       final response = await _supabase
@@ -36,7 +35,6 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
       rethrow;
     }
   }
-
 
   @override
   Future<PostgrestResponse<dynamic>> insertUserProfile({
@@ -62,27 +60,6 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
   }
 
   @override
-  Future<PostgrestResponse<dynamic>> fetchUserWhere(
-      {required String userName}) async {
-    try {
-      final response = await _supabase
-          .from(_table)
-          .select('*')
-          .eq('username', userName)
-          .execute();
-      if (response.hasError) {
-        log(response.error!.message);
-      }
-      return response;
-    } catch (e) {
-      ErrorService.printError(
-          'Error in UserProfileDataSourceImpl fetchUser() dataSource:  $e');
-      rethrow;
-    }
-  }
-
-// TODO remove methods, use fetch all instead
-  @override
   Future<PostgrestResponse<dynamic>> fetchUserName() async {
     try {
       final response = await _supabase
@@ -102,26 +79,46 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
   }
 
   @override
-  Future<PostgrestResponse<dynamic>> fetchAvatar() async {
+  Future<PostgrestResponse<dynamic>> updateAvatar(
+      {required String avatarUrl}) async {
     try {
       final response = await _supabase
           .from(_table)
-          .select('avatar_url')
+          .update({UserProfileScheme.avatarUrl: avatarUrl})
           .eq(UserProfileScheme.uuid, _supabase.auth.currentUser!.id)
           .execute();
       if (response.hasError) {
         log(response.error!.message);
       }
       return response;
-    } catch (e, t) {
+    } catch (e) {
       ErrorService.printError(
-          'Error in UserProfileDataSourceImpl fetchAvatar() dataSource: $e, trace: $t');
+          'Error in UserProfileDataSourceImpl updateAvatar() dataSource: $e');
       rethrow;
     }
   }
 
   @override
-  Future<PostgrestResponse<dynamic>> fetchUsers(
+  Future<PostgrestResponse<dynamic>> fetchAvatar() async {
+    try {
+      final response = await _supabase
+          .from(_table)
+          .select(UserProfileScheme.avatarUrl)
+          .eq(UserProfileScheme.uuid, _supabase.auth.currentUser!.id)
+          .execute();
+      if (response.hasError) {
+        log(response.error!.message);
+      }
+      return response;
+    } catch (e) {
+      ErrorService.printError(
+          'Error in UserProfileDataSourceImpl fetchAvatar() dataSource: $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<PostgrestResponse<dynamic>> fetchUsersWhere(
       {required String userName}) async {
     try {
       final response = await SupabaseSource()
@@ -143,5 +140,4 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
       rethrow;
     }
   }
-
 }

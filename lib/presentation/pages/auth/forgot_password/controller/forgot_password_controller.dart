@@ -12,6 +12,7 @@ class ForgotPasswordController extends ChangeNotifier {
   Future<void> sendEmail({
     required BuildContext context,
     required String email,
+    required VoidCallback navigationCallback,
   }) async {
     if (formKey.currentState!.validate()) {
       isClickedButton.value = false;
@@ -20,7 +21,9 @@ class ForgotPasswordController extends ChangeNotifier {
         context: context,
         email: email,
       );
+      
       MessageService.displaySnackbar(context: context, message: 'Check your email.');
+      navigationCallback;
     }
     isClickedButton.value = true;
     isClickedButton.notifyListeners();

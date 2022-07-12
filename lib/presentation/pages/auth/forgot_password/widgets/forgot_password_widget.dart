@@ -5,16 +5,16 @@ class ForgotPasswordWidget extends StatelessWidget {
   const ForgotPasswordWidget({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      left: 245,
-      top: 315,
-      child: InkWell(
-        onTap: () async =>
+    return Align(
+      alignment: Alignment.centerRight,
+      child: TextButton(
+        onPressed: () async =>
             await NavigationService.navigateTo(context, Pages.forgotPassword),
         child: const Text(
           'Forgot password',
           style: TextStyle(
             fontSize: 18,
+            color: Colors.black,
             fontWeight: FontWeight.w200,
             fontStyle: FontStyle.italic,
           ),

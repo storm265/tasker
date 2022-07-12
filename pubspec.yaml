@@ -21,6 +21,7 @@ dependencies:
   flutter_secure_storage: 
   connectivity_plus:
   intl:
+  email_validator: ^2.0.1
   cached_network_image: 
   simple_gesture_detector:
   percent_indicator:

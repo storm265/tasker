@@ -80,7 +80,7 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
       {required String userName}) async {
     try {
       final response =
-          await _userProfileDataSource.fetchUsers(userName: userName);
+          await _userProfileDataSource.fetchUsersWhere(userName: userName);
       if (response.hasError) {
         log(response.error!.message);
       }
