@@ -6,17 +6,14 @@ class DotsPagerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 40),
-      child: Align(
-        alignment: Alignment.center,
-        child: ListView.builder(
-          shrinkWrap: true,
-          scrollDirection: Axis.horizontal,
-          itemCount: 3,
-          itemBuilder: (context, index) =>
-              DotItemWidget(index: index, pageIndex: pageIndex),
-        ),
+    return Align(
+      alignment: Alignment.center,
+      child: ListView.builder(
+        shrinkWrap: true,
+        scrollDirection: Axis.horizontal,
+        itemCount: 3,
+        itemBuilder: (context, index) =>
+            DotItemWidget(index: index, pageIndex: pageIndex),
       ),
     );
   }

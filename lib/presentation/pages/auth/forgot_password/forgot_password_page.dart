@@ -65,7 +65,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     valueListenable: _forgotPasswordController.isClickedButton,
                     builder: (context, isClicked, _) => SubmitUpButtonWidget(
                       alignment: Alignment.topCenter,
-                      top: 250,
+                
                       buttonText: 'Send Request',
                       onPressed: isClicked
                           ? () async {

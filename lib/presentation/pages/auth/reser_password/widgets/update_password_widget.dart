@@ -46,7 +46,6 @@ class UpdatePasswordWidget extends StatelessWidget {
           valueListenable: restoreController.isClickedSubmit,
           builder: (_, isClicked, __) => SubmitUpButtonWidget(
             buttonText: 'Update password',
-            top: 200,
             onPressed: isClicked
                 ? () => restoreController.validatePassword(context: context)
                 : null,

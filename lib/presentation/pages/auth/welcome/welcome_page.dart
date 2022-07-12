@@ -25,13 +25,13 @@ class _WelcomePageState extends State<WelcomePage> {
           alignment: Alignment.center,
           fit: StackFit.expand,
           children: [
+            ForegroundWaveWidget(pageIndex: _pageIndex),
+            BackgroundWaveWidget(pageIndex: _pageIndex),
             AsseterWidget(
               onChange: (index) => setState(() => _pageIndex = index),
             ),
             DotsPagerWidget(pageIndex: _pageIndex),
-            ForegroundWaveWidget(pageIndex: _pageIndex),
-            BackgroundWaveWidget(pageIndex: _pageIndex),
-            const GetStartedButton()
+            const GetStartedButton(),
           ],
         ),
       ),

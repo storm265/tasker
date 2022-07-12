@@ -10,25 +10,23 @@ class AvatarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      top: 95,
-      child: InkWell(
-        onTap: () => signUpController.pickAvatar(),
-        child: ValueListenableBuilder<XFile>(
-          valueListenable: signUpController.pickedFile,
-          builder: (__, imageFile, _) => Container(
-            width: 80,
-            height: 80,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: (imageFile.path.contains('assets')
-                      ? AssetImage(imageFile.path)
-                      : FileImage(File(imageFile.path)) as ImageProvider),
-                  fit: BoxFit.cover),
-              border: Border.all(color: Colors.red, width: 1.5),
-              shape: BoxShape.circle,
-              color: Colors.black45,
+    return InkWell(
+      onTap: () => signUpController.pickAvatar(),
+      child: ValueListenableBuilder<XFile>(
+        valueListenable: signUpController.pickedFile,
+        builder: (__, imageFile, _) => Container(
+          width: 80,
+          height: 80,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: (imageFile.path.contains('assets')
+                  ? AssetImage(imageFile.path)
+                  : FileImage(File(imageFile.path)) as ImageProvider),
+              fit: BoxFit.cover,
             ),
+            border: Border.all(color: Colors.red, width: 1.5),
+            shape: BoxShape.circle,
+            color: Colors.black45,
           ),
         ),
       ),

@@ -3,7 +3,6 @@ import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 class SubmitUpButtonWidget extends StatelessWidget {
   final String buttonText;
-  final double top;
   final Alignment alignment;
   final VoidCallback? onPressed;
   final Color backgroundColor;
@@ -15,14 +14,12 @@ class SubmitUpButtonWidget extends StatelessWidget {
     this.alignment = Alignment.center,
     this.backgroundColor = Palette.red,
     this.textColor = Colors.white,
-    this.top = 0,
+
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: top),
-      child: Align(
+    return Align(
         alignment: alignment,
         child: ElevatedButton(
           style: ButtonStyle(
@@ -42,7 +39,6 @@ class SubmitUpButtonWidget extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 }

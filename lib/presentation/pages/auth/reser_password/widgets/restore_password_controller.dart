@@ -50,7 +50,7 @@ class RestorePasswordWidget extends StatelessWidget {
               ),
               SubmitUpButtonWidget(
                 buttonText: 'Change password',
-                top: 350,
+               
                 onPressed: () =>
                     restoreController.validatePassword(context: context),
               ),

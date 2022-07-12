@@ -11,16 +11,13 @@ class TitleTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.topLeft,
-      child: Text(
+    return Text(
         text!,
         style: const TextStyle(
           fontSize: 32,
           fontWeight: FontWeight.w200,
           fontStyle: FontStyle.italic,
         ),
-      ),
-    );
+      );
   }
 }

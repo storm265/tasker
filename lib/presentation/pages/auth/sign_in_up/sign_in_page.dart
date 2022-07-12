@@ -52,38 +52,37 @@ class _SignInPageState extends State<SignInPage> {
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   child: Padding(
                     padding: const EdgeInsets.all(paddingAll),
-                    child: Stack(
-                      fit: StackFit.expand,
-                      alignment: Alignment.center,
+                    child: Wrap(
+                      runSpacing: 25,
                       children: [
-                        const TitleTextWidget(text: 'Welcome back'),
-                        const SubTitleWidget(text: 'Sign in to continue'),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 150),
-                          child: Wrap(
-                            runSpacing: 25,
-                            children: [
-                              TextFieldWidget(
-                                validateCallback: (text) => _signInController
-                                    .formValidatorController
-                                    .validateEmail(email: text!),
-                                isEmail: false,
-                                textController: _emailController,
-                                labelText: 'Email:',
-                                text: 'Username',
-                              ),
-                              TextFieldWidget(
-                                validateCallback: (text) => _signInController
-                                    .formValidatorController
-                                    .validatePassword(password: text!),
-                                isEmail: false,
-                                textController: _passwordController,
-                                isObcecure: true,
-                                labelText: 'Password:',
-                                text: 'Password',
-                              ),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const [
+                              TitleTextWidget(text: 'Welcome back'),
+                              SubTitleWidget(text: 'Sign in to continue'),
                             ],
                           ),
+                        ),
+                        TextFieldWidget(
+                          validateCallback: (text) => _signInController
+                              .formValidatorController
+                              .validateEmail(email: text!),
+                          isEmail: false,
+                          textController: _emailController,
+                          labelText: 'Email:',
+                          text: 'Username',
+                        ),
+                        TextFieldWidget(
+                          validateCallback: (text) => _signInController
+                              .formValidatorController
+                              .validatePassword(password: text!),
+                          isEmail: false,
+                          textController: _passwordController,
+                          isObcecure: true,
+                          labelText: 'Password:',
+                          text: 'Password',
                         ),
                         const ForgotPasswordWidget(),
                         ValueListenableBuilder<bool>(
@@ -92,7 +91,6 @@ class _SignInPageState extends State<SignInPage> {
                           builder: ((context, isClicked, _) =>
                               SubmitUpButtonWidget(
                                 buttonText: 'Sign In',
-                                top: 170,
                                 onPressed: isClicked
                                     ? () async {
                                         _signInController.signInValidate(
@@ -106,10 +104,7 @@ class _SignInPageState extends State<SignInPage> {
                                     : null,
                               )),
                         ),
-                        const SignInButtonWidget(
-                          buttonText: 'Sign Up',
-                          bottom: 80,
-                        ),
+                        const SignInButtonWidget(buttonText: 'Sign Up'),
                       ],
                     ),
                   ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/pages/auth/welcome/widgets/wave_colors.dart';
-
 import 'painter/foreground_wave_painter.dart';
 
 class ForegroundWaveWidget extends StatelessWidget {
@@ -14,7 +13,7 @@ class ForegroundWaveWidget extends StatelessWidget {
       alignment: Alignment.bottomCenter,
       child: CustomPaint(
         painter: ForegroundWave(color: WaveColors.backgroundColors[pageIndex]),
-        size: const Size(500, 240),
+        size: const Size(double.infinity, 240),
       ),
     );
   }

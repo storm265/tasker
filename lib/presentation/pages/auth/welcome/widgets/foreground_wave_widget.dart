@@ -13,7 +13,7 @@ class BackgroundWaveWidget extends StatelessWidget {
       alignment: Alignment.bottomCenter,
       child: CustomPaint(
         painter: BackgroundWave(color: WaveColors.backgroundColors[pageIndex]),
-        size: const Size(500, 250),
+        size: const Size(double.infinity, 250),
       ),
     );
   }
