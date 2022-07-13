@@ -52,21 +52,29 @@ class _ProfileWidgetState extends State<ProfileWidget>
               ),
             ),
           ),
-          UserDataWidget(
-            avatarImage: _profileController.image,
-            email: '${_profileController.supabase!.email}',
-            nickname: _profileController.userName,
-          ),
-          const TasksTextWidget(
-      
-            title: '120',
-            subtitle: 'Create Tasks',
-          ),
-          const TasksTextWidget(
-        
-            title: '999',
-            subtitle: 'Completed Tasks',
-          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              UserDataWidget(
+                avatarImage: _profileController.image,
+                email: '${_profileController.supabase!.email}',
+                nickname: _profileController.userName,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: const [
+                  TasksTextWidget(
+                    title: '120',
+                    subtitle: 'Create Tasks',
+                  ),
+                  TasksTextWidget(
+                    title: '999',
+                    subtitle: 'Completed Tasks',
+                  ),
+                ],
+              ),
+            ],
+          )
         ],
       ),
     );

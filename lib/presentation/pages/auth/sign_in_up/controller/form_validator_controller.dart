@@ -22,10 +22,12 @@ class FormValidatorController {
     return null;
   }
 
-  String? validateUsername({required String username}) {
-    if (username.isEmpty) {
-      return 'Username is cannot be empty';
-    } else if (username.length <= 5) {
+
+
+   String? validateNickname({required String username}) {
+    if (username.isEmpty || username.trim().isEmpty) {
+      return 'This field is required';
+    } else if (username.length <= 3) {
       return 'Username must be at least 5 characters';
     } else {
       return null;

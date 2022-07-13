@@ -17,7 +17,7 @@ class ProfilePage extends StatelessWidget {
       isRedAppBar: false,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
+        child: Wrap(
           children: [
             const ProfileWidget(),
             FutureBuilder<List<ProjectModel>>(

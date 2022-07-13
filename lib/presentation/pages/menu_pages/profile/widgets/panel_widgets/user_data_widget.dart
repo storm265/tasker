@@ -15,31 +15,27 @@ class UserDataWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      top: 40,
-      child: SizedBox(
-        width: 300,
-        height: 70,
-        child: ListTile(
-           leading: avatarImage!='' ? CachedAvatarWidget(image: avatarImage) : const CircularProgressIndicator.adaptive(),   
-          title: Text(
-            nickname,
-            style: const TextStyle(
-              fontSize: 18,
-              color: Colors.grey,
-              fontWeight: FontWeight.w400,
-              fontStyle: FontStyle.italic,
-            ),
-          ),
-          subtitle: Text(
-            email,
-            style: const TextStyle(
-              fontSize: 18,
-              color: Colors.grey,
-              fontWeight: FontWeight.w500,
-              fontStyle: FontStyle.italic,
-            ),
-          ),
+    return ListTile(
+      // TODO not good
+      contentPadding:const  EdgeInsets.symmetric(horizontal: 35),
+      leading: avatarImage != ''
+          ? CachedAvatarWidget(image: avatarImage)
+          : const CircularProgressIndicator.adaptive(),
+      title: Text(
+        nickname,
+        style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w300,
+          fontStyle: FontStyle.italic,
+        ),
+      ),
+      subtitle: Text(
+        email,
+        style: const TextStyle(
+          fontSize: 18,
+          color: Colors.grey,
+          fontWeight: FontWeight.w500,
+          fontStyle: FontStyle.italic,
         ),
       ),
     );

@@ -90,7 +90,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         TextFieldWidget(
                           validateCallback: (text) => _signUpController
                               .formValidatorController
-                              .validateUsername(username: text!),
+                              .validateNickname(username: text!),
                           isEmail: false,
                           textController: _usernameController,
                           isObcecure: true,
