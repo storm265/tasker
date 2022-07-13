@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/auth/reser_password/controller/padding_constant.dart';
+import 'package:todo2/presentation/pages/auth/reset_password/controller/padding_constant.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/sign_in_controller.dart';
 import 'package:todo2/presentation/pages/auth/widgets/unfocus_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';

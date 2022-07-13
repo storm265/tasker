@@ -4,7 +4,7 @@ description: A new Flutter project.
 publish_to: 'none' 
 
 
-version: 3.5.9+2
+version: 3.5.9+3
 
 environment:
   sdk: ">=2.16.2 <3.0.0"
@@ -15,13 +15,13 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
+  email_validator: ^2.0.1
   flutter_slidable:
   supabase_flutter:
   image_picker: 
   flutter_secure_storage: 
   connectivity_plus:
   intl:
-  email_validator: ^2.0.1
   cached_network_image: 
   simple_gesture_detector:
   percent_indicator:

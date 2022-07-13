@@ -7,7 +7,7 @@ import 'package:todo2/database/repository/task_attachment_repository.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/tasks_member_repository.dart';
 import 'package:todo2/database/repository/user_profile_repository.dart';
-import 'package:todo2/presentation/pages/auth/reser_password/new_password_page.dart';
+import 'package:todo2/presentation/pages/auth/reset_password/new_password_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/controller_inherited.dart';
 import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
@@ -22,6 +22,7 @@ import 'package:todo2/services/supabase/constants.dart';
 import 'package:todo2/services/supabase/update_token_service.dart';
 import 'package:todo2/services/system_service/system_chrome.dart';
 import 'presentation/pages/auth/changed_password_page.dart';
+import 'presentation/pages/auth/forgot_password/forgot_password_page.dart';
 import 'presentation/pages/auth/welcome/welcome_page.dart';
 import 'presentation/pages/menu_pages/floating_button/new_note/new_note_page.dart';
 import 'presentation/pages/menu_pages/floating_button/new_task/controller/add_task_controller.dart';
@@ -67,8 +68,8 @@ class MyApp extends StatelessWidget {
             title: 'Todo2',
             theme: _themeDataController.themeData,
             initialRoute: '/',
-             routes: routes,
-         // home: WelcomePage(),
+            routes: routes,
+            //  home: ForgotPasswordPage(),
           ),
         ),
       ),

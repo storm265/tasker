@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/auth/reser_password/controller/padding_constant.dart';
+import 'package:todo2/presentation/pages/auth/reset_password/controller/padding_constant.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/sign_up_controller.dart';
 import 'package:todo2/presentation/pages/auth/widgets/unfocus_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
@@ -62,9 +62,9 @@ class _SignUpPageState extends State<SignUpPage> {
                           alignment: Alignment.topLeft,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children:const [
-                               TitleTextWidget(text: 'Welcome'),
-                               SubTitleWidget(text: 'Sign up to continue'),
+                            children: const [
+                              TitleTextWidget(text: 'Welcome'),
+                              SubTitleWidget(text: 'Sign up to continue'),
                             ],
                           ),
                         ),
@@ -82,7 +82,8 @@ class _SignUpPageState extends State<SignUpPage> {
                           validateCallback: (text) => _signUpController
                               .formValidatorController
                               .validatePassword(password: text!),
-                          isEmail: true,
+                          isEmail: false,
+                          isObcecure: true,
                           textController: _passwordController,
                           labelText: 'Password:',
                           text: 'Password',
@@ -93,7 +94,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               .validateNickname(username: text!),
                           isEmail: false,
                           textController: _usernameController,
-                          isObcecure: true,
+                          isObcecure: false,
                           labelText: 'Username:',
                           text: 'Username',
                         ),
