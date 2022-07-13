@@ -8,6 +8,7 @@ import 'package:todo2/presentation/pages/menu_pages/menu/widgets/circle_widget.d
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
+import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
 
 class MenuPage extends StatefulWidget {
@@ -19,6 +20,16 @@ class MenuPage extends StatefulWidget {
 
 class _MenuPageState extends State<MenuPage> {
   final _projectsRepository = ProjectRepositoryImpl();
+// fake request
+  Future<List<ProjectModel>> fetchProject() async {
+    return [
+      ProjectModel(
+          title: 'title',
+          color: '42500',
+          createdAt: DateTime.now().toString(),
+          uuid: 'uuid')
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +45,12 @@ class _MenuPageState extends State<MenuPage> {
               child: Column(
                 children: [
                   FutureBuilder<List<ProjectModel>>(
-                    future: _projectsRepository.fetchProject(),
+                    // future: _projectsRepository.fetchProject(),
+                    future: fetchProject(),
                     builder: (_, AsyncSnapshot<List<ProjectModel>> snapshot) {
                       // TODo refactor
                       if (snapshot.data == null) {
-                        return const CircularProgressIndicator();
+                        return const ProgressIndicatorWidget();
                       }
                       if (snapshot.data!.isEmpty) {
                         return const SizedBox();
@@ -59,15 +71,31 @@ class _MenuPageState extends State<MenuPage> {
                                 width: 140,
                                 height: 180,
                                 decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.red),
                                   borderRadius: BorderRadius.circular(10),
                                   color: Colors.white,
                                 ),
-                                child: Stack(
-                                  children: [
-                                    DoubleCircleWidget(color: data.color),
-                                    CategoryWidget(title: data.title),
-                                    const CategoryLengthWidget()
-                                  ],
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 15),
+                                  child: Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Column(
+                                      children: [
+                                        DoubleCircleWidget(
+                                          color: data.color,
+                                        ),
+                                        Column(
+                                          children: [
+                                            CategoryWidget(title: data.title),
+                                            const CategoryLengthWidget(
+                                              taskLenght: 10,
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               );
                             });

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/supabase/constants.dart';
@@ -21,15 +23,16 @@ abstract class AuthDataSource {
 class AuthDataSourceImpl implements AuthDataSource {
   SupabaseSource supabase;
   SupabaseConfiguration configuration;
-  
-  AuthDataSourceImpl({required this.supabase,required this.configuration} );
+
+  AuthDataSourceImpl({required this.supabase, required this.configuration});
 
   @override
   Future<GotrueJsonResponse> resetPasswordForMail({
     required String email,
-  }) {
+  }) async {
     try {
-      final responce = supabase.restApiClient.auth.api.resetPasswordForEmail(
+      final responce =
+          await supabase.restApiClient.auth.api.resetPasswordForEmail(
         email,
         options: AuthOptions(redirectTo: configuration.redirectTo),
       );
@@ -45,14 +48,13 @@ class AuthDataSourceImpl implements AuthDataSource {
   Future<GotrueSessionResponse> signIn({
     required String email,
     required String password,
-  }) {
+  }) async {
     try {
-      final responce = supabase.restApiClient.auth.signIn(
+      final response = await supabase.restApiClient.auth.signIn(
         email: email,
         password: password,
-        
       );
-      return responce;
+      return response;
     } catch (e) {
       ErrorService.printError('Error in signIn() dataSource: $e');
       rethrow;
@@ -62,7 +64,7 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<GotrueResponse> signOut() async {
     try {
-      final responce = supabase.restApiClient.auth.signOut();
+      final responce = await supabase.restApiClient.auth.signOut();
       return responce;
     } catch (e) {
       ErrorService.printError('Error in signOut() dataSource: $e');
@@ -74,9 +76,9 @@ class AuthDataSourceImpl implements AuthDataSource {
   Future<GotrueSessionResponse> signUp({
     required String email,
     required String password,
-  }) {
+  }) async {
     try {
-      final response = supabase.restApiClient.auth.signUp(
+      final response = await supabase.restApiClient.auth.signUp(
         email,
         password,
       );
@@ -90,7 +92,7 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<GotrueUserResponse> updatePassword({required String password}) async {
     try {
-      final response = supabase.restApiClient.auth.api.updateUser(
+      final response = await supabase.restApiClient.auth.api.updateUser(
         supabase.restApiClient.auth.currentSession!.accessToken,
         UserAttributes(password: password),
       );

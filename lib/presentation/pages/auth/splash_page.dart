@@ -21,6 +21,10 @@ class SplashPageState extends AuthState<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    return const SizedBox();
+    return Scaffold(
+      body: Center(
+        child: Image.asset('assets/splash_screen/splash.png'),
+      ),
+    );
   }
 }

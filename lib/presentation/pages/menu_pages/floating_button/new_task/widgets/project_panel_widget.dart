@@ -33,7 +33,6 @@ class ProjectPanelPickerWidget extends StatelessWidget {
                 ),
                 leading: DoubleCircleWidget(
                   color: data.color,
-                  isUsePositioned: false,
                 ),
                 title: Text(data.title),
               ),

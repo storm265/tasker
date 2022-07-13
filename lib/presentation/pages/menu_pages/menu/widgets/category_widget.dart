@@ -6,18 +6,13 @@ class CategoryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      top: 125,
-      left: 23,
-      child: Text(
-        title,
-        style: const TextStyle(
-          fontStyle: FontStyle.italic,
-          color: Colors.black,
-          fontSize: 18,
-          fontWeight: FontWeight.w300,
-          
-        ),
+    return Text(
+      title,
+      style: const TextStyle(
+        fontStyle: FontStyle.italic,
+        color: Colors.black,
+        fontSize: 18,
+        fontWeight: FontWeight.w300,
       ),
     );
   }

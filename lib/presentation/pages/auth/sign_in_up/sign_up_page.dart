@@ -15,6 +15,7 @@ import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/subtitle_widget
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/textfield_widget.dart';
 import 'package:todo2/presentation/pages/auth/widgets/title_widget.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
+import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -35,6 +36,8 @@ class _SignUpPageState extends State<SignUpPage> {
     _passwordController.dispose();
     _usernameController.dispose();
     _signUpController.dispose();
+    _signUpController.isClickedSubmitButton.dispose();
+    _signUpController.pickedFile.dispose();
     super.dispose();
   }
 
@@ -111,18 +114,21 @@ class _SignUpPageState extends State<SignUpPage> {
                         ValueListenableBuilder<bool>(
                           valueListenable:
                               _signUpController.isClickedSubmitButton,
-                          builder: (context, isClicked, _) =>
-                              SubmitUpButtonWidget(
-                            buttonText: 'Sign Up',
-                            onPressed: isClicked
-                                ? () async => _signUpController.signUpValidate(
-                                      context: context,
-                                      userName: _usernameController.text,
-                                      email: _emailController.text,
-                                      password: _passwordController.text,
-                                    )
-                                : null,
-                          ),
+                          builder: (context, isClicked, _) => isClicked
+                              ? SubmitUpButtonWidget(
+                                  buttonText: 'Sign Up',
+                                  onPressed: isClicked
+                                      ? () async =>
+                                          _signUpController.signUpValidate(
+                                            context: context,
+                                            userName: _usernameController.text,
+                                            email: _emailController.text,
+                                            password: _passwordController.text,
+                                          )
+                                      : null,
+                                )
+                              : const ProgressIndicatorWidget(
+                                  text: 'Validating...'),
                         ),
                         const SignInButtonWidget(
                           buttonText: 'Sign In',

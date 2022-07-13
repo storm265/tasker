@@ -6,6 +6,7 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/wid
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/controller_inherited.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/confirm_button.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
+import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 class AddUserDialog extends StatelessWidget {
@@ -84,7 +85,8 @@ class AddUserDialog extends StatelessWidget {
                         AsyncSnapshot<List<UserProfileModel>> snapshot) {
                       return (snapshot.hasError || !snapshot.hasData)
                           ? const Center(
-                              child: CircularProgressIndicator.adaptive())
+                              child: ProgressIndicatorWidget(),
+                            )
                           : ListView.builder(
                               itemCount: snapshot.data!.length,
                               itemBuilder: (context, index) {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/presentation/pages/auth/reset_password/controller/restore_password_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/sign_up_button_widget.dart';
@@ -7,6 +6,7 @@ import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/subtitle_widget
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/textfield_widget.dart';
 import 'package:todo2/presentation/pages/auth/widgets/title_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
+import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
 
 class RestorePasswordWidget extends StatelessWidget {
@@ -64,14 +64,8 @@ class RestorePasswordWidget extends StatelessWidget {
                     ],
                   );
                 } else {
-                  return Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        CircularProgressIndicator.adaptive(),
-                        Text('Confirm email'),
-                      ],
-                    ),
+                  return const Center(
+                    child: ProgressIndicatorWidget(text: 'Confirm email'),
                   );
                 }
               },

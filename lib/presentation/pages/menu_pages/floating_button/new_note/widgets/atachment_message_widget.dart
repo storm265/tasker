@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:todo2/database/repository/user_profile_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/controller_inherited.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/widgets/panel_widgets/image_widget.dart';
+import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 
 class AttachementWidget extends StatefulWidget {
   const AttachementWidget({Key? key}) : super(key: key);
@@ -86,7 +87,7 @@ class _AttachementWidgetState extends State<AttachementWidget> {
               shrinkWrap: true,
             );
           } else {
-            return const CircularProgressIndicator.adaptive();
+            return const  ProgressIndicatorWidget();
           }
         }),
       ),

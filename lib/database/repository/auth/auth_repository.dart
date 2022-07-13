@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/data_source/auth_data_source.dart';
 import 'package:todo2/services/error_service/error_service.dart';
-import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/supabase/constants.dart';
 
 abstract class AuthRepository {

@@ -37,7 +37,9 @@ class SignUpController extends ChangeNotifier {
     required String email,
     required String password,
   }) async {
-    if (formKey.currentState!.validate()) {
+    if (pickedFile.value.path == _defaultAssetPath) {
+      MessageService.displaySnackbar(context: context, message: 'Pick image!');
+    } else if (formKey.currentState!.validate()) {
       isClickedSubmitButton.value = false;
       isClickedSubmitButton.notifyListeners();
       await signUp(
@@ -97,17 +99,10 @@ class SignUpController extends ChangeNotifier {
 
   Future<void> uploadAvatar({required BuildContext context}) async {
     try {
-      if (pickedFile.value.path.contains('assets')) {
-        MessageService.displaySnackbar(
-          context: context,
-          message: 'Pick avatar.',
-        );
-      } else {
-        await _supabase.storage.from('avatar').upload(
-              pickedFile.value.name,
-              File(pickedFile.value.path),
-            );
-      }
+      await _supabase.storage.from('avatar').upload(
+            pickedFile.value.name,
+            File(pickedFile.value.path),
+          );
     } catch (e) {
       ErrorService.printError('uploadAvatar error: $e');
     }

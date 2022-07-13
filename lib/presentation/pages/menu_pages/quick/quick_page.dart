@@ -8,6 +8,7 @@ import 'package:todo2/database/repository/checklist_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/note_card.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
+import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
 
 class CheckListLinkedModel {
@@ -75,7 +76,7 @@ class QuickPage extends StatelessWidget {
                         ),
                       ),
                     )
-                  : const Center(child: CircularProgressIndicator.adaptive())),
+                  : const Center(child: ProgressIndicatorWidget())),
         ),
       ),
     );

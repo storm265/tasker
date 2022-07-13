@@ -78,11 +78,9 @@ class NavigationService {
       case Pages.taskList:
         await Navigator.pushNamed(context, '/workList');
         break;
-      // todo ! careful
       case Pages.home:
-        // await Navigator.pushNamedAndRemoveUntil(
-        //     context, '/home', ((_) => false));
-       await  Navigator.pushNamed(context, '/home');
+        await Navigator.pushNamedAndRemoveUntil(
+            context, '/home', ((_) => false));
         break;
       case Pages.noConnection:
         await Navigator.pushNamed(context, '/noConnection');
