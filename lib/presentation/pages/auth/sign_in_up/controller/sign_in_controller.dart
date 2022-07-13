@@ -57,21 +57,11 @@ class SignInController extends ChangeNotifier {
         );
         return;
       }
-      MessageService.displaySnackbar(
-        context: context,
-        message: 'Should push',
-      );
+
       await Future.delayed(
         const Duration(seconds: 0),
         () => NavigationService.navigateTo(context, Pages.home),
       );
-      // final push = await    ;
-
-      //  push;
-      // else {
-
-      //   push;
-      // }
     } catch (e) {
       ErrorService.printError('Error in signIn() controller: $e');
     }
