@@ -1,5 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:todo2/database/repository/auth/auth_repository.dart';
 import 'package:todo2/presentation/pages/auth/reset_password/controller/padding_constant.dart';
+import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/sign_in_controller.dart';
 import 'package:todo2/presentation/pages/auth/widgets/unfocus_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
@@ -23,13 +27,16 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final _signInController = SignInController();
+
+  final _signInController = SignInController(
+    authRepository: AuthRepositoryImpl(),
+    formValidatorController: FormValidatorController(),
+  );
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
-    _signInController.isClickedSubmitButton.dispose();
-    _signInController.dispose();
+    _signInController.disposeObjects();
     super.dispose();
   }
 
@@ -93,13 +100,15 @@ class _SignInPageState extends State<SignInPage> {
                                 buttonText: 'Sign In',
                                 onPressed: isClicked
                                     ? () async {
-                                        _signInController.signInValidate(
-                                          context: context,
-                                          emailController:
-                                              _emailController.text,
-                                          passwordController:
-                                              _passwordController.text,
-                                        );
+                                        _signInController
+                                            .signInValidate(
+                                              context: context,
+                                              emailController:
+                                                  _emailController.text,
+                                              passwordController:
+                                                  _passwordController.text,
+                                            )
+                                            ;
                                       }
                                     : null,
                               )),

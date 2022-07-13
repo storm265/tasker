@@ -23,12 +23,15 @@ class ProfileController extends ChangeNotifier {
   Future<void> signOut(BuildContext context) async {
     try {
       final pushBack = NavigationService.navigateTo(context, Pages.welcome);
-      await _authRepository.signOut(context: context);
-      pushBack;
-    } catch (e) {
-      MessageService.displaySnackbar(
+      final response = await _authRepository.signOut(context: context);
+      if (response.error != null) {
+        MessageService.displaySnackbar(
           context: context,
-          message: 'Error in ProfileController  signOut : $e');
+          message: response.error!.message.toString(),
+        );
+        pushBack;
+      }
+    } catch (e) {
       ErrorService.printError('Error in ProfileController  signOut : $e');
     }
   }
@@ -38,10 +41,6 @@ class ProfileController extends ChangeNotifier {
     try {
       return _projectsRepository.fetchProject();
     } catch (e) {
-      MessageService.displaySnackbar(
-        context: context,
-        message: "Error in ProfileController  fetchProject() :$e ",
-      );
       ErrorService.printError(
           "Error in ProfileController  fetchProject() :$e ");
       rethrow;
@@ -57,10 +56,6 @@ class ProfileController extends ChangeNotifier {
       userName = await _userProfileRepository.fetchUserName();
       updateStateCallback();
     } catch (e) {
-      MessageService.displaySnackbar(
-        context: context,
-        message: "Error in ProfileController  fetchProfileInfo() :$e ",
-      );
       ErrorService.printError(
           "Error in ProfileController  fetchProfileInfo() :$e ");
       rethrow;

@@ -19,11 +19,10 @@ abstract class AuthDataSource {
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
-  // TODO  add dependency injection
   SupabaseSource supabase;
   SupabaseConfiguration configuration;
   
-  AuthDataSourceImpl(this.supabase,this.configuration);
+  AuthDataSourceImpl({required this.supabase,required this.configuration} );
 
   @override
   Future<GotrueJsonResponse> resetPasswordForMail({
@@ -51,6 +50,7 @@ class AuthDataSourceImpl implements AuthDataSource {
       final responce = supabase.restApiClient.auth.signIn(
         email: email,
         password: password,
+        
       );
       return responce;
     } catch (e) {

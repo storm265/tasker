@@ -8,7 +8,6 @@ class RestorePasswordController extends ChangeNotifier {
 
   final TextEditingController passwordController1 = TextEditingController();
   final TextEditingController passwordController2 = TextEditingController();
-
   final isClickedSubmit = ValueNotifier(true);
 
   final AuthRepositoryImpl authRepositoryController;
@@ -46,15 +45,19 @@ class RestorePasswordController extends ChangeNotifier {
 
   Future<void> updatePassword({required BuildContext context}) async {
     try {
-      await authRepositoryController.updatePassword(
+      final response = await authRepositoryController.updatePassword(
           password: passwordController1.text);
-      MessageService.displaySnackbar(
-          context: context, message: 'Password updated');
-      MessageService.displaySnackbar(
-          context: context, message: 'Password updated');
-      await Future.delayed(const Duration(seconds: 1),
-          () => NavigationService.navigateTo(context, Pages.passwordChanged));
-      
+      if (response.error != null) {
+        MessageService.displaySnackbar(
+          context: context,
+          message: response.error!.message.toString(),
+        );
+      } else {
+        MessageService.displaySnackbar(
+            context: context, message: 'Password updated');
+        await Future.delayed(const Duration(seconds: 1),
+            () => NavigationService.navigateTo(context, Pages.passwordChanged));
+      }
     } catch (e) {
       throw Exception('Error in updatePassword() controller $e');
     }

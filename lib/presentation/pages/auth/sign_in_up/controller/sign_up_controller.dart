@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:todo2/database/repository/auth/auth_repository.dart';
@@ -14,18 +13,23 @@ import 'package:todo2/services/supabase/constants.dart';
 const _defaultAssetPath = 'assets/grey_avatar.jpg';
 
 class SignUpController extends ChangeNotifier {
+  SignUpController({
+    required this.authRepository,
+    required this.userProfileRepository,
+    required this.userRepository,
+    required this.formValidatorController,
+  });
+
+  final AuthRepositoryImpl authRepository;
+  final UserProfileRepositoryImpl userProfileRepository;
+  final UserRepositoryImpl userRepository;
+  final FormValidatorController formValidatorController;
+
+  final formKey = GlobalKey<FormState>();
+  final isClickedSubmitButton = ValueNotifier(true);
   final _supabase = SupabaseSource().restApiClient;
   final pickedFile = ValueNotifier(XFile(_defaultAssetPath));
-  final ImagePicker picker = ImagePicker();
-
-  final _authRepository = AuthRepositoryImpl();
-  final _userProfileRepository = UserProfileRepositoryImpl();
-  final _userRepository = UserRepositoryImpl();
-
-  final formValidatorController = FormValidatorController();
-  final formKey = GlobalKey<FormState>();
-  final double leftPadding = 25;
-  final isClickedSubmitButton = ValueNotifier(true);
+  final picker = ImagePicker();
 
   Future<void> signUpValidate({
     required BuildContext context,
@@ -33,8 +37,7 @@ class SignUpController extends ChangeNotifier {
     required String email,
     required String password,
   }) async {
-    if (formKey.currentState!.validate() &&
-        !pickedFile.value.path.contains('assets')) {
+    if (formKey.currentState!.validate()) {
       isClickedSubmitButton.value = false;
       isClickedSubmitButton.notifyListeners();
       await signUp(
@@ -42,7 +45,7 @@ class SignUpController extends ChangeNotifier {
         username: userName,
         email: email,
         password: password,
-      ).then((_) => NavigationService.navigateTo(context, Pages.home));
+      );
       isClickedSubmitButton.value = true;
       isClickedSubmitButton.notifyListeners();
     }
@@ -55,20 +58,27 @@ class SignUpController extends ChangeNotifier {
     required String username,
   }) async {
     try {
-      await _authRepository.signUp(
+      final response = await authRepository.signUp(
         context: context,
         email: email,
         password: password,
       );
-      await _userRepository.insertUser(email: email, password: password);
-      await _userProfileRepository.insertProfile(
-        avatarUrl: pickedFile.value.name,
-        username: username,
-      );
-      await uploadAvatar();
+      if (response.error != null) {
+        MessageService.displaySnackbar(
+          context: context,
+          message: response.error!.message.toString(),
+        );
+      } else {
+        await userRepository.insertUser(email: email, password: password);
+        await userProfileRepository.insertProfile(
+          avatarUrl: pickedFile.value.name,
+          username: username,
+        );
+        await uploadAvatar(context: context)
+            .then((_) => NavigationService.navigateTo(context, Pages.home));
+      }
     } catch (e) {
-      MessageService.displaySnackbar(
-          context: context, message: 'signUp error: $e');
+      MessageService.displaySnackbar(context: context, message: '$e');
     }
   }
 
@@ -85,10 +95,13 @@ class SignUpController extends ChangeNotifier {
     }
   }
 
-  Future<void> uploadAvatar() async {
+  Future<void> uploadAvatar({required BuildContext context}) async {
     try {
       if (pickedFile.value.path.contains('assets')) {
-        ErrorService.printError('Pick image!');
+        MessageService.displaySnackbar(
+          context: context,
+          message: 'Pick avatar.',
+        );
       } else {
         await _supabase.storage.from('avatar').upload(
               pickedFile.value.name,

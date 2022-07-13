@@ -12,8 +12,6 @@ import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 
-import 'package:todo2/services/supabase/constants.dart';
-
 enum InputFieldStatus {
   showUserPanel,
   showProjectPanel,
@@ -27,7 +25,6 @@ class AddTaskController extends ChangeNotifier {
   TaskAttachmentRepositoryImpl taskAttachment;
   TasksMembersRepositoryImpl tasksMembers;
 
-  final _supabase = SupabaseSource().restApiClient;
   final formKey = GlobalKey<FormState>();
 
   AddTaskController({
@@ -106,6 +103,7 @@ class AddTaskController extends ChangeNotifier {
   final pickedTime = ValueNotifier<DateTime?>(null);
   void pickTime({required DateTime newTime}) {
     pickedTime.value = newTime;
+    print(pickedTime.value);
     pickedTime.notifyListeners();
   }
 
@@ -189,17 +187,17 @@ class AddTaskController extends ChangeNotifier {
         projectId: projectId,
         dueDate: pickedTime.value!,
       );
-      int currentProjectId = await taskRepository.fetchTaskId(title: title);
-      // push attachment
-      for (int i = 0; i < files.value.length; i++) {
-        await taskAttachment.putAttachment(
-            url: files.value[i].name, taskId: currentProjectId);
-      }
-      //TODO fix it
-      // task members
-      for (int i = 0; i < taskMembers.value.length; i++) {
-        tasksMembers.putMember();
-      }
+      // int currentProjectId = await taskRepository.fetchTaskId(title: title);
+      // // push attachment
+      // for (int i = 0; i < files.value.length; i++) {
+      //   await taskAttachment.putAttachment(
+      //       url: files.value[i].name, taskId: currentProjectId);
+      // }
+      // //TODO fix it
+      // // task members
+      // for (int i = 0; i < taskMembers.value.length; i++) {
+      //   tasksMembers.putMember();
+      // }
     } catch (e) {
       ErrorService.printError('Error in add task controller putTask(): $e');
     }

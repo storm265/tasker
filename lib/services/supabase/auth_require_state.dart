@@ -9,7 +9,7 @@ class AuthRequiredState<T extends StatefulWidget>
     /// Users will be sent back to the LoginPage if they sign out.
     if (mounted) {
       /// Users will be sent back to the LoginPage if they sign out.
-      await NavigationService.navigateTo(context, Pages.signIn);
+       await NavigationService.navigateTo(context, Pages.signIn);
     }
   }
 }

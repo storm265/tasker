@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:todo2/database/repository/auth/auth_repository.dart';
+import 'package:todo2/database/repository/user_profile_repository.dart';
+import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/pages/auth/reset_password/controller/padding_constant.dart';
+import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/sign_up_controller.dart';
 import 'package:todo2/presentation/pages/auth/widgets/unfocus_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
@@ -21,6 +25,10 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -30,11 +38,13 @@ class _SignUpPageState extends State<SignUpPage> {
     super.dispose();
   }
 
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _usernameController = TextEditingController();
+  final _signUpController = SignUpController(
+    formValidatorController: FormValidatorController(),
+    authRepository: AuthRepositoryImpl(),
+    userProfileRepository: UserProfileRepositoryImpl(),
+    userRepository: UserRepositoryImpl(),
+  );
 
-  final _signUpController = SignUpController();
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;

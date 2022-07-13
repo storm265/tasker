@@ -1,15 +1,22 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:todo2/database/repository/auth/auth_repository.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
 import 'package:todo2/services/error_service/error_service.dart';
+import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 class SignInController extends ChangeNotifier {
-  final _authRepository = AuthRepositoryImpl();
-  final formValidatorController = FormValidatorController();
-  final formKey = GlobalKey<FormState>();
-  final double left = 25;
+  final AuthRepositoryImpl authRepository;
+  final FormValidatorController formValidatorController;
 
+  SignInController({
+    required this.authRepository,
+    required this.formValidatorController,
+  });
+
+  final formKey = GlobalKey<FormState>();
   final isClickedSubmitButton = ValueNotifier(true);
 
   Future<void> signInValidate({
@@ -20,6 +27,7 @@ class SignInController extends ChangeNotifier {
     if (formKey.currentState!.validate()) {
       isClickedSubmitButton.value = false;
       isClickedSubmitButton.notifyListeners();
+
       await signIn(
         context: context,
         email: emailController,
@@ -37,26 +45,60 @@ class SignInController extends ChangeNotifier {
     required String password,
   }) async {
     try {
-      await _authRepository.signIn(
+      final response = await authRepository.signIn(
         context: context,
         email: email,
         password: password,
-        navigatorCallback: () =>
-            NavigationService.navigateTo(context, Pages.home),
       );
+      if (response.error != null) {
+        MessageService.displaySnackbar(
+          context: context,
+          message: response.error!.message.toString(),
+        );
+        return;
+      }
+      MessageService.displaySnackbar(
+        context: context,
+        message: 'Should push',
+      );
+      await Future.delayed(
+        const Duration(seconds: 0),
+        () => NavigationService.navigateTo(context, Pages.home),
+      );
+      // final push = await    ;
+
+      //  push;
+      // else {
+
+      //   push;
+      // }
     } catch (e) {
-      throw Exception('Error in signIn() controller: $e');
+      ErrorService.printError('Error in signIn() controller: $e');
     }
   }
 
   Future<void> resetPassword({
     required BuildContext context,
     required String email,
+    required VoidCallback navigationCallback,
   }) async {
     try {
-      await _authRepository.resetPassword(context: context, email: email);
+      final response =
+          await authRepository.resetPassword(context: context, email: email);
+      if (response.error != null) {
+        MessageService.displaySnackbar(
+          context: context,
+          message: response.error!.message.toString(),
+        );
+      } else {
+        navigationCallback;
+      }
     } catch (e) {
       ErrorService.printError('Error in resetPassword : $e');
     }
+  }
+
+  void disposeObjects() {
+    isClickedSubmitButton.dispose();
   }
 }

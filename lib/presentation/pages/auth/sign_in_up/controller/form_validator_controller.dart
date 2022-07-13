@@ -11,7 +11,6 @@
 
 import 'package:email_validator/email_validator.dart';
 
-
 class FormValidatorController {
   // RegExp regex = RegExp(_emailPattern);
   // String? validateEmail({required String email}) {
@@ -23,7 +22,7 @@ class FormValidatorController {
   //   return null;
   // }
   String? validateEmail({required String email}) {
-    if (email.trim().isEmpty) {
+    if (email.isEmpty || email.trim().isEmpty) {
       return 'Email cant be empty';
     } else if (!EmailValidator.validate(email, true)) {
       return 'Incorrect email';

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/data_source/auth_data_source.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
@@ -17,7 +18,6 @@ abstract class AuthRepository {
     required BuildContext context,
     required String email,
     required String password,
-    required VoidCallback navigatorCallback,
   });
 
   Future resetPassword({
@@ -30,29 +30,23 @@ abstract class AuthRepository {
 }
 
 class AuthRepositoryImpl implements AuthRepository {
-  final _authDataSource =
-      AuthDataSourceImpl(SupabaseSource(), SupabaseConfiguration());
-      
+  final _authDataSource = AuthDataSourceImpl(
+    supabase: SupabaseSource(),
+    configuration: SupabaseConfiguration(),
+  );
+
   @override
-  Future<void> signIn({
+  Future<GotrueSessionResponse> signIn({
     required BuildContext context,
     required String email,
     required String password,
-    required VoidCallback navigatorCallback,
   }) async {
     try {
       final response = await _authDataSource.signIn(
         email: email,
         password: password,
       );
-      if (response.error != null) {
-        MessageService.displaySnackbar(
-          context: context,
-          message: response.error!.message.toString(),
-        );
-      } else {
-        navigatorCallback();
-      }
+      return response;
     } catch (e) {
       ErrorService.printError('Error in signIn() repository: $e');
       rethrow;
@@ -60,7 +54,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<void> signUp({
+  Future<GotrueSessionResponse> signUp({
     required BuildContext context,
     required String email,
     required String password,
@@ -70,12 +64,7 @@ class AuthRepositoryImpl implements AuthRepository {
         email: email,
         password: password,
       );
-      if (response.error != null) {
-        MessageService.displaySnackbar(
-          context: context,
-          message: response.error!.message.toString(),
-        );
-      }
+      return response;
     } catch (e) {
       ErrorService.printError('Error in signUp() repository: $e');
       rethrow;
@@ -83,15 +72,10 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<void> signOut({required BuildContext context}) async {
+  Future<GotrueResponse> signOut({required BuildContext context}) async {
     try {
       final response = await _authDataSource.signOut();
-      if (response.error != null) {
-        MessageService.displaySnackbar(
-          context: context,
-          message: response.error!.message.toString(),
-        );
-      }
+      return response;
     } catch (e) {
       ErrorService.printError('Error in signOut() repository: $e');
       rethrow;
@@ -99,19 +83,13 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<void> resetPassword({
+  Future<GotrueJsonResponse> resetPassword({
     required BuildContext context,
     required String email,
   }) async {
     try {
       final response = await _authDataSource.resetPasswordForMail(email: email);
-
-      if (response.error != null) {
-        MessageService.displaySnackbar(
-          context: context,
-          message: response.error!.message.toString(),
-        );
-      }
+      return response;
     } catch (e) {
       ErrorService.printError('Error in resetPassword() repository: $e');
       rethrow;
@@ -119,12 +97,10 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<void> updatePassword({required String password}) async {
+  Future<GotrueUserResponse> updatePassword({required String password}) async {
     try {
       final response = await _authDataSource.updatePassword(password: password);
-      if (response.error != null) {
-        ErrorService.printError(response.error!.message);
-      }
+      return response;
     } catch (e) {
       ErrorService.printError('Error in updatePassword() repository: $e');
       rethrow;
