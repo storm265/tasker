@@ -18,6 +18,8 @@ import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_page.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
+import 'package:todo2/services/network_service/network_service.dart';
+import 'package:todo2/services/supabase/auth_state.dart';
 import 'package:todo2/services/supabase/configure.dart';
 import 'package:todo2/services/supabase/constants.dart';
 import 'package:todo2/services/supabase/update_token_service.dart';
@@ -41,9 +43,25 @@ void main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   MyApp({Key? key}) : super(key: key);
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends AuthState<MyApp> {
+  @override
+  void initState() {
+    log('init');
+   NetworkService().checkConnection(context, () { });
+    super.initState();
+  }
+  @override
+  void dispose() {
+        log('dispose');
+    super.dispose();
+  }
   final _newTaskConroller = AddTaskController(
     tasksMembers: TasksMembersRepositoryImpl(),
     taskRepository: TaskRepositoryImpl(),
@@ -53,7 +71,9 @@ class MyApp extends StatelessWidget {
   );
 
   final _themeDataController = ThemeDataService();
+
   final _profileController = ProfileController();
+
   final _navigationController = NavigationController();
 
   @override

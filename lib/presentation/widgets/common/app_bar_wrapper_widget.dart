@@ -47,7 +47,6 @@ class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
         InheritedNavigator.of(context)!.navigationController;
 
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: showAppBar
           ? AppBar(
               systemOverlayStyle: isRedAppBar ? _redBar : _whiteBar,

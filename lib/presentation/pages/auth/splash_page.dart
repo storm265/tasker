@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/services/network_service/network_service.dart';
 import 'package:todo2/services/supabase/auth_state.dart';
 
 class SplashPage extends StatefulWidget {
@@ -13,9 +12,7 @@ class SplashPageState extends AuthState<SplashPage> {
   @override
   void initState() {
     super.initState();
-    // TODO fix it;
     recoverSupabaseSession();
-   // NetworkService().checkConnection(context, () => );
   }
 
   @override

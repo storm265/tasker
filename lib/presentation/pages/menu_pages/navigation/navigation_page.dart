@@ -49,12 +49,11 @@ class _NavigationPageState extends State<NavigationPage> {
             maintainBottomViewPadding: true,
             bottom: false,
             child: PageView(
+              physics: const NeverScrollableScrollPhysics(),
               onPageChanged: (index) {
                 index == 0
                     ? _statusBarController.setRedStatusMode(true)
                     : _statusBarController.setRedStatusMode(false);
-                print(index);
-                inheritedNavigatorConroller.updateIndex(index: index);
               },
               controller: pageController,
               children: [

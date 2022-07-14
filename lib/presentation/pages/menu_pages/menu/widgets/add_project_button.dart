@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
-import 'package:todo2/presentation/pages/menu_pages/menu/dialog.dart';
+import 'package:todo2/presentation/pages/menu_pages/menu/dialogs/add_project_dialog.dart';
 
 class AddProjectButton extends StatelessWidget {
   final Function notifyParent;

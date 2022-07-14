@@ -31,7 +31,6 @@ class NavigationController extends ChangeNotifier {
       case NavigationPages.profile:
         pageIndex.value = 3;
         break;
-
       default:
         pageIndex.value = 0;
         break;
@@ -42,11 +41,6 @@ class NavigationController extends ChangeNotifier {
       duration: const Duration(milliseconds: 500),
       curve: Curves.easeInOut,
     );
-    notifyListeners();
-  }
-
-  void updateIndex({required int index}) {
-    pageIndex.value == index;
     pageIndex.notifyListeners();
   }
 }
