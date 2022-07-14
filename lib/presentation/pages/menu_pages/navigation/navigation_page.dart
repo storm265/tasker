@@ -32,7 +32,6 @@ class _NavigationPageState extends State<NavigationPage> {
   @override
   void dispose() {
     _statusBarController.dispose();
-    //inheritedNavigatorConroller.pageController.dispose();
     super.dispose();
   }
 
@@ -50,9 +49,13 @@ class _NavigationPageState extends State<NavigationPage> {
             maintainBottomViewPadding: true,
             bottom: false,
             child: PageView(
-              onPageChanged: (index) => index == 0
-                  ? _statusBarController.setRedStatusMode(true)
-                  : _statusBarController.setRedStatusMode(false),
+              onPageChanged: (index) {
+                index == 0
+                    ? _statusBarController.setRedStatusMode(true)
+                    : _statusBarController.setRedStatusMode(false);
+                print(index);
+                inheritedNavigatorConroller.updateIndex(index: index);
+              },
               controller: pageController,
               children: [
                 const KeepAlivePageWidget(child: TasksPage()),

@@ -44,4 +44,9 @@ class NavigationController extends ChangeNotifier {
     );
     notifyListeners();
   }
+
+  void updateIndex({required int index}) {
+    pageIndex.value == index;
+    pageIndex.notifyListeners();
+  }
 }

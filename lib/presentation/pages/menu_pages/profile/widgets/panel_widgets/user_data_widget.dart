@@ -21,7 +21,8 @@ class UserDataWidget extends StatelessWidget {
       contentPadding: const EdgeInsets.symmetric(horizontal: 35),
       leading: avatarImage != ''
           ? CachedAvatarWidget(image: avatarImage)
-          : const ProgressIndicatorWidget(),
+          //  : const ProgressIndicatorWidget(),
+          : const SizedBox(),
       title: Text(
         nickname,
         style: const TextStyle(

@@ -24,9 +24,10 @@ class FormValidatorController {
     RegExp regex = RegExp(_passwordPattern);
     if (password.isEmpty || password.trim().isEmpty) {
       return 'This field is required 😐';
-    } else if (!regex.hasMatch(password)) {
-      return 'Incorrect password 🔒';
     }
+    // else if (!regex.hasMatch(password)) {
+    //   return 'Incorrect password 🔒';
+    // }
 
     return null;
   }

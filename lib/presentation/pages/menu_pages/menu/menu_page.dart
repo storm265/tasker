@@ -21,15 +21,15 @@ class MenuPage extends StatefulWidget {
 class _MenuPageState extends State<MenuPage> {
   final _projectsRepository = ProjectRepositoryImpl();
 // fake request
-  Future<List<ProjectModel>> fetchProject() async {
-    return [
-      ProjectModel(
-          title: 'title',
-          color: '42500',
-          createdAt: DateTime.now().toString(),
-          uuid: 'uuid')
-    ];
-  }
+  // Future<List<ProjectModel>> fakeRequest() async {
+  //   return [
+  //     ProjectModel(
+  //         title: 'title',
+  //         color: '42500',
+  //         createdAt: DateTime.now().toString(),
+  //         uuid: 'uuid')
+  //   ];
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +45,8 @@ class _MenuPageState extends State<MenuPage> {
               child: Column(
                 children: [
                   FutureBuilder<List<ProjectModel>>(
-                    // future: _projectsRepository.fetchProject(),
-                    future: fetchProject(),
+                    future: _projectsRepository.fetchProject(),
+                    //  future: fakeRequest(),
                     builder: (_, AsyncSnapshot<List<ProjectModel>> snapshot) {
                       // TODo refactor
                       if (snapshot.data == null) {
@@ -67,34 +67,39 @@ class _MenuPageState extends State<MenuPage> {
                             ),
                             itemBuilder: (BuildContext context, index) {
                               final data = snapshot.data![index];
-                              return Container(
+                              return SizedBox(
                                 width: 140,
                                 height: 180,
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.red),
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Colors.white,
-                                ),
+                                // decoration: BoxDecoration(
+                                //   border: Border.all(color: Colors.red),
+                                //   borderRadius: BorderRadius.circular(10),
+                                //   color: Colors.white,
+                                // ),
                                 child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 10, horizontal: 15),
-                                  child: Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Column(
-                                      children: [
-                                        DoubleCircleWidget(
+                                  padding: const EdgeInsets.all(15),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Align(
+                                        alignment: Alignment.topLeft,
+                                        child: DoubleCircleWidget(
                                           color: data.color,
                                         ),
-                                        Column(
+                                      ),
+                                      Align(
+                                        alignment: Alignment.bottomLeft,
+                                        child: Wrap(
+                                          spacing: 5,
+                                          direction: Axis.vertical,
                                           children: [
                                             CategoryWidget(title: data.title),
                                             const CategoryLengthWidget(
-                                              taskLenght: 10,
-                                            )
+                                                taskLenght: 10)
                                           ],
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               );

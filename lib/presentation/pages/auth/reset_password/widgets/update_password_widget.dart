@@ -23,7 +23,7 @@ class UpdatePasswordWidget extends StatelessWidget {
               TitleTextWidget(text: 'New Password'),
               SubTitleWidget(
                   text:
-                      'Reset code was sent to your email. Please enter the code and creae new password'),
+                      'Reset code was sent to your email. Please enter the code and create new password'),
             ],
           ),
         ),
