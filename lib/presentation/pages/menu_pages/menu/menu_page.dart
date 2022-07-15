@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo2/database/data_source/projects_user_data_source.dart';
 import 'package:todo2/database/model/projects_model.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/dialogs/options_dialog.dart';
@@ -19,7 +20,16 @@ class MenuPage extends StatefulWidget {
 }
 
 class _MenuPageState extends State<MenuPage> {
-  final _projectsRepository = ProjectRepositoryImpl();
+  final List<ProjectModel> model = [
+    ProjectModel(
+        color: '012', createdAt: '', title: 'default title', uuid: '1233')
+  ];
+
+  Future<List<ProjectModel>> fakeFetch() async {
+    return model;
+  }
+
+  ProjectModel? selectedModel;
   @override
   Widget build(BuildContext context) {
     return WillPopWrapper(
@@ -34,7 +44,8 @@ class _MenuPageState extends State<MenuPage> {
               child: Column(
                 children: [
                   FutureBuilder<List<ProjectModel>>(
-                    future: _projectsRepository.fetchProject(),
+                    // future: _projectsRepository.fetchProject(),
+                    future: fakeFetch(),
                     builder: (_, AsyncSnapshot<List<ProjectModel>> snapshot) {
                       if (snapshot.data == null) {
                         return const ProgressIndicatorWidget();
@@ -54,7 +65,14 @@ class _MenuPageState extends State<MenuPage> {
                               return Padding(
                                 padding: const EdgeInsets.all(4),
                                 child: InkWell(
-                                  onLongPress: () => showOptionsDialog(context),
+                                  onLongPress: () {
+                                    selectedModel = data;
+                                    print(selectedModel);
+                                    showOptionsDialog(
+                                      context: context,
+                                      projectModel: data,
+                                    );
+                                  },
                                   child: Container(
                                     width: 140,
                                     height: 180,
@@ -80,7 +98,8 @@ class _MenuPageState extends State<MenuPage> {
                                                 CategoryWidget(
                                                     title: data.title),
                                                 const CategoryLengthWidget(
-                                                    taskLenght: 10)
+                                                  taskLenght: 10,
+                                                )
                                               ],
                                             ),
                                           ),
@@ -96,6 +115,9 @@ class _MenuPageState extends State<MenuPage> {
                       }
                     },
                   ),
+                  RaisedButton(
+                      onPressed: () => ProjectUserDataImpl()
+                          .updateProject(projectModel: selectedModel!)),
                   AddProjectButton(
                     notifyParent: () => setState(() {}),
                   )

@@ -1,10 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:todo2/database/model/projects_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/controller/add_project_dialog_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/color_pallete_widget.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 
-Future<void> showAddProjectDialog(BuildContext context) async {
+enum ProjectDialogStatus {
+  add,
+  edit,
+  remove,
+}
+
+Future<void> showAddProjectDialog(
+    {required BuildContext context,
+    required ProjectDialogStatus status,
+    required AddProjectDialogController projectController,}) async {
   final addProjectController = AddProjectDialogController();
+
   await showDialog(
     context: context,
     builder: (_) => AlertDialog(
@@ -56,18 +67,50 @@ Future<void> showAddProjectDialog(BuildContext context) async {
       ),
       actions: <Widget>[
         ValueListenableBuilder<bool>(
-          valueListenable: addProjectController.isClickedButton,
-          builder: (__, isClicked, _) => TextButton(
-            onPressed: () async {
-              isClicked
-                  ? await addProjectController
-                      .validate()
-                      .then((_) => Navigator.of(context).pop())
-                  : null;
-            },
-            child: const Text('Add Project'),
-          ),
-        ),
+            valueListenable: addProjectController.isClickedButton,
+            builder: (__, isClicked, _) {
+              switch (status) {
+                case ProjectDialogStatus.add:
+               return    TextButton(
+                    onPressed: () async {
+                      isClicked
+                          ? await addProjectController
+                              .validate()
+                              .then((_) => Navigator.of(context).pop())
+                          : null;
+                    },
+                    child: const Text('Add Project'),
+                  );
+
+ case ProjectDialogStatus.edit:
+               return    TextButton(
+                    onPressed: () async {
+                      isClicked
+                          ? 
+                          // TODO fix it
+                          await projectController.updateProject(projectModel:projectController. )
+                            
+                              .then((_) => Navigator.of(context).pop())
+                          : null;
+                    },
+                    child: const Text('Edit Project'),
+                  );
+
+           case ProjectDialogStatus.remove:
+                  return    TextButton(
+                    onPressed: () async {
+                      isClicked
+                          ? 
+                          await Future.delayed(Duration(seconds: 0))
+                            
+                              .then((_) => Navigator.of(context).pop())
+                          : null;
+                    },
+                    child: const Text('Edit Project'),
+                  );
+           
+              }
+            }),
       ],
     ),
   );

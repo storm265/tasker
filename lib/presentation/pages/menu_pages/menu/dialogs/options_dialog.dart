@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:todo2/database/model/projects_model.dart';
 
-Future<void> showOptionsDialog(BuildContext context) async {
+Future<void> showOptionsDialog({
+  required BuildContext context,
+  required ProjectModel projectModel,
+}) async {
   final icons = [Icons.edit, Icons.delete];
   final titles = ['Edit', 'Remove'];
   await showDialog(
@@ -14,7 +18,9 @@ Future<void> showOptionsDialog(BuildContext context) async {
         child: ListView.builder(
           itemCount: 2,
           itemBuilder: ((context, index) => GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  
+                },
                 child: ListTile(
                   leading: Icon(
                     icons[index],

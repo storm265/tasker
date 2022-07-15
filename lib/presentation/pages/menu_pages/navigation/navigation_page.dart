@@ -10,6 +10,7 @@ import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/floating_button_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/nav_bar_widget.dart';
+import 'package:todo2/services/network_service/network_service.dart';
 
 class NavigationPage extends StatefulWidget {
   const NavigationPage({Key? key}) : super(key: key);
@@ -98,9 +99,7 @@ class _NavigationPageState extends State<NavigationPage> {
                         iconColor: pageIndex == 1 ? Colors.white : Colors.grey,
                       ),
                     ),
-                    const SizedBox(
-                      width: 50,
-                    ),
+                    const SizedBox(width: 50),
                     GestureDetector(
                       onTap: () async {
                         await inheritedNavigatorConroller

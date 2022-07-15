@@ -1,19 +1,18 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:todo2/presentation/pages/auth/sign_in_up/controller/sign_up_controller.dart';
+import 'package:todo2/presentation/controller/image_picker_controller.dart';
 
 class AvatarWidget extends StatelessWidget {
-  final SignUpController signUpController;
-  const AvatarWidget({Key? key, required this.signUpController})
-      : super(key: key);
+  final   ImageController imageController;
+  const AvatarWidget({Key? key,required this.imageController}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => signUpController.pickAvatar(),
+      onTap: () => imageController.pickAvatar(),
       child: ValueListenableBuilder<XFile>(
-        valueListenable: signUpController.pickedFile,
+        valueListenable: imageController.pickedFile,
         builder: (__, imageFile, _) => Container(
           width: 80,
           height: 80,

@@ -16,6 +16,7 @@ import 'package:todo2/presentation/pages/menu_pages/profile/profile_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/navigation/navigation_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_page.dart';
+import 'package:todo2/presentation/pages/no_connection_page.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/network_service/network_service.dart';
@@ -43,25 +44,9 @@ void main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends AuthState<MyApp> {
-  @override
-  void initState() {
-    log('init');
-   NetworkService().checkConnection(context, () { });
-    super.initState();
-  }
-  @override
-  void dispose() {
-        log('dispose');
-    super.dispose();
-  }
   final _newTaskConroller = AddTaskController(
     tasksMembers: TasksMembersRepositoryImpl(),
     taskRepository: TaskRepositoryImpl(),
@@ -71,9 +56,7 @@ class _MyAppState extends AuthState<MyApp> {
   );
 
   final _themeDataController = ThemeDataService();
-
   final _profileController = ProfileController();
-
   final _navigationController = NavigationController();
 
   @override
@@ -88,9 +71,9 @@ class _MyAppState extends AuthState<MyApp> {
             debugShowCheckedModeBanner: false,
             title: 'Todo2',
             theme: _themeDataController.themeData,
-             initialRoute: '/',
-           routes: routes,
-         //  home: ProfilePage(),
+            // initialRoute: '/',
+            // routes: routes,
+            home: MenuPage(),
           ),
         ),
       ),

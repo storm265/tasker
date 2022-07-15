@@ -1,11 +1,15 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/database_scheme/project_user_scheme.dart';
+import 'package:todo2/database/model/projects_model.dart';
+
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/supabase/constants.dart';
 
 abstract class ProjectUserData {
-  // Future getId();
-  Future fetchMyProjects();
+  Future fetchProject();
+  Future updateProject({required ProjectModel projectModel});
+  Future deleteProject({required int id});
+
   Future putData({
     required String color,
     required String title,
@@ -24,12 +28,10 @@ class ProjectUserDataImpl implements ProjectUserData {
     required String title,
   }) async {
     try {
-      // int projectId = await getId();
       final response = await _supabase.from(_table).insert({
         ProjectDataScheme.title: title,
         ProjectDataScheme.color: color,
-        ProjectDataScheme.uuid: _supabase.auth.currentUser!.id,
-        // ProjectDataScheme.uuid:projectId + 1,
+        ProjectDataScheme.ownerId: _supabase.auth.currentUser!.id,
         ProjectDataScheme.createdAt: DateTime.now().toString(),
       }).execute();
 
@@ -42,12 +44,12 @@ class ProjectUserDataImpl implements ProjectUserData {
   }
 
   @override
-  Future<PostgrestResponse<dynamic>> fetchMyProjects() async {
+  Future<PostgrestResponse<dynamic>> fetchProject() async {
     try {
       final response = await _supabase
           .from(_table)
-          .select('*')
-          .eq(ProjectDataScheme.uuid, _supabase.auth.currentUser!.id)
+          .select()
+          .eq(ProjectDataScheme.ownerId, _supabase.auth.currentUser!.id)
           .execute();
       return response;
     } catch (e) {
@@ -63,14 +65,14 @@ class ProjectUserDataImpl implements ProjectUserData {
     try {
       final response = await _supabase
           .from(_table)
-          .select('*')
-          .eq(ProjectDataScheme.uuid, _supabase.auth.currentUser!.id)
+          .select(ProjectDataScheme.id)
+          .eq(ProjectDataScheme.ownerId, _supabase.auth.currentUser!.id)
           .eq(ProjectDataScheme.title, project)
           .execute();
       return response;
     } catch (e) {
       ErrorService.printError(
-          'Error in ProjectUserDataImpl fetchProject() dataSource:  $e');
+          'Error in ProjectUserDataImpl fetchProjectId() dataSource:  $e');
       rethrow;
     }
   }
@@ -81,7 +83,7 @@ class ProjectUserDataImpl implements ProjectUserData {
     try {
       final response = await _supabase
           .from(_table)
-          .select('*')
+          .select()
           .ilike(
             ProjectDataScheme.title,
             '%$title%',
@@ -90,6 +92,38 @@ class ProjectUserDataImpl implements ProjectUserData {
       return response;
     } catch (e) {
       ErrorService.printError('Error in dataSource fetchProjects() : $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<PostgrestResponse<dynamic>> deleteProject({required int id}) async {
+    try {
+      final response = await _supabase
+          .from(_table)
+          .delete()
+          .eq(ProjectDataScheme.id, id)
+          .execute();
+      return response;
+    } catch (e) {
+      ErrorService.printError('Error in dataSource deleteProject() : $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<PostgrestResponse> updateProject(
+      {required ProjectModel projectModel}) async {
+    try {
+      final response = await _supabase.from(_table).update({
+        ProjectDataScheme.title: projectModel.title,
+        ProjectDataScheme.createdAt: DateTime.now().toString(),
+        ProjectDataScheme.color: projectModel.color,
+      }).execute();
+
+      return response;
+    } catch (e) {
+      ErrorService.printError('Error in dataSource updateProject() : $e');
       rethrow;
     }
   }

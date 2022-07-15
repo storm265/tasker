@@ -17,6 +17,6 @@ class ProjectModel {
         title: json[ProjectDataScheme.title],
         color: json[ProjectDataScheme.color],
         createdAt: json[ProjectDataScheme.createdAt],
-        uuid: json[ProjectDataScheme.uuid],
+        uuid: json[ProjectDataScheme.ownerId],
       );
 }

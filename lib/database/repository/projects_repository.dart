@@ -1,5 +1,4 @@
-import 'dart:developer';
-
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/data_source/projects_user_data_source.dart';
 import 'package:todo2/database/database_scheme/project_user_scheme.dart';
 import 'package:todo2/database/model/projects_model.dart';
@@ -12,7 +11,12 @@ abstract class ProjectRepository<T> {
     required String title,
   });
   Future fetchProjectId({required String project});
+
   Future fetchProjectsWhere({required String title});
+
+  Future deleteProject({required int id});
+
+  Future updateProject({required ProjectModel projectModel});
 }
 
 class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
@@ -20,10 +24,7 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
   @override
   Future<List<ProjectModel>> fetchProject() async {
     try {
-      final response = await _projectDataSource.fetchMyProjects();
-      if (response.hasError) {
-        log(response.error!.message);
-      }
+      final response = await _projectDataSource.fetchProject();
       return (response.data as List<dynamic>)
           .map((json) => ProjectModel.fromJson(json))
           .toList();
@@ -40,13 +41,10 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
     required String title,
   }) async {
     try {
-      final response = await _projectDataSource.putData(
+      await _projectDataSource.putData(
         color: color,
         title: title,
       );
-      if (response.hasError) {
-        log(response.error!.message);
-      }
     } catch (e) {
       ErrorService.printError(
           'Error in ProjectRepositoryImpl putData() repository $e');
@@ -59,9 +57,6 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
     try {
       final response =
           await _projectDataSource.fetchProjectsWhere(title: title);
-      if (response.hasError) {
-        log(response.error!.message);
-      }
       return (response.data as List<dynamic>)
           .map((json) => ProjectModel.fromJson(json))
           .toList();
@@ -81,6 +76,30 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
     } catch (e) {
       ErrorService.printError(
           'Error in ProjectRepositoryImpl fetchProjectId() : $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<PostgrestResponse> updateProject(
+      {required ProjectModel projectModel}) async {
+    try {
+      final response =
+          await _projectDataSource.updateProject(projectModel: projectModel);
+      return response;
+    } catch (e) {
+      ErrorService.printError('Error in dataSource removeProject() : $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<PostgrestResponse<dynamic>> deleteProject({required int id}) async {
+    try {
+      final response = await _projectDataSource.deleteProject(id: id);
+      return response;
+    } catch (e) {
+      ErrorService.printError('Error in dataSource removeProject() : $e');
       rethrow;
     }
   }

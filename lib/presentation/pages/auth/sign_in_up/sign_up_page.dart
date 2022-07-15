@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todo2/database/repository/auth/auth_repository.dart';
 import 'package:todo2/database/repository/user_profile_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
+import 'package:todo2/presentation/controller/image_picker_controller.dart';
 import 'package:todo2/presentation/pages/auth/reset_password/controller/padding_constant.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/sign_up_controller.dart';
@@ -30,23 +31,21 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
 
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    _usernameController.dispose();
-    _signUpController.dispose();
-    _signUpController.isClickedSubmitButton.dispose();
-    _signUpController.pickedFile.dispose();
-    super.dispose();
-  }
-
   final _signUpController = SignUpController(
+    imagePickerController: ImageController(),
     formValidatorController: FormValidatorController(),
     authRepository: AuthRepositoryImpl(),
     userProfileRepository: UserProfileRepositoryImpl(),
     userRepository: UserRepositoryImpl(),
   );
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    _usernameController.dispose();
+    _signUpController.disposeValues();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +80,9 @@ class _SignUpPageState extends State<SignUpPage> {
                             ],
                           ),
                         ),
-                        AvatarWidget(signUpController: _signUpController),
+                        AvatarWidget(
+                            imageController:
+                                _signUpController.imagePickerController),
                         TextFieldWidget(
                           validateCallback: (text) => _signUpController
                               .formValidatorController
