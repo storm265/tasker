@@ -74,7 +74,7 @@ class AddTaskController extends ChangeNotifier {
   }
 
   final pickedProject = ValueNotifier<ProjectModel>(
-    ProjectModel(color: '', createdAt: '', title: '', uuid: ''),
+    ProjectModel(color: '', createdAt: '', title: '', ownerId: ''),
   );
 
   void pickProject({
@@ -187,13 +187,14 @@ class AddTaskController extends ChangeNotifier {
         projectId: projectId,
         dueDate: pickedTime.value!,
       );
+      //TODO fix it
       // int currentProjectId = await taskRepository.fetchTaskId(title: title);
       // // push attachment
       // for (int i = 0; i < files.value.length; i++) {
       //   await taskAttachment.putAttachment(
       //       url: files.value[i].name, taskId: currentProjectId);
       // }
-      // //TODO fix it
+      //
       // // task members
       // for (int i = 0; i < taskMembers.value.length; i++) {
       //   tasksMembers.putMember();

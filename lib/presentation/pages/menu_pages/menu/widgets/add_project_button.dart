@@ -1,19 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_controller.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/dialogs/add_project_dialog.dart';
 
 class AddProjectButton extends StatelessWidget {
   final Function notifyParent;
-  const AddProjectButton({Key? key, required this.notifyParent})
-      : super(key: key);
+  final ProjectController projectController;
+  const AddProjectButton({
+    Key? key,
+    required this.notifyParent,
+    required this.projectController,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.topLeft,
       child: InkWell(
-        onTap: () async =>
-            await showAddProjectDialog(context).then((_) => notifyParent()),
+        onTap: () async => await showAddProjectDialog(
+          context: context,
+          projectController: projectController,
+        ).then((_) => notifyParent()),
         child: Padding(
           padding: const EdgeInsets.only(top: 15),
           child: Container(

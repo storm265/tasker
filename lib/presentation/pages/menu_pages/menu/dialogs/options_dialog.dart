@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/projects_model.dart';
+import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/menu/dialogs/add_project_dialog.dart';
 
 Future<void> showOptionsDialog({
+    required Function notifyParent,
   required BuildContext context,
   required ProjectModel projectModel,
+  required ProjectController projectController,
 }) async {
   final icons = [Icons.edit, Icons.delete];
   final titles = ['Edit', 'Remove'];
@@ -18,8 +22,23 @@ Future<void> showOptionsDialog({
         child: ListView.builder(
           itemCount: 2,
           itemBuilder: ((context, index) => GestureDetector(
-                onTap: () {
-                  
+                onTap: () async {
+                  switch (index) {
+                    case 0:
+     
+                      Navigator.pop(context);
+                      await showAddProjectDialog(
+                        context: context,
+                        projectController: projectController,
+                        status: ProjectDialogStatus.edit,
+                      );
+                      break;
+                    case 1:
+                      await projectController
+                          .deleteProject(projectModel: projectModel)
+                          .then((_) => Navigator.pop(context));
+                      break;
+                  }
                 },
                 child: ListTile(
                   leading: Icon(
@@ -33,7 +52,10 @@ Future<void> showOptionsDialog({
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+Navigator.pop(context);
+            notifyParent;
+          } ,
           child: const Text('Cancel'),
         ),
       ],

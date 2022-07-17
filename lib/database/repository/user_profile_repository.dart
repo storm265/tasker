@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:todo2/database/data_source/user_profile_data_source.dart';
 import 'package:todo2/database/database_scheme/user_profile_scheme.dart';
@@ -10,7 +9,7 @@ abstract class UserProfileRepository {
   Future<String> fetchUserName();
   Future<String> fetchAvatar();
   Future fetchId();
-  Future<void> insertProfile({
+  Future<void> postProfile({
     required String avatarUrl,
     required String username,
   });
@@ -22,18 +21,15 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
   final _storage = 'avatar';
   final _supabase = SupabaseSource().restApiClient;
   @override
-  Future<void> insertProfile({
+  Future<void> postProfile({
     required String avatarUrl,
     required String username,
   }) async {
     try {
-      final response = await _userProfileDataSource.insertUserProfile(
+      await _userProfileDataSource.insertUserProfile(
         avatarUrl: avatarUrl,
         username: username,
       );
-      if (response.hasError) {
-        log(response.error!.message);
-      }
     } catch (e) {
       ErrorService.printError(
           'Error in insertImg() UserProfileRepositoryImpl: $e');
@@ -45,9 +41,7 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
   Future<String> fetchUserName() async {
     try {
       final response = await _userProfileDataSource.fetchUserName();
-      if (response.hasError) {
-        log(response.error!.message);
-      }
+
       return response.data[0][UserProfileScheme.username] as String;
     } catch (e) {
       ErrorService.printError(
@@ -60,9 +54,6 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
   Future<String> fetchAvatar() async {
     try {
       final response = await _userProfileDataSource.fetchAvatar();
-      if (response.hasError) {
-        log(response.error!.message);
-      }
       final imageResponce = _supabase.storage
           .from(_storage)
           .getPublicUrl(response.data[0][UserProfileScheme.avatarUrl]);
@@ -81,9 +72,6 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
     try {
       final response =
           await _userProfileDataSource.fetchUsersWhere(userName: userName);
-      if (response.hasError) {
-        log(response.error!.message);
-      }
       return (response.data as List<dynamic>)
           .map((json) => UserProfileModel.fromJson(json))
           .toList();
@@ -97,7 +85,6 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
   Future<int> fetchId() async {
     try {
       final response = await _userProfileDataSource.fetchUserId();
-
       return response;
     } catch (e) {
       ErrorService.printError(

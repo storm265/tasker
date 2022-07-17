@@ -1,21 +1,17 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/database_scheme/project_user_scheme.dart';
 import 'package:todo2/database/model/projects_model.dart';
-
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/supabase/constants.dart';
 
 abstract class ProjectUserData {
   Future fetchProject();
   Future updateProject({required ProjectModel projectModel});
-  Future deleteProject({required int id});
-
-  Future putData({
-    required String color,
-    required String title,
-  });
+  Future deleteProject({required ProjectModel projectModel});
+  Future postProject({required ProjectModel projectModel});
   Future fetchProjectsWhere({required String title});
   Future fetchProjectId({required String project});
+  Future findDublicates({required String title});
 }
 
 class ProjectUserDataImpl implements ProjectUserData {
@@ -23,14 +19,12 @@ class ProjectUserDataImpl implements ProjectUserData {
   final _supabase = SupabaseSource().restApiClient;
 
   @override
-  Future<PostgrestResponse<dynamic>> putData({
-    required String color,
-    required String title,
-  }) async {
+  Future<PostgrestResponse<dynamic>> postProject(
+      {required ProjectModel projectModel}) async {
     try {
       final response = await _supabase.from(_table).insert({
-        ProjectDataScheme.title: title,
-        ProjectDataScheme.color: color,
+        ProjectDataScheme.title: projectModel.title,
+        ProjectDataScheme.color: projectModel.color,
         ProjectDataScheme.ownerId: _supabase.auth.currentUser!.id,
         ProjectDataScheme.createdAt: DateTime.now().toString(),
       }).execute();
@@ -49,6 +43,24 @@ class ProjectUserDataImpl implements ProjectUserData {
       final response = await _supabase
           .from(_table)
           .select()
+          .eq(ProjectDataScheme.ownerId, _supabase.auth.currentUser!.id)
+          .execute();
+      return response;
+    } catch (e) {
+      ErrorService.printError(
+          'Error in ProjectUserDataImpl fetchProject() dataSource:  $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<PostgrestResponse<dynamic>> findDublicates(
+      {required String title}) async {
+    try {
+      final response = await _supabase
+          .from(_table)
+          .select()
+          .eq(ProjectDataScheme.title, title)
           .eq(ProjectDataScheme.ownerId, _supabase.auth.currentUser!.id)
           .execute();
       return response;
@@ -97,12 +109,14 @@ class ProjectUserDataImpl implements ProjectUserData {
   }
 
   @override
-  Future<PostgrestResponse<dynamic>> deleteProject({required int id}) async {
+  Future<PostgrestResponse<dynamic>> deleteProject(
+      {required ProjectModel projectModel}) async {
     try {
       final response = await _supabase
           .from(_table)
           .delete()
-          .eq(ProjectDataScheme.id, id)
+          .eq(ProjectDataScheme.ownerId, projectModel.ownerId)
+          .eq(ProjectDataScheme.title, projectModel.title)
           .execute();
       return response;
     } catch (e) {

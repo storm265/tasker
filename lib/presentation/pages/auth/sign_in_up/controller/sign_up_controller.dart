@@ -1,11 +1,11 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
+import 'package:todo2/database/model/projects_model.dart';
 import 'package:todo2/database/repository/auth/auth_repository.dart';
 import 'package:todo2/database/repository/user_profile_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/controller/image_picker_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_controller.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 
@@ -16,6 +16,7 @@ class SignUpController extends ChangeNotifier {
     required this.userRepository,
     required this.formValidatorController,
     required this.imagePickerController,
+    required this.projectController,
   });
 
   final AuthRepositoryImpl authRepository;
@@ -23,6 +24,7 @@ class SignUpController extends ChangeNotifier {
   final UserRepositoryImpl userRepository;
   final FormValidatorController formValidatorController;
   final ImageController imagePickerController;
+  final ProjectController projectController;
   final formKey = GlobalKey<FormState>();
   final isClickedSubmitButton = ValueNotifier(true);
 
@@ -69,10 +71,11 @@ class SignUpController extends ChangeNotifier {
         );
       } else {
         await userRepository.insertUser(email: email, password: password);
-        await userProfileRepository.insertProfile(
+        await userProfileRepository.postProfile(
           avatarUrl: imagePickerController.pickedFile.value.name,
           username: username,
         );
+        await projectController.postProject(projectModel: ProjectModel(title: 'Personal', ));
         await imagePickerController
             .uploadAvatar(context: context)
             .then((_) => NavigationService.navigateTo(context, Pages.home));

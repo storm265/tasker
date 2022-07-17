@@ -6,17 +6,17 @@ import 'package:todo2/services/error_service/error_service.dart';
 
 abstract class ProjectRepository<T> {
   Future fetchProject();
-  Future putData({
-    required String color,
-    required String title,
-  });
+
+  Future postProject({required ProjectModel projectModel});
+
   Future fetchProjectId({required String project});
 
   Future fetchProjectsWhere({required String title});
 
-  Future deleteProject({required int id});
+  Future deleteProject({required ProjectModel projectModel});
 
   Future updateProject({required ProjectModel projectModel});
+  Future findDublicates({required String title});
 }
 
 class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
@@ -36,15 +36,11 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
   }
 
   @override
-  Future<void> putData({
-    required String color,
-    required String title,
+  Future<void> postProject({
+    required ProjectModel projectModel,
   }) async {
     try {
-      await _projectDataSource.putData(
-        color: color,
-        title: title,
-      );
+      await _projectDataSource.postProject(projectModel: projectModel);
     } catch (e) {
       ErrorService.printError(
           'Error in ProjectRepositoryImpl putData() repository $e');
@@ -94,10 +90,23 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
   }
 
   @override
-  Future<PostgrestResponse<dynamic>> deleteProject({required int id}) async {
+  Future<PostgrestResponse<dynamic>> deleteProject(
+      {required ProjectModel projectModel}) async {
     try {
-      final response = await _projectDataSource.deleteProject(id: id);
+      final response =
+          await _projectDataSource.deleteProject(projectModel: projectModel);
       return response;
+    } catch (e) {
+      ErrorService.printError('Error in dataSource removeProject() : $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<String> findDublicates({required String title}) async {
+    try {
+      final response = await _projectDataSource.findDublicates(title: title);
+        return response.data[0][ProjectDataScheme.title];
     } catch (e) {
       ErrorService.printError('Error in dataSource removeProject() : $e');
       rethrow;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/database/repository/auth/auth_repository.dart';
+import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/user_profile_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/controller/image_picker_controller.dart';
@@ -7,6 +8,8 @@ import 'package:todo2/presentation/pages/auth/reset_password/controller/padding_
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/sign_up_controller.dart';
 import 'package:todo2/presentation/pages/auth/widgets/unfocus_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_controller.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/pages/auth/widgets/constants.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/avatar_widget.dart';
@@ -32,6 +35,10 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _usernameController = TextEditingController();
 
   final _signUpController = SignUpController(
+    projectController: ProjectController(
+      colorPalleteController: ColorPalleteController(),
+      projectsRepository: ProjectRepositoryImpl(),
+    ),
     imagePickerController: ImageController(),
     formValidatorController: FormValidatorController(),
     authRepository: AuthRepositoryImpl(),
@@ -43,7 +50,9 @@ class _SignUpPageState extends State<SignUpPage> {
     _emailController.dispose();
     _passwordController.dispose();
     _usernameController.dispose();
+    // TODO careful with this dispose
     _signUpController.disposeValues();
+    _signUpController.dispose();
     super.dispose();
   }
 

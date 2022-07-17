@@ -1,21 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/database/model/projects_model.dart';
-import 'package:todo2/presentation/pages/menu_pages/menu/controller/add_project_dialog_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/color_pallete_widget.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 
-enum ProjectDialogStatus {
-  add,
-  edit,
-  remove,
-}
-
-Future<void> showAddProjectDialog(
-    {required BuildContext context,
-    required ProjectDialogStatus status,
-    required AddProjectDialogController projectController,}) async {
-  final addProjectController = AddProjectDialogController();
-
+Future<void> showAddProjectDialog({
+  required BuildContext context,
+  ProjectDialogStatus status = ProjectDialogStatus.add,
+  required ProjectController projectController,
+}) async {
   await showDialog(
     context: context,
     builder: (_) => AlertDialog(
@@ -34,7 +26,7 @@ Future<void> showAddProjectDialog(
                   width: 300,
                   height: 50,
                   child: Form(
-                    key: addProjectController.formKey,
+                    key: projectController.formKey,
                     child: TextFormField(
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -45,7 +37,7 @@ Future<void> showAddProjectDialog(
                         }
                         return null;
                       },
-                      controller: addProjectController.titleController,
+                      controller: projectController.titleController,
                     ),
                   ),
                 ),
@@ -58,8 +50,8 @@ Future<void> showAddProjectDialog(
                   ),
                 ),
                 ColorPalleteWidget(
-                    colorController:
-                        addProjectController.colorPalleteController)
+                  colorController: projectController.colorPalleteController,
+                )
               ],
             ),
           ),
@@ -67,49 +59,49 @@ Future<void> showAddProjectDialog(
       ),
       actions: <Widget>[
         ValueListenableBuilder<bool>(
-            valueListenable: addProjectController.isClickedButton,
+            valueListenable: projectController.isClickedSubmitButton,
             builder: (__, isClicked, _) {
               switch (status) {
                 case ProjectDialogStatus.add:
-               return    TextButton(
+                  return TextButton(
                     onPressed: () async {
                       isClicked
-                          ? await addProjectController
-                              .validate()
-                              .then((_) => Navigator.of(context).pop())
+                          ? await projectController
+                              .validate(
+                              context: context,
+                              isEdit: status == ProjectDialogStatus.add
+                                  ? false
+                                  : true,
+                            )
+                              .then((_) {
+                              Navigator.of(context).pop();
+                              projectController.titleController.dispose();
+                              // projectController.disposeValues();
+                            })
                           : null;
                     },
                     child: const Text('Add Project'),
                   );
 
- case ProjectDialogStatus.edit:
-               return    TextButton(
+                case ProjectDialogStatus.edit:
+                  return TextButton(
                     onPressed: () async {
                       isClicked
-                          ? 
-                          // TODO fix it
-                          await projectController.updateProject(projectModel:projectController. )
-                            
+                          ? await projectController
+                              .postProject(
+                                  projectModel:
+                                      projectController.selectedModel.value)
                               .then((_) => Navigator.of(context).pop())
                           : null;
                     },
                     child: const Text('Edit Project'),
                   );
-
-           case ProjectDialogStatus.remove:
-                  return    TextButton(
-                    onPressed: () async {
-                      isClicked
-                          ? 
-                          await Future.delayed(Duration(seconds: 0))
-                            
-                              .then((_) => Navigator.of(context).pop())
-                          : null;
-                    },
-                    child: const Text('Edit Project'),
-                  );
-           
+                case ProjectDialogStatus.remove:
+                  break;
+                default:
+                  break;
               }
+              return const SizedBox();
             }),
       ],
     ),

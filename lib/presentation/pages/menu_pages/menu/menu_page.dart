@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/database/data_source/projects_user_data_source.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:todo2/database/model/projects_model.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/dialogs/options_dialog.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/add_project_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/category_length_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/category_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/circle_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/menu/widgets/item_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/menu/widgets/project_shimmer_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
@@ -20,16 +24,16 @@ class MenuPage extends StatefulWidget {
 }
 
 class _MenuPageState extends State<MenuPage> {
-  final List<ProjectModel> model = [
-    ProjectModel(
-        color: '012', createdAt: '', title: 'default title', uuid: '1233')
-  ];
-
-  Future<List<ProjectModel>> fakeFetch() async {
-    return model;
+  final _projectController = ProjectController(
+    projectsRepository: ProjectRepositoryImpl(),
+    colorPalleteController: ColorPalleteController(),
+  );
+  @override
+  void dispose() {
+    _projectController.disposeValues();
+    super.dispose();
   }
 
-  ProjectModel? selectedModel;
   @override
   Widget build(BuildContext context) {
     return WillPopWrapper(
@@ -44,11 +48,12 @@ class _MenuPageState extends State<MenuPage> {
               child: Column(
                 children: [
                   FutureBuilder<List<ProjectModel>>(
-                    // future: _projectsRepository.fetchProject(),
-                    future: fakeFetch(),
+                    future: _projectController.fetchProjects(),
+                    // future: fakeFetch(),
                     builder: (_, AsyncSnapshot<List<ProjectModel>> snapshot) {
-                      if (snapshot.data == null) {
-                        return const ProgressIndicatorWidget();
+                      print(snapshot.data);
+                      if (snapshot.data!.isEmpty) {
+                        return const Text('No projects');
                       } else if (snapshot.hasData) {
                         return GridView.builder(
                             shrinkWrap: true,
@@ -62,63 +67,36 @@ class _MenuPageState extends State<MenuPage> {
                             ),
                             itemBuilder: (BuildContext context, index) {
                               final data = snapshot.data![index];
-                              return Padding(
-                                padding: const EdgeInsets.all(4),
-                                child: InkWell(
-                                  onLongPress: () {
-                                    selectedModel = data;
-                                    print(selectedModel);
-                                    showOptionsDialog(
-                                      context: context,
-                                      projectModel: data,
+                              return snapshot.connectionState ==
+                                      ConnectionState.waiting
+                                  ? ShimmerProjectItem(model: data)
+                                  : Padding(
+                                      padding: const EdgeInsets.all(4),
+                                      child: InkWell(
+                                          onLongPress: () {
+                                            _projectController.pickProject(
+                                              pickedModel: data,
+                                            );
+                                            showOptionsDialog(
+                                              notifyParent: () =>
+                                                  setState(() {}),
+                                              projectController:
+                                                  _projectController,
+                                              context: context,
+                                              projectModel: data,
+                                            );
+                                          },
+                                          child:
+                                              ProjectItemWidget(model: data)),
                                     );
-                                  },
-                                  child: Container(
-                                    width: 140,
-                                    height: 180,
-                                    color: Colors.white,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(15),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Align(
-                                            alignment: Alignment.topLeft,
-                                            child: DoubleCircleWidget(
-                                              color: data.color,
-                                            ),
-                                          ),
-                                          Align(
-                                            alignment: Alignment.bottomLeft,
-                                            child: Wrap(
-                                              spacing: 5,
-                                              direction: Axis.vertical,
-                                              children: [
-                                                CategoryWidget(
-                                                    title: data.title),
-                                                const CategoryLengthWidget(
-                                                  taskLenght: 10,
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              );
                             });
                       } else {
-                        return const SizedBox();
+                        return const ProgressIndicatorWidget();
                       }
                     },
                   ),
-                  RaisedButton(
-                      onPressed: () => ProjectUserDataImpl()
-                          .updateProject(projectModel: selectedModel!)),
                   AddProjectButton(
+                    projectController: _projectController,
                     notifyParent: () => setState(() {}),
                   )
                 ],
