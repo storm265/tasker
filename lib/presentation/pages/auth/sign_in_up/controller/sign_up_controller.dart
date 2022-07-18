@@ -6,6 +6,7 @@ import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/controller/image_picker_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_controller.dart';
+import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 
@@ -75,7 +76,8 @@ class SignUpController extends ChangeNotifier {
           avatarUrl: imagePickerController.pickedFile.value.name,
           username: username,
         );
-        await projectController.postProject(projectModel: ProjectModel(title: 'Personal', ));
+        await projectController.postProject(
+            title: 'Personal', color: colors[0].value.toString());
         await imagePickerController
             .uploadAvatar(context: context)
             .then((_) => NavigationService.navigateTo(context, Pages.home));

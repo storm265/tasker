@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todo2/database/model/projects_model.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
+import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 
@@ -21,7 +22,6 @@ class ProjectController extends ChangeNotifier {
   final formKey = GlobalKey<FormState>();
   final isClickedSubmitButton = ValueNotifier(true);
   final titleController = TextEditingController();
-
   final selectedModel = ValueNotifier(
     ProjectModel(
       color: '',
@@ -41,25 +41,38 @@ class ProjectController extends ChangeNotifier {
     isClickedSubmitButton.notifyListeners();
   }
 
-  Future<void> validate({required bool isEdit,required BuildContext context}) async {
+  Future<void> validate({
+    required bool isEdit,
+    required BuildContext context,
+    required String title,
+    required VoidCallback onSuccessCallback,
+    required String oldTitle,
+  }) async {
     try {
       if (formKey.currentState!.validate()) {
         setClickedValue(false);
-        if(titleController.text.length >= 3){
-         final bool isDublicateProject = await findDublicates(context: context, title: titleController.text);
-       if(!isDublicateProject){
-         isEdit
-                ? await projectsRepository.updateProject(
-                    projectModel: selectedModel.value)
-                : await projectsRepository.postProject(
-                    projectModel: selectedModel.value);
-       }
-         
+        final bool isDublicateProject =
+            await findDublicates(context: context, title: title);
+        if (!isDublicateProject) {
+          isEdit
+              ? await projectsRepository.updateProject(
+                  oldTitle: oldTitle,
+                  color: selectedModel.value.color,
+                  title: title,
+                )
+              : await projectsRepository.postProject(
+                  color: colors[colorPalleteController.selectedIndex.value]
+                      .value
+                      .toString(),
+                  title: title,
+                );
         }
+
         setClickedValue(true);
+        onSuccessCallback();
       }
-    } catch (e) {
-      ErrorService.printError('Error in validate(): $e');
+    } catch (e, t) {
+      ErrorService.printError('Error in validate(): $e, trace: $t');
     }
   }
 
@@ -73,24 +86,33 @@ class ProjectController extends ChangeNotifier {
     }
   }
 
-  Future<bool> findDublicates({required String title,required BuildContext context}) async {
+  Future<bool> findDublicates({
+    required String title,
+    required BuildContext context,
+  }) async {
     try {
       String foundTitle = await projectsRepository.findDublicates(title: title);
-      if (title == foundTitle) {
-        MessageService.displaySnackbar(context: context, message: 'This project is already exist');
+      if (title.trim() == foundTitle.trim()) {
+        MessageService.displaySnackbar(
+          context: context,
+          message: 'This project is already exist',
+        );
         return true;
       } else {
         return false;
       }
     } catch (e) {
-      ErrorService.printError('Error in fetchProjects(): $e');
+      ErrorService.printError('Error in findDublicates(): $e');
       rethrow;
     }
   }
 
-  Future<void> postProject({required ProjectModel projectModel}) async {
+  Future<void> postProject({
+    required String color,
+    required String title,
+  }) async {
     try {
-      await projectsRepository.postProject(projectModel: projectModel);
+      await projectsRepository.postProject(color: color, title: title);
     } catch (e) {
       ErrorService.printError('Error in fetchProjects(): $e');
       rethrow;
@@ -98,10 +120,16 @@ class ProjectController extends ChangeNotifier {
   }
 
   Future<void> updateProject({
-    required ProjectModel projectModel,
+    required String color,
+    required String title,
+    required String oldTitle,
   }) async {
     try {
-      await projectsRepository.updateProject(projectModel: projectModel);
+      await projectsRepository.updateProject(
+        color: color,
+        title: title,
+        oldTitle: oldTitle,
+      );
     } catch (e) {
       ErrorService.printError('Error in fetchProjects(): $e');
       rethrow;
@@ -118,8 +146,8 @@ class ProjectController extends ChangeNotifier {
   }
 
   void disposeValues() {
+    titleController.dispose();
     isClickedSubmitButton.dispose();
     selectedModel.dispose();
-    titleController.dispose();
   }
 }

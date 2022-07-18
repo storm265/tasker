@@ -6,8 +6,10 @@ import 'package:todo2/presentation/pages/menu_pages/menu/dialogs/add_project_dia
 class AddProjectButton extends StatelessWidget {
   final Function notifyParent;
   final ProjectController projectController;
+  final TextEditingController titleController;
   const AddProjectButton({
     Key? key,
+    required this.titleController,
     required this.notifyParent,
     required this.projectController,
   }) : super(key: key);
@@ -16,8 +18,9 @@ class AddProjectButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.topLeft,
-      child: InkWell(
+      child: GestureDetector(
         onTap: () async => await showAddProjectDialog(
+          titleController: titleController,
           context: context,
           projectController: projectController,
         ).then((_) => notifyParent()),

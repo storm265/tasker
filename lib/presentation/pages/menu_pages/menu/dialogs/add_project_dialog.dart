@@ -7,7 +7,9 @@ Future<void> showAddProjectDialog({
   required BuildContext context,
   ProjectDialogStatus status = ProjectDialogStatus.add,
   required ProjectController projectController,
+  required TextEditingController titleController,
 }) async {
+
   await showDialog(
     context: context,
     builder: (_) => AlertDialog(
@@ -19,7 +21,7 @@ Future<void> showAddProjectDialog({
       content: DisabledGlowWidget(
         child: SingleChildScrollView(
           child: SizedBox(
-            height: 230,
+            height: 200,
             child: Column(
               children: [
                 SizedBox(
@@ -31,27 +33,27 @@ Future<void> showAddProjectDialog({
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Please enter title';
+                        } else {
+                          return null;
                         }
-                        if (value.length < 2) {
-                          return 'Title must be at least 2 characters';
-                        }
-                        return null;
                       },
-                      controller: projectController.titleController,
+                      controller: titleController,
                     ),
                   ),
                 ),
                 const SizedBox(height: 50),
-                const Padding(
-                  padding: EdgeInsets.only(right: 220, bottom: 20),
-                  child: Text(
-                    'Title',
-                    style: TextStyle(fontWeight: FontWeight.w300),
+                const Align(
+                  alignment: Alignment.centerLeft,
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      'Choose Color',
+                      style: TextStyle(fontWeight: FontWeight.w300),
+                    ),
                   ),
                 ),
                 ColorPalleteWidget(
-                  colorController: projectController.colorPalleteController,
-                )
+                    colorController: projectController.colorPalleteController)
               ],
             ),
           ),
@@ -61,47 +63,28 @@ Future<void> showAddProjectDialog({
         ValueListenableBuilder<bool>(
             valueListenable: projectController.isClickedSubmitButton,
             builder: (__, isClicked, _) {
-              switch (status) {
-                case ProjectDialogStatus.add:
-                  return TextButton(
-                    onPressed: () async {
-                      isClicked
-                          ? await projectController
-                              .validate(
-                              context: context,
-                              isEdit: status == ProjectDialogStatus.add
-                                  ? false
-                                  : true,
-                            )
-                              .then((_) {
-                              Navigator.of(context).pop();
-                              projectController.titleController.dispose();
-                              // projectController.disposeValues();
-                            })
-                          : null;
-                    },
-                    child: const Text('Add Project'),
-                  );
-
-                case ProjectDialogStatus.edit:
-                  return TextButton(
-                    onPressed: () async {
-                      isClicked
-                          ? await projectController
-                              .postProject(
-                                  projectModel:
-                                      projectController.selectedModel.value)
-                              .then((_) => Navigator.of(context).pop())
-                          : null;
-                    },
-                    child: const Text('Edit Project'),
-                  );
-                case ProjectDialogStatus.remove:
-                  break;
-                default:
-                  break;
-              }
-              return const SizedBox();
+              return TextButton(
+                onPressed: isClicked
+                    ? () async {
+                        projectController.setClickedValue(false);
+                        await projectController.validate(
+                          oldTitle: projectController.selectedModel.value.title,
+                          title: titleController.text,
+                          context: context,
+                          isEdit:
+                              status == ProjectDialogStatus.add ? false : true,
+                          onSuccessCallback: () => Navigator.of(context).pop(),
+                        );
+                      
+                        projectController.setClickedValue(true);
+                      }
+                    : null,
+                child: Text(
+                  status == ProjectDialogStatus.add
+                      ? 'Add Project'
+                      : 'Update Project',
+                ),
+              );
             }),
       ],
     ),

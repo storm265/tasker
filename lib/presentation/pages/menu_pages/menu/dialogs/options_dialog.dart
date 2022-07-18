@@ -4,10 +4,11 @@ import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_cont
 import 'package:todo2/presentation/pages/menu_pages/menu/dialogs/add_project_dialog.dart';
 
 Future<void> showOptionsDialog({
-    required Function notifyParent,
+  required Function notifyParent,
   required BuildContext context,
   required ProjectModel projectModel,
   required ProjectController projectController,
+  required TextEditingController titleController,
 }) async {
   final icons = [Icons.edit, Icons.delete];
   final titles = ['Edit', 'Remove'];
@@ -25,9 +26,9 @@ Future<void> showOptionsDialog({
                 onTap: () async {
                   switch (index) {
                     case 0:
-     
                       Navigator.pop(context);
                       await showAddProjectDialog(
+                        titleController: titleController,
                         context: context,
                         projectController: projectController,
                         status: ProjectDialogStatus.edit,
@@ -36,7 +37,10 @@ Future<void> showOptionsDialog({
                     case 1:
                       await projectController
                           .deleteProject(projectModel: projectModel)
-                          .then((_) => Navigator.pop(context));
+                          .then((_) {
+                        Navigator.pop(context);
+                        notifyParent();
+                      });
                       break;
                   }
                 },
@@ -52,10 +56,7 @@ Future<void> showOptionsDialog({
       ),
       actions: [
         TextButton(
-          onPressed: () {
-Navigator.pop(context);
-            notifyParent;
-          } ,
+          onPressed: () => Navigator.pop(context),
           child: const Text('Cancel'),
         ),
       ],

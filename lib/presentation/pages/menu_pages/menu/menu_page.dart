@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
 import 'package:todo2/database/model/projects_model.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/dialogs/options_dialog.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/add_project_button.dart';
-import 'package:todo2/presentation/pages/menu_pages/menu/widgets/category_length_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/menu/widgets/category_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/menu/widgets/circle_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/item_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/project_shimmer_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
@@ -24,6 +20,7 @@ class MenuPage extends StatefulWidget {
 }
 
 class _MenuPageState extends State<MenuPage> {
+  final titleController = TextEditingController();
   final _projectController = ProjectController(
     projectsRepository: ProjectRepositoryImpl(),
     colorPalleteController: ColorPalleteController(),
@@ -31,6 +28,8 @@ class _MenuPageState extends State<MenuPage> {
   @override
   void dispose() {
     _projectController.disposeValues();
+    _projectController.dispose();
+    titleController.dispose();
     super.dispose();
   }
 
@@ -48,10 +47,9 @@ class _MenuPageState extends State<MenuPage> {
               child: Column(
                 children: [
                   FutureBuilder<List<ProjectModel>>(
+                    initialData: const [],
                     future: _projectController.fetchProjects(),
-                    // future: fakeFetch(),
                     builder: (_, AsyncSnapshot<List<ProjectModel>> snapshot) {
-                      print(snapshot.data);
                       if (snapshot.data!.isEmpty) {
                         return const Text('No projects');
                       } else if (snapshot.hasData) {
@@ -73,21 +71,27 @@ class _MenuPageState extends State<MenuPage> {
                                   : Padding(
                                       padding: const EdgeInsets.all(4),
                                       child: InkWell(
-                                          onLongPress: () {
-                                            _projectController.pickProject(
-                                              pickedModel: data,
-                                            );
-                                            showOptionsDialog(
-                                              notifyParent: () =>
-                                                  setState(() {}),
-                                              projectController:
-                                                  _projectController,
-                                              context: context,
-                                              projectModel: data,
-                                            );
-                                          },
-                                          child:
-                                              ProjectItemWidget(model: data)),
+                                        onLongPress: snapshot
+                                                    .data![index].title ==
+                                                'Personal'
+                                            ? null
+                                            : () {
+                                                _projectController.pickProject(
+                                                  pickedModel: data,
+                                                );
+                                                showOptionsDialog(
+                                                  titleController:
+                                                      titleController,
+                                                  notifyParent: () =>
+                                                      setState(() {}),
+                                                  projectController:
+                                                      _projectController,
+                                                  context: context,
+                                                  projectModel: data,
+                                                );
+                                              },
+                                        child: ProjectItemWidget(model: data),
+                                      ),
                                     );
                             });
                       } else {
@@ -96,6 +100,7 @@ class _MenuPageState extends State<MenuPage> {
                     },
                   ),
                   AddProjectButton(
+                    titleController: titleController,
                     projectController: _projectController,
                     notifyParent: () => setState(() {}),
                   )

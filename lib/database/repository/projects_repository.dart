@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/data_source/projects_user_data_source.dart';
 import 'package:todo2/database/database_scheme/project_user_scheme.dart';
@@ -7,7 +9,7 @@ import 'package:todo2/services/error_service/error_service.dart';
 abstract class ProjectRepository<T> {
   Future fetchProject();
 
-  Future postProject({required ProjectModel projectModel});
+  Future postProject({required String color, required String title});
 
   Future fetchProjectId({required String project});
 
@@ -15,7 +17,12 @@ abstract class ProjectRepository<T> {
 
   Future deleteProject({required ProjectModel projectModel});
 
-  Future updateProject({required ProjectModel projectModel});
+  Future updateProject({
+    required String color,
+    required String title,
+    required String oldTitle,
+  });
+
   Future findDublicates({required String title});
 }
 
@@ -37,13 +44,14 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
 
   @override
   Future<void> postProject({
-    required ProjectModel projectModel,
+    required String color,
+    required String title,
   }) async {
     try {
-      await _projectDataSource.postProject(projectModel: projectModel);
+      await _projectDataSource.postProject(color: color, title: title);
     } catch (e) {
       ErrorService.printError(
-          'Error in ProjectRepositoryImpl putData() repository $e');
+          'Error in ProjectRepositoryImpl postProject() repository $e');
       rethrow;
     }
   }
@@ -77,14 +85,18 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
   }
 
   @override
-  Future<PostgrestResponse> updateProject(
-      {required ProjectModel projectModel}) async {
+  Future<PostgrestResponse> updateProject({
+    required String color,
+    required String title,
+    required String oldTitle,
+  }) async {
     try {
-      final response =
-          await _projectDataSource.updateProject(projectModel: projectModel);
+      final response = await _projectDataSource.updateProject(
+          color: color, title: title, oldTitle: oldTitle);
       return response;
     } catch (e) {
-      ErrorService.printError('Error in dataSource removeProject() : $e');
+      ErrorService.printError(
+          'Error in ProjectRepositoryImpl removeProject() : $e');
       rethrow;
     }
   }
@@ -97,7 +109,8 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
           await _projectDataSource.deleteProject(projectModel: projectModel);
       return response;
     } catch (e) {
-      ErrorService.printError('Error in dataSource removeProject() : $e');
+      ErrorService.printError(
+          'Error in ProjectRepositoryImpl removeProject() : $e');
       rethrow;
     }
   }
@@ -105,10 +118,16 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
   @override
   Future<String> findDublicates({required String title}) async {
     try {
+      log('title in repo $title');
       final response = await _projectDataSource.findDublicates(title: title);
+      if (response.data.toString().length == 2) {
+        return 'no';
+      } else {
         return response.data[0][ProjectDataScheme.title];
+      }
     } catch (e) {
-      ErrorService.printError('Error in dataSource removeProject() : $e');
+      ErrorService.printError(
+          'Error in ProjectRepositoryImpl findDublicates() : $e');
       rethrow;
     }
   }

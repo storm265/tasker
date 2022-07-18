@@ -25,30 +25,28 @@ Future<void> showAddDialog(BuildContext context) async {
             itemCount: 3,
             shrinkWrap: true,
             itemBuilder: ((_, index) {
-              return Padding(
-                padding: const EdgeInsets.only(top: 25, bottom: 25),
-                child: GestureDetector(
-                  onTap: () async {
-                    switch (index) {
-                      case 0:
-                        Navigator.pop(context);
-                        await NavigationService.navigateTo(
-                            context, Pages.addTask);
-                        break;
-                      case 1:
-                        Navigator.pop(context);
-                        await NavigationService.navigateTo(
-                            context, Pages.addNote);
-
-                        break;
-                      case 2:
-                        Navigator.pop(context);
-                        await NavigationService.navigateTo(
-                            context, Pages.addCheckList);
-                        break;
-                      default:
-                    }
-                  },
+              return GestureDetector(
+                onTap: () async {
+                  switch (index) {
+                    case 0:
+                      Navigator.pop(context);
+                      await NavigationService.navigateTo(
+                          context, Pages.addTask);
+                      break;
+                    case 1:
+                      Navigator.pop(context);
+                      await NavigationService.navigateTo(
+                          context, Pages.addNote);
+                      break;
+                    case 2:
+                      Navigator.pop(context);
+                      await NavigationService.navigateTo(
+                          context, Pages.addCheckList);
+                      break;
+                  }
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 25, bottom: 25),
                   child: Center(
                     child: Text(
                       items[index],
