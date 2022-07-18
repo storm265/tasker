@@ -5,7 +5,7 @@ import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/supabase/constants.dart';
 
 abstract class CommentDataSource {
-  Future putComment({required String content});
+  Future postComment({required String content});
 }
 
 class CommentDataSourceImpl implements CommentDataSource {
@@ -13,7 +13,7 @@ class CommentDataSourceImpl implements CommentDataSource {
   final _supabase = SupabaseSource().restApiClient;
 
   @override
-  Future<PostgrestResponse<dynamic>> putComment(
+  Future<PostgrestResponse<dynamic>> postComment(
       {required String content}) async {
     try {
       final response = await _supabase.from(_table).insert({

@@ -14,7 +14,7 @@ abstract class TaskDataSource {
     required int projectId,
     required DateTime dueDate,
   });
- Future fetchTaskId({required String title});
+  Future fetchTaskId({required String title});
 }
 
 class TaskDataSourceImpl implements TaskDataSource {
@@ -25,7 +25,7 @@ class TaskDataSourceImpl implements TaskDataSource {
     try {
       final response = await _supabase
           .from(_table)
-          .select('*')
+          .select()
           .eq(TaskScheme.ownerId, _supabase.auth.currentUser!.id)
           .execute();
       if (response.hasError) {
@@ -34,30 +34,28 @@ class TaskDataSourceImpl implements TaskDataSource {
       return response;
     } catch (e) {
       ErrorService.printError(
-          'Error in ProjectUserDataImpl fetchProject() dataSource:  $e');
+          'Error in ProjectUserDataImpl fetchProject():  $e');
       rethrow;
     }
   }
 
-   @override
-  Future<PostgrestResponse<dynamic>> fetchTaskId({required String title}) async {
+  @override
+  Future<PostgrestResponse<dynamic>> fetchTaskId(
+      {required String title}) async {
     try {
       final response = await _supabase
           .from(_table)
           .select(TaskScheme.id)
-          .eq(TaskScheme.ownerId, _supabase.auth.currentUser!.id).eq(TaskScheme.title, title)
+          .eq(TaskScheme.ownerId, _supabase.auth.currentUser!.id)
+          .eq(TaskScheme.title, title)
           .execute();
-      if (response.hasError) {
-        log(response.error!.message);
-      }
       return response;
     } catch (e) {
       ErrorService.printError(
-          'Error in ProjectUserDataImpl fetchProject() dataSource:  $e');
+          'Error in ProjectUserDataImpl fetchProject():  $e');
       rethrow;
     }
   }
-
 
   @override
   Future<PostgrestResponse<dynamic>> putTask({
@@ -80,7 +78,7 @@ class TaskDataSourceImpl implements TaskDataSource {
       }).execute();
       return response;
     } catch (e) {
-      ErrorService.printError('Error in putTask() data source:$e');
+      ErrorService.printError('Error in ProjectUserDataImpl putTask():$e');
       rethrow;
     }
   }

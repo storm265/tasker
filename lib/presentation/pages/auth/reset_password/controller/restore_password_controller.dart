@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:todo2/database/repository/auth/auth_repository.dart';
+import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 

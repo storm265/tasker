@@ -58,6 +58,7 @@ class AddTextFieldWidget extends StatelessWidget {
         border: InputBorder.none,
         hintText: hintText,
         hintStyle: const TextStyle(
+          overflow: TextOverflow.ellipsis,
           fontWeight: FontWeight.w300,
           fontSize: 18,
           fontStyle: FontStyle.italic,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/database/repository/auth/auth_repository.dart';
+import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';

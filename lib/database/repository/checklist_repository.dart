@@ -39,7 +39,7 @@ class CheckListsRepositoryImpl extends CheckListsRepository<CheckListModel> {
           .map((json) => CheckListModel.fromJson(json))
           .toList();
     } catch (e) {
-      ErrorService.printError('Error in fetchNotes() repository:$e');
+      ErrorService.printError('Error in CheckListsRepositoryImpl fetchCheckList():$e');
       rethrow;
     }
   }
@@ -48,10 +48,9 @@ class CheckListsRepositoryImpl extends CheckListsRepository<CheckListModel> {
   Future<int> fetchCheckListId({required String title}) async {
     try {
       int  id = await _checkListsDataSource.fetchCheckId(title: title);
-     
       return id;
     } catch (e) {
-      ErrorService.printError('Error in fetchNotes() repository:$e');
+      ErrorService.printError('Error in CheckListsRepositoryImpl fetchNotes():$e');
       rethrow;
     }
   }

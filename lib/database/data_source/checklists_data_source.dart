@@ -29,7 +29,8 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
       }).execute();
       return response;
     } catch (e) {
-      ErrorService.printError('Error in data source putChecklistItem: $e');
+      ErrorService.printError(
+          'Error in CheckListsDataSourceImpl putChecklistItem: $e');
       rethrow;
     }
   }
@@ -39,12 +40,13 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
     try {
       final response = await _supabase
           .from(_table)
-          .select('*')
+          .select()
           .eq(CheckListsScheme.ownerId, _supabase.auth.currentUser!.id)
           .execute();
       return response;
     } catch (e) {
-      ErrorService.printError('Error in data source fetchCheckList: $e');
+      ErrorService.printError(
+          'Error in CheckListsDataSourceImpl fetchCheckList: $e');
       rethrow;
     }
   }

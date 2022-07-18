@@ -1,12 +1,10 @@
-import 'dart:developer';
-
 import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/database_scheme/user_profile_scheme.dart';
 import 'package:todo2/database/model/users_profile_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 
 abstract class UserRepository {
-  Future<void> insertUser({
+  Future<void> postUser({
     required String email,
     required String password,
   });
@@ -17,20 +15,17 @@ abstract class UserRepository {
 class UserRepositoryImpl implements UserRepository {
   final _userRepository = UserDataSourceImpl();
   @override
-  Future<void> insertUser({
+  Future<void> postUser({
     required String password,
     required String email,
   }) async {
     try {
-      final response = await _userRepository.insertUser(
+      await _userRepository.postUser(
         email: email,
         password: password,
       );
-      if (response.hasError) {
-        log(response.error!.message);
-      }
     } catch (e) {
-      ErrorService.printError('Error in insert() UserRepositoryImpl: $e');
+      ErrorService.printError('Error in UserRepositoryImpl insert() : $e');
       rethrow;
     }
   }
@@ -39,9 +34,6 @@ class UserRepositoryImpl implements UserRepository {
   Future<List<UserProfileModel>> fetchUser() async {
     try {
       final response = await _userRepository.fetchUser();
-      if (response.hasError) {
-        log(response.error!.message);
-      }
       return (response.data as List<dynamic>)
           .map((json) => UserProfileModel.fromJson(json))
           .toList();
@@ -56,9 +48,6 @@ class UserRepositoryImpl implements UserRepository {
     try {
       List<String> emails = [];
       final response = await _userRepository.fetchEmail();
-      if (response.hasError) {
-        log(response.error!.message);
-      }
       for (var i = 0; i < response.data.length; i++) {
         emails.add(response.data[i][UserProfileScheme.email] as String);
       }

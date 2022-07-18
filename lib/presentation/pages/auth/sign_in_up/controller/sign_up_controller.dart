@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:todo2/database/model/projects_model.dart';
-import 'package:todo2/database/repository/auth/auth_repository.dart';
+import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/user_profile_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/controller/image_picker_controller.dart';
@@ -71,7 +70,7 @@ class SignUpController extends ChangeNotifier {
           message: response.error!.message.toString(),
         );
       } else {
-        await userRepository.insertUser(email: email, password: password);
+        await userRepository.postUser(email: email, password: password);
         await userProfileRepository.postProfile(
           avatarUrl: imagePickerController.pickedFile.value.name,
           username: username,

@@ -8,8 +8,7 @@ import 'package:todo2/services/supabase/constants.dart';
 
 abstract class UserDataSource {
   Future fetchUser();
-
-  Future insertUser({
+  Future postUser({
     required String email,
     required String password,
   });
@@ -21,7 +20,7 @@ class UserDataSourceImpl implements UserDataSource {
   final _supabase = SupabaseSource().restApiClient;
 
   @override
-  Future<supabase.PostgrestResponse<dynamic>> insertUser({
+  Future<supabase.PostgrestResponse<dynamic>> postUser({
     required String email,
     required String password,
   }) async {
@@ -32,12 +31,9 @@ class UserDataSourceImpl implements UserDataSource {
         UserDataScheme.ownerId: _supabase.auth.currentUser?.id,
         UserDataScheme.createdAt: DateTime.now().toString(),
       }).execute();
-      if (response.hasError) {
-        log(response.error!.message);
-      }
       return response;
     } catch (e) {
-      ErrorService.printError('Error in insert() dataSource: $e');
+      ErrorService.printError('Error in UserDataSourceImpl insert(): $e');
       rethrow;
     }
   }
@@ -47,15 +43,12 @@ class UserDataSourceImpl implements UserDataSource {
     try {
       final response = await _supabase
           .from(_table)
-          .select('*')
+          .select()
           .eq(UserDataScheme.id, _supabase.auth.currentUser!.id)
           .execute();
-      if (response.hasError) {
-        log(response.error!.message);
-      }
       return response;
     } catch (e) {
-      ErrorService.printError('Error in fetchUser() dataSource: $e');
+      ErrorService.printError('Error in UserDataSourceImpl fetchUser() : $e');
       rethrow;
     }
   }
@@ -65,15 +58,10 @@ class UserDataSourceImpl implements UserDataSource {
     try {
       final response =
           await _supabase.from(_table).select(UserDataScheme.email).execute();
-      if (response.hasError) {
-        log(response.error!.message);
-      }
       return response;
     } catch (e) {
-      ErrorService.printError('Error in fetchEmail() dataSource: $e');
+      ErrorService.printError('Error in UserDataSourceImpl fetchEmail(): $e');
       rethrow;
     }
   }
-
-  
 }

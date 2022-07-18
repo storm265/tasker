@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/data_source/projects_user_data_source.dart';
 import 'package:todo2/database/database_scheme/project_user_scheme.dart';
@@ -9,7 +7,10 @@ import 'package:todo2/services/error_service/error_service.dart';
 abstract class ProjectRepository<T> {
   Future fetchProject();
 
-  Future postProject({required String color, required String title});
+  Future postProject({
+    required String color,
+    required String title,
+  });
 
   Future fetchProjectId({required String project});
 
@@ -37,7 +38,7 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
           .toList();
     } catch (e) {
       ErrorService.printError(
-          'Error in ProjectRepositoryImpl fetchProject() repository $e');
+          'Error in ProjectRepositoryImpl fetchProject() $e');
       rethrow;
     }
   }
@@ -51,7 +52,7 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
       await _projectDataSource.postProject(color: color, title: title);
     } catch (e) {
       ErrorService.printError(
-          'Error in ProjectRepositoryImpl postProject() repository $e');
+          'Error in ProjectRepositoryImpl postProject() $e');
       rethrow;
     }
   }
@@ -66,7 +67,7 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
           .toList();
     } catch (e) {
       ErrorService.printError(
-          'Error in ProjectRepositoryImpl fetchProjectsWhere() : $e');
+          'Error in ProjectRepositoryImpl fetchProjectsWhere(): $e');
       rethrow;
     }
   }
@@ -79,7 +80,7 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
       return response.data[0][ProjectDataScheme.id];
     } catch (e) {
       ErrorService.printError(
-          'Error in ProjectRepositoryImpl fetchProjectId() : $e');
+          'Error in ProjectRepositoryImpl fetchProjectId(): $e');
       rethrow;
     }
   }
@@ -92,11 +93,14 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
   }) async {
     try {
       final response = await _projectDataSource.updateProject(
-          color: color, title: title, oldTitle: oldTitle);
+        color: color,
+        title: title,
+        oldTitle: oldTitle,
+      );
       return response;
     } catch (e) {
       ErrorService.printError(
-          'Error in ProjectRepositoryImpl removeProject() : $e');
+          'Error in ProjectRepositoryImpl removeProject(): $e');
       rethrow;
     }
   }
@@ -110,7 +114,7 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
       return response;
     } catch (e) {
       ErrorService.printError(
-          'Error in ProjectRepositoryImpl removeProject() : $e');
+          'Error in ProjectRepositoryImpl removeProject(): $e');
       rethrow;
     }
   }
@@ -118,7 +122,6 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
   @override
   Future<String> findDublicates({required String title}) async {
     try {
-      log('title in repo $title');
       final response = await _projectDataSource.findDublicates(title: title);
       if (response.data.toString().length == 2) {
         return 'no';
@@ -127,7 +130,7 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
       }
     } catch (e) {
       ErrorService.printError(
-          'Error in ProjectRepositoryImpl findDublicates() : $e');
+          'Error in ProjectRepositoryImpl findDublicates(): $e');
       rethrow;
     }
   }

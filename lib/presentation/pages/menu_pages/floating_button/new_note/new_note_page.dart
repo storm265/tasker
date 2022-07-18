@@ -8,6 +8,7 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/titl
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/white_box_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/color_pallete_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
+import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 
 class AddQuickNote extends StatefulWidget {
   const AddQuickNote({Key? key}) : super(key: key);
@@ -18,7 +19,6 @@ class AddQuickNote extends StatefulWidget {
 
 class _AddQuickNoteState extends State<AddQuickNote> {
   final descriptionTextController = TextEditingController();
-  
   final _addNoteController = NewNoteController(
     addNoteRepository: NoteRepositoryImpl(),
     colorPalleteController: ColorPalleteController(),
@@ -45,6 +45,7 @@ class _AddQuickNoteState extends State<AddQuickNote> {
         children: [
           const FakeAppBar(),
           WhiteBoxWidget(
+            height: 500,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
               child: Column(
@@ -53,7 +54,6 @@ class _AddQuickNoteState extends State<AddQuickNote> {
                     key: _addNoteController.formKey,
                     child: TitleWidget(
                       textInputType: TextInputType.multiline,
-                      maxLines: 8,
                       maxLength: 512,
                       textController: descriptionTextController,
                       title: 'Description',
@@ -67,15 +67,20 @@ class _AddQuickNoteState extends State<AddQuickNote> {
                       const SizedBox(height: 50),
                       ValueListenableBuilder<bool>(
                         valueListenable: _addNoteController.isButtonClicked,
-                        builder: (context, isClicked, _) => ConfirmButtonWidget(
-                          title: 'Done',
-                          onPressed: isClicked
-                              ? () async => _addNoteController.addNote(
-                                    context: context,
-                                    description: descriptionTextController.text,
-                                  )
-                              : null,
-                        ),
+                        builder: (context, isClicked, _) => isClicked
+                            ? ConfirmButtonWidget(
+                                title: 'Done',
+                                onPressed: isClicked
+                                    ? () async => _addNoteController.addNote(
+                                          context: context,
+                                          description:
+                                              descriptionTextController.text,
+                                        )
+                                    : null,
+                              )
+                            : const ProgressIndicatorWidget(
+                                text: 'Adding note...',
+                              ),
                       ),
                     ],
                   )

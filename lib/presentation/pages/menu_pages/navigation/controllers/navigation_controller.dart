@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 // TODO fix it
-final pageController = PageController(keepPage: true);
+final pageController = PageController(
+  keepPage: true,
+  initialPage: 0,
+);
 
 enum NavigationPages {
   tasks,

@@ -4,7 +4,7 @@ import 'package:todo2/services/error_service/error_service.dart';
 
 abstract class NoteRepository<T> {
   Future fetchNote();
-  Future putNote({
+  Future postNote({
     required String color,
     required String description,
   });
@@ -26,7 +26,7 @@ class NoteRepositoryImpl implements NoteRepository<NotesModel> {
   }
 
   @override
-  Future<void> putNote({
+  Future<void> postNote({
     required String color,
     required String description,
   }) async {

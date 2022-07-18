@@ -21,8 +21,9 @@ class NewNoteController extends ChangeNotifier {
     if (formKey.currentState!.validate()) {
       isButtonClicked.value = false;
       isButtonClicked.notifyListeners();
+
       await addNoteRepository
-          .putNote(
+          .postNote(
             color:
                 '${colors[colorPalleteController.selectedIndex.value].value}',
             description: description,

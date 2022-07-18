@@ -1,4 +1,3 @@
-
 import 'package:todo2/database/data_source/user_profile_data_source.dart';
 import 'package:todo2/database/database_scheme/user_profile_scheme.dart';
 import 'package:todo2/database/model/users_profile_model.dart';
@@ -20,19 +19,21 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
   final _userProfileDataSource = UserProfileDataSourceImpl();
   final _storage = 'avatar';
   final _supabase = SupabaseSource().restApiClient;
+
+  
   @override
   Future<void> postProfile({
     required String avatarUrl,
     required String username,
   }) async {
     try {
-      await _userProfileDataSource.insertUserProfile(
+      await _userProfileDataSource.postUserProfile(
         avatarUrl: avatarUrl,
         username: username,
       );
     } catch (e) {
       ErrorService.printError(
-          'Error in insertImg() UserProfileRepositoryImpl: $e');
+          'Error in ) UserProfileRepositoryImpl postProfile(: $e');
       rethrow;
     }
   }
@@ -41,11 +42,10 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
   Future<String> fetchUserName() async {
     try {
       final response = await _userProfileDataSource.fetchUserName();
-
       return response.data[0][UserProfileScheme.username] as String;
     } catch (e) {
       ErrorService.printError(
-          'Error in fetchUserName() UserProfileRepositoryImpl: $e');
+          'Error in  UserProfileRepositoryImpl fetchUserName(): $e');
       rethrow;
     }
   }
@@ -61,7 +61,7 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
       return image!;
     } catch (e) {
       ErrorService.printError(
-          'Error in fetchAvatar() UserProfileRepositoryImpl: $e');
+          'Error in UserProfileRepositoryImpl fetchAvatar() : $e');
       rethrow;
     }
   }
@@ -76,7 +76,8 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
           .map((json) => UserProfileModel.fromJson(json))
           .toList();
     } catch (e) {
-      ErrorService.printError('Error in repository fetchUsers(): $e');
+      ErrorService.printError(
+          'Error in UserProfileRepositoryImpl fetchUsersWhere(): $e');
       rethrow;
     }
   }
@@ -88,7 +89,7 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
       return response;
     } catch (e) {
       ErrorService.printError(
-          'Error in fetchAvatar() UserProfileRepositoryImpl: $e');
+          'Error in UserProfileRepositoryImpl fetchId() : $e');
       rethrow;
     }
   }

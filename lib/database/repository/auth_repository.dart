@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/data_source/auth_data_source.dart';
@@ -47,7 +45,7 @@ class AuthRepositoryImpl implements AuthRepository {
       );
       return response;
     } catch (e) {
-      ErrorService.printError('Error in signIn() repository: $e');
+      ErrorService.printError('Error in AuthRepositoryImpl signIn(): $e');
       rethrow;
     }
   }
@@ -65,7 +63,7 @@ class AuthRepositoryImpl implements AuthRepository {
       );
       return response;
     } catch (e) {
-      ErrorService.printError('Error in signUp() repository: $e');
+      ErrorService.printError('Error in AuthRepositoryImpl signUp(): $e');
       rethrow;
     }
   }
@@ -76,7 +74,7 @@ class AuthRepositoryImpl implements AuthRepository {
       final response = await _authDataSource.signOut();
       return response;
     } catch (e) {
-      ErrorService.printError('Error in signOut() repository: $e');
+      ErrorService.printError('Error in AuthRepositoryImpl signOut(): $e');
       rethrow;
     }
   }
@@ -90,7 +88,7 @@ class AuthRepositoryImpl implements AuthRepository {
       final response = await _authDataSource.resetPasswordForMail(email: email);
       return response;
     } catch (e) {
-      ErrorService.printError('Error in resetPassword() repository: $e');
+      ErrorService.printError('Error in AuthRepositoryImpl resetPassword(): $e');
       rethrow;
     }
   }
@@ -101,7 +99,7 @@ class AuthRepositoryImpl implements AuthRepository {
       final response = await _authDataSource.updatePassword(password: password);
       return response;
     } catch (e) {
-      ErrorService.printError('Error in updatePassword() repository: $e');
+      ErrorService.printError('Error in AuthRepositoryImpl updatePassword(): $e');
       rethrow;
     }
   }

@@ -9,7 +9,7 @@ abstract class UserProfileDataSource {
   Future fetchUserId();
   Future fetchUserName();
   Future fetchAvatar();
-  Future insertUserProfile({
+  Future postUserProfile({
     required String avatarUrl,
     required String username,
   });
@@ -29,15 +29,16 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
           .select(UserProfileScheme.id)
           .eq(UserProfileScheme.uuid, _supabase.auth.currentUser!.id)
           .execute();
-      return response.data[0]['id'];
+      return response.data[0][UserProfileScheme.id];
     } catch (e) {
-      ErrorService.printError('Error in fetchAvatar() fetchUserId: $e');
+      ErrorService.printError(
+          'Error in UserProfileDataSourceImpl fetchUserId(): $e');
       rethrow;
     }
   }
 
   @override
-  Future<PostgrestResponse<dynamic>> insertUserProfile({
+  Future<PostgrestResponse<dynamic>> postUserProfile({
     required String avatarUrl,
     required String username,
   }) async {
@@ -48,13 +49,10 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
         UserProfileScheme.uuid: _supabase.auth.currentUser!.id,
         UserProfileScheme.createdAt: DateTime.now().toString(),
       }).execute();
-      if (response.hasError) {
-        log(response.error!.message);
-      }
       return response;
     } catch (e) {
       ErrorService.printError(
-          'Error in UserProfileDataSourceImpl insertImg() dataSource: $e');
+          'Error in UserProfileDataSourceImpl insertUserProfile(): $e');
       rethrow;
     }
   }
@@ -67,13 +65,10 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
           .select(UserProfileScheme.username)
           .eq(UserProfileScheme.uuid, _supabase.auth.currentUser!.id)
           .execute();
-      if (response.hasError) {
-        log(response.error!.message);
-      }
       return response;
     } catch (e) {
       ErrorService.printError(
-          'Error in UserProfileDataSourceImpl fetchUserName() dataSource: $e');
+          'Error in UserProfileDataSourceImpl fetchUserName(): $e');
       rethrow;
     }
   }
@@ -87,13 +82,10 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
           .update({UserProfileScheme.avatarUrl: avatarUrl})
           .eq(UserProfileScheme.uuid, _supabase.auth.currentUser!.id)
           .execute();
-      if (response.hasError) {
-        log(response.error!.message);
-      }
       return response;
     } catch (e) {
       ErrorService.printError(
-          'Error in UserProfileDataSourceImpl updateAvatar() dataSource: $e');
+          'Error in UserProfileDataSourceImpl updateAvatar(): $e');
       rethrow;
     }
   }
@@ -106,13 +98,10 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
           .select(UserProfileScheme.avatarUrl)
           .eq(UserProfileScheme.uuid, _supabase.auth.currentUser!.id)
           .execute();
-      if (response.hasError) {
-        log(response.error!.message);
-      }
       return response;
     } catch (e) {
       ErrorService.printError(
-          'Error in UserProfileDataSourceImpl fetchAvatar() dataSource: $e');
+          'Error in UserProfileDataSourceImpl fetchAvatar(): $e');
       rethrow;
     }
   }
@@ -124,19 +113,16 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
       final response = await SupabaseSource()
           .restApiClient
           .from(_table)
-          .select('*')
+          .select()
           .ilike(
             UserProfileScheme.username,
             '%$userName%',
           )
           .execute();
-      if (response.hasError) {
-        log(response.error!.message);
-      }
-
       return response;
     } catch (e) {
-      ErrorService.printError(' Error in dataSource fetchUsers():  $e');
+      ErrorService.printError(
+          ' Error in UserProfileDataSourceImpl fetchUsers():$e');
       rethrow;
     }
   }

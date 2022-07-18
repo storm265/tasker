@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/database/model/task_model.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/app_bar_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/calendar_lib/table_calendar.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/widgets/list/list_widget.dart';
-import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
-import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 
 class TasksPage extends StatefulWidget {
   const TasksPage({Key? key}) : super(key: key);

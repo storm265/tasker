@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/database/repository/auth/auth_repository.dart';
+import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/user_profile_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
@@ -50,7 +50,6 @@ class _SignUpPageState extends State<SignUpPage> {
     _emailController.dispose();
     _passwordController.dispose();
     _usernameController.dispose();
-    // TODO careful with this dispose
     _signUpController.disposeValues();
     _signUpController.dispose();
     super.dispose();

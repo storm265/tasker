@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/database/repository/auth/auth_repository.dart';
+import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/presentation/pages/auth/reset_password/controller/padding_constant.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/sign_in_controller.dart';
@@ -86,7 +86,7 @@ class _SignInPageState extends State<SignInPage> {
                               .validatePassword(password: text!),
                           isEmail: false,
                           textController: _passwordController,
-                          isObcecure: false,
+                          isObcecure: true,
                           labelText: 'Password:',
                           text: 'Password',
                         ),

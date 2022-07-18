@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/projects_model.dart';
-import 'package:todo2/database/repository/auth/auth_repository.dart';
+import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/user_profile_repository.dart';
 import 'package:todo2/services/error_service/error_service.dart';

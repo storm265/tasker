@@ -1,29 +1,28 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:todo2/database/data_source/task_attachment_data_source.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 
 abstract class TaskAttachmentRepository {
-  Future putAttachment({required String url,required int taskId});
+  Future postAttachment({required String url, required int taskId});
   Future uploadFile({required String path, required File file});
 }
 
 class TaskAttachmentRepositoryImpl implements TaskAttachmentRepository {
   final _taskAttachmentDataSource = TaskAttachmentsDataSourceImpl();
   @override
-  Future<void> putAttachment({required String url,required int taskId}) async {
+  Future<void> postAttachment(
+      {required String url, required int taskId}) async {
     try {
-      final response = await _taskAttachmentDataSource.putAttachment(url: url,taskId: taskId);
-      if (response.hasError) {
-        log(response.error!.message);
-      }
+      await _taskAttachmentDataSource.postAttachment(
+        url: url,
+        taskId: taskId,
+      );
     } catch (e) {
       ErrorService.printError(
           'Error in TaskAttachmentsRepositoryImpl putAttachment() : $e');
       rethrow;
     }
   }
-  
 
   @override
   Future<void> uploadFile({required String path, required File file}) async {

@@ -10,7 +10,6 @@ import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/floating_button_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/nav_bar_widget.dart';
-import 'package:todo2/services/network_service/network_service.dart';
 
 class NavigationPage extends StatefulWidget {
   const NavigationPage({Key? key}) : super(key: key);

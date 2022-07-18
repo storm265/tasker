@@ -1,13 +1,12 @@
-import 'dart:developer';
-
 import 'package:todo2/database/data_source/task_data_source.dart';
+import 'package:todo2/database/database_scheme/task_scheme.dart';
 import 'package:todo2/database/model/task_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 
 abstract class TaskRepository<T> {
   Future fetchTaskId({required String title});
   Future fetchTask();
-  Future putTask({
+  Future postTask({
     required String title,
     required String description,
     required int assignedTo,
@@ -22,9 +21,6 @@ class TaskRepositoryImpl implements TaskRepository {
   Future<List<TaskModel>> fetchTask() async {
     try {
       final response = await _taskDataSource.fetchTask();
-      if (response.hasError) {
-        log(response.error!.message);
-      }
       return (response.data as List<dynamic>)
           .map((json) => TaskModel.fromJson(json))
           .toList();
@@ -39,11 +35,7 @@ class TaskRepositoryImpl implements TaskRepository {
   Future<int> fetchTaskId({required String title}) async {
     try {
       final response = await _taskDataSource.fetchTaskId(title: title);
-      if (response.hasError) {
-        log(response.error!.message);
-      }
-    
-      return response.data[0]['id'];
+      return response.data[0][TaskScheme.id];
     } catch (e) {
       ErrorService.printError(
           'Error in TaskRepositoryImpl fetchTaskId() repository $e');
@@ -52,7 +44,7 @@ class TaskRepositoryImpl implements TaskRepository {
   }
 
   @override
-  Future<void> putTask({
+  Future<void> postTask({
     required String title,
     required String description,
     required int assignedTo,
@@ -60,16 +52,13 @@ class TaskRepositoryImpl implements TaskRepository {
     required DateTime dueDate,
   }) async {
     try {
-      final response = await _taskDataSource.putTask(
+      await _taskDataSource.putTask(
         title: title,
         assignedTo: assignedTo,
         description: description,
         dueDate: dueDate,
         projectId: projectId,
       );
-      if (response.hasError) {
-        log(response.error!.message);
-      }
     } catch (e) {
       ErrorService.printError('Error in  ProjectRepositoryImpl putTask(): $e');
       rethrow;
