@@ -6,6 +6,7 @@ class ConfirmButtonWidget extends StatelessWidget {
   final double height;
   final String title;
   final Color color;
+  final bool useAlign;
   final VoidCallback? onPressed;
   const ConfirmButtonWidget({
     Key? key,
@@ -14,6 +15,7 @@ class ConfirmButtonWidget extends StatelessWidget {
     this.color = Palette.red,
     this.width = 295,
     this.height = 48,
+    this.useAlign = false,
   }) : super(key: key);
 
   @override

@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/add_check_list/controller/add_check_list_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/add_check_list/widgets/add_item_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/add_check_list/widgets/check_box_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/add_check_list/widgets/chose_color_text.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/confirm_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/red_app_bar.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/title_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/white_box_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/color_pallete_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
-import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 class AddCheckListPage extends StatefulWidget {
   const AddCheckListPage({Key? key}) : super(key: key);
@@ -50,7 +48,6 @@ class _AddCheckListPageState extends State<AddCheckListPage> {
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     key: _checkListController.formKey,
                     child: TitleWidget(
-
                       textController: _titleController,
                       title: 'Title',
                     ),
@@ -89,7 +86,6 @@ class _AddCheckListPageState extends State<AddCheckListPage> {
                 ),
                 Column(
                   children: [
-                    choseColorText,
                     ColorPalleteWidget(
                       colorController:
                           _checkListController.colorPalleteController,
@@ -102,13 +98,10 @@ class _AddCheckListPageState extends State<AddCheckListPage> {
                         title: 'Done',
                         onPressed: isClicked
                             ? () async {
-                                _checkListController
-                                    .addCheckList(
-                                      
-                                      context: context,
-                                      title: _titleController.text,
-                                    );
-                                 
+                                _checkListController.addCheckList(
+                                  context: context,
+                                  title: _titleController.text,
+                                );
                               }
                             : null,
                       ),

@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/widgets/atachment_message_widget.dart';
@@ -11,10 +10,12 @@ class DescriptionFieldWidget extends StatelessWidget {
   final TextEditingController descriptionController;
   final String? hintText;
   final bool showImageIcon;
+  final int maxLength;
   const DescriptionFieldWidget({
     Key? key,
     required this.descriptionController,
     this.hintText,
+    this.maxLength = 512,
     this.showImageIcon = false,
   }) : super(key: key);
   final iconPath = 'assets/detailed_task/image.png';
@@ -74,7 +75,7 @@ class DescriptionFieldWidget extends StatelessWidget {
                       },
                       controller: descriptionController,
                       onEditingComplete: () => FocusScope.of(context).unfocus(),
-                      maxLength: 512,
+                      maxLength: maxLength,
                       buildCounter: (
                         context, {
                         required currentLength,
@@ -82,9 +83,9 @@ class DescriptionFieldWidget extends StatelessWidget {
                         maxLength,
                       }) =>
                           maxLength == currentLength
-                              ? const Text(
-                                  '512/512',
-                                  style: TextStyle(color: Colors.red),
+                              ? Text(
+                                  '$maxLength/$maxLength',
+                                  style: const TextStyle(color: Colors.red),
                                 )
                               : null,
                       keyboardType: TextInputType.multiline,

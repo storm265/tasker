@@ -11,7 +11,7 @@ class WhiteBoxWidget extends StatelessWidget {
     required this.child,
     this.scrollController,
     this.width = 350,
-    this.height = 468,
+    this.height = 470,
   }) : super(key: key);
 
   @override

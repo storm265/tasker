@@ -5,7 +5,7 @@ import 'package:todo2/services/supabase/constants.dart';
 
 abstract class NotesDataSource {
   Future fetchNote();
-  Future putNote({
+  Future postNote({
     required String color,
     required String description,
   });
@@ -25,13 +25,13 @@ class NotesDataSourceImpl implements NotesDataSource {
           .execute();
       return response;
     } catch (e) {
-      ErrorService.printError('Error in fetchNotes() data source:$e');
+      ErrorService.printError('Error in NotesDataSourceImpl fetchNotes() :$e');
       rethrow;
     }
   }
 
   @override
-  Future<PostgrestResponse<dynamic>> putNote({
+  Future<PostgrestResponse<dynamic>> postNote({
     required String color,
     required String description,
   }) async {
@@ -45,7 +45,7 @@ class NotesDataSourceImpl implements NotesDataSource {
       }).execute();
       return response;
     } catch (e) {
-      ErrorService.printError('Error in putNote() data source:$e');
+      ErrorService.printError('Error in NotesDataSourceImpl putNote() :$e');
       rethrow;
     }
   }

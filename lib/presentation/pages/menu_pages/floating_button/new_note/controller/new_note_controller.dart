@@ -4,11 +4,15 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/c
 import 'package:todo2/presentation/widgets/common/colors.dart';
 
 class NewNoteController extends ChangeNotifier {
+  final ColorPalleteController colorPalleteController;
+  final NoteRepositoryImpl addNoteRepository;
+  final isButtonClicked = ValueNotifier(true);
   final formKey = GlobalKey<FormState>();
 
-  final colorPalleteController = ColorPalleteController();
-  final addNoteRepository = NoteRepositoryImpl();
-  final isButtonClicked = ValueNotifier(true);
+  NewNoteController({
+    required this.colorPalleteController,
+    required this.addNoteRepository,
+  });
 
   Future<void> addNote({
     required BuildContext context,
@@ -19,7 +23,6 @@ class NewNoteController extends ChangeNotifier {
       isButtonClicked.notifyListeners();
       await addNoteRepository
           .putNote(
-            context: context,
             color:
                 '${colors[colorPalleteController.selectedIndex.value].value}',
             description: description,

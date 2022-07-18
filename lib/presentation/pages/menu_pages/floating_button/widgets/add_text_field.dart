@@ -5,15 +5,17 @@ class AddTextFieldWidget extends StatelessWidget {
   final TextEditingController titleController;
   final VoidCallback? onTap;
   final VoidCallback? onEdiditionCompleteCallback;
-  final int? maxLength;
-  final int? maxLines;
+  final int maxLength;
+  final int maxLines;
+  final TextInputType? textInputType;
 
   const AddTextFieldWidget({
     Key? key,
     required this.titleController,
     this.onTap,
-    this.maxLength,
-    this.maxLines,
+    this.maxLength = 32,
+    this.maxLines = 5,
+    this.textInputType,
     this.onEdiditionCompleteCallback,
     this.hintText,
   }) : super(key: key);
@@ -21,6 +23,20 @@ class AddTextFieldWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      buildCounter: (
+        context, {
+        required currentLength,
+        required isFocused,
+        maxLength,
+      }) =>
+          maxLength == currentLength
+              ? Text(
+                  '$maxLength/$maxLength',
+                  style: const TextStyle(color: Colors.red),
+                )
+              : null,
+      keyboardType: textInputType,
+      maxLines: maxLines,
       maxLength: maxLength,
       validator: (text) {
         if (text!.isEmpty) {

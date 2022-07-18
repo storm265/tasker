@@ -9,41 +9,64 @@ class ColorPalleteWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 300,
-      height: 48,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: colors.length,
-        shrinkWrap: true,
-        itemBuilder: ((_, index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 6),
-            child: ValueListenableBuilder(
-              valueListenable: colorController.selectedIndex,
-              builder: (context, value, _) {
-                return GestureDetector(
-                  onTap: () => colorController.changeSelectedIndex(index),
-                  child: Container(
-                    width: 48,
-                    height: 48,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: colors[index],
-                    ),
-                    child: Icon(
-                      (colorController.selectedIndex.value == index)
-                          ? Icons.done
-                          : null,
-                      color: Colors.white,
-                    ),
-                  ),
-                );
-              },
+    return Column(
+      children: [
+        const Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: EdgeInsets.only(
+              left: 25,
+              top: 15,
+              bottom: 15,
+              right: 15,
             ),
-          );
-        }),
-      ),
+            child: Text(
+              'Choose Color',
+              style: TextStyle(
+                fontWeight: FontWeight.w300,
+                fontStyle: FontStyle.italic,
+                fontSize: 18,
+              ),
+            ),
+          ),
+        ),
+        SizedBox(
+          width: 300,
+          height: 48,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: colors.length,
+            shrinkWrap: true,
+            itemBuilder: ((_, index) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 6),
+                child: ValueListenableBuilder(
+                  valueListenable: colorController.selectedIndex,
+                  builder: (context, value, _) {
+                    return GestureDetector(
+                      onTap: () => colorController.changeSelectedIndex(index),
+                      child: Container(
+                        width: 48,
+                        height: 48,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: colors[index],
+                        ),
+                        child: Icon(
+                          (colorController.selectedIndex.value == index)
+                              ? Icons.done
+                              : null,
+                          color: Colors.white,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              );
+            }),
+          ),
+        ),
+      ],
     );
   }
 }

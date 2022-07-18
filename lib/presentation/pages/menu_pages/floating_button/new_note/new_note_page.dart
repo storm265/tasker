@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/add_check_list/widgets/chose_color_text.dart';
+import 'package:todo2/database/repository/notes_repository.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/controller/new_note_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/confirm_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/red_app_bar.dart';
@@ -16,17 +17,23 @@ class AddQuickNote extends StatefulWidget {
 }
 
 class _AddQuickNoteState extends State<AddQuickNote> {
+  final descriptionTextController = TextEditingController();
+  
+  final _addNoteController = NewNoteController(
+    addNoteRepository: NoteRepositoryImpl(),
+    colorPalleteController: ColorPalleteController(),
+  );
+
   @override
   void dispose() {
     descriptionTextController.dispose();
     _addNoteController.colorPalleteController.dispose();
-    // _addNoteController.isButtonClicked.dispose();
-    //  _addNoteController.dispose();
+    // TODO careful!
+    _addNoteController.isButtonClicked.dispose();
+    _addNoteController.dispose();
     super.dispose();
   }
 
-  final descriptionTextController = TextEditingController();
-  final _addNoteController = NewNoteController();
   @override
   Widget build(BuildContext context) {
     return AppbarWrapperWidget(
@@ -45,18 +52,18 @@ class _AddQuickNoteState extends State<AddQuickNote> {
                   Form(
                     key: _addNoteController.formKey,
                     child: TitleWidget(
+                      textInputType: TextInputType.multiline,
+                      maxLines: 8,
+                      maxLength: 512,
                       textController: descriptionTextController,
                       title: 'Description',
                     ),
                   ),
-                  const SizedBox(height: 100),
                   Column(
                     children: [
-                      choseColorText,
                       ColorPalleteWidget(
-                        colorController:
-                            _addNoteController.colorPalleteController,
-                      ),
+                          colorController:
+                              _addNoteController.colorPalleteController),
                       const SizedBox(height: 50),
                       ValueListenableBuilder<bool>(
                         valueListenable: _addNoteController.isButtonClicked,
