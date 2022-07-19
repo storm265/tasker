@@ -3,7 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:todo2/database/data_source/storage/avatar_storage_data_source.dart';
+import 'package:todo2/database/repository/auth_repository.dart';
+import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/storage/avatar_storage_repository.dart';
+import 'package:todo2/database/repository/user_profile_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
@@ -13,6 +16,7 @@ const _defaultAssetPath = 'assets/grey_avatar.jpg';
 class ImageController extends ChangeNotifier {
   final avatarStorageRepository = AvatarStorageReposiroryImpl(
       avatarDataSource: AvatarStorageDataSourceImpl());
+
   final pickedFile = ValueNotifier(XFile(_defaultAssetPath));
   final picker = ImagePicker();
 
@@ -53,12 +57,15 @@ class ImageController extends ChangeNotifier {
     }
   }
 
-  Future<void> pushUpdatedAvatar({required BuildContext context}) async {
+  Future<void> pushUpdatedAvatar({
+    required BuildContext context,
+    required ProfileController profileController,
+  }) async {
     try {
       await pickAvatar();
       bool isValidImage = isValidAvatar(context: context);
       if (isValidImage) {
-        await updateAvatar().then(
+        await updateAvatar(profileController: profileController).then(
           (_) => MessageService.displaySnackbar(
             context: context,
             message: 'Avatar updated',
@@ -81,14 +88,17 @@ class ImageController extends ChangeNotifier {
     }
   }
 
-  Future<void> updateAvatar() async {
+  Future<void> updateAvatar(
+      {required ProfileController profileController}) async {
     try {
-      final profileController = ProfileController();
-      await avatarStorageRepository.updateAvatar(
-        name: profileController.image,
+      print(profileController.image);
+      print(pickedFile.value.path);
+      final response = await avatarStorageRepository.updateAvatar(
+        bucketImage: profileController.image,
         file: File(pickedFile.value.path),
       );
-      log('image: ${profileController.image}');
+      log('updateAvatar response: ${response.data}');
+      log('updateAvatar response: ${response.error!.message}');
     } catch (e) {
       ErrorService.printError('uploadAvatar error: $e');
     }

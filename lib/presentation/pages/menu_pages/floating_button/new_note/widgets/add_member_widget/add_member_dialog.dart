@@ -21,7 +21,7 @@ class AddUserDialog extends StatelessWidget {
   Future<List<UserProfileModel>> fetchUsers({required String userName}) async {
     emails = await UserRepositoryImpl().fetchEmail();
     users =
-        await UserProfileRepositoryImpl().fetchUsersWhere(userName: userName);
+        await UserProfileRepositoryImpl().fetchUserWhere(userName: userName);
 
     return users;
   }

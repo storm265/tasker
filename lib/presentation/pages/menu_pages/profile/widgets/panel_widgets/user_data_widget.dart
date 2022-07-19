@@ -16,7 +16,6 @@ class UserDataWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile( 
-      // TODO not good
       contentPadding: const EdgeInsets.symmetric(horizontal: 35),
       leading: avatarImage != ''
           ? CachedAvatarWidget(image: avatarImage)

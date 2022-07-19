@@ -6,7 +6,8 @@ import 'package:todo2/presentation/pages/menu_pages/profile/dialogs/settings_dia
 import 'package:todo2/presentation/pages/menu_pages/profile/widgets/panel_widgets/user_data_widget.dart';
 
 class ProfileWidget extends StatefulWidget {
-  const ProfileWidget({Key? key}) : super(key: key);
+  final ProfileController profileController;
+  const ProfileWidget({Key? key,required this.profileController}) : super(key: key);
 
   @override
   State<ProfileWidget> createState() => _ProfileWidgetState();
@@ -14,20 +15,20 @@ class ProfileWidget extends StatefulWidget {
 
 class _ProfileWidgetState extends State<ProfileWidget>
     with SingleTickerProviderStateMixin {
-  final _profileController = ProfileController();
+
 
   @override
   void initState() {
-    _profileController.rotateSettingsIcon(ticker: this);
-    _profileController.fetchProfileInfo(
+    widget.profileController.rotateSettingsIcon(ticker: this);
+    widget.profileController.fetchProfileInfo(
         context: context, updateStateCallback: () => setState(() {}));
     super.initState();
   }
 
   @override
   void dispose() {
-    _profileController.iconAnimationController.dispose();
-    _profileController.dispose();
+    widget.profileController.iconAnimationController.dispose();
+    widget.profileController.dispose();
     super.dispose();
   }
 
@@ -42,13 +43,12 @@ class _ProfileWidgetState extends State<ProfileWidget>
           Align(
             alignment: Alignment.topRight,
             child: IconButton(
-              onPressed: () => showSettingsDialog(context),
+              onPressed: () => showSettingsDialog(
+                  context: context, profileController: widget.profileController),
               icon: RotationTransition(
                 turns: Tween(begin: 0.0, end: 1.0)
-                    .animate(_profileController.iconAnimationController),
-                child: const Icon(
-                  Icons.settings,
-                ),
+                    .animate(widget.profileController.iconAnimationController),
+                child: const Icon(Icons.settings),
               ),
             ),
           ),
@@ -56,9 +56,9 @@ class _ProfileWidgetState extends State<ProfileWidget>
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               UserDataWidget(
-                avatarImage: _profileController.image,
-                email: '${_profileController.supabase!.email}',
-                nickname: _profileController.userName,
+                avatarImage: widget.profileController.imageStoragePublicUrl,
+                email: '${widget.profileController.supabase!.email}',
+                nickname: widget.profileController.userName,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,

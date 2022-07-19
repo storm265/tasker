@@ -11,19 +11,27 @@ import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/supabase/constants.dart';
 
 class ProfileController extends ChangeNotifier {
-  final _projectsRepository = ProjectRepositoryImpl();
-  final _userProfileRepository = UserProfileRepositoryImpl();
-  final _authRepository = AuthRepositoryImpl();
+  final ProjectRepositoryImpl projectsRepository;
+  final UserProfileRepositoryImpl userProfileRepository;
+  final AuthRepositoryImpl authRepository;
+
+  ProfileController({
+    required this.projectsRepository,
+    required this.userProfileRepository,
+    required this.authRepository,
+  });
 
   final supabase = SupabaseSource().restApiClient.auth.currentUser;
 
-  late String userName = '', image = '', publicUrl = '';
+  late String userName = '';
+  late String image = '';
+  late String imageStoragePublicUrl = '';
   late AnimationController iconAnimationController;
 
   Future<void> signOut(BuildContext context) async {
     try {
       final pushBack = NavigationService.navigateTo(context, Pages.welcome);
-      final response = await _authRepository.signOut(context: context);
+      final response = await authRepository.signOut(context: context);
       if (response.error != null) {
         MessageService.displaySnackbar(
           context: context,
@@ -39,7 +47,7 @@ class ProfileController extends ChangeNotifier {
   Future<List<ProjectModel>> fetchProject(
       {required BuildContext context}) async {
     try {
-      return _projectsRepository.fetchProject();
+      return projectsRepository.fetchProject();
     } catch (e) {
       ErrorService.printError(
           "Error in ProfileController  fetchProject() :$e ");
@@ -52,8 +60,10 @@ class ProfileController extends ChangeNotifier {
     required BuildContext context,
   }) async {
     try {
-      publicUrl = await _userProfileRepository.fetchAvatarFromStorage(publicUrl: image);
-      userName = await _userProfileRepository.fetchUserName();
+      image = await userProfileRepository.fetchAvatar();
+      imageStoragePublicUrl =
+          await userProfileRepository.fetchAvatarFromStorage(publicUrl: image);
+      userName = await userProfileRepository.fetchUserName();
       updateStateCallback();
     } catch (e) {
       ErrorService.printError(
@@ -61,16 +71,17 @@ class ProfileController extends ChangeNotifier {
       rethrow;
     }
   }
-  // Future<String> fetchAvatar() async {
-  //   try {
-  //     final response = await _userProfileRepository.fetchAvatar();
-  //     return response;
-  //   } catch (e) {
-  //     ErrorService.printError(
-  //         'Error in UserProfileRepositoryImpl fetchAvatar() : $e');
-  //     rethrow;
-  //   }
-  // }
+
+  Future<String> fetchAvatar() async {
+    try {
+      final response = await userProfileRepository.fetchAvatar();
+      return response;
+    } catch (e) {
+      ErrorService.printError(
+          'Error in UserProfileRepositoryImpl fetchAvatar() : $e');
+      rethrow;
+    }
+  }
 
   void rotateSettingsIcon({required TickerProvider ticker}) {
     iconAnimationController = AnimationController(

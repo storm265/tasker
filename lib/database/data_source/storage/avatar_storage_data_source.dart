@@ -7,7 +7,7 @@ import 'package:todo2/services/supabase/constants.dart';
 
 abstract class AvatarStorageDataSource {
   Future uploadAvatar({required String name, required File file});
-  Future updateAvatar({required String name, required File file});
+  Future updateAvatar({required String bucketImage, required File file});
 }
 
 class AvatarStorageDataSourceImpl implements AvatarStorageDataSource {
@@ -16,18 +16,14 @@ class AvatarStorageDataSourceImpl implements AvatarStorageDataSource {
 
   @override
   Future<StorageResponse<String>> updateAvatar(
-      {required String name, required File file}) async {
+      {required String bucketImage, required File file}) async {
     try {
-      final response = await _supabase.storage
-          .from(_storagePath)
-          .update('$_storagePath/public$name', file);
-      log('file: ${file.path}');
-      log('error: ${response.error!.message}');
-
+      final response =
+          await _supabase.storage.from(_storagePath).update(bucketImage, file);
       return response;
-    } catch (e) {
+    } catch (e, t) {
       ErrorService.printError(
-          'AvatarStorageDataSourceImpl updateAvatar  error: $e');
+          'AvatarStorageDataSourceImpl updateAvatar  error: $e, $t');
       rethrow;
     }
   }

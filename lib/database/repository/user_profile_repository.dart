@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:todo2/database/data_source/user_profile_data_source.dart';
 import 'package:todo2/database/database_scheme/user_profile_scheme.dart';
 import 'package:todo2/database/model/users_profile_model.dart';
@@ -6,14 +8,14 @@ import 'package:todo2/services/supabase/constants.dart';
 
 abstract class UserProfileRepository {
   Future<String> fetchUserName();
- Future fetchAvatarFromStorage({required String publicUrl}) ;
+  Future fetchAvatarFromStorage({required String publicUrl});
   Future fetchId();
   Future<void> postProfile({
     required String avatarUrl,
     required String username,
   });
-  fetchUsersWhere({required String userName});
-  Future  fetchAvatar();
+  Future fetchUserWhere({required String userName});
+  Future fetchAvatar();
 }
 
 class UserProfileRepositoryImpl implements UserProfileRepository {
@@ -53,9 +55,8 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
   @override
   Future<String> fetchAvatarFromStorage({required String publicUrl}) async {
     try {
-      final imageResponce = _supabase.storage
-          .from(_storage)
-          .getPublicUrl(publicUrl);
+      final imageResponce =
+          _supabase.storage.from(_storage).getPublicUrl(publicUrl);
       final image = imageResponce.data;
       return image!;
     } catch (e) {
@@ -69,8 +70,9 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
   Future<String> fetchAvatar() async {
     try {
       final response = await _userProfileDataSource.fetchAvatar();
-     final image  = await response.data[0][UserProfileScheme.avatarUrl];
-      return  image;
+      final image = await response.data[0][UserProfileScheme.avatarUrl];
+      log(' fetchAvatar repo: $image');
+      return image;
     } catch (e) {
       ErrorService.printError(
           'Error in UserProfileRepositoryImpl fetchAvatar() : $e');
@@ -79,7 +81,7 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
   }
 
   @override
-  Future<List<UserProfileModel>> fetchUsersWhere(
+  Future<List<UserProfileModel>> fetchUserWhere(
       {required String userName}) async {
     try {
       final response =

@@ -131,7 +131,8 @@ class AddTaskController extends ChangeNotifier {
   late String userName = '', image = '';
   Future<List<String>> fetchCommentInfo() async {
     try {
-      image = await userProfileRepository.fetchAvatarFromStorage();
+      // TODO fix it
+     // image = await userProfileRepository.fetchAvatarFromStorage();
       userName = await userProfileRepository.fetchUserName();
       return [image, userName];
     } catch (e) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/task_attachment_repository.dart';
 import 'package:todo2/database/repository/task_repository.dart';
@@ -39,7 +40,11 @@ class MyApp extends StatelessWidget {
   );
 
   final _themeDataController = ThemeDataService();
-  final _profileController = ProfileController();
+  final _profileController = ProfileController(
+    authRepository: AuthRepositoryImpl(),
+    projectsRepository: ProjectRepositoryImpl(),
+    userProfileRepository: UserProfileRepositoryImpl(),
+  );
   final _navigationController = NavigationController();
 
   @override
@@ -54,9 +59,9 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'Todo2',
             theme: _themeDataController.themeData,
-            initialRoute: '/',
-            routes: routes,
-            //   home: ProfilePage(),
+           // initialRoute: '/',
+          //  routes: routes,
+             home: ProfilePage(),
           ),
         ),
       ),

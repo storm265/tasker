@@ -19,7 +19,7 @@ class ProfilePage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Wrap(
           children: [
-            const ProfileWidget(),
+             ProfileWidget(profileController: inheritedProfile.profileController),
             // FutureBuilder<List<ProjectModel>>(
             //   initialData: const [],
             //   future: inheritedProfile.profileController
