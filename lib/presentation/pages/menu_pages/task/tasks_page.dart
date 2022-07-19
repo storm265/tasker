@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/database/repository/task_repository.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/widgets/app_bar_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/dialogs/tasks_dialog.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/calendar_lib/table_calendar.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/widgets/tabs/bottom_tabs.dart';
+import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 
 class TasksPage extends StatefulWidget {
   const TasksPage({Key? key}) : super(key: key);
-
   @override
   State<TasksPage> createState() => _TasksPageState();
 }
@@ -30,11 +31,23 @@ class _TasksPageState extends State<TasksPage>
   var _calendarFormat = CalendarFormat.week;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBarWorkList(
-        tabController: _tabController,
+    return AppbarWrapperWidget(
+      preferredHeight: 90,
+      showLeadingButton: false,
+      actionWidget: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: GestureDetector(
+          child: const Icon(Icons.tune_outlined),
+          onTap: () => showTasksDialog(context),
+        ),
       ),
-      body: Column(
+      title: 'Work list',
+      bottom: TabBar(
+        indicatorColor: Colors.white,
+        controller: _tabController,
+        tabs: const [todayTab, monthTab],
+      ),
+      child: Column(
         children: [
           TableCalendar(
             shouldHideButton: false,

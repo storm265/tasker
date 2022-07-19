@@ -6,13 +6,14 @@ import 'package:todo2/services/supabase/constants.dart';
 
 abstract class UserProfileRepository {
   Future<String> fetchUserName();
-  Future<String> fetchAvatar();
+ Future fetchAvatarFromStorage({required String publicUrl}) ;
   Future fetchId();
   Future<void> postProfile({
     required String avatarUrl,
     required String username,
   });
   fetchUsersWhere({required String userName});
+  Future  fetchAvatar();
 }
 
 class UserProfileRepositoryImpl implements UserProfileRepository {
@@ -20,7 +21,6 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
   final _storage = 'avatar';
   final _supabase = SupabaseSource().restApiClient;
 
-  
   @override
   Future<void> postProfile({
     required String avatarUrl,
@@ -51,14 +51,26 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
   }
 
   @override
+  Future<String> fetchAvatarFromStorage({required String publicUrl}) async {
+    try {
+      final imageResponce = _supabase.storage
+          .from(_storage)
+          .getPublicUrl(publicUrl);
+      final image = imageResponce.data;
+      return image!;
+    } catch (e) {
+      ErrorService.printError(
+          'Error in UserProfileRepositoryImpl fetchAvatarFromStorage() : $e');
+      rethrow;
+    }
+  }
+
+  @override
   Future<String> fetchAvatar() async {
     try {
       final response = await _userProfileDataSource.fetchAvatar();
-      final imageResponce = _supabase.storage
-          .from(_storage)
-          .getPublicUrl(response.data[0][UserProfileScheme.avatarUrl]);
-      final image = imageResponce.data;
-      return image!;
+     final image  = await response.data[0][UserProfileScheme.avatarUrl];
+      return  image;
     } catch (e) {
       ErrorService.printError(
           'Error in UserProfileRepositoryImpl fetchAvatar() : $e');

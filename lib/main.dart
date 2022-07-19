@@ -7,6 +7,9 @@ import 'package:todo2/database/repository/user_profile_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/controller_inherited.dart';
 import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/profile/profile_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/tasks_page.dart';
+import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/supabase/configure.dart';
 import 'package:todo2/services/supabase/update_token_service.dart';
 import 'package:todo2/services/system_service/system_chrome.dart';
@@ -51,9 +54,9 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'Todo2',
             theme: _themeDataController.themeData,
-          //  initialRoute: '/',
-           // routes: routes,
-              home: AddQuickNote(),
+            initialRoute: '/',
+            routes: routes,
+            //   home: ProfilePage(),
           ),
         ),
       ),

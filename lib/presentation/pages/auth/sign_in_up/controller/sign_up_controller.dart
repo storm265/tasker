@@ -78,7 +78,7 @@ class SignUpController extends ChangeNotifier {
         await projectController.postProject(
             title: 'Personal', color: colors[0].value.toString());
         await imagePickerController
-            .uploadAvatar(context: context)
+            .uploadAvatar()
             .then((_) => NavigationService.navigateTo(context, Pages.home));
       }
     } catch (e) {

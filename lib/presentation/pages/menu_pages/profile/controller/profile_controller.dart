@@ -17,7 +17,7 @@ class ProfileController extends ChangeNotifier {
 
   final supabase = SupabaseSource().restApiClient.auth.currentUser;
 
-  late String userName = '', image = '';
+  late String userName = '', image = '', publicUrl = '';
   late AnimationController iconAnimationController;
 
   Future<void> signOut(BuildContext context) async {
@@ -52,7 +52,7 @@ class ProfileController extends ChangeNotifier {
     required BuildContext context,
   }) async {
     try {
-      image = await _userProfileRepository.fetchAvatar();
+      publicUrl = await _userProfileRepository.fetchAvatarFromStorage(publicUrl: image);
       userName = await _userProfileRepository.fetchUserName();
       updateStateCallback();
     } catch (e) {
@@ -61,6 +61,16 @@ class ProfileController extends ChangeNotifier {
       rethrow;
     }
   }
+  // Future<String> fetchAvatar() async {
+  //   try {
+  //     final response = await _userProfileRepository.fetchAvatar();
+  //     return response;
+  //   } catch (e) {
+  //     ErrorService.printError(
+  //         'Error in UserProfileRepositoryImpl fetchAvatar() : $e');
+  //     rethrow;
+  //   }
+  // }
 
   void rotateSettingsIcon({required TickerProvider ticker}) {
     iconAnimationController = AnimationController(

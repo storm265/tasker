@@ -2,17 +2,19 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:todo2/database/data_source/storage/avatar_storage_data_source.dart';
+import 'package:todo2/database/repository/storage/avatar_storage_repository.dart';
+import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
-import 'package:todo2/services/supabase/constants.dart';
 
 const _defaultAssetPath = 'assets/grey_avatar.jpg';
 
 class ImageController extends ChangeNotifier {
-  final _storagePath = 'avatar';
+  final avatarStorageRepository = AvatarStorageReposiroryImpl(
+      avatarDataSource: AvatarStorageDataSourceImpl());
   final pickedFile = ValueNotifier(XFile(_defaultAssetPath));
   final picker = ImagePicker();
-  final _supabase = SupabaseSource().restApiClient;
 
   bool get _isWrongImageFormat =>
       pickedFile.value.path.endsWith('.jpg') ||
@@ -23,41 +25,80 @@ class ImageController extends ChangeNotifier {
     try {
       pickedFile.value = (await picker.pickImage(source: ImageSource.gallery) ??
           XFile(_defaultAssetPath));
-      notifyListeners();
+      pickedFile.notifyListeners();
       if (pickedFile.value.name.isEmpty) {
         return;
       }
-      log(pickedFile.value.path);
     } catch (e) {
-      ErrorService.printError('pickAvatar error: $e');
+      ErrorService.printError('ImageController pickAvatar error: $e');
     }
   }
 
   bool isValidAvatar({required BuildContext context}) {
-    if (pickedFile.value.path == _defaultAssetPath) {
-      MessageService.displaySnackbar(context: context, message: 'Pick image!');
-      return false;
-    } else if (!_isWrongImageFormat) {
-      MessageService.displaySnackbar(
-          context: context, message: 'Wrong image format');
-      return false;
-    } else {
-      return true;
+    try {
+      if (pickedFile.value.path == _defaultAssetPath) {
+        MessageService.displaySnackbar(
+            context: context, message: 'Pick image!');
+        return false;
+      } else if (!_isWrongImageFormat) {
+        MessageService.displaySnackbar(
+            context: context, message: 'Wrong image format');
+        return false;
+      } else {
+        return true;
+      }
+    } catch (e) {
+      ErrorService.printError('ImageController isValidAvatar error: $e');
+      rethrow;
     }
   }
 
-  Future<void> uploadAvatar({required BuildContext context}) async {
+  Future<void> pushUpdatedAvatar({required BuildContext context}) async {
     try {
-      await _supabase.storage.from(_storagePath).upload(
-            pickedFile.value.name,
-            File(pickedFile.value.path),
-          );
+      await pickAvatar();
+      bool isValidImage = isValidAvatar(context: context);
+      if (isValidImage) {
+        await updateAvatar().then(
+          (_) => MessageService.displaySnackbar(
+            context: context,
+            message: 'Avatar updated',
+          ),
+        );
+      }
+    } catch (e) {
+      ErrorService.printError('ImageController pushUpdatedAvatar error: $e');
+    }
+  }
+
+  Future<void> uploadAvatar() async {
+    try {
+      await avatarStorageRepository.uploadAvatar(
+        name: pickedFile.value.name,
+        file: File(pickedFile.value.path),
+      );
+    } catch (e) {
+      ErrorService.printError('uploadAvatar error: $e');
+    }
+  }
+
+  Future<void> updateAvatar() async {
+    try {
+      final profileController = ProfileController();
+      await avatarStorageRepository.updateAvatar(
+        name: profileController.image,
+        file: File(pickedFile.value.path),
+      );
+      log('image: ${profileController.image}');
     } catch (e) {
       ErrorService.printError('uploadAvatar error: $e');
     }
   }
 
   void disposeValues() {
-    pickedFile.dispose();
+    try {
+      pickedFile.dispose();
+    } catch (e) {
+      ErrorService.printError('ImageController disposeValues error: $e');
+    }
   }
 }

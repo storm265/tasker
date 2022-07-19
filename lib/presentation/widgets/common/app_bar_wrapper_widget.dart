@@ -21,17 +21,23 @@ const _redBar = SystemUiOverlayStyle(
 );
 
 class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
+  final PreferredSizeWidget? bottom;
+  final Widget actionWidget;
   final Widget child;
   final String? title;
   final bool shouldUsePopMethod;
   final bool showLeadingButton;
   final bool showAppBar;
   final bool isRedAppBar;
+  final double preferredHeight;
 
   const AppbarWrapperWidget({
     Key? key,
     required this.child,
+    this.preferredHeight = 60,
+    this.bottom,
     this.title,
+    this.actionWidget = const SizedBox(),
     this.shouldUsePopMethod = false,
     this.showLeadingButton = false,
     this.showAppBar = true,
@@ -39,7 +45,7 @@ class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
   }) : super(key: key);
 
   @override
-  Size get preferredSize => const Size(double.infinity, 60);
+  Size get preferredSize => Size(double.infinity, preferredHeight);
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +84,8 @@ class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
                   fontWeight: FontWeight.w300,
                 ),
               ),
+              actions: [actionWidget],
+              bottom: bottom,
             )
           : null,
       body: SafeArea(

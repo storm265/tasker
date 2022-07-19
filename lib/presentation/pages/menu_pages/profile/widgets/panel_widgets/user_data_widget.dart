@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/widgets/panel_widgets/image_widget.dart';
-import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 
 class UserDataWidget extends StatelessWidget {
   final String avatarImage;
@@ -16,7 +15,7 @@ class UserDataWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
+    return ListTile( 
       // TODO not good
       contentPadding: const EdgeInsets.symmetric(horizontal: 35),
       leading: avatarImage != ''
