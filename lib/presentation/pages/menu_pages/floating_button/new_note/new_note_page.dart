@@ -28,7 +28,6 @@ class _AddQuickNoteState extends State<AddQuickNote> {
   void dispose() {
     descriptionTextController.dispose();
     _addNoteController.colorPalleteController.dispose();
-    // TODO careful!
     _addNoteController.isButtonClicked.dispose();
     _addNoteController.dispose();
     super.dispose();
@@ -47,7 +46,7 @@ class _AddQuickNoteState extends State<AddQuickNote> {
           WhiteBoxWidget(
             height: 500,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                padding: const EdgeInsets.all(30.0),
               child: Column(
                 children: [
                   Form(

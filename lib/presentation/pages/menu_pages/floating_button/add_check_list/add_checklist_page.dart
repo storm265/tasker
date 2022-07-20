@@ -8,6 +8,7 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/titl
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/white_box_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/color_pallete_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
+import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 
 class AddCheckListPage extends StatefulWidget {
   const AddCheckListPage({Key? key}) : super(key: key);
@@ -40,75 +41,84 @@ class _AddCheckListPageState extends State<AddCheckListPage> {
         children: [
           const FakeAppBar(),
           WhiteBoxWidget(
-            height: 550,
-            child: Column(
-              children: [
-                ListTile(
-                  title: Form(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    key: _checkListController.formKey,
-                    child: TitleWidget(
-                      textController: _titleController,
-                      title: 'Title',
+            height: 600,
+            child: Padding(
+              padding: const EdgeInsets.all(30.0),
+              child: Column(
+                children: [
+                  ListTile(
+                    contentPadding: const EdgeInsets.all(0),
+                    title: Form(
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      key: _checkListController.formKey,
+                      child: TitleWidget(
+                        textInputType: TextInputType.multiline,
+                        maxLength: 512,
+                        maxLines: 2,
+                        textController: _titleController,
+                        title: 'Title',
+                      ),
                     ),
-                  ),
-                  subtitle: SizedBox(
-                    width: 200,
-                    height: 200,
-                    child: SingleChildScrollView(
-                      child: ValueListenableBuilder<List<String>>(
-                        valueListenable: _checkListController.checkBoxItems,
-                        builder: (_, value, __) => ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: value.length,
-                          itemBuilder: (context, index) {
-                            return Column(
-                              children: [
-                                CheckBoxWidget(
-                                  checkBoxController: _checkListController,
-                                  isClicked: _checkListController.isChecked,
-                                  index: index,
-                                ),
-                                (index == value.length - 1)
-                                    ? AddItemButton(
-                                        onPressed: () =>
-                                            _checkListController.addItem(index),
-                                      )
-                                    : const SizedBox()
-                              ],
-                            );
-                          },
+                    subtitle: SizedBox(
+                      width: 200,
+                      height: 200,
+                      child: SingleChildScrollView(
+                        child: ValueListenableBuilder<List<String>>(
+                          valueListenable: _checkListController.checkBoxItems,
+                          builder: (_, value, __) => ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: value.length,
+                            itemBuilder: (context, index) {
+                              return Column(
+                                children: [
+                                  CheckBoxWidget(
+                                    checkBoxController: _checkListController,
+                                    isClicked: _checkListController.isChecked,
+                                    index: index,
+                                  ),
+                                  (index == value.length - 1)
+                                      ? AddItemButton(
+                                          onPressed: () => _checkListController
+                                              .addItem(index),
+                                        )
+                                      : const SizedBox()
+                                ],
+                              );
+                            },
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-                Column(
-                  children: [
-                    ColorPalleteWidget(
-                      colorController:
-                          _checkListController.colorPalleteController,
-                    ),
-                    const SizedBox(height: 40),
-                    ValueListenableBuilder<bool>(
-                      valueListenable: _checkListController.isClickedButton,
-                      builder: (context, isClicked, child) =>
-                          ConfirmButtonWidget(
-                        title: 'Done',
-                        onPressed: isClicked
-                            ? () async {
-                                _checkListController.addCheckList(
-                                  context: context,
-                                  title: _titleController.text,
-                                );
-                              }
-                            : null,
+                  Column(
+                    children: [
+                      ColorPalleteWidget(
+                        colorController:
+                            _checkListController.colorPalleteController,
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                      const SizedBox(height: 40),
+                      ValueListenableBuilder<bool>(
+                          valueListenable: _checkListController.isClickedButton,
+                          builder: (context, isClicked, _) => isClicked
+                              ? ConfirmButtonWidget(
+                                  title: 'Done',
+                                  onPressed: isClicked
+                                      ? () async {
+                                          _checkListController.addCheckList(
+                                            context: context,
+                                            title: _titleController.text,
+                                          );
+                                        }
+                                      : null,
+                                )
+                              : const ProgressIndicatorWidget(
+                                  text: 'Saving...',
+                                )),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ],

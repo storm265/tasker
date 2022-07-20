@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/data_source/storage/avatar_storage_data_source.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
@@ -62,15 +63,19 @@ class ImageController extends ChangeNotifier {
     required ProfileController profileController,
   }) async {
     try {
+      final pushBack = Navigator.pop(context);
       await pickAvatar();
       bool isValidImage = isValidAvatar(context: context);
       if (isValidImage) {
-        await updateAvatar(profileController: profileController).then(
-          (_) => MessageService.displaySnackbar(
+        final response =
+            await updateAvatar(profileController: profileController);
+        if (response.error == null) {
+          MessageService.displaySnackbar(
             context: context,
             message: 'Avatar updated',
-          ),
-        );
+          );
+          pushBack;
+        }
       }
     } catch (e) {
       ErrorService.printError('ImageController pushUpdatedAvatar error: $e');
@@ -88,19 +93,20 @@ class ImageController extends ChangeNotifier {
     }
   }
 
-  Future<void> updateAvatar(
+  Future<StorageResponse<String>> updateAvatar(
       {required ProfileController profileController}) async {
     try {
-      print(profileController.image);
-      print(pickedFile.value.path);
       final response = await avatarStorageRepository.updateAvatar(
         bucketImage: profileController.image,
         file: File(pickedFile.value.path),
       );
-      log('updateAvatar response: ${response.data}');
-      log('updateAvatar response: ${response.error!.message}');
+      if (response.error != null) {
+        log('Error updateAvatar controller: ${response.error}');
+      }
+      return response;
     } catch (e) {
       ErrorService.printError('uploadAvatar error: $e');
+      rethrow;
     }
   }
 

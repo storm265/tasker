@@ -7,6 +7,7 @@ class AddTextFieldWidget extends StatelessWidget {
   final VoidCallback? onEdiditionCompleteCallback;
   final int maxLength;
   final int maxLines;
+
   final TextInputType? textInputType;
 
   const AddTextFieldWidget({

@@ -18,31 +18,29 @@ class TitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-      child: Column(
-        children: [
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              title,
-              style: const TextStyle(
-                fontWeight: FontWeight.w300,
-                fontSize: 18,
-                fontStyle: FontStyle.italic,
-                color: Colors.black,
-              ),
+    return Column(
+      children: [
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            title,
+            style: const TextStyle(
+              fontWeight: FontWeight.w300,
+              fontSize: 18,
+              fontStyle: FontStyle.italic,
+              color: Colors.black,
             ),
           ),
-          AddTextFieldWidget(
-            textInputType: textInputType,
-            maxLength: maxLength,
-            maxLines: maxLines,
-            hintText: 'Enter $title:',
-            titleController: textController,
-          ),
-        ],
-      ),
+        ),
+        AddTextFieldWidget(
+          textInputType: textInputType,
+          maxLength: maxLength,
+          maxLines: maxLines,
+          hintText: 'Enter $title:',
+          titleController: textController,
+          
+        ),
+      ],
     );
   }
 }

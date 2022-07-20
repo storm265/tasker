@@ -1,6 +1,4 @@
-import 'dart:developer';
 import 'dart:io';
-
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/supabase/constants.dart';
@@ -18,8 +16,9 @@ class AvatarStorageDataSourceImpl implements AvatarStorageDataSource {
   Future<StorageResponse<String>> updateAvatar(
       {required String bucketImage, required File file}) async {
     try {
-      final response =
-          await _supabase.storage.from(_storagePath).update(bucketImage, file);
+      final response = await _supabase.storage.from(_storagePath).update(
+          bucketImage, file,
+          fileOptions: const FileOptions(cacheControl: '3600', upsert: false));
       return response;
     } catch (e, t) {
       ErrorService.printError(

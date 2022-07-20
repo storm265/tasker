@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
@@ -20,18 +21,20 @@ class ConfirmButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
-      style: ButtonStyle(
-          minimumSize: MaterialStateProperty.all<Size>(Size(width, height)),
-          backgroundColor: MaterialStateProperty.all<Color>(color)),
-      onPressed: onPressed,
-      child: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.w300,
-          fontStyle: FontStyle.italic,
-          color: Colors.white,
+    return SizedBox(
+      width: width,
+      height: height,
+      child: CupertinoButton(
+        color: color,
+        onPressed: onPressed,
+        child: Text(
+          title,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w300,
+            fontStyle: FontStyle.italic,
+            color: Colors.white,
+          ),
         ),
       ),
     );

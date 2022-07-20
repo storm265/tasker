@@ -52,6 +52,7 @@ Future<void> showAddDialog(BuildContext context) async {
                       items[index],
                       style: const TextStyle(
                         fontWeight: FontWeight.w300,
+                        fontStyle: FontStyle.italic,
                       ),
                     ),
                   ),

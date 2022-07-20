@@ -4,19 +4,20 @@ import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.da
 class WhiteBoxWidget extends StatelessWidget {
   final Widget child;
   final double height;
-
+  final VoidCallback? onClick;
   final ScrollController? scrollController;
   const WhiteBoxWidget({
     Key? key,
     required this.child,
     this.scrollController,
+    this.onClick,
     this.height = 470,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
+      onTap: () => onClick == null ? FocusScope.of(context).unfocus() : null,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
         child: Container(

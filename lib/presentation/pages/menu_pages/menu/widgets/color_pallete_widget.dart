@@ -15,7 +15,7 @@ class ColorPalleteWidget extends StatelessWidget {
           alignment: Alignment.centerLeft,
           child: Padding(
             padding: EdgeInsets.only(
-              left: 25,
+              left: 20,
               top: 15,
               bottom: 15,
               right: 15,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 class ProgressIndicatorWidget extends StatelessWidget {
   final String? text;
@@ -10,9 +11,9 @@ class ProgressIndicatorWidget extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SpinKitDualRing(
+        const SpinKitDualRing(
           size: 30,
-          color: Theme.of(context).primaryColor,
+          color: Palette.red,
         ),
         text == null
             ? const SizedBox()
