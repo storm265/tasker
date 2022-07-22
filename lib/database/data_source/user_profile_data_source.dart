@@ -18,18 +18,19 @@ abstract class UserProfileDataSource {
 }
 
 class UserProfileDataSourceImpl implements UserProfileDataSource {
-  final _supabase = SupabaseSource().restApiClient;
+  final _supabase = NetworkSource().networkApiClient;
   final _table = 'user_profile';
 
   @override
   Future<int> fetchUserId() async {
     try {
-      final response = await _supabase
-          .from(_table)
-          .select(UserProfileScheme.id)
-          .eq(UserProfileScheme.uuid, _supabase.auth.currentUser!.id)
-          .execute();
-      return response.data[0][UserProfileScheme.id];
+      // final response = await _supabase
+      //     .from(_table)
+      //     .select(UserProfileScheme.id)
+      //     .eq(UserProfileScheme.uuid, _supabase.auth.currentUser!.id)
+      //     .execute();
+      // return response.data[0][UserProfileScheme.id];
+               return     Future.delayed( Duration(seconds: 1));
     } catch (e) {
       ErrorService.printError(
           'Error in UserProfileDataSourceImpl fetchUserId(): $e');
@@ -43,13 +44,14 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
     required String username,
   }) async {
     try {
-      final response = await _supabase.from(_table).insert({
-        UserProfileScheme.username: username,
-        UserProfileScheme.avatarUrl: avatarUrl,
-        UserProfileScheme.uuid: _supabase.auth.currentUser!.id,
-        UserProfileScheme.createdAt: DateTime.now().toString(),
-      }).execute();
-      return response;
+      // final response = await _supabase.from(_table).insert({
+      //   UserProfileScheme.username: username,
+      //   UserProfileScheme.avatarUrl: avatarUrl,
+      //   UserProfileScheme.uuid: _supabase.auth.currentUser!.id,
+      //   UserProfileScheme.createdAt: DateTime.now().toString(),
+      // }).execute();
+      // return response;
+               return     Future.delayed( Duration(seconds: 1));
     } catch (e) {
       ErrorService.printError(
           'Error in UserProfileDataSourceImpl insertUserProfile(): $e');
@@ -60,12 +62,13 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
   @override
   Future<PostgrestResponse<dynamic>> fetchUserName() async {
     try {
-      final response = await _supabase
-          .from(_table)
-          .select(UserProfileScheme.username)
-          .eq(UserProfileScheme.uuid, _supabase.auth.currentUser!.id)
-          .execute();
-      return response;
+      // final response = await _supabase
+      //     .from(_table)
+      //     .select(UserProfileScheme.username)
+      //     .eq(UserProfileScheme.uuid, _supabase.auth.currentUser!.id)
+      //     .execute();
+      // return response;
+               return     Future.delayed( Duration(seconds: 1));
     } catch (e) {
       ErrorService.printError(
           'Error in UserProfileDataSourceImpl fetchUserName(): $e');
@@ -77,12 +80,13 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
   Future<PostgrestResponse<dynamic>> updateAvatar(
       {required String avatarUrl}) async {
     try {
-      final response = await _supabase
-          .from(_table)
-          .update({UserProfileScheme.avatarUrl: avatarUrl})
-          .eq(UserProfileScheme.uuid, _supabase.auth.currentUser!.id)
-          .execute();
-      return response;
+      // final response = await _supabase
+      //     .from(_table)
+      //     .update({UserProfileScheme.avatarUrl: avatarUrl})
+      //     .eq(UserProfileScheme.uuid, _supabase.auth.currentUser!.id)
+      //     .execute();
+      // return response;
+               return     Future.delayed( Duration(seconds: 1));
     } catch (e) {
       ErrorService.printError(
           'Error in UserProfileDataSourceImpl updateAvatar(): $e');
@@ -93,12 +97,13 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
   @override
   Future<PostgrestResponse<dynamic>> fetchAvatar() async {
     try {
-      final response = await _supabase
-          .from(_table)
-          .select(UserProfileScheme.avatarUrl)
-          .eq(UserProfileScheme.uuid, _supabase.auth.currentUser!.id)
-          .execute();
-      return response;
+      // final response = await _supabase
+      //     .from(_table)
+      //     .select(UserProfileScheme.avatarUrl)
+      //     .eq(UserProfileScheme.uuid, _supabase.auth.currentUser!.id)
+      //     .execute();
+      // return response;
+               return     Future.delayed( Duration(seconds: 1));
     } catch (e) {
       ErrorService.printError(
           'Error in UserProfileDataSourceImpl fetchAvatar(): $e');
@@ -110,16 +115,17 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
   Future<PostgrestResponse<dynamic>> fetchUsersWhere(
       {required String userName}) async {
     try {
-      final response = await SupabaseSource()
-          .restApiClient
-          .from(_table)
-          .select()
-          .ilike(
-            UserProfileScheme.username,
-            '%$userName%',
-          )
-          .execute();
-      return response;
+      // final response = await NetworkSource()
+      //     .networkApiClient
+      //     .from(_table)
+      //     .select()
+      //     .ilike(
+      //       UserProfileScheme.username,
+      //       '%$userName%',
+      //     )
+      //     .execute();
+      // return response;
+               return     Future.delayed( Duration(seconds: 1));
     } catch (e) {
       ErrorService.printError(
           ' Error in UserProfileDataSourceImpl fetchUsers():$e');

@@ -1,25 +1,20 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:dio/dio.dart';
 
-class SupabaseSource {
-  static final SupabaseSource _instance = SupabaseSource._internal();
+class NetworkSource {
+  static final NetworkSource _instance = NetworkSource._internal();
 
-  factory SupabaseSource() {
+  factory NetworkSource() {
     return _instance;
   }
 
-  SupabaseSource._internal();
+  NetworkSource._internal();
 
-  final SupabaseClient _supabaseClient = Supabase.instance.client;
-  SupabaseClient get restApiClient => _supabaseClient;
+  final NetworkConfiguration _supabaseClient = NetworkConfiguration();
+
+  NetworkConfiguration get networkApiClient => _supabaseClient;
 }
 
-class SupabaseConfiguration {
-  final String redirectTo = 'io.supabase.todo2://reset-callback';
-  final String supabaseUrl = 'https://loaphbqhspenbaeyhaqr.supabase.co';
-
-  final String supabaseAnnonKey =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxvYXBoYnFoc3BlbmJhZXloYXFyIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NTI2Mzc5NTMsImV4cCI6MTk2ODIxMzk1M30.q35gjhnPgLrkaCeyp4yGYNdc5UBY94Ffvq4sqi2np_A';
-
-  final String publicStorageBaseUrl =
-      "https://loaphbqhspenbaeyhaqr.supabase.co/storage/v1/object/sign/avatar/";
+class NetworkConfiguration {
+  final Dio dio = Dio();
+  final String serverUrl = 'https://todolist.dev2.cogniteq.com/api/v1';
 }

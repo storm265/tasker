@@ -22,18 +22,19 @@ abstract class TaskAttachmentsDataSource {
 
 class TaskAttachmentsDataSourceImpl implements TaskAttachmentsDataSource {
   final String _table = 'task_attachment';
-  final _supabase = SupabaseSource().restApiClient;
+  final _supabase = NetworkSource().networkApiClient;
 
   @override
   Future<PostgrestResponse<dynamic>> postAttachment(
       {required String url, required int taskId}) async {
     try {
-      final response = await _supabase.from(_table).insert({
-        TaskAttachmentsScheme.url: url,
-        TaskAttachmentsScheme.taskId: taskId,
-        TaskAttachmentsScheme.createdAt: DateTime.now().toString()
-      }).execute();
-      return response;
+      // final response = await _supabase.from(_table).insert({
+      //   TaskAttachmentsScheme.url: url,
+      //   TaskAttachmentsScheme.taskId: taskId,
+      //   TaskAttachmentsScheme.createdAt: DateTime.now().toString()
+      // }).execute();
+      // return response;
+               return     Future.delayed( Duration(seconds: 1));
     } catch (e) {
       ErrorService.printError(
           'Error in TaskAttachmentsDataSourceImpl fetchNotes():$e');
@@ -44,12 +45,13 @@ class TaskAttachmentsDataSourceImpl implements TaskAttachmentsDataSource {
   @override
   Future<PostgrestResponse<dynamic>> fetchAttachment() async {
     try {
-      final response = await _supabase
-          .from(_table)
-          .select()
-          .eq(TaskAttachmentsScheme.taskId, _supabase.auth.currentUser!.id)
-          .execute();
-      return response;
+      // final response = await _supabase
+      //     .from(_table)
+      //     .select()
+      //     .eq(TaskAttachmentsScheme.taskId, _supabase.auth.currentUser!.id)
+      //     .execute();
+      // return response;
+               return     Future.delayed( Duration(seconds: 1));
     } catch (e) {
       ErrorService.printError(
           'Error in TaskAttachmentsDataSourceImpl fetchAttachment() dataSource:  $e');
@@ -60,7 +62,7 @@ class TaskAttachmentsDataSourceImpl implements TaskAttachmentsDataSource {
   @override
   Future<void> uploadFile({required String path, required File file}) async {
     try {
-      await _supabase.storage.from(StorageScheme.avatar).upload(path, file);
+      // await _supabase.storage.from(StorageScheme.avatar).upload(path, file);
     } catch (e) {
       ErrorService.printError(
           'TaskAttachmentsDataSourceImpl uploadAvatar error: $e');
@@ -70,12 +72,13 @@ class TaskAttachmentsDataSourceImpl implements TaskAttachmentsDataSource {
   @override
   Future<PostgrestResponse<dynamic>> fetchAvatar() async {
     try {
-      final response = await _supabase
-          .from(_table)
-          .select(StorageScheme.avatarUrl)
-          .eq(StorageScheme.avatar, _supabase.auth.currentUser!.id)
-          .execute();
-      return response;
+      // final response = await _supabase
+      //     .from(_table)
+      //     .select(StorageScheme.avatarUrl)
+      //     .eq(StorageScheme.avatar, _supabase.auth.currentUser!.id)
+      //     .execute();
+      // return response;
+               return     Future.delayed( Duration(seconds: 1));
     } catch (e) {
       ErrorService.printError(
           'Error in TaskAttachmentsDataSourceImpl fetchAvatar() dataSource: $e');

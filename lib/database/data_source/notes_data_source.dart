@@ -13,17 +13,18 @@ abstract class NotesDataSource {
 
 class NotesDataSourceImpl implements NotesDataSource {
   final _table = 'notes';
-  final _supabase = SupabaseSource().restApiClient;
+  final _supabase = NetworkSource().networkApiClient;
 
   @override
   Future<PostgrestResponse<dynamic>> fetchNote() async {
     try {
-      final response = await _supabase
-          .from(_table)
-          .select('${NotesScheme.description},${NotesScheme.color}')
-          .eq(NotesScheme.ownerId, _supabase.auth.currentUser!.id)
-          .execute();
-      return response;
+      // final response = await _supabase
+      //     .from(_table)
+      //     .select('${NotesScheme.description},${NotesScheme.color}')
+      //     .eq(NotesScheme.ownerId, _supabase.auth.currentUser!.id)
+      //     .execute();
+      // return response;
+               return     Future.delayed( Duration(seconds: 1));
     } catch (e) {
       ErrorService.printError('Error in NotesDataSourceImpl fetchNotes() :$e');
       rethrow;
@@ -36,14 +37,15 @@ class NotesDataSourceImpl implements NotesDataSource {
     required String description,
   }) async {
     try {
-      final response = await _supabase.from(_table).insert({
-        NotesScheme.isCompleted: false,
-        NotesScheme.color: color,
-        NotesScheme.description: description,
-        NotesScheme.ownerId: _supabase.auth.currentUser!.id,
-        NotesScheme.createdAt: DateTime.now().toString(),
-      }).execute();
-      return response;
+      // final response = await _supabase.from(_table).insert({
+      //   NotesScheme.isCompleted: false,
+      //   NotesScheme.color: color,
+      //   NotesScheme.description: description,
+      //   NotesScheme.ownerId: _supabase.auth.currentUser!.id,
+      //   NotesScheme.createdAt: DateTime.now().toString(),
+      // }).execute();
+      // return response;
+               return     Future.delayed( Duration(seconds: 1));
     } catch (e) {
       ErrorService.printError('Error in NotesDataSourceImpl putNote() :$e');
       rethrow;

@@ -1,40 +1,27 @@
-import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:dio/dio.dart';
 import 'package:todo2/database/data_source/auth_data_source.dart';
 import 'package:todo2/services/error_service/error_service.dart';
-import 'package:todo2/services/supabase/constants.dart';
 
 abstract class AuthRepository {
   Future signUp({
-    required BuildContext context,
     required String email,
     required String password,
+    required String nickname,
   });
 
   Future signIn({
-    required BuildContext context,
     required String email,
     required String password,
   });
 
-  Future resetPassword({
-    required BuildContext context,
-    required String email,
-  });
-  Future updatePassword({required String password});
-
-  Future signOut({required BuildContext context});
+  Future signOut({required String email});
 }
 
 class AuthRepositoryImpl implements AuthRepository {
-  final _authDataSource = AuthDataSourceImpl(
-    supabase: SupabaseSource(),
-    configuration: SupabaseConfiguration(),
-  );
+  final _authDataSource = AuthDataSourceImpl();
 
   @override
-  Future<GotrueSessionResponse> signIn({
-    required BuildContext context,
+  Future<Response<dynamic>> signIn({
     required String email,
     required String password,
   }) async {
@@ -43,6 +30,8 @@ class AuthRepositoryImpl implements AuthRepository {
         email: email,
         password: password,
       );
+      print('AuthRepositoryImpl data signIn: ${response.data}');
+      print('AuthRepositoryImpl statusCode signIn: ${response.statusCode}');
       return response;
     } catch (e) {
       ErrorService.printError('Error in AuthRepositoryImpl signIn(): $e');
@@ -51,16 +40,19 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<GotrueSessionResponse> signUp({
-    required BuildContext context,
+  Future<Response<dynamic>> signUp({
     required String email,
     required String password,
+    required String nickname,
   }) async {
     try {
       final response = await _authDataSource.signUp(
         email: email,
         password: password,
+        nickname: nickname,
       );
+      print('AuthRepositoryImpl data signUp: ${response.data}');
+      print('AuthRepositoryImpl statusCode signUp: ${response.statusCode}');
       return response;
     } catch (e) {
       ErrorService.printError('Error in AuthRepositoryImpl signUp(): $e');
@@ -69,37 +61,12 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<GotrueResponse> signOut({required BuildContext context}) async {
+  Future<Response<dynamic>> signOut({required String email}) async {
     try {
-      final response = await _authDataSource.signOut();
+      final response = await _authDataSource.signOut(email: email);
       return response;
     } catch (e) {
       ErrorService.printError('Error in AuthRepositoryImpl signOut(): $e');
-      rethrow;
-    }
-  }
-
-  @override
-  Future<GotrueJsonResponse> resetPassword({
-    required BuildContext context,
-    required String email,
-  }) async {
-    try {
-      final response = await _authDataSource.resetPasswordForMail(email: email);
-      return response;
-    } catch (e) {
-      ErrorService.printError('Error in AuthRepositoryImpl resetPassword(): $e');
-      rethrow;
-    }
-  }
-
-  @override
-  Future<GotrueUserResponse> updatePassword({required String password}) async {
-    try {
-      final response = await _authDataSource.updatePassword(password: password);
-      return response;
-    } catch (e) {
-      ErrorService.printError('Error in AuthRepositoryImpl updatePassword(): $e');
       rethrow;
     }
   }

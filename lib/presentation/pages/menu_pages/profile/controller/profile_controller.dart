@@ -21,7 +21,7 @@ class ProfileController extends ChangeNotifier {
     required this.authRepository,
   });
 
-  final supabase = SupabaseSource().restApiClient.auth.currentUser;
+  //final supabase = NetworkSource().networkApiClient.auth.currentUser;
 
   late String userName = '';
   late String image = '';
@@ -31,14 +31,14 @@ class ProfileController extends ChangeNotifier {
   Future<void> signOut(BuildContext context) async {
     try {
       final pushBack = NavigationService.navigateTo(context, Pages.welcome);
-      final response = await authRepository.signOut(context: context);
-      if (response.error != null) {
-        MessageService.displaySnackbar(
-          context: context,
-          message: response.error!.message.toString(),
-        );
-        pushBack;
-      }
+      // final response = await authRepository.signOut(context: context);
+      // if (response.error != null) {
+      //   MessageService.displaySnackbar(
+      //     context: context,
+      //     message: response.error!.message.toString(),
+      //   );
+      //   pushBack;
+      // }
     } catch (e) {
       ErrorService.printError('Error in ProfileController  signOut : $e');
     }

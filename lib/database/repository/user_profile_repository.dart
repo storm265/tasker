@@ -21,7 +21,7 @@ abstract class UserProfileRepository {
 class UserProfileRepositoryImpl implements UserProfileRepository {
   final _userProfileDataSource = UserProfileDataSourceImpl();
   final _storage = 'avatar';
-  final _supabase = SupabaseSource().restApiClient;
+  final _supabase = NetworkSource().networkApiClient;
 
   @override
   Future<void> postProfile({
@@ -55,10 +55,11 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
   @override
   Future<String> fetchAvatarFromStorage({required String publicUrl}) async {
     try {
-      final imageResponce =
-          _supabase.storage.from(_storage).getPublicUrl(publicUrl);
-      final image = imageResponce.data;
-      return image!;
+      // final imageResponce =
+      //     _supabase.storage.from(_storage).getPublicUrl(publicUrl);
+      // final image = imageResponce.data;
+      // return image!;
+      return Future.delayed(Duration(seconds: 1));
     } catch (e) {
       ErrorService.printError(
           'Error in UserProfileRepositoryImpl fetchAvatarFromStorage() : $e');

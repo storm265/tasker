@@ -17,7 +17,7 @@ abstract class UserDataSource {
 
 class UserDataSourceImpl implements UserDataSource {
   final _table = 'user';
-  final _supabase = SupabaseSource().restApiClient;
+  final _supabase = NetworkSource().networkApiClient;
 
   @override
   Future<supabase.PostgrestResponse<dynamic>> postUser({
@@ -25,13 +25,14 @@ class UserDataSourceImpl implements UserDataSource {
     required String password,
   }) async {
     try {
-      final response = await _supabase.from(_table).insert({
-        UserDataScheme.email: email,
-        UserDataScheme.password: password,
-        UserDataScheme.ownerId: _supabase.auth.currentUser?.id,
-        UserDataScheme.createdAt: DateTime.now().toString(),
-      }).execute();
-      return response;
+      // final response = await _supabase.from(_table).insert({
+      //   UserDataScheme.email: email,
+      //   UserDataScheme.password: password,
+      //   UserDataScheme.ownerId: _supabase.auth.currentUser?.id,
+      //   UserDataScheme.createdAt: DateTime.now().toString(),
+      // }).execute();
+      // return response;
+               return     Future.delayed( Duration(seconds: 1));
     } catch (e) {
       ErrorService.printError('Error in UserDataSourceImpl insert(): $e');
       rethrow;
@@ -41,12 +42,13 @@ class UserDataSourceImpl implements UserDataSource {
   @override
   Future<supabase.PostgrestResponse<dynamic>> fetchUser() async {
     try {
-      final response = await _supabase
-          .from(_table)
-          .select()
-          .eq(UserDataScheme.id, _supabase.auth.currentUser!.id)
-          .execute();
-      return response;
+      // final response = await _supabase
+      //     .from(_table)
+      //     .select()
+      //     .eq(UserDataScheme.id, _supabase.auth.currentUser!.id)
+      //     .execute();
+      // return response;
+               return     Future.delayed( Duration(seconds: 1));
     } catch (e) {
       ErrorService.printError('Error in UserDataSourceImpl fetchUser() : $e');
       rethrow;
@@ -56,9 +58,10 @@ class UserDataSourceImpl implements UserDataSource {
   @override
   Future<supabase.PostgrestResponse<dynamic>> fetchEmail() async {
     try {
-      final response =
-          await _supabase.from(_table).select(UserDataScheme.email).execute();
-      return response;
+      // final response =
+      //     await _supabase.from(_table).select(UserDataScheme.email).execute();
+      // return response;
+               return     Future.delayed( Duration(seconds: 1));
     } catch (e) {
       ErrorService.printError('Error in UserDataSourceImpl fetchEmail(): $e');
       rethrow;

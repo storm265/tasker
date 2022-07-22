@@ -1,19 +1,17 @@
-
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/supabase/constants.dart';
 
 Future<void> initSupabase() async {
-
   try {
-    final configuration = SupabaseConfiguration();
-    await Supabase.initialize(
-      url: configuration.supabaseUrl,
-      anonKey: configuration.supabaseAnnonKey,
-      debug: true,
-      localStorage: SecureLocalStorage(),
-    );
+    // final configuration = NetworkConfiguration();
+    // await Supabase.initialize(
+    //   url: configuration.serverUrl,
+    //   anonKey: configuration.accessToken,
+    //   debug: true,
+    //   localStorage: SecureLocalStorage(),
+    // );
   } catch (e) {
     ErrorService.printError('Error in initSupabase: $e');
   }

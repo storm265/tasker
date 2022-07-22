@@ -38,13 +38,13 @@ class UserPanelPickerWidget extends StatelessWidget {
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
                   final data = snapshot.data![index];
-                  final avatar = SupabaseSource()
-                          .restApiClient
-                          .storage
-                          .from('avatar')
-                          .getPublicUrl(snapshot.data![index].avatarUrl)
-                          .data ??
-                      '';
+                  // final avatar = NetworkSource()
+                  //         .networkApiClient
+                  //         .storage
+                  //         .from('avatar')
+                  //         .getPublicUrl(snapshot.data![index].avatarUrl)
+                  //         .data ??
+                  //     '';
                   return InkWell(
                     onTap: () {
                       FocusScope.of(context).unfocus();
@@ -56,8 +56,8 @@ class UserPanelPickerWidget extends StatelessWidget {
                         newUser: data,
                         context: context,
                       ),
-                      leading:
-                          CircleAvatar(backgroundImage: NetworkImage(avatar)),
+                      // leading:
+                      //     CircleAvatar(backgroundImage: NetworkImage(avatar)),
                       title: Text(data.username),
                       subtitle: Text(emails[index]),
                     ),

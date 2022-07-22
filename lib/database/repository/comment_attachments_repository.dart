@@ -6,7 +6,7 @@ abstract class CommentAttachmentRepository {
 }
 
 class CommentAttachmentRepositoryImpl implements CommentAttachmentRepository {
-  final _taskAttachmentDataSource = CommentAttachmentDataSourceImpl();
+  //final _taskAttachmentDataSource = CommentAttachmentDataSourceImpl();
 
   @override
   Future<void> putAttachment({
@@ -14,10 +14,10 @@ class CommentAttachmentRepositoryImpl implements CommentAttachmentRepository {
     required String commentId,
   }) async {
     try {
-      await _taskAttachmentDataSource.putCommentAttachment(
-        url: url,
-        commentId: commentId,
-      );
+      // await _taskAttachmentDataSource.putCommentAttachment(
+      //   url: url,
+      //   commentId: commentId,
+      // );
     } catch (e) {
       ErrorService.printError(
           'Error in CommentAttachmentRepositoryImpl putAttachment() : $e');

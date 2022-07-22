@@ -74,13 +74,13 @@ class _AddUserWidgetState extends State<AddUserWidget> {
                 shrinkWrap: true,
                 itemCount: users.length,
                 itemBuilder: (context, index) {
-                  final avatar = SupabaseSource()
-                          .restApiClient
-                          .storage
-                          .from(StorageScheme.avatar)
-                          .getPublicUrl(users[index].avatarUrl)
-                          .data ??
-                      '';
+                  // final avatar = NetworkSource()
+                  //         .networkApiClient
+                  //         .storage
+                  //         .from(StorageScheme.avatar)
+                  //         .getPublicUrl(users[index].avatarUrl)
+                  //         .data ??
+                  //     '';
                   return Row(
                     children: [
                       Padding(
@@ -88,7 +88,7 @@ class _AddUserWidgetState extends State<AddUserWidget> {
                         child: CircleAvatar(
                           radius: 17,
                           backgroundColor: Colors.red,
-                          backgroundImage: NetworkImage(avatar),
+                         // backgroundImage: NetworkImage(avatar),
                           // child: Text(users[index].username),
                         ),
                       ),

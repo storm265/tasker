@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/auth/changed_password_page.dart';
-import 'package:todo2/presentation/pages/auth/forgot_password/forgot_password_page.dart';
-import 'package:todo2/presentation/pages/auth/reset_password/new_password_page.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/sign_in_page.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/sign_up_page.dart';
 import 'package:todo2/presentation/pages/auth/splash_page.dart';
@@ -35,11 +32,6 @@ Map<String, Widget Function(BuildContext)> routes = {
   '/welcome': (_) => const WelcomePage(),
   '/signUp': (_) => const SignUpPage(),
   '/signIn': (_) => const SignInPage(),
-  '/forgotPassword': (_) => const ForgotPasswordPage(),
-  '/newPassword': (_) => const NewPasswordPage(),
-  // TODO fix it
-  '/updatePassword': (_) => const NewPasswordPage(),
-  '/passwordChanged': (_) => const PasswordChangedPage(),
   '/home': (_) => const NavigationPage(),
   '/taskList': (_) => const TasksPage(),
   '/addTask': (_) => const AddTaskPage(),

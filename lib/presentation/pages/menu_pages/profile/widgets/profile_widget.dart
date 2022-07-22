@@ -57,7 +57,8 @@ class _ProfileWidgetState extends State<ProfileWidget>
             children: [
               UserDataWidget(
                 avatarImage: widget.profileController.imageStoragePublicUrl,
-                email: '${widget.profileController.supabase!.email}',
+             //   email: '${widget.profileController.supabase!.email}',
+             email: '',
                 nickname: widget.profileController.userName,
               ),
               Row(

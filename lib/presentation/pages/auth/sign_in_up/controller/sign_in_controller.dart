@@ -44,47 +44,27 @@ class SignInController extends ChangeNotifier {
   }) async {
     try {
       final response = await authRepository.signIn(
-        context: context,
+       
         email: email,
         password: password,
       );
-      if (response.error != null) {
-        MessageService.displaySnackbar(
-          context: context,
-          message: response.error!.message.toString(),
-        );
-        return;
-      }
+      // if (response.error != null) {
+      //   MessageService.displaySnackbar(
+      //     context: context,
+      //     message: response.error!.message.toString(),
+      //   );
+      //   return;
+      // }
 
-      await Future.delayed(
-        const Duration(seconds: 0),
-        () => NavigationService.navigateTo(context, Pages.home),
-      );
+      // await Future.delayed(
+      //   const Duration(seconds: 0),
+      //   () => NavigationService.navigateTo(context, Pages.home),
+      // );
     } catch (e) {
       ErrorService.printError('Error in signIn() controller: $e');
     }
   }
 
-  Future<void> resetPassword({
-    required BuildContext context,
-    required String email,
-    required VoidCallback navigationCallback,
-  }) async {
-    try {
-      final response =
-          await authRepository.resetPassword(context: context, email: email);
-      if (response.error != null) {
-        MessageService.displaySnackbar(
-          context: context,
-          message: response.error!.message.toString(),
-        );
-      } else {
-        navigationCallback;
-      }
-    } catch (e) {
-      ErrorService.printError('Error in resetPassword : $e');
-    }
-  }
 
   void disposeObjects() {
     isClickedSubmitButton.dispose();

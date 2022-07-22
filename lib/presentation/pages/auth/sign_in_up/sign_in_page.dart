@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
-import 'package:todo2/presentation/pages/auth/reset_password/controller/padding_constant.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/sign_in_controller.dart';
+import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/padding_contstant.dart';
 import 'package:todo2/presentation/pages/auth/widgets/unfocus_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/pages/auth/widgets/constants.dart';
-import 'package:todo2/presentation/pages/auth/forgot_password/widgets/forgot_password_widget.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/sign_in_button_widget.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/sign_up_button_widget.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/subtitle_widget.dart';
@@ -90,7 +89,6 @@ class _SignInPageState extends State<SignInPage> {
                           labelText: 'Password:',
                           text: 'Password',
                         ),
-                        const ForgotPasswordWidget(),
                         ValueListenableBuilder<bool>(
                           valueListenable:
                               _signInController.isClickedSubmitButton,

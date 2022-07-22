@@ -60,27 +60,27 @@ class SignUpController extends ChangeNotifier {
   }) async {
     try {
       final response = await authRepository.signUp(
-        context: context,
+       nickname: username,
         email: email,
         password: password,
       );
-      if (response.error != null) {
-        MessageService.displaySnackbar(
-          context: context,
-          message: response.error!.message.toString(),
-        );
-      } else {
-        await userRepository.postUser(email: email, password: password);
-        await userProfileRepository.postProfile(
-          avatarUrl: imagePickerController.pickedFile.value.name,
-          username: username,
-        );
-        await projectController.postProject(
-            title: 'Personal', color: colors[0].value.toString());
-        await imagePickerController
-            .uploadAvatar()
-            .then((_) => NavigationService.navigateTo(context, Pages.home));
-      }
+      // if (response.error != null) {
+      //   MessageService.displaySnackbar(
+      //     context: context,
+      //     message: response.error!.message.toString(),
+      //   );
+      // } else {
+      //   await userRepository.postUser(email: email, password: password);
+      //   await userProfileRepository.postProfile(
+      //     avatarUrl: imagePickerController.pickedFile.value.name,
+      //     username: username,
+      //   );
+      //   await projectController.postProject(
+      //       title: 'Personal', color: colors[0].value.toString());
+      //   await imagePickerController
+      //       .uploadAvatar()
+      //       .then((_) => NavigationService.navigateTo(context, Pages.home));
+      // }
     } catch (e) {
       MessageService.displaySnackbar(context: context, message: '$e');
     }
