@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:todo2/services/error_service/error_service.dart';
-import 'package:todo2/services/supabase/constants.dart';
+
 
 // Future<void> updateToken() async {
 //   try {

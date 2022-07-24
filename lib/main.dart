@@ -5,6 +5,7 @@ import 'package:todo2/database/repository/task_attachment_repository.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/tasks_member_repository.dart';
 import 'package:todo2/database/repository/user_profile_repository.dart';
+import 'package:todo2/presentation/pages/auth/welcome/welcome_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/add_check_list/add_checklist_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/controller_inherited.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/new_task.dart';
@@ -13,6 +14,8 @@ import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_c
 import 'package:todo2/presentation/pages/menu_pages/profile/profile_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_page.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
+import 'package:todo2/services/network_service/network_service.dart';
+import 'package:todo2/services/storage/tokens_storage.dart';
 
 import 'package:todo2/services/system_service/system_chrome.dart';
 
@@ -24,14 +27,28 @@ import 'services/theme_service/theme_data_controller.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChromeProvider.setSystemChrome();
-  
+
   //await initSupabase();
- // await updateToken();
-  runApp(MyApp());
+  // await updateToken();
+  runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void dispose() {
+    _newTaskConroller.disposeAll();
+    _newTaskConroller.dispose();
+    _profileController.dispose();
+    _navigationController.dispose();
+    super.dispose();
+  }
 
   final _newTaskConroller = AddTaskController(
     tasksMembers: TasksMembersRepositoryImpl(),
@@ -43,10 +60,12 @@ class MyApp extends StatelessWidget {
 
   final _themeDataController = ThemeDataService();
   final _profileController = ProfileController(
+    tokenStorageService: TokenStorageService(),
     authRepository: AuthRepositoryImpl(),
     projectsRepository: ProjectRepositoryImpl(),
     userProfileRepository: UserProfileRepositoryImpl(),
   );
+
   final _navigationController = NavigationController();
 
   @override
@@ -61,9 +80,8 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             title: 'Todo2',
             theme: _themeDataController.themeData,
-            initialRoute: '/welcome',
-          routes: routes,
-           // home: AddTaskPage(),
+            initialRoute: '/',
+            routes: routes,
           ),
         ),
       ),

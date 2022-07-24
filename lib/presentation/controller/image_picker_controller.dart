@@ -28,7 +28,12 @@ class ImageController extends ChangeNotifier {
 
   Future<void> pickAvatar() async {
     try {
-      pickedFile.value = (await picker.pickImage(source: ImageSource.gallery) ??
+      pickedFile.value = (await picker.pickImage(
+            source: ImageSource.gallery,
+            imageQuality: 50,
+            maxHeight: 500,
+            maxWidth: 500,
+          ) ??
           XFile(_defaultAssetPath));
       pickedFile.notifyListeners();
       if (pickedFile.value.name.isEmpty) {

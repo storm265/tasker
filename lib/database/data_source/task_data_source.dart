@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/database_scheme/task_scheme.dart';
 import 'package:todo2/services/error_service/error_service.dart';
-import 'package:todo2/services/supabase/constants.dart';
+import 'package:todo2/services/network/constants.dart';
 
 abstract class TaskDataSource {
   Future fetchTask();

@@ -55,7 +55,7 @@ Future<void> showSettingsDialog(
                       );
                       break;
                     case 2:
-                      await profileController.signOut(context);
+                      await profileController.signOut(context:context);
                       break;
                   }
                 },

@@ -8,9 +8,11 @@ import 'package:todo2/database/repository/user_profile_repository.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
-import 'package:todo2/services/supabase/constants.dart';
+import 'package:todo2/services/network/constants.dart';
+import 'package:todo2/services/storage/tokens_storage.dart';
 
 class ProfileController extends ChangeNotifier {
+  final TokenStorageService tokenStorageService;
   final ProjectRepositoryImpl projectsRepository;
   final UserProfileRepositoryImpl userProfileRepository;
   final AuthRepositoryImpl authRepository;
@@ -19,6 +21,7 @@ class ProfileController extends ChangeNotifier {
     required this.projectsRepository,
     required this.userProfileRepository,
     required this.authRepository,
+    required this.tokenStorageService,
   });
 
   //final supabase = NetworkSource().networkApiClient.auth.currentUser;
@@ -28,17 +31,22 @@ class ProfileController extends ChangeNotifier {
   late String imageStoragePublicUrl = '';
   late AnimationController iconAnimationController;
 
-  Future<void> signOut(BuildContext context) async {
+  Future<void> signOut({required BuildContext context}) async {
     try {
-      final pushBack = NavigationService.navigateTo(context, Pages.welcome);
-      // final response = await authRepository.signOut(context: context);
-      // if (response.error != null) {
-      //   MessageService.displaySnackbar(
-      //     context: context,
-      //     message: response.error!.message.toString(),
-      //   );
-      //   pushBack;
-      // }
+      final response = await authRepository.signOut();
+      if (response.statusCode != 200) {
+        MessageService.displaySnackbar(
+          context: context,
+          message: '${response.statusMessage}',
+        );
+      } else {
+        // TODO create obj
+        await tokenStorageService.removeAllTokens();
+        await Future.delayed(
+          Duration.zero,
+          () async => NavigationService.navigateTo(context, Pages.welcome),
+        );
+      }
     } catch (e) {
       ErrorService.printError('Error in ProfileController  signOut : $e');
     }

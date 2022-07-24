@@ -1,7 +1,9 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/services/error_service/error_service.dart';
-import 'package:todo2/services/supabase/constants.dart';
+import 'package:todo2/services/network/constants.dart';
 
 abstract class AuthDataSource {
   Future signUp({
@@ -13,7 +15,7 @@ abstract class AuthDataSource {
     required String email,
     required String password,
   });
-  Future signOut({required String email});
+  Future signOut();
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
@@ -26,13 +28,23 @@ class AuthDataSourceImpl implements AuthDataSource {
   }) async {
     try {
       Response response = await _network.dio.post(
-        '${_network.serverUrl}/sign-in',
+        '/sign-in',
         data: {
           AuthScheme.email: email,
           AuthScheme.password: password,
         },
-      ); print('AuthDataSourceImpl data signIn : ${response.data}');
-       print('AuthDataSourceImpl statusCode signIn : ${response.statusCode}');
+        options: Options(
+          validateStatus: (_) => true,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        ),
+      );
+      if (response.statusCode == 401) {
+        log(' ERROR 401');
+      }
+      // print('AuthDataSourceImpl data signIn : ${response.data}');
+      // print('AuthDataSourceImpl statusCode signIn : ${response.statusCode}');
       return response;
     } catch (e) {
       ErrorService.printError('Error in signIn() dataSource: $e');
@@ -41,11 +53,12 @@ class AuthDataSourceImpl implements AuthDataSource {
   }
 
   @override
-  Future<Response<dynamic>> signOut({required String email}) async {
+  Future<Response<dynamic>> signOut() async {
     try {
       Response response = await _network.dio.post(
-        '${_network.serverUrl}/sign-out',
-        data: {AuthScheme.email: email},
+        '/sign-out',
+        // TODO fix it
+        data: {AuthScheme.email: 'peter4533@mail.ru'},
       );
       return response;
     } catch (e) {
@@ -62,14 +75,15 @@ class AuthDataSourceImpl implements AuthDataSource {
   }) async {
     try {
       Response response = await _network.dio.post(
-        '${_network.serverUrl}/sign-up',
+        '/sign-up',
         data: {
           AuthScheme.email: email,
           AuthScheme.password: password,
           AuthScheme.nickname: nickname,
         },
-      ); print('AuthDataSourceImpl data signUp : ${response.data}');
-       print('AuthDataSourceImpl statusCode signUp : ${response.statusCode}');
+      );
+      print('AuthDataSourceImpl data signUp : ${response.data}');
+      print('AuthDataSourceImpl statusCode signUp : ${response.statusCode}');
       return response;
     } catch (e) {
       ErrorService.printError('Error in signUp() dataSource: $e');

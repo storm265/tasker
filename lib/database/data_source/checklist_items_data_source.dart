@@ -1,7 +1,6 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:todo2/database/database_scheme/check_list_items.dart';
 import 'package:todo2/services/error_service/error_service.dart';
-import 'package:todo2/services/supabase/constants.dart';
+import 'package:todo2/services/network/constants.dart';
 
 abstract class ChecklistItemsDataSource {
   Future putCheckListItem({

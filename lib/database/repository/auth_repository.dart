@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:todo2/database/data_source/auth_data_source.dart';
 import 'package:todo2/services/error_service/error_service.dart';
@@ -14,7 +16,7 @@ abstract class AuthRepository {
     required String password,
   });
 
-  Future signOut({required String email});
+  Future signOut();
 }
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -30,8 +32,9 @@ class AuthRepositoryImpl implements AuthRepository {
         email: email,
         password: password,
       );
-      print('AuthRepositoryImpl data signIn: ${response.data}');
-      print('AuthRepositoryImpl statusCode signIn: ${response.statusCode}');
+      if (response.statusCode == 401) {
+        log(' ERROR 401');
+      }
       return response;
     } catch (e) {
       ErrorService.printError('Error in AuthRepositoryImpl signIn(): $e');
@@ -61,9 +64,9 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Response<dynamic>> signOut({required String email}) async {
+  Future<Response<dynamic>> signOut() async {
     try {
-      final response = await _authDataSource.signOut(email: email);
+      final response = await _authDataSource.signOut();
       return response;
     } catch (e) {
       ErrorService.printError('Error in AuthRepositoryImpl signOut(): $e');

@@ -15,6 +15,8 @@ class NetworkSource {
 }
 
 class NetworkConfiguration {
-  final Dio dio = Dio();
-  final String serverUrl = 'https://todolist.dev2.cogniteq.com/api/v1';
+  final Dio dio = Dio()
+    ..options.baseUrl = 'https://todolist.dev2.cogniteq.com/api/v1';
+  final String storagePath = '=@"/Users/andreikastsiuk/Downloads';
+  final String tokenType = 'Bearer';
 }

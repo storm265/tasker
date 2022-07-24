@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
@@ -44,27 +46,24 @@ class SignInController extends ChangeNotifier {
   }) async {
     try {
       final response = await authRepository.signIn(
-       
         email: email,
         password: password,
       );
-      // if (response.error != null) {
-      //   MessageService.displaySnackbar(
-      //     context: context,
-      //     message: response.error!.message.toString(),
-      //   );
-      //   return;
-      // }
-
-      // await Future.delayed(
-      //   const Duration(seconds: 0),
-      //   () => NavigationService.navigateTo(context, Pages.home),
-      // );
+      if (response.statusCode != 200) {
+        MessageService.displaySnackbar(
+          context: context,
+          message: response.statusMessage!,
+        );
+      } else {
+        await Future.delayed(
+          const Duration(seconds: 0),
+          () => NavigationService.navigateTo(context, Pages.home),
+        );
+      }
     } catch (e) {
       ErrorService.printError('Error in signIn() controller: $e');
     }
   }
-
 
   void disposeObjects() {
     isClickedSubmitButton.dispose();

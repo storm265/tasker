@@ -4,7 +4,7 @@ import 'package:todo2/database/data_source/user_profile_data_source.dart';
 import 'package:todo2/database/database_scheme/user_profile_scheme.dart';
 import 'package:todo2/database/model/users_profile_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
-import 'package:todo2/services/supabase/constants.dart';
+import 'package:todo2/services/network/constants.dart';
 
 abstract class UserProfileRepository {
   Future<String> fetchUserName();
