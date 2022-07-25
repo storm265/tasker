@@ -2,6 +2,15 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 
+enum StorageDataType {
+  email,
+  username,
+  accessToken,
+  refreshToken,
+  id,
+  avatarUrl,
+}
+
 class SecureStorageSource {
   static final SecureStorageSource _instance = SecureStorageSource._internal();
 
@@ -17,62 +26,44 @@ class SecureStorageSource {
 class SecureStorageService {
   final _storage = const FlutterSecureStorage();
 
-  Future<String?> getAccessToken() async {
+  Future<String?> getUserData({required StorageDataType type}) async {
     try {
-      String? accessToken = await _storage.read(key: AuthScheme.accessToken);
-      return accessToken;
-    } catch (e) {
-      ErrorService.printError('SecureStorageService getAccessToken error: $e');
-      rethrow;
-    }
-  }
+      String? username;
+      switch (type) {
+        case StorageDataType.id:
+          username = await _storage.read(key: AuthScheme.id);
+          break;
+        case StorageDataType.email:
+          username = await _storage.read(key: AuthScheme.email);
+          break;
+        case StorageDataType.accessToken:
+          username = await _storage.read(key: AuthScheme.accessToken);
+          break;
 
-  Future<String?> getRefreshToken() async {
-    try {
-      String? refreshToken = await _storage.read(key: AuthScheme.refreshToken);
-      return refreshToken;
-    } catch (e) {
-      ErrorService.printError('SecureStorageService getRefreshToken error: $e');
-      rethrow;
-    }
-  }
+        case StorageDataType.username:
+          username = await _storage.read(key: AuthScheme.username);
+          break;
+        case StorageDataType.refreshToken:
+          username = await _storage.read(key: AuthScheme.refreshToken);
+          break;
+        case StorageDataType.avatarUrl:
+          username = await _storage.read(key: AuthScheme.avatarUrl);
+          break;
+        default:
+      }
 
-  Future<String?> getEmail() async {
-    try {
-      String? email = await _storage.read(key: AuthScheme.email);
-      return email;
-    } catch (e) {
-      ErrorService.printError('SecureStorageService getEmail error: $e');
-      rethrow;
-    }
-  }
-
-  Future<String?> getPassword() async {
-    try {
-      String? password = await _storage.read(key: AuthScheme.password);
-      return password;
-    } catch (e) {
-      ErrorService.printError('SecureStorageService getPassword error: $e');
-      rethrow;
-    }
-  }
-
-  Future<String?> getId() async {
-    try {
-      String? id = await _storage.read(key: AuthScheme.id);
-      return id;
-    } catch (e) {
-      ErrorService.printError('SecureStorageService getUsername error: $e');
-      rethrow;
-    }
-  }
-
-  Future<String?> getUsername() async {
-    try {
-      String? username = await _storage.read(key: AuthScheme.username);
       return username;
     } catch (e) {
-      ErrorService.printError('SecureStorageService getUsername error: $e');
+      ErrorService.printError('SecureStorageService getUserData error: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> putAvatarUrl({required String avatarUrl}) async {
+    try {
+      await _storage.write(key: AuthScheme.avatarUrl, value: avatarUrl);
+    } catch (e) {
+      ErrorService.printError('SecureStorageService putAvatarUrl error: $e');
       rethrow;
     }
   }

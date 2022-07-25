@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:todo2/database/data_source/auth_data_source.dart';
 import 'package:todo2/database/model/auth_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
+import 'package:todo2/services/storage/secure_storage_service.dart';
 
 abstract class AuthRepository {
   Future signUp({
@@ -22,7 +23,8 @@ abstract class AuthRepository {
 }
 
 class AuthRepositoryImpl implements AuthRepository {
-  final _authDataSource = AuthDataSourceImpl();
+  final _authDataSource =
+      AuthDataSourceImpl(secureStorageService: SecureStorageService());
 
   @override
   Future<Response<dynamic>> signIn({

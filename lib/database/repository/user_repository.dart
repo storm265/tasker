@@ -1,11 +1,9 @@
 import 'dart:developer';
-
 import 'package:dio/dio.dart';
-import 'package:todo2/database/data_source/user_profile_data_source.dart';
+import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/database_scheme/user_profile_scheme.dart';
 import 'package:todo2/database/model/users_profile_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
-import 'package:todo2/services/network/constants.dart';
 
 abstract class UserProfileRepository {
   Future fetchAvatarFromStorage({required String publicUrl});
@@ -20,8 +18,6 @@ abstract class UserProfileRepository {
 
 class UserProfileRepositoryImpl implements UserProfileRepository {
   final _userProfileDataSource = UserProfileDataSourceImpl();
-  final _storage = 'avatar';
-  final _supabase = NetworkSource().networkApiClient;
 
   @override
   Future<Response<dynamic>> postProfile({

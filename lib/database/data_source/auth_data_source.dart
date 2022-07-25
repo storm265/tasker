@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/network/constants.dart';
+import 'package:todo2/services/storage/secure_storage_service.dart';
 
 abstract class AuthDataSource {
   Future signUp({
@@ -19,6 +20,9 @@ abstract class AuthDataSource {
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
+  final SecureStorageService secureStorageService;
+  AuthDataSourceImpl({required this.secureStorageService});
+
   final _network = NetworkSource().networkApiClient;
 
   @override
@@ -32,7 +36,7 @@ class AuthDataSourceImpl implements AuthDataSource {
         data: {
           AuthScheme.email: email,
           AuthScheme.password: password,
-        },      
+        },
         options: _network.authOptions,
       );
 
@@ -52,6 +56,7 @@ class AuthDataSourceImpl implements AuthDataSource {
         data: {AuthScheme.email: 'peter4533@mail.ru'},
         options: _network.authOptions,
       );
+      await secureStorageService.removeAllUserData();
       return response;
     } catch (e) {
       ErrorService.printError('Error in signOut() dataSource: $e');

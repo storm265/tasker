@@ -82,6 +82,7 @@ class SignUpController extends ChangeNotifier {
           email: email,
           password: password,
           username: username,
+          
           refreshToken: snapshot[AuthScheme.refreshToken],
           accessToken: snapshot[AuthScheme.accessToken],
         );

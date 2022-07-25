@@ -22,11 +22,13 @@ class SplashPageState extends State<SplashPage> {
   }
 
   Future<void> isAuthenticated() async {
-    final accessToken = await SecureStorageService().getAccessToken();
+    final accessToken = await SecureStorageService()
+        .getUserData(type: StorageDataType.accessToken);
     await Future.delayed(
-        const Duration(seconds: 1),
-        () async => NavigationService.navigateTo(
-            context, accessToken == null ? Pages.welcome : Pages.home));
+      const Duration(seconds: 1),
+      () async => NavigationService.navigateTo(
+          context, accessToken == null ? Pages.welcome : Pages.home),
+    );
   }
 
   @override

@@ -40,7 +40,7 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
         options: Options(
           headers: {
             'Authorization':
-                '${_network.tokenType} ${_storageSource.getAccessToken()}'
+                '${_network.tokenType} ${_storageSource.getUserData(type: StorageDataType.accessToken)}'
           },
         ),
       );
