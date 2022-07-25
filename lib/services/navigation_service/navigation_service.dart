@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/sign_in_page.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/sign_up_page.dart';
 import 'package:todo2/presentation/pages/auth/splash_page.dart';
-
 import 'package:todo2/presentation/pages/auth/welcome/welcome_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/add_check_list/add_checklist_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/new_note_page.dart';
@@ -15,10 +14,6 @@ enum Pages {
   welcome,
   signUp,
   signIn,
-  forgotPassword,
-  newPassword,
-  passwordChanged,
-  updatePassword,
   home,
   taskList,
   noConnection,
@@ -54,20 +49,7 @@ class NavigationService {
       case Pages.signIn:
         await Navigator.pushNamed(context, '/signIn');
         break;
-      case Pages.forgotPassword:
-        await Navigator.pushNamed(context, '/forgotPassword');
-        break;
-      case Pages.newPassword:
-        await Navigator.pushNamed(context, '/newPassword');
-        break;
-      case Pages.passwordChanged:
-        await Navigator.pushNamedAndRemoveUntil(
-            context, '/passwordChanged', ((_) => false));
-        break;
-      case Pages.updatePassword:
-        await Navigator.pushNamed(context, '/updatePassword',
-            arguments: arguments);
-        break;
+
       case Pages.taskList:
         await Navigator.pushNamed(context, '/workList');
         break;

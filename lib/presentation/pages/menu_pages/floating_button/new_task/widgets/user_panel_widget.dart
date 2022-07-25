@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/users_profile_model.dart';
-import 'package:todo2/database/repository/user_profile_repository.dart';
+import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/add_task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/controller_inherited.dart';
@@ -14,13 +14,13 @@ class UserPanelPickerWidget extends StatelessWidget {
   List<String> emails = [];
   List<UserProfileModel> users = [];
 
-  Future<List<UserProfileModel>> fetchUsers({required String userName}) async {
-    emails = await UserRepositoryImpl().fetchEmail();
-    users =
-        await UserProfileRepositoryImpl().fetchUserWhere(userName: userName);
+  // Future<List<UserProfileModel>> fetchUsers({required String userName}) async {
+  //   emails = await UserRepositoryImpl().fetchEmail();
+  //   users =
+  //       await UserProfileRepositoryImpl().fetchUserWhere(userName: userName);
 
-    return users;
-  }
+  //   return users;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class UserPanelPickerWidget extends StatelessWidget {
         InheritedNewTaskController.of(context).addTaskController;
     return FutureBuilder<List<UserProfileModel>>(
       initialData: const [],
-      future: fetchUsers(userName: newTaskController.userTextController.text),
+      //future: fetchUsers(userName: newTaskController.userTextController.text),
       builder: (context, AsyncSnapshot<List<UserProfileModel>> snapshot) {
         return (snapshot.hasError || !snapshot.hasData)
             ? const Center(

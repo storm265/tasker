@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/network/constants.dart';
-import 'package:todo2/services/storage/tokens_storage.dart';
+import 'package:todo2/services/storage/secure_storage_service.dart';
 
 abstract class AvatarStorageDataSource {
   Future uploadAvatar({
@@ -17,7 +17,7 @@ abstract class AvatarStorageDataSource {
 class AvatarStorageDataSourceImpl implements AvatarStorageDataSource {
   final _storagePath = 'users-avatar';
   final _network = NetworkSource().networkApiClient;
-  final _tokenStorageSource = TokenStorageSource().storageApi;
+  final _storageSource = SecureStorageSource().storageApi;
   @override
   Future<StorageResponse<String>> updateAvatar(
       {required String bucketImage, required File file}) async {
@@ -35,7 +35,7 @@ class AvatarStorageDataSourceImpl implements AvatarStorageDataSource {
   }
 
   @override
-  Future<void> uploadAvatar({
+  Future<Response<dynamic>> uploadAvatar({
     required String name,
     required File file,
     required String userId,
@@ -48,19 +48,20 @@ class AvatarStorageDataSourceImpl implements AvatarStorageDataSource {
         ),
         'user_id': userId,
       });
-      await _network.dio.post(
+      final response = await _network.dio.post(
         '/$_storagePath',
         data: formData,
         options: Options(
           headers: {
             'Authorization':
-                '${_network.tokenType} ${_tokenStorageSource.getAccessToken()}'
+                '${_network.tokenType} ${_storageSource.getAccessToken()}'
           },
         ),
       );
-      //   await _supabase.storage.from(_storagePath).upload(name, file);
+      return response;
     } catch (e) {
       ErrorService.printError('uploadAvatar error: $e');
+      rethrow;
     }
   }
 }

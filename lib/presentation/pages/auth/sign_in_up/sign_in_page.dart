@@ -14,7 +14,7 @@ import 'package:todo2/presentation/pages/auth/widgets/title_widget.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
-import 'package:todo2/services/storage/tokens_storage.dart';
+import 'package:todo2/services/storage/secure_storage_service.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -28,6 +28,7 @@ class _SignInPageState extends State<SignInPage> {
   final TextEditingController _passwordController = TextEditingController();
 
   final _signInController = SignInController(
+    storageSource: SecureStorageSource(),
     authRepository: AuthRepositoryImpl(),
     formValidatorController: FormValidatorController(),
   );

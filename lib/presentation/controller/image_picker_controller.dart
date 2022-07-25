@@ -7,7 +7,7 @@ import 'package:todo2/database/data_source/storage/avatar_storage_data_source.da
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/storage/avatar_storage_repository.dart';
-import 'package:todo2/database/repository/user_profile_repository.dart';
+import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
@@ -87,9 +87,10 @@ class ImageController extends ChangeNotifier {
     }
   }
 
-  Future<void> uploadAvatar() async {
+  Future<void> uploadAvatar({required String userId}) async {
     try {
       await avatarStorageRepository.uploadAvatar(
+        userId: userId,
         name: pickedFile.value.name,
         file: File(pickedFile.value.path),
       );
@@ -105,9 +106,6 @@ class ImageController extends ChangeNotifier {
         bucketImage: profileController.image,
         file: File(pickedFile.value.path),
       );
-      if (response.error != null) {
-        log('Error updateAvatar controller: ${response.error}');
-      }
       return response;
     } catch (e) {
       ErrorService.printError('uploadAvatar error: $e');

@@ -7,7 +7,7 @@ import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/task_attachment_repository.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/tasks_member_repository.dart';
-import 'package:todo2/database/repository/user_profile_repository.dart';
+import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
@@ -58,7 +58,7 @@ class AddTaskController extends ChangeNotifier {
   final files = ValueNotifier<List<PlatformFile>>([]);
 
   final pickedUser = ValueNotifier<UserProfileModel>(
-    UserProfileModel(avatarUrl: '', createdAt: '', username: '', uuid: ''),
+    UserProfileModel(avatarUrl: '', createdAt: '', username: '', id: ''),
   );
 
   void pickUser({
@@ -133,7 +133,7 @@ class AddTaskController extends ChangeNotifier {
     try {
       // TODO fix it
      // image = await userProfileRepository.fetchAvatarFromStorage();
-      userName = await userProfileRepository.fetchUserName();
+     // userName = await userProfileRepository.fetchUserName();
       return [image, userName];
     } catch (e) {
       ErrorService.printError("Error in ProfileController  getUserData() :$e ");
@@ -177,7 +177,8 @@ class AddTaskController extends ChangeNotifier {
     required String description,
   }) async {
     try {
-      int userId = await userProfileRepository.fetchId();
+      int userId =0;
+      // await userProfileRepository.fetchId();
       int projectId = await projectRepository.fetchProjectId(
           project: pickedProject.value.title);
 

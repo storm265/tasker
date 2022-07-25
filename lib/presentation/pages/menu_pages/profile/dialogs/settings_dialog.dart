@@ -1,19 +1,14 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:todo2/database/repository/auth_repository.dart';
-import 'package:todo2/database/repository/projects_repository.dart';
-import 'package:todo2/database/repository/user_profile_repository.dart';
 import 'package:todo2/presentation/controller/image_picker_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
-import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 Future<void> showSettingsDialog(
     {required BuildContext context,
     required ProfileController profileController}) async {
   final imageController = ImageController();
-  final List<String> items = ['Update avatar', 'Update password', 'Sign out'];
-  final List<IconData> iconDataItems = [Icons.image, Icons.add, Icons.logout];
+  final List<String> items = ['Update avatar', 'Sign out'];
+  final List<IconData> iconDataItems = [Icons.image, Icons.logout];
 
   await showDialog(
     context: context,
@@ -47,15 +42,7 @@ Future<void> showSettingsDialog(
                       );
                       break;
                     case 1:
-                      Navigator.pop(context);
-                      await NavigationService.navigateTo(
-                        context,
-                        Pages.newPassword,
-                        arguments: true,
-                      );
-                      break;
-                    case 2:
-                      await profileController.signOut(context:context);
+                      await profileController.signOut(context: context);
                       break;
                   }
                 },

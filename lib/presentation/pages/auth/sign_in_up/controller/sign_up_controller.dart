@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
-import 'package:todo2/database/repository/user_profile_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/controller/image_picker_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
@@ -8,23 +8,25 @@ import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_cont
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
+import 'package:todo2/services/storage/secure_storage_service.dart';
 
 class SignUpController extends ChangeNotifier {
   SignUpController({
     required this.authRepository,
     required this.userProfileRepository,
-    required this.userRepository,
     required this.formValidatorController,
     required this.imagePickerController,
     required this.projectController,
+    required this.storageSource,
   });
 
   final AuthRepositoryImpl authRepository;
   final UserProfileRepositoryImpl userProfileRepository;
-  final UserRepositoryImpl userRepository;
+
   final FormValidatorController formValidatorController;
   final ImageController imagePickerController;
   final ProjectController projectController;
+  final SecureStorageSource storageSource;
   final formKey = GlobalKey<FormState>();
   final isClickedSubmitButton = ValueNotifier(true);
 
@@ -64,24 +66,40 @@ class SignUpController extends ChangeNotifier {
         email: email,
         password: password,
       );
+      print(response.data);
+      print(response.statusCode);
       if (response.statusCode != 200) {
-        print(' signUp response.data: ${response.data}');
         MessageService.displaySnackbar(
           context: context,
-          message: response.statusMessage!,
+          message: response.data[AuthScheme.message],
         );
       } else {
-        // await userRepository.postUser(email: email, password: password);
-        // await userProfileRepository.postProfile(
-        //   avatarUrl: imagePickerController.pickedFile.value.name,
-        //   username: username,
-        // );
+        final model = Map<String, dynamic>.from(response.data);
+        final snapshot = model[AuthScheme.data];
+
+        storageSource.storageApi.putUserData(
+          id: snapshot[AuthScheme.id],
+          email: email,
+          password: password,
+          username: username,
+          refreshToken: snapshot[AuthScheme.refreshToken],
+          accessToken: snapshot[AuthScheme.accessToken],
+        );
+
+        await userProfileRepository.postProfile(
+          id: snapshot[AuthScheme.id],
+          avatarUrl: imagePickerController.pickedFile.value.name,
+          username: username,
+        );
+        // TODO push default project
         // await projectController.postProject(
         //     title: 'Personal', color: colors[0].value.toString());
-        await imagePickerController
-            .uploadAvatar()
-            .then((_) => NavigationService.navigateTo(context, Pages.home));
 
+        await imagePickerController
+            .uploadAvatar(userId: snapshot[AuthScheme.id])
+            .then((_) {
+          NavigationService.navigateTo(context, Pages.home);
+        });
       }
     } catch (e) {
       MessageService.displaySnackbar(context: context, message: '$e');

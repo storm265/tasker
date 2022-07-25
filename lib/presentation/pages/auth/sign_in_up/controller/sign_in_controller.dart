@@ -1,17 +1,24 @@
+import 'dart:collection';
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:todo2/database/database_scheme/auth_scheme.dart';
+import 'package:todo2/database/model/auth_model.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
+import 'package:todo2/services/storage/secure_storage_service.dart';
 
 class SignInController extends ChangeNotifier {
   final AuthRepositoryImpl authRepository;
   final FormValidatorController formValidatorController;
+  final SecureStorageSource storageSource;
 
   SignInController({
+    required this.storageSource,
     required this.authRepository,
     required this.formValidatorController,
   });

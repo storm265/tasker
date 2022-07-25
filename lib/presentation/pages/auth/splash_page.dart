@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/network_service/network_service.dart';
-import 'package:todo2/services/storage/tokens_storage.dart';
+import 'package:todo2/services/storage/secure_storage_service.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
@@ -21,7 +22,7 @@ class SplashPageState extends State<SplashPage> {
   }
 
   Future<void> isAuthenticated() async {
-    final accessToken = await TokenStorageService().getAccessToken();
+    final accessToken = await SecureStorageService().getAccessToken();
     await Future.delayed(
         const Duration(seconds: 1),
         () async => NavigationService.navigateTo(
@@ -30,8 +31,9 @@ class SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
+    return AppbarWrapperWidget(
+      isRedAppBar: false,
+      child: Center(
         child: Image.asset('assets/splash_screen/splash.png'),
       ),
     );

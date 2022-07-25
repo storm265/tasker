@@ -4,7 +4,7 @@ import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/task_attachment_repository.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/tasks_member_repository.dart';
-import 'package:todo2/database/repository/user_profile_repository.dart';
+import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/pages/auth/welcome/welcome_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/add_check_list/add_checklist_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/controller_inherited.dart';
@@ -15,7 +15,7 @@ import 'package:todo2/presentation/pages/menu_pages/profile/profile_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_page.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/network_service/network_service.dart';
-import 'package:todo2/services/storage/tokens_storage.dart';
+import 'package:todo2/services/storage/secure_storage_service.dart';
 
 import 'package:todo2/services/system_service/system_chrome.dart';
 
@@ -60,7 +60,7 @@ class _MyAppState extends State<MyApp> {
 
   final _themeDataController = ThemeDataService();
   final _profileController = ProfileController(
-    tokenStorageService: TokenStorageService(),
+    tokenStorageService: SecureStorageService(),
     authRepository: AuthRepositoryImpl(),
     projectsRepository: ProjectRepositoryImpl(),
     userProfileRepository: UserProfileRepositoryImpl(),

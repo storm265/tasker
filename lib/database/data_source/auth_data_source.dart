@@ -32,19 +32,10 @@ class AuthDataSourceImpl implements AuthDataSource {
         data: {
           AuthScheme.email: email,
           AuthScheme.password: password,
-        },
-        options: Options(
-          validateStatus: (_) => true,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        ),
+        },      
+        options: _network.authOptions,
       );
-      if (response.statusCode == 401) {
-        log(' ERROR 401');
-      }
-      // print('AuthDataSourceImpl data signIn : ${response.data}');
-      // print('AuthDataSourceImpl statusCode signIn : ${response.statusCode}');
+
       return response;
     } catch (e) {
       ErrorService.printError('Error in signIn() dataSource: $e');
@@ -59,6 +50,7 @@ class AuthDataSourceImpl implements AuthDataSource {
         '/sign-out',
         // TODO fix it
         data: {AuthScheme.email: 'peter4533@mail.ru'},
+        options: _network.authOptions,
       );
       return response;
     } catch (e) {
@@ -79,8 +71,9 @@ class AuthDataSourceImpl implements AuthDataSource {
         data: {
           AuthScheme.email: email,
           AuthScheme.password: password,
-          AuthScheme.nickname: nickname,
+          AuthScheme.username: nickname,
         },
+        options: _network.authOptions,
       );
       print('AuthDataSourceImpl data signUp : ${response.data}');
       print('AuthDataSourceImpl statusCode signUp : ${response.statusCode}');

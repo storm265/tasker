@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
-import 'package:todo2/database/repository/user_profile_repository.dart';
+import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/controller/image_picker_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
@@ -21,6 +21,7 @@ import 'package:todo2/presentation/pages/auth/widgets/title_widget.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
+import 'package:todo2/services/storage/secure_storage_service.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -35,6 +36,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _usernameController = TextEditingController();
 
   final _signUpController = SignUpController(
+    storageSource: SecureStorageSource(),
     projectController: ProjectController(
       colorPalleteController: ColorPalleteController(),
       projectsRepository: ProjectRepositoryImpl(),
@@ -43,7 +45,6 @@ class _SignUpPageState extends State<SignUpPage> {
     formValidatorController: FormValidatorController(),
     authRepository: AuthRepositoryImpl(),
     userProfileRepository: UserProfileRepositoryImpl(),
-    userRepository: UserRepositoryImpl(),
   );
   @override
   void dispose() {

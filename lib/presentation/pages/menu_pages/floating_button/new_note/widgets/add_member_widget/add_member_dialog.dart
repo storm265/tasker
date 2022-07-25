@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/users_profile_model.dart';
-import 'package:todo2/database/repository/user_profile_repository.dart';
+import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/widgets/add_member_widget/member_item_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/controller_inherited.dart';
@@ -18,13 +18,13 @@ class AddUserDialog extends StatelessWidget {
   List<String> emails = [];
   List<UserProfileModel> users = [];
 
-  Future<List<UserProfileModel>> fetchUsers({required String userName}) async {
-    emails = await UserRepositoryImpl().fetchEmail();
-    users =
-        await UserProfileRepositoryImpl().fetchUserWhere(userName: userName);
+  // Future<List<UserProfileModel>> fetchUsers({required String userName}) async {
+  //   emails = await UserRepositoryImpl().fetchEmail();
+  //   users =
+  //       await UserProfileRepositoryImpl().fetchUserWhere(userName: userName);
 
-    return users;
-  }
+  //   return users;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +80,8 @@ class AddUserDialog extends StatelessWidget {
                 child: DisabledGlowWidget(
                   child: FutureBuilder<List<UserProfileModel>>(
                     initialData: const [],
-                    future: fetchUsers(userName: userTextController.text),
+                    future: Future.delayed(Duration(seconds: 1)),
+                   // future: fetchUsers(userName: userTextController.text),
                     builder: (context,
                         AsyncSnapshot<List<UserProfileModel>> snapshot) {
                       return (snapshot.hasError || !snapshot.hasData)

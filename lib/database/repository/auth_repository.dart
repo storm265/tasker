@@ -1,7 +1,9 @@
+import 'dart:collection';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:todo2/database/data_source/auth_data_source.dart';
+import 'package:todo2/database/model/auth_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 
 abstract class AuthRepository {
@@ -32,9 +34,6 @@ class AuthRepositoryImpl implements AuthRepository {
         email: email,
         password: password,
       );
-      if (response.statusCode == 401) {
-        log(' ERROR 401');
-      }
       return response;
     } catch (e) {
       ErrorService.printError('Error in AuthRepositoryImpl signIn(): $e');
@@ -54,8 +53,6 @@ class AuthRepositoryImpl implements AuthRepository {
         password: password,
         nickname: nickname,
       );
-      print('AuthRepositoryImpl data signUp: ${response.data}');
-      print('AuthRepositoryImpl statusCode signUp: ${response.statusCode}');
       return response;
     } catch (e) {
       ErrorService.printError('Error in AuthRepositoryImpl signUp(): $e');

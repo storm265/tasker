@@ -1,18 +1,15 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/projects_model.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
-import 'package:todo2/database/repository/user_profile_repository.dart';
+import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
-import 'package:todo2/services/network/constants.dart';
-import 'package:todo2/services/storage/tokens_storage.dart';
+import 'package:todo2/services/storage/secure_storage_service.dart';
 
 class ProfileController extends ChangeNotifier {
-  final TokenStorageService tokenStorageService;
+  final SecureStorageService tokenStorageService;
   final ProjectRepositoryImpl projectsRepository;
   final UserProfileRepositoryImpl userProfileRepository;
   final AuthRepositoryImpl authRepository;
@@ -23,8 +20,6 @@ class ProfileController extends ChangeNotifier {
     required this.authRepository,
     required this.tokenStorageService,
   });
-
-  //final supabase = NetworkSource().networkApiClient.auth.currentUser;
 
   late String userName = '';
   late String image = '';
@@ -40,8 +35,7 @@ class ProfileController extends ChangeNotifier {
           message: '${response.statusMessage}',
         );
       } else {
-        // TODO create obj
-        await tokenStorageService.removeAllTokens();
+        await tokenStorageService.removeAllUserData();
         await Future.delayed(
           Duration.zero,
           () async => NavigationService.navigateTo(context, Pages.welcome),
@@ -71,7 +65,8 @@ class ProfileController extends ChangeNotifier {
       image = await userProfileRepository.fetchAvatar();
       imageStoragePublicUrl =
           await userProfileRepository.fetchAvatarFromStorage(publicUrl: image);
-      userName = await userProfileRepository.fetchUserName();
+      userName ='';
+      // await userProfileRepository.fetchUserName();
       updateStateCallback();
     } catch (e) {
       ErrorService.printError(

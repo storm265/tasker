@@ -19,4 +19,11 @@ class NetworkConfiguration {
     ..options.baseUrl = 'https://todolist.dev2.cogniteq.com/api/v1';
   final String storagePath = '=@"/Users/andreikastsiuk/Downloads';
   final String tokenType = 'Bearer';
+
+  final Options authOptions = Options(
+    validateStatus: (_) => true,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  );
 }
