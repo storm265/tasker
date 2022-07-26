@@ -18,6 +18,7 @@ import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/sign_up_button_
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/subtitle_widget.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/textfield_widget.dart';
 import 'package:todo2/presentation/pages/auth/widgets/title_widget.dart';
+import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
@@ -128,13 +129,26 @@ class _SignUpPageState extends State<SignUpPage> {
                               ? SubmitUpButtonWidget(
                                   buttonText: 'Sign Up',
                                   onPressed: isClicked
-                                      ? () async =>
-                                          _signUpController.signUpValidate(
-                                            context: context,
-                                            userName: _usernameController.text,
-                                            email: _emailController.text,
-                                            password: _passwordController.text,
-                                          )
+                                      ? () async {
+                                          // final controller = ProjectController(
+                                          //     colorPalleteController:
+                                          //         ColorPalleteController(),
+                                          //     projectsRepository:
+                                          //         ProjectRepositoryImpl());
+                                          // controller.postProject(
+                                          //     title: 'Personal',
+                                          //     color:
+                                          //         colors[0].value.toString());
+
+                                          
+                                        }
+                                      // _signUpController.signUpValidate(
+                                      //   context: context,
+                                      //   userName: _usernameController.text,
+                                      //   email: _emailController.text,
+                                      //   password: _passwordController.text,
+                                      // )
+
                                       : null,
                                 )
                               : const ProgressIndicatorWidget(

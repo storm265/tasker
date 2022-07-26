@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/data_source/storage/avatar_storage_data_source.dart';
+import 'package:todo2/database/database_scheme/auth_scheme.dart';
+import 'package:todo2/database/model/auth_model.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/storage/avatar_storage_repository.dart';
@@ -87,15 +89,18 @@ class ImageController extends ChangeNotifier {
     }
   }
 
-  Future<void> uploadAvatar({required String userId}) async {
+  Future<Map<dynamic, dynamic>> uploadAvatar({required String userId}) async {
     try {
-      await avatarStorageRepository.uploadAvatar(
+      final response = await avatarStorageRepository.uploadAvatar(
         userId: userId,
         name: pickedFile.value.name,
         file: File(pickedFile.value.path),
       );
+
+      return response.data[AuthScheme.data];
     } catch (e) {
       ErrorService.printError('uploadAvatar error: $e');
+      rethrow;
     }
   }
 

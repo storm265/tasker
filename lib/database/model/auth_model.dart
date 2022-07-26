@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
 
 class AuthModel {
@@ -12,7 +10,7 @@ class AuthModel {
     required this.refreshToken,
     required this.expiresIn,
   });
-  factory AuthModel.fromJson(LinkedHashMap<String, dynamic> json) {
+  factory AuthModel.fromJson(Map<String, dynamic> json) {
     return AuthModel(
       accessToken: json[AuthScheme.accessToken],
       refreshToken: json[AuthScheme.refreshToken],

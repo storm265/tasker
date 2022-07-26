@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:todo2/services/storage/secure_storage_service.dart';
 
 class NetworkSource {
   static final NetworkSource _instance = NetworkSource._internal();
@@ -26,4 +27,14 @@ class NetworkConfiguration {
       'Content-Type': 'application/json',
     },
   );
+  final _storageSource = SecureStorageSource().storageApi;
+  
+  Options getRequestOptions() {
+    return Options(
+      headers: {
+        'Authorization':
+            '$tokenType ${_storageSource.getUserData(type: StorageDataType.accessToken)}'
+      },
+    );
+  }
 }

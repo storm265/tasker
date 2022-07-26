@@ -38,6 +38,7 @@ class AuthDataSourceImpl implements AuthDataSource {
           AuthScheme.password: password,
         },
         options: _network.authOptions,
+        
       );
 
       return response;

@@ -51,12 +51,7 @@ class AvatarStorageDataSourceImpl implements AvatarStorageDataSource {
       final response = await _network.dio.post(
         '/$_storagePath',
         data: formData,
-        options: Options(
-          headers: {
-            'Authorization':
-                '${_network.tokenType} ${_storageSource.getUserData(type: StorageDataType.accessToken)}'
-          },
-        ),
+        options: _network.getRequestOptions()
       );
       return response;
     } catch (e) {

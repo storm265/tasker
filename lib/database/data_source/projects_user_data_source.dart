@@ -1,10 +1,12 @@
 import 'dart:developer';
 
+import 'package:dio/dio.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/database_scheme/project_user_scheme.dart';
 import 'package:todo2/database/model/projects_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/network/constants.dart';
+import 'package:todo2/services/storage/secure_storage_service.dart';
 
 abstract class ProjectUserData {
   Future fetchProject();
@@ -21,26 +23,31 @@ abstract class ProjectUserData {
 }
 
 class ProjectUserDataImpl implements ProjectUserData {
-  final _table = 'projects';
-  final _supabase = NetworkSource().networkApiClient;
+  final SecureStorageService _secureStorageService = SecureStorageService();
+  final _path = '/projects';
+  final _network = NetworkSource().networkApiClient;
 
   @override
-  Future<PostgrestResponse<dynamic>> postProject({
+  Future<Response<dynamic>> postProject({
     required String color,
     required String title,
   }) async {
     try {
-      // final response = await _supabase.from(_table).insert({
-      //   ProjectDataScheme.title: title,
-      //   ProjectDataScheme.color: color,
-      //   ProjectDataScheme.ownerId: _supabase.auth.currentUser!.id,
-      //   ProjectDataScheme.createdAt: DateTime.now().toString(),
-      // }).execute();
-      // return response;
-               return     Future.delayed( Duration(seconds: 1));
+      final response = await _network.dio.post(
+        _path,
+        data: {
+          ProjectDataScheme.ownerId:
+              await _secureStorageService.getUserData(type: StorageDataType.id),
+          ProjectDataScheme.color: color,
+          ProjectDataScheme.title: title,
+          ProjectDataScheme.createdAt: DateTime.now().toIso8601String(),
+        },
+        options: _network.getRequestOptions(),
+      );
+      print(response.data);
+      return response;
     } catch (e) {
-      ErrorService.printError(
-          'Error in ProjectUserDataImpl putData() error dataSource: $e');
+      ErrorService.printError('Error in ProjectUserDataImpl postProject(): $e');
       rethrow;
     }
   }
@@ -54,7 +61,7 @@ class ProjectUserDataImpl implements ProjectUserData {
       //     .eq(ProjectDataScheme.ownerId, _supabase.auth.currentUser!.id)
       //     .execute();
       // return response;
-               return     Future.delayed( Duration(seconds: 1));
+      return Future.delayed(Duration(seconds: 1));
     } catch (e) {
       ErrorService.printError(
           'Error in ProjectUserDataImpl fetchProject() dataSource:  $e');
@@ -73,7 +80,7 @@ class ProjectUserDataImpl implements ProjectUserData {
       //     .eq(ProjectDataScheme.title, title)
       //     .execute();
       // return response;
-               return     Future.delayed( Duration(seconds: 1));
+      return Future.delayed(Duration(seconds: 1));
     } catch (e) {
       ErrorService.printError(
           'Error in ProjectUserDataImpl findDublicates() dataSource:  $e');
@@ -92,7 +99,7 @@ class ProjectUserDataImpl implements ProjectUserData {
       //     .eq(ProjectDataScheme.title, project)
       //     .execute();
       // return response;
-               return     Future.delayed( Duration(seconds: 1));
+      return Future.delayed(Duration(seconds: 1));
     } catch (e) {
       ErrorService.printError(
           'Error in ProjectUserDataImpl fetchProjectId() dataSource:  $e');
@@ -113,7 +120,7 @@ class ProjectUserDataImpl implements ProjectUserData {
       //     )
       //     .execute();
       // return response;
-               return     Future.delayed( Duration(seconds: 1));
+      return Future.delayed(Duration(seconds: 1));
     } catch (e) {
       ErrorService.printError('Error in dataSource fetchProjects() : $e');
       rethrow;
@@ -131,7 +138,7 @@ class ProjectUserDataImpl implements ProjectUserData {
       //     .eq(ProjectDataScheme.title, projectModel.title)
       //     .execute();
       // return response;
-               return     Future.delayed( Duration(seconds: 1));
+      return Future.delayed(Duration(seconds: 1));
     } catch (e) {
       ErrorService.printError('Error in dataSource deleteProject() : $e');
       rethrow;
@@ -155,7 +162,7 @@ class ProjectUserDataImpl implements ProjectUserData {
       //     .eq(ProjectDataScheme.title, oldTitle)
       //     .execute();
       // return response;
-               return     Future.delayed( Duration(seconds: 1));
+      return Future.delayed(Duration(seconds: 1));
     } catch (e) {
       ErrorService.printError('Error in dataSource updateProject() : $e');
       rethrow;

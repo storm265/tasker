@@ -46,7 +46,7 @@ class SignInController extends ChangeNotifier {
     }
   }
 
-  Future<void> signIn({
+  Future<Map<String, dynamic>> signIn({
     required BuildContext context,
     required String email,
     required String password,
@@ -67,8 +67,10 @@ class SignInController extends ChangeNotifier {
           () => NavigationService.navigateTo(context, Pages.home),
         );
       }
+      return response.data[AuthScheme.data];
     } catch (e) {
       ErrorService.printError('Error in signIn() controller: $e');
+      rethrow;
     }
   }
 

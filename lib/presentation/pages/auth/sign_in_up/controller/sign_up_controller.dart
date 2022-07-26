@@ -60,51 +60,56 @@ class SignUpController extends ChangeNotifier {
     required String password,
     required String username,
   }) async {
-    try {
-      final response = await authRepository.signUp(
-        nickname: username,
-        email: email,
-        password: password,
-      );
-      print(response.data);
-      print(response.statusCode);
-      if (response.statusCode != 200) {
-        MessageService.displaySnackbar(
-          context: context,
-          message: response.data[AuthScheme.message],
-        );
-      } else {
-        final model = Map<String, dynamic>.from(response.data);
-        final snapshot = model[AuthScheme.data];
+    // TODO push default project
+ 
+    // try {
+    //   final response = await authRepository.signUp(
+    //     nickname: username,
+    //     email: email,
+    //     password: password,
+    //   );
 
-        storageSource.storageApi.putUserData(
-          id: snapshot[AuthScheme.id],
-          email: email,
-          password: password,
-          username: username,
-          
-          refreshToken: snapshot[AuthScheme.refreshToken],
-          accessToken: snapshot[AuthScheme.accessToken],
-        );
+    //   if (response.statusCode != 200) {
+    //     MessageService.displaySnackbar(
+    //       context: context,
+    //       message: response.data[AuthScheme.message],
+    //     );
+    //   } else {
+    //     // final model = Map<String, dynamic>.from(response.data);
+    //     // final snapshot = model[AuthScheme.data];
 
-        await userProfileRepository.postProfile(
-          id: snapshot[AuthScheme.id],
-          avatarUrl: imagePickerController.pickedFile.value.name,
-          username: username,
-        );
-        // TODO push default project
-        // await projectController.postProject(
-        //     title: 'Personal', color: colors[0].value.toString());
+    //     // storageSource.storageApi.putUserData(
+    //     //   id: snapshot[AuthScheme.id],
+    //     //   email: email,
+    //     //   password: password,
+    //     //   username: username,
+    //     //   refreshToken: snapshot[AuthScheme.refreshToken],
+    //     //   accessToken: snapshot[AuthScheme.accessToken],
+    //     // );
 
-        await imagePickerController
-            .uploadAvatar(userId: snapshot[AuthScheme.id])
-            .then((_) {
-          NavigationService.navigateTo(context, Pages.home);
-        });
-      }
-    } catch (e) {
-      MessageService.displaySnackbar(context: context, message: '$e');
-    }
+    //     // // TODO push default project
+    //     // await projectController.postProject(
+    //     //     title: 'Personal', color: colors[0].value.toString());
+
+    //     // final imageResponse = await imagePickerController.uploadAvatar(
+    //     //     userId: snapshot[AuthScheme.id]);
+
+    //     // storageSource.storageApi
+    //     //     .putAvatarUrl(avatarUrl: imageResponse[AuthScheme.avatarUrl]);
+
+    //     // await userProfileRepository
+    //     //     .postProfile(
+    //     //   id: snapshot[AuthScheme.id],
+    //     //   avatarUrl: imageResponse[AuthScheme.avatarUrl],
+    //     //   username: username,
+    //     // )
+    //     //     .then((_) {
+    //     //   NavigationService.navigateTo(context, Pages.home);
+    //     // });
+    //   }
+    // } catch (e) {
+    //   MessageService.displaySnackbar(context: context, message: '$e');
+    // }
   }
 
   void disposeValues() {

@@ -37,12 +37,30 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
           UserProfileScheme.avatarPath: avatarUrl,
           UserProfileScheme.createdAt: DateTime.now().toString(),
         },
-        options: Options(
-          headers: {
-            'Authorization':
-                '${_network.tokenType} ${_storageSource.getUserData(type: StorageDataType.accessToken)}'
-          },
-        ),
+        options: _network.getRequestOptions(),
+      );
+      return response;
+    } catch (e) {
+      ErrorService.printError(
+          'Error in UserProfileDataSourceImpl insertUserProfile(): $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Response<dynamic>> fetchUserProfile() async {
+    try {
+      final response = await _network.dio.get(
+        _path,
+        queryParameters: {'id': 12, 'name': 'wendu'}
+        data: {
+          UserProfileScheme.id: id,
+          UserProfileScheme.username: username,
+          UserProfileScheme.avatarPath: avatarUrl,
+          UserProfileScheme.createdAt: DateTime.now().toString(),
+        },
+
+        options: _network.getRequestOptions(),
       );
       return response;
     } catch (e) {

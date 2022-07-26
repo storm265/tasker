@@ -7,10 +7,10 @@ class ProjectModel {
   String createdAt;
 
   ProjectModel({
-    this.title ='',
-    this.color='',
-    this.createdAt='',
-    this.ownerId='',
+    required this.title,
+    required this.color,
+    required this.createdAt,
+    required this.ownerId,
   });
 
   factory ProjectModel.fromJson(Map<String, dynamic> json) => ProjectModel(
