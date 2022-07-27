@@ -45,7 +45,7 @@ class AvatarStorageDataSourceImpl implements AvatarStorageDataSource {
       String fileName = file.path.split('/').last;
       var formData = FormData.fromMap(
         {
-          "=@/Users/andreikastsiuk/Downloads/": await MultipartFile.fromFile(
+          "=@": await MultipartFile.fromFile(
             file.path,
             filename: fileName,
           ),
@@ -53,7 +53,7 @@ class AvatarStorageDataSourceImpl implements AvatarStorageDataSource {
         },
       );
 
-      print('filename ${name}');
+      print('filename =@${file.path}${name}');
       final response = await _network.dio.post(_storagePath,
           data: formData, options: _network.getRequestOptions());
       return response;

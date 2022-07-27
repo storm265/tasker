@@ -72,27 +72,23 @@ class SignUpController extends ChangeNotifier {
       );
 
 // if response ok then
-      // final userSession = response[AuthScheme.userSession];
+      final userSession = response[AuthScheme.userSession];
 
-      // await storageSource.storageApi.saveUserData(
-      //   id: response[AuthScheme.id],
-      //   email: email,
-      //   username: username,
-      //   refreshToken: userSession[AuthScheme.refreshToken],
-      //   accessToken: userSession[AuthScheme.accessToken],
-      // );
+      await _storageSource.storageApi.saveUserData(
+        id: response[AuthScheme.id],
+        email: email,
+        username: username,
+        refreshToken: userSession[AuthScheme.refreshToken],
+        accessToken: userSession[AuthScheme.accessToken],
+      );
 
       final imageResponse = await imagePickerController.uploadAvatar(
-          // userId: response[AuthScheme.id]
-          userId: '26e200e5-2aeb-4fa2-9840-009d88a46885');
+          userId: response[AuthScheme.id]);
+
       print('image reposs: $imageResponse');
 
-      await _storageSource.storageApi
-          .saveAvatarUrl(avatarUrl: imageResponse[AuthScheme.avatarUrl]);
-
-      // // TODO push default project
-      // await projectController.postProject(
-      //     title: 'Personal', color: colors[0].value.toString());
+      // await _storageSource.storageApi
+      //     .saveAvatarUrl(avatarUrl: imageResponse[AuthScheme.avatarUrl]);
 
       // await userProfileRepository
       //     .postProfile(

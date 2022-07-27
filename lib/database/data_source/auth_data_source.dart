@@ -18,11 +18,12 @@ abstract class AuthDataSource {
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
-  AuthDataSourceImpl(this._secureStorageService);
   final SecureStorageService _secureStorageService;
-  
+  AuthDataSourceImpl({required SecureStorageService secureStorageService})
+      : _secureStorageService = secureStorageService;
 
   final _network = NetworkSource().networkApiClient;
+
   final _signInUrl = '/sign-in';
   final _signUpUrl = '/sign-up';
   final _signOutUrl = '/sign-out';
@@ -54,8 +55,10 @@ class AuthDataSourceImpl implements AuthDataSource {
     try {
       Response response = await _network.dio.post(
         _signOutUrl,
-        // TODO fix it
-        data: {AuthScheme.email: 'peter4533@mail.ru'},
+        data: {
+          AuthScheme.email:
+              _secureStorageService.getUserData(type: StorageDataType.email)
+        },
         options: _network.authOptions,
       );
       await _secureStorageService.removeAllUserData();
@@ -89,4 +92,3 @@ class AuthDataSourceImpl implements AuthDataSource {
     }
   }
 }
-// create class 

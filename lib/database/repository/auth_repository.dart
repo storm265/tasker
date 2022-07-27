@@ -24,7 +24,8 @@ abstract class AuthRepository {
 }
 
 class AuthRepositoryImpl implements AuthRepository {
-  final _authDataSource = AuthDataSourceImpl(SecureStorageService());
+  final _authDataSource =
+      AuthDataSourceImpl(secureStorageService: SecureStorageService());
 
   @override
   Future<Map<String, dynamic>> signIn({
