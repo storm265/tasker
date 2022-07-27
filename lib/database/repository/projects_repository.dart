@@ -30,12 +30,10 @@ abstract class ProjectRepository<T> {
 class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
   final _projectDataSource = ProjectUserDataImpl();
   @override
-  Future<List<ProjectModel>> fetchProject() async {
+  Future<Map<String, dynamic>> fetchProject() async {
     try {
       final response = await _projectDataSource.fetchProject();
-      return (response.data as List<dynamic>)
-          .map((json) => ProjectModel.fromJson(json))
-          .toList();
+      return response.data[ProjectDataScheme.data];
     } catch (e) {
       ErrorService.printError(
           'Error in ProjectRepositoryImpl fetchProject() $e');

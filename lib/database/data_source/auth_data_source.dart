@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/services/error_service/error_service.dart';
@@ -20,10 +18,14 @@ abstract class AuthDataSource {
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
-  final SecureStorageService secureStorageService;
-  AuthDataSourceImpl({required this.secureStorageService});
+  AuthDataSourceImpl(this._secureStorageService);
+  final SecureStorageService _secureStorageService;
+  
 
   final _network = NetworkSource().networkApiClient;
+  final _signInUrl = '/sign-in';
+  final _signUpUrl = '/sign-up';
+  final _signOutUrl = '/sign-out';
 
   @override
   Future<Response<dynamic>> signIn({
@@ -32,13 +34,12 @@ class AuthDataSourceImpl implements AuthDataSource {
   }) async {
     try {
       Response response = await _network.dio.post(
-        '/sign-in',
+        _signInUrl,
         data: {
           AuthScheme.email: email,
           AuthScheme.password: password,
         },
         options: _network.authOptions,
-        
       );
 
       return response;
@@ -52,12 +53,12 @@ class AuthDataSourceImpl implements AuthDataSource {
   Future<Response<dynamic>> signOut() async {
     try {
       Response response = await _network.dio.post(
-        '/sign-out',
+        _signOutUrl,
         // TODO fix it
         data: {AuthScheme.email: 'peter4533@mail.ru'},
         options: _network.authOptions,
       );
-      await secureStorageService.removeAllUserData();
+      await _secureStorageService.removeAllUserData();
       return response;
     } catch (e) {
       ErrorService.printError('Error in signOut() dataSource: $e');
@@ -73,7 +74,7 @@ class AuthDataSourceImpl implements AuthDataSource {
   }) async {
     try {
       Response response = await _network.dio.post(
-        '/sign-up',
+        _signUpUrl,
         data: {
           AuthScheme.email: email,
           AuthScheme.password: password,
@@ -81,8 +82,6 @@ class AuthDataSourceImpl implements AuthDataSource {
         },
         options: _network.authOptions,
       );
-      print('AuthDataSourceImpl data signUp : ${response.data}');
-      print('AuthDataSourceImpl statusCode signUp : ${response.statusCode}');
       return response;
     } catch (e) {
       ErrorService.printError('Error in signUp() dataSource: $e');
@@ -90,3 +89,4 @@ class AuthDataSourceImpl implements AuthDataSource {
     }
   }
 }
+// create class 

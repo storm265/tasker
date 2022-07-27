@@ -1,27 +1,29 @@
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:todo2/database/database_scheme/user_profile_scheme.dart';
+import 'package:todo2/database/database_scheme/user_data_scheme..dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/network/constants.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 abstract class UserProfileDataSource {
-  Future fetchAvatar();
-  Future postUserProfile({
+  Future<Response<dynamic>> downloadAvatar();
+  Future<Response<dynamic>> postUserProfile({
     required String avatarUrl,
     required String username,
     required String id,
   });
-  Future fetchUsersWhere({required String userName});
-  Future updateAvatar({required String avatarUrl});
+  Future<Response<dynamic>> fetchCurrentUser({required String id});
+  Future<Response<dynamic>> fetchUsersWhere({required String userName});
+  Future<Response<dynamic>> updateAvatar({required String avatarUrl});
 }
 
 class UserProfileDataSourceImpl implements UserProfileDataSource {
   final _network = NetworkSource().networkApiClient;
   final _path = '/users-avatar';
-  final _storageSource = SecureStorageSource().storageApi;
+  final _userPath = '/users/';
+  final _userAvatarPath = '/users-avatar/';
+  final _storage = SecureStorageService();
   @override
   Future<Response<dynamic>> postUserProfile({
     required String avatarUrl,
@@ -32,13 +34,15 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
       final response = await _network.dio.post(
         _path,
         data: {
-          UserProfileScheme.id: id,
-          UserProfileScheme.username: username,
-          UserProfileScheme.avatarPath: avatarUrl,
-          UserProfileScheme.createdAt: DateTime.now().toString(),
+          UserDataScheme.id: id,
+          UserDataScheme.username: username,
+          UserDataScheme.avatarUrl: avatarUrl,
+          UserDataScheme.createdAt: DateTime.now().toString(),
         },
         options: _network.getRequestOptions(),
       );
+      log('response data insertUserProfile : ${response.data}');
+      log('response data insertUserProfile : ${response.statusCode}');
       return response;
     } catch (e) {
       ErrorService.printError(
@@ -48,31 +52,41 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
   }
 
   @override
-  Future<Response<dynamic>> fetchUserProfile() async {
+  Future<Response<dynamic>> fetchCurrentUser({required String id}) async {
     try {
       final response = await _network.dio.get(
-        _path,
-        queryParameters: {'id': 12, 'name': 'wendu'}
-        data: {
-          UserProfileScheme.id: id,
-          UserProfileScheme.username: username,
-          UserProfileScheme.avatarPath: avatarUrl,
-          UserProfileScheme.createdAt: DateTime.now().toString(),
-        },
-
+        _userPath,
+        queryParameters: {UserDataScheme.id: id},
         options: _network.getRequestOptions(),
       );
       return response;
     } catch (e) {
       ErrorService.printError(
-          'Error in UserProfileDataSourceImpl insertUserProfile(): $e');
+          'Error in UserProfileDataSourceImpl fetchCurrentUser(): $e');
       rethrow;
     }
   }
 
   @override
-  Future<PostgrestResponse<dynamic>> updateAvatar(
-      {required String avatarUrl}) async {
+  Future<Response<dynamic>> downloadAvatar() async {
+    try {
+      final response = await _network.dio.get(
+        _userAvatarPath,
+        queryParameters: {
+          UserDataScheme.id: _storage.getUserData(type: StorageDataType.id)
+        },
+        options: _network.getRequestOptions(),
+      );
+      return response;
+    } catch (e) {
+      ErrorService.printError(
+          'Error in UserProfileDataSourceImpl fetchAvatar(): $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Response<dynamic>> updateAvatar({required String avatarUrl}) async {
     try {
       // final response = await _supabase
       //     .from(_table)
@@ -89,25 +103,7 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
   }
 
   @override
-  Future<PostgrestResponse<dynamic>> fetchAvatar() async {
-    try {
-      // final response = await _supabase
-      //     .from(_table)
-      //     .select(UserProfileScheme.avatarUrl)
-      //     .eq(UserProfileScheme.uuid, _supabase.auth.currentUser!.id)
-      //     .execute();
-      // return response;
-      return Future.delayed(Duration(seconds: 1));
-    } catch (e) {
-      ErrorService.printError(
-          'Error in UserProfileDataSourceImpl fetchAvatar(): $e');
-      rethrow;
-    }
-  }
-
-  @override
-  Future<PostgrestResponse<dynamic>> fetchUsersWhere(
-      {required String userName}) async {
+  Future<Response<dynamic>> fetchUsersWhere({required String userName}) async {
     try {
       // final response = await NetworkSource()
       //     .networkApiClient

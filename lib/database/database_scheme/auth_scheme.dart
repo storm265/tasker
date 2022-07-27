@@ -1,5 +1,6 @@
 class AuthScheme {
-  static String id = 'id';
+    static String id = 'id';
+  static String userId = 'user_id';
   static String data = 'data';
   static String email = 'email';
   static String password = 'password';
@@ -10,4 +11,5 @@ class AuthScheme {
   static String accessToken = 'access_token';
   static String refreshToken = 'refresh_token';
   static String expiresIn = 'expires_in';
+  static String createdAt = 'created_at';
 }

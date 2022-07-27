@@ -19,11 +19,12 @@ class ProfilePage extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Wrap(
           children: [
-             ProfileWidget(profileController: inheritedProfile.profileController),
+            ProfileWidget(
+                profileController: inheritedProfile.profileController),
             FutureBuilder<List<ProjectModel>>(
               initialData: const [],
-              future: inheritedProfile.profileController
-                  .fetchProject(context: context),
+              // future: inheritedProfile.profileController
+              //     .fetchProject(context: context),
               builder: (_, AsyncSnapshot<List<ProjectModel>> snapshot) {
                 return snapshot.hasData
                     ? Column(

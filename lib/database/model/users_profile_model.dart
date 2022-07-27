@@ -1,4 +1,4 @@
-import 'package:todo2/database/database_scheme/user_profile_scheme.dart';
+import 'package:todo2/database/database_scheme/user_data_scheme..dart';
 
 class UserProfileModel {
   String id;
@@ -15,9 +15,9 @@ class UserProfileModel {
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) =>
       UserProfileModel(
-        id: json[UserProfileScheme.id],
-        username: json[UserProfileScheme.username],
-        avatarUrl: json[UserProfileScheme.avatarPath],
-        createdAt: json[UserProfileScheme.createdAt],
+        id: json[UserDataScheme.id],
+        username: json[UserDataScheme.username],
+        avatarUrl: json[UserDataScheme.avatarUrl],
+        createdAt: json[UserDataScheme.createdAt],
       );
 }

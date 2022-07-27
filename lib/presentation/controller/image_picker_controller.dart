@@ -96,7 +96,6 @@ class ImageController extends ChangeNotifier {
         name: pickedFile.value.name,
         file: File(pickedFile.value.path),
       );
-
       return response.data[AuthScheme.data];
     } catch (e) {
       ErrorService.printError('uploadAvatar error: $e');

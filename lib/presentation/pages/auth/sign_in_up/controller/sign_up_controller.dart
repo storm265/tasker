@@ -6,27 +6,27 @@ import 'package:todo2/presentation/controller/image_picker_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_controller.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
+import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 class SignUpController extends ChangeNotifier {
-  SignUpController({
-    required this.authRepository,
-    required this.userProfileRepository,
-    required this.formValidatorController,
-    required this.imagePickerController,
-    required this.projectController,
-    required this.storageSource,
-  });
+  SignUpController(
+    this._authRepository,
+    this._userProfileRepository,
+    this.formValidatorController,
+    this.imagePickerController,
+    this._projectController,
+    this._storageSource,
+  );
 
-  final AuthRepositoryImpl authRepository;
-  final UserProfileRepositoryImpl userProfileRepository;
-
+  final AuthRepositoryImpl _authRepository;
+  final UserProfileRepositoryImpl _userProfileRepository;
   final FormValidatorController formValidatorController;
   final ImageController imagePickerController;
-  final ProjectController projectController;
-  final SecureStorageSource storageSource;
+  final ProjectController _projectController;
+  final SecureStorageSource _storageSource;
   final formKey = GlobalKey<FormState>();
   final isClickedSubmitButton = ValueNotifier(true);
 
@@ -36,21 +36,25 @@ class SignUpController extends ChangeNotifier {
     required String email,
     required String password,
   }) async {
-    if (imagePickerController.isValidAvatar(context: context)) {
-      if (formKey.currentState!.validate()) {
-        isClickedSubmitButton.value = false;
-        isClickedSubmitButton.notifyListeners();
+    try {
+      if (imagePickerController.isValidAvatar(context: context)) {
+        if (formKey.currentState!.validate()) {
+          isClickedSubmitButton.value = false;
+          isClickedSubmitButton.notifyListeners();
 
-        await signUp(
-          context: context,
-          username: userName,
-          email: email,
-          password: password,
-        );
+          await signUp(
+            context: context,
+            username: userName,
+            email: email,
+            password: password,
+          );
 
-        isClickedSubmitButton.value = true;
-        isClickedSubmitButton.notifyListeners();
+          isClickedSubmitButton.value = true;
+          isClickedSubmitButton.notifyListeners();
+        }
       }
+    } catch (e) {
+      ErrorService.printError('Error in signUpValidate() controller: $e');
     }
   }
 
@@ -60,56 +64,48 @@ class SignUpController extends ChangeNotifier {
     required String password,
     required String username,
   }) async {
-    // TODO push default project
- 
-    // try {
-    //   final response = await authRepository.signUp(
-    //     nickname: username,
-    //     email: email,
-    //     password: password,
-    //   );
+    try {
+      final response = await _authRepository.signUp(
+        nickname: username,
+        email: email,
+        password: password,
+      );
 
-    //   if (response.statusCode != 200) {
-    //     MessageService.displaySnackbar(
-    //       context: context,
-    //       message: response.data[AuthScheme.message],
-    //     );
-    //   } else {
-    //     // final model = Map<String, dynamic>.from(response.data);
-    //     // final snapshot = model[AuthScheme.data];
+// if response ok then
+      // final userSession = response[AuthScheme.userSession];
 
-    //     // storageSource.storageApi.putUserData(
-    //     //   id: snapshot[AuthScheme.id],
-    //     //   email: email,
-    //     //   password: password,
-    //     //   username: username,
-    //     //   refreshToken: snapshot[AuthScheme.refreshToken],
-    //     //   accessToken: snapshot[AuthScheme.accessToken],
-    //     // );
+      // await storageSource.storageApi.saveUserData(
+      //   id: response[AuthScheme.id],
+      //   email: email,
+      //   username: username,
+      //   refreshToken: userSession[AuthScheme.refreshToken],
+      //   accessToken: userSession[AuthScheme.accessToken],
+      // );
 
-    //     // // TODO push default project
-    //     // await projectController.postProject(
-    //     //     title: 'Personal', color: colors[0].value.toString());
+      final imageResponse = await imagePickerController.uploadAvatar(
+          // userId: response[AuthScheme.id]
+          userId: '26e200e5-2aeb-4fa2-9840-009d88a46885');
+      print('image reposs: $imageResponse');
 
-    //     // final imageResponse = await imagePickerController.uploadAvatar(
-    //     //     userId: snapshot[AuthScheme.id]);
+      await _storageSource.storageApi
+          .saveAvatarUrl(avatarUrl: imageResponse[AuthScheme.avatarUrl]);
 
-    //     // storageSource.storageApi
-    //     //     .putAvatarUrl(avatarUrl: imageResponse[AuthScheme.avatarUrl]);
+      // // TODO push default project
+      // await projectController.postProject(
+      //     title: 'Personal', color: colors[0].value.toString());
 
-    //     // await userProfileRepository
-    //     //     .postProfile(
-    //     //   id: snapshot[AuthScheme.id],
-    //     //   avatarUrl: imageResponse[AuthScheme.avatarUrl],
-    //     //   username: username,
-    //     // )
-    //     //     .then((_) {
-    //     //   NavigationService.navigateTo(context, Pages.home);
-    //     // });
-    //   }
-    // } catch (e) {
-    //   MessageService.displaySnackbar(context: context, message: '$e');
-    // }
+      // await userProfileRepository
+      //     .postProfile(
+      //   id: response[AuthScheme.id],
+      //   avatarUrl: imageResponse[AuthScheme.avatarUrl],
+      //   username: username,
+      // )
+      //     .then((_) {
+      //   NavigationService.navigateTo(context, Pages.home);
+      // });
+    } catch (e, t) {
+      ErrorService.printError('$e, $t');
+    }
   }
 
   void disposeValues() {

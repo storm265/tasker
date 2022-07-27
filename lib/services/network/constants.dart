@@ -17,8 +17,21 @@ class NetworkSource {
 
 class NetworkConfiguration {
   final Dio dio = Dio()
-    ..options.baseUrl = 'https://todolist.dev2.cogniteq.com/api/v1';
-  final String storagePath = '=@"/Users/andreikastsiuk/Downloads';
+    ..options.baseUrl = 'https://todolist.dev2.cogniteq.com/api/v1'
+    ..interceptors.add(InterceptorsWrapper(onRequest: (options, handler) {
+      // Do something before request is sent
+      print("Image Upload Resposne 1 ${options.data}");
+      return handler.next(options); //continue
+    }, onResponse: (response, handler) {
+      print("Image Upload Resposne 2 ${response.statusCode}");
+      print("Image Upload Resposne 2 ${response.data}");
+      return handler.next(response); // continue
+    }, onError: (DioError e, handler) {
+      // Do something with response error
+      print("Image Upload Resposne 12 ${e.error}");
+      return handler.next(e); //continue
+    }));
+  final String storagePath = '=@"/Users/andreikastsiuk/Downloads/';
   final String tokenType = 'Bearer';
 
   final Options authOptions = Options(
@@ -28,9 +41,10 @@ class NetworkConfiguration {
     },
   );
   final _storageSource = SecureStorageSource().storageApi;
-  
+
   Options getRequestOptions() {
     return Options(
+      validateStatus: (_) => true,
       headers: {
         'Authorization':
             '$tokenType ${_storageSource.getUserData(type: StorageDataType.accessToken)}'

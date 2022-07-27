@@ -22,8 +22,8 @@ class MenuPage extends StatefulWidget {
 class _MenuPageState extends State<MenuPage> {
   final titleController = TextEditingController();
   final _projectController = ProjectController(
-    projectsRepository: ProjectRepositoryImpl(),
-    colorPalleteController: ColorPalleteController(),
+    ProjectRepositoryImpl(),
+    ColorPalleteController(),
   );
   @override
   void dispose() {
@@ -48,7 +48,7 @@ class _MenuPageState extends State<MenuPage> {
                 children: [
                   FutureBuilder<List<ProjectModel>>(
                     initialData: const [],
-                    future: _projectController.fetchProjects(),
+                    // future: _projectController.fetchProjects(),
                     builder: (_, AsyncSnapshot<List<ProjectModel>> snapshot) {
                       if (snapshot.data!.isEmpty) {
                         return const Text('No projects');

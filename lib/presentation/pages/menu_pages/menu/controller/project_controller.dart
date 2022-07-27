@@ -13,11 +13,11 @@ enum ProjectDialogStatus {
 }
 
 class ProjectController extends ChangeNotifier {
-  ProjectController({
-    required this.projectsRepository,
-    required this.colorPalleteController,
-  });
-  final ProjectRepositoryImpl projectsRepository;
+  ProjectController(
+    this._projectsRepository,
+    this.colorPalleteController,
+  );
+  final ProjectRepositoryImpl _projectsRepository;
   final ColorPalleteController colorPalleteController;
   final formKey = GlobalKey<FormState>();
   final isClickedSubmitButton = ValueNotifier(true);
@@ -55,12 +55,12 @@ class ProjectController extends ChangeNotifier {
             await findDublicates(context: context, title: title);
         if (!isDublicateProject) {
           isEdit
-              ? await projectsRepository.updateProject(
+              ? await _projectsRepository.updateProject(
                   oldTitle: oldTitle,
                   color: selectedModel.value.color,
                   title: title,
                 )
-              : await projectsRepository.postProject(
+              : await _projectsRepository.postProject(
                   color: colors[colorPalleteController.selectedIndex.value]
                       .value
                       .toString(),
@@ -76,9 +76,9 @@ class ProjectController extends ChangeNotifier {
     }
   }
 
-  Future<List<ProjectModel>> fetchProjects() async {
+  Future<Map<String, dynamic>> fetchProjects() async {
     try {
-      List<ProjectModel> projects = await projectsRepository.fetchProject();
+      final projects = await _projectsRepository.fetchProject();
       return projects;
     } catch (e) {
       ErrorService.printError('Error in fetchProjects(): $e');
@@ -91,7 +91,8 @@ class ProjectController extends ChangeNotifier {
     required BuildContext context,
   }) async {
     try {
-      String foundTitle = await projectsRepository.findDublicates(title: title);
+      String foundTitle =
+          await _projectsRepository.findDublicates(title: title);
       if (title.trim() == foundTitle.trim()) {
         MessageService.displaySnackbar(
           context: context,
@@ -112,7 +113,7 @@ class ProjectController extends ChangeNotifier {
     required String title,
   }) async {
     try {
-      await projectsRepository.postProject(color: color, title: title);
+      await _projectsRepository.postProject(color: color, title: title);
     } catch (e) {
       ErrorService.printError('Error in fetchProjects(): $e');
       rethrow;
@@ -125,7 +126,7 @@ class ProjectController extends ChangeNotifier {
     required String oldTitle,
   }) async {
     try {
-      await projectsRepository.updateProject(
+      await _projectsRepository.updateProject(
         color: color,
         title: title,
         oldTitle: oldTitle,
@@ -138,7 +139,7 @@ class ProjectController extends ChangeNotifier {
 
   Future<void> deleteProject({required ProjectModel projectModel}) async {
     try {
-      await projectsRepository.deleteProject(projectModel: projectModel);
+      await _projectsRepository.deleteProject(projectModel: projectModel);
     } catch (e) {
       ErrorService.printError('Error in fetchProjects(): $e');
       rethrow;

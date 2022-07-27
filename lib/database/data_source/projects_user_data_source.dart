@@ -44,7 +44,13 @@ class ProjectUserDataImpl implements ProjectUserData {
         },
         options: _network.getRequestOptions(),
       );
-      print(response.data);
+      String? id =
+          await _secureStorageService.getUserData(type: StorageDataType.id);
+      log('id: $id');
+      log('color: $color');
+      log('title: $title');
+      log('response: postProject ${response.data}');
+      log('response: postProject ${response.statusCode}');
       return response;
     } catch (e) {
       ErrorService.printError('Error in ProjectUserDataImpl postProject(): $e');

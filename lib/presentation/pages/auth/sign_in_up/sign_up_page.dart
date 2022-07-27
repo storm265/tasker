@@ -37,15 +37,12 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _usernameController = TextEditingController();
 
   final _signUpController = SignUpController(
-    storageSource: SecureStorageSource(),
-    projectController: ProjectController(
-      colorPalleteController: ColorPalleteController(),
-      projectsRepository: ProjectRepositoryImpl(),
-    ),
-    imagePickerController: ImageController(),
-    formValidatorController: FormValidatorController(),
-    authRepository: AuthRepositoryImpl(),
-    userProfileRepository: UserProfileRepositoryImpl(),
+    AuthRepositoryImpl(),
+    UserProfileRepositoryImpl(),
+    FormValidatorController(),
+    ImageController(),
+    ProjectController(ProjectRepositoryImpl(), ColorPalleteController()),
+    SecureStorageSource(),
   );
   @override
   void dispose() {
@@ -129,26 +126,12 @@ class _SignUpPageState extends State<SignUpPage> {
                               ? SubmitUpButtonWidget(
                                   buttonText: 'Sign Up',
                                   onPressed: isClicked
-                                      ? () async {
-                                          // final controller = ProjectController(
-                                          //     colorPalleteController:
-                                          //         ColorPalleteController(),
-                                          //     projectsRepository:
-                                          //         ProjectRepositoryImpl());
-                                          // controller.postProject(
-                                          //     title: 'Personal',
-                                          //     color:
-                                          //         colors[0].value.toString());
-
-                                          
-                                        }
-                                      // _signUpController.signUpValidate(
-                                      //   context: context,
-                                      //   userName: _usernameController.text,
-                                      //   email: _emailController.text,
-                                      //   password: _passwordController.text,
-                                      // )
-
+                                      ? () => _signUpController.signUpValidate(
+                                            context: context,
+                                            userName: _usernameController.text,
+                                            email: _emailController.text,
+                                            password: _passwordController.text,
+                                          )
                                       : null,
                                 )
                               : const ProgressIndicatorWidget(

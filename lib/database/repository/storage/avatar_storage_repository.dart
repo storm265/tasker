@@ -43,7 +43,10 @@ class AvatarStorageReposiroryImpl implements AvatarStorageDataSource {
   }) async {
     try {
       final response = await avatarDataSource.uploadAvatar(
-          name: name, file: file, userId: userId);
+        name: name,
+        file: file,
+        userId: userId,
+      );
       return response;
     } catch (e) {
       ErrorService.printError(

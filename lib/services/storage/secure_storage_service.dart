@@ -31,7 +31,7 @@ class SecureStorageService {
       String? username;
       switch (type) {
         case StorageDataType.id:
-          username = await _storage.read(key: AuthScheme.id);
+          username = await _storage.read(key: AuthScheme.userId);
           break;
         case StorageDataType.email:
           username = await _storage.read(key: AuthScheme.email);
@@ -59,7 +59,7 @@ class SecureStorageService {
     }
   }
 
-  Future<void> putAvatarUrl({required String avatarUrl}) async {
+  Future<void> saveAvatarUrl({required String avatarUrl}) async {
     try {
       await _storage.write(key: AuthScheme.avatarUrl, value: avatarUrl);
     } catch (e) {
@@ -68,18 +68,16 @@ class SecureStorageService {
     }
   }
 
-  Future<void> putUserData({
+  Future<void> saveUserData({
+    required String id,
     required String email,
-    required String password,
     required String username,
     required String refreshToken,
     required String accessToken,
-    required String id,
   }) async {
     try {
-      await _storage.write(key: AuthScheme.id, value: id);
+      await _storage.write(key: AuthScheme.userId, value: id);
       await _storage.write(key: AuthScheme.email, value: email);
-      await _storage.write(key: AuthScheme.password, value: password);
       await _storage.write(key: AuthScheme.username, value: username);
       await _storage.write(key: AuthScheme.accessToken, value: accessToken);
       await _storage.write(key: AuthScheme.refreshToken, value: refreshToken);

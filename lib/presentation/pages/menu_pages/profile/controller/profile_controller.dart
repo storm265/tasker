@@ -46,7 +46,7 @@ class ProfileController extends ChangeNotifier {
     }
   }
 
-  Future<List<ProjectModel>> fetchProject(
+  Future<Map<String, dynamic>> fetchProject(
       {required BuildContext context}) async {
     try {
       return projectsRepository.fetchProject();
@@ -65,7 +65,7 @@ class ProfileController extends ChangeNotifier {
       image = await userProfileRepository.fetchAvatar();
       imageStoragePublicUrl =
           await userProfileRepository.fetchAvatarFromStorage(publicUrl: image);
-      userName ='';
+      userName = '';
       // await userProfileRepository.fetchUserName();
       updateStateCallback();
     } catch (e) {

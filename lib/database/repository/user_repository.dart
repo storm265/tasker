@@ -1,17 +1,18 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:todo2/database/data_source/user_data_source.dart';
-import 'package:todo2/database/database_scheme/user_profile_scheme.dart';
+import 'package:todo2/database/database_scheme/user_data_scheme..dart';
 import 'package:todo2/database/model/users_profile_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 
 abstract class UserProfileRepository {
   Future fetchAvatarFromStorage({required String publicUrl});
-  Future<void> postProfile({
+  Future postProfile({
     required String avatarUrl,
     required String username,
     required String id,
   });
+  Future fetchCurrentUser({required String id});
   Future fetchUserWhere({required String userName});
   Future fetchAvatar();
 }
@@ -34,7 +35,20 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
       return response;
     } catch (e) {
       ErrorService.printError(
-          'Error in ) UserProfileRepositoryImpl postProfile(: $e');
+          'Error in UserProfileRepositoryImpl postProfile(: $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> fetchCurrentUser({required String id}) async {
+    try {
+      final response = await _userProfileDataSource.fetchCurrentUser(id: id);
+      print('reponse data : ${response.data}');
+      return response.data[UserDataScheme.data];
+    } catch (e) {
+      ErrorService.printError(
+          'Error in UserProfileRepositoryImpl fetchCurrentUser(): $e');
       rethrow;
     }
   }
@@ -57,8 +71,8 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
   @override
   Future<String> fetchAvatar() async {
     try {
-      final response = await _userProfileDataSource.fetchAvatar();
-      final image = await response.data[0][UserProfileScheme.avatarPath];
+      final response = await _userProfileDataSource.downloadAvatar();
+      final image = await response.data[0][UserDataScheme.avatarUrl];
       log(' fetchAvatar repo: $image');
       return image;
     } catch (e) {

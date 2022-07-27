@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/network/constants.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
@@ -15,9 +16,9 @@ abstract class AvatarStorageDataSource {
 }
 
 class AvatarStorageDataSourceImpl implements AvatarStorageDataSource {
-  final _storagePath = 'users-avatar';
+  final _storagePath = '/users-avatar';
   final _network = NetworkSource().networkApiClient;
-  final _storageSource = SecureStorageSource().storageApi;
+  // final _storageSource = SecureStorageSource().storageApi;
   @override
   Future<StorageResponse<String>> updateAvatar(
       {required String bucketImage, required File file}) async {
@@ -41,18 +42,20 @@ class AvatarStorageDataSourceImpl implements AvatarStorageDataSource {
     required String userId,
   }) async {
     try {
-      var formData = FormData.fromMap({
-        "": await MultipartFile.fromFile(
-          file.path,
-          filename: name,
-        ),
-        'user_id': userId,
-      });
-      final response = await _network.dio.post(
-        '/$_storagePath',
-        data: formData,
-        options: _network.getRequestOptions()
+      String fileName = file.path.split('/').last;
+      var formData = FormData.fromMap(
+        {
+          "=@/Users/andreikastsiuk/Downloads/": await MultipartFile.fromFile(
+            file.path,
+            filename: fileName,
+          ),
+          AuthScheme.userId: userId,
+        },
       );
+
+      print('filename ${name}');
+      final response = await _network.dio.post(_storagePath,
+          data: formData, options: _network.getRequestOptions());
       return response;
     } catch (e) {
       ErrorService.printError('uploadAvatar error: $e');
