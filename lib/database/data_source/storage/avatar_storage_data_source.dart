@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -11,6 +12,7 @@ abstract class AvatarStorageDataSource {
     required String name,
     required File file,
     required String userId,
+    required String accessToken,
   });
   Future updateAvatar({required String bucketImage, required File file});
 }
@@ -40,6 +42,7 @@ class AvatarStorageDataSourceImpl implements AvatarStorageDataSource {
     required String name,
     required File file,
     required String userId,
+    required String accessToken,
   }) async {
     try {
       String fileName = file.path.split('/').last;
@@ -52,9 +55,12 @@ class AvatarStorageDataSourceImpl implements AvatarStorageDataSource {
           AuthScheme.userId: userId,
         },
       );
-
+      log(' file.path: ${file.path}');
+      log(' fileName: $fileName');
       final response = await _network.dio.post(_storagePath,
-          data: formData, options: await _network.getRequestOptions());
+          data: formData,
+          options: _network.getRequestOptions(accessToken: accessToken));
+      log('response.data: ${response.data}');
       return response;
     } catch (e) {
       ErrorService.printError('uploadAvatar error: $e');

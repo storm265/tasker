@@ -9,6 +9,7 @@ abstract class AvatarStorageDataSource {
     required String name,
     required File file,
     required String userId,
+    required String accessToken,
   });
 }
 
@@ -36,9 +37,11 @@ class AvatarStorageReposiroryImpl implements AvatarStorageDataSource {
     required String name,
     required File file,
     required String userId,
+    required String accessToken,
   }) async {
     try {
       final response = await avatarDataSource.uploadAvatar(
+        accessToken: accessToken,
         name: name,
         file: file,
         userId: userId,

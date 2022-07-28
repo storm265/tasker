@@ -42,7 +42,7 @@ class ProjectUserDataImpl implements ProjectUserData {
           ProjectDataScheme.title: title,
           ProjectDataScheme.createdAt: DateTime.now().toIso8601String(),
         },
-        options:await _network.getRequestOptions(),
+        options: await _network.getLocalRequestOptions(),
       );
 
       return response;

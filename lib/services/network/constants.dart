@@ -43,13 +43,20 @@ class NetworkConfiguration {
   );
   final _storageSource = SecureStorageSource().storageApi;
 
-  Future<Options> getRequestOptions() async {
+  Future<Options> getLocalRequestOptions() async {
     return Options(
       validateStatus: (_) => true,
       headers: {
         'Authorization':
             '$tokenType ${await _storageSource.getUserData(type: StorageDataType.accessToken)}'
       },
+    );
+  }
+
+  Options getRequestOptions({required String accessToken}) {
+    return Options(
+      validateStatus: (_) => true,
+      headers: {'Authorization': '$tokenType $accessToken'},
     );
   }
 }

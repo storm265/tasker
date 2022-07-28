@@ -10,22 +10,23 @@ import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
 import 'package:todo2/services/error_service/error_service.dart';
-import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 class SignInController extends ChangeNotifier {
-  final AuthRepositoryImpl authRepository;
+  final AuthRepositoryImpl _authRepository;
   final FormValidatorController formValidatorController;
-  final SecureStorageSource storageSource;
-  final UserProfileRepositoryImpl userProfileRepository;
+  final SecureStorageSource _storageSource;
+  final UserProfileRepositoryImpl _userProfileRepository;
 
   SignInController({
-    required this.authRepository,
-    required this.storageSource,
-    required this.userProfileRepository,
+    required AuthRepositoryImpl authRepository,
+    required SecureStorageSource storageSource,
+    required UserProfileRepositoryImpl userProfileRepository,
     required this.formValidatorController,
-  });
+  })  : _storageSource = storageSource,
+        _authRepository = authRepository,
+        _userProfileRepository = userProfileRepository;
 
   final formKey = GlobalKey<FormState>();
   final isClickedSubmitButton = ValueNotifier(true);
@@ -56,42 +57,42 @@ class SignInController extends ChangeNotifier {
     required String password,
   }) async {
     try {
-      final response = await authRepository.signIn(
+      final response = await _authRepository.signIn(
         email: email,
         password: password,
       );
-      // if (response.statusCode != 200) {
-      //   MessageService.displaySnackbar(
-      //     context: context,
-      //     message: response.statusMessage!,
-      //   );
-      // } else {
-      //   // await Future.delayed(
-      //   //   const Duration(seconds: 0),
-      //   //   () => NavigationService.navigateTo(context, Pages.home),
-      //   // );
-      // }
 
-      final userData = await userProfileRepository.fetchCurrentUser(
-          id: response[AuthScheme.userId]);
-
-      log('id ${response[AuthScheme.userId]}');
-      log('email $email');
-      log('password $password');
-      log('username ${userData[AuthScheme.username]}');
-      log('accessToken ${response[AuthScheme.accessToken]}');
-      log('refreshToken ${response[AuthScheme.refreshToken]}');
-      log('created AT  ${userData[AuthScheme.createdAt]}');
-      log('avatarUrl  ${userData[AuthScheme.avatarUrl]}');
-
-      storageSource.storageApi.saveUserData(
-        email: email,
-        username: userData[AuthScheme.username],
-        refreshToken: response[AuthScheme.refreshToken],
+      final userData = await _userProfileRepository.fetchCurrentUser(
         accessToken: response[AuthScheme.accessToken],
         id: response[AuthScheme.userId],
-        avatarUrl: userData[AuthScheme.avatarUrl],
       );
+
+      Future.wait([
+        _storageSource.storageApi.saveUserData(
+          type: StorageDataType.id,
+          value: response[AuthScheme.userId],
+        ),
+        _storageSource.storageApi.saveUserData(
+          type: StorageDataType.email,
+          value: email,
+        ),
+        _storageSource.storageApi.saveUserData(
+          type: StorageDataType.username,
+          value: userData[AuthScheme.username],
+        ),
+        _storageSource.storageApi.saveUserData(
+          type: StorageDataType.avatarUrl,
+          value: userData[AuthScheme.avatarUrl],
+        ),
+        _storageSource.storageApi.saveUserData(
+          type: StorageDataType.refreshToken,
+          value: response[AuthScheme.refreshToken],
+        ),
+        _storageSource.storageApi.saveUserData(
+          type: StorageDataType.accessToken,
+          value: response[AuthScheme.accessToken],
+        ),
+      ]).then((value) => NavigationService.navigateTo(context, Pages.home));
     } catch (e) {
       ErrorService.printError('Error in signIn() controller: $e');
       rethrow;

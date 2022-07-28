@@ -12,7 +12,7 @@ abstract class UserProfileRepository {
     required String username,
     required String id,
   });
-  Future fetchCurrentUser({required String id});
+  Future fetchCurrentUser({required String id, required String accessToken});
   Future fetchUserWhere({required String userName});
   Future fetchAvatar();
 }
@@ -41,9 +41,11 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
   }
 
   @override
-  Future<Map<String, dynamic>> fetchCurrentUser({required String id}) async {
+  Future<Map<String, dynamic>> fetchCurrentUser(
+      {required String id, required String accessToken}) async {
     try {
-      final response = await _userProfileDataSource.fetchCurrentUser(id: id);
+      final response = await _userProfileDataSource.fetchCurrentUser(
+          id: id, accessToken: accessToken);
 
       return response.data[UserDataScheme.data];
     } catch (e) {

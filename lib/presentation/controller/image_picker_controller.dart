@@ -89,14 +89,24 @@ class ImageController extends ChangeNotifier {
     }
   }
 
-  Future<Map<dynamic, dynamic>> uploadAvatar({required String userId}) async {
+  Future<Map<dynamic, dynamic>> uploadAvatar({
+    required String userId,
+    required String accessToken,
+    required BuildContext context,
+  }) async {
     try {
-      final response = await avatarStorageRepository.uploadAvatar(
-        userId: userId,
-        name: pickedFile.value.name,
-        file: File(pickedFile.value.path),
-      );
-      return response.data[AuthScheme.data];
+      bool isValidImage = isValidAvatar(context: context);
+      if (isValidImage) {
+        final response = await avatarStorageRepository.uploadAvatar(
+          accessToken: accessToken,
+          userId: userId,
+          name: pickedFile.value.name,
+          file: File(pickedFile.value.path),
+        );
+        return response.data[AuthScheme.data];
+      }else{
+        return Map();
+      }
     } catch (e) {
       ErrorService.printError('uploadAvatar error: $e');
       rethrow;

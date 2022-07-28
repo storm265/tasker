@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
@@ -71,34 +73,41 @@ class SignUpController extends ChangeNotifier {
         password: password,
       );
 
-// if response ok then
       final userSession = response[AuthScheme.userSession];
-
       final imageResponse = await imagePickerController.uploadAvatar(
+          context: context,
+          accessToken: userSession[AuthScheme.accessToken],
           userId: response[AuthScheme.id]);
 
-      await _userProfileRepository.postProfile(
+      Future.wait([
+        _storageSource.storageApi.saveUserData(
+            type: StorageDataType.id, value: response[AuthScheme.id]),
+        _storageSource.storageApi
+            .saveUserData(type: StorageDataType.email, value: email),
+        _storageSource.storageApi
+            .saveUserData(type: StorageDataType.username, value: username),
+        _storageSource.storageApi.saveUserData(
+            type: StorageDataType.avatarUrl,
+            value: imageResponse[AuthScheme.avatarUrl]),
+        _storageSource.storageApi.saveUserData(
+            type: StorageDataType.refreshToken,
+            value: userSession[AuthScheme.refreshToken]),
+        _storageSource.storageApi.saveUserData(
+            type: StorageDataType.accessToken,
+            value: userSession[AuthScheme.accessToken]),
+      ]);
+
+      await _userProfileRepository
+          .postProfile(
         id: response[AuthScheme.id],
         avatarUrl: imageResponse[AuthScheme.avatarUrl],
         username: username,
-      );
-
-      await _storageSource.storageApi.saveUserData(
-        id: response[AuthScheme.id],
-        email: email,
-        username: username,
-        avatarUrl: imageResponse[AuthScheme.avatarUrl],
-        refreshToken: userSession[AuthScheme.refreshToken],
-        accessToken: userSession[AuthScheme.accessToken],
-      );
-
-      print('image reposs: $imageResponse');
-
-      await _storageSource.storageApi
-          .saveAvatarUrl(avatarUrl: imageResponse[AuthScheme.avatarUrl])
+      )
           .then((_) {
         NavigationService.navigateTo(context, Pages.home);
       });
+
+      print('image reposs: $imageResponse');
     } catch (e, t) {
       ErrorService.printError('$e, $t');
     }
