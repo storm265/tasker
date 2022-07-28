@@ -53,9 +53,8 @@ class AvatarStorageDataSourceImpl implements AvatarStorageDataSource {
         },
       );
 
-      print('filename =@${file.path}${name}');
       final response = await _network.dio.post(_storagePath,
-          data: formData, options: _network.getRequestOptions());
+          data: formData, options: await _network.getRequestOptions());
       return response;
     } catch (e) {
       ErrorService.printError('uploadAvatar error: $e');

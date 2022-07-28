@@ -10,10 +10,6 @@ abstract class AvatarStorageDataSource {
     required File file,
     required String userId,
   });
-  Future updateAvatar({
-    required String bucketImage,
-    required File file,
-  });
 }
 
 class AvatarStorageReposiroryImpl implements AvatarStorageDataSource {

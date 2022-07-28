@@ -22,6 +22,7 @@ import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
+import 'package:todo2/services/network/constants.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -139,7 +140,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         const SignInButtonWidget(
                           buttonText: 'Sign In',
-                        )
+                        ),
                       ],
                     ),
                   ),

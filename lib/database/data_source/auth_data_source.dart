@@ -56,8 +56,8 @@ class AuthDataSourceImpl implements AuthDataSource {
       Response response = await _network.dio.post(
         _signOutUrl,
         data: {
-          AuthScheme.email:
-              _secureStorageService.getUserData(type: StorageDataType.email)
+          AuthScheme.email: await _secureStorageService.getUserData(
+              type: StorageDataType.email)
         },
         options: _network.authOptions,
       );

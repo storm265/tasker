@@ -42,15 +42,9 @@ class ProjectUserDataImpl implements ProjectUserData {
           ProjectDataScheme.title: title,
           ProjectDataScheme.createdAt: DateTime.now().toIso8601String(),
         },
-        options: _network.getRequestOptions(),
+        options:await _network.getRequestOptions(),
       );
-      String? id =
-          await _secureStorageService.getUserData(type: StorageDataType.id);
-      log('id: $id');
-      log('color: $color');
-      log('title: $title');
-      log('response: postProject ${response.data}');
-      log('response: postProject ${response.statusCode}');
+
       return response;
     } catch (e) {
       ErrorService.printError('Error in ProjectUserDataImpl postProject(): $e');

@@ -75,17 +75,23 @@ class SignInController extends ChangeNotifier {
       final userData = await userProfileRepository.fetchCurrentUser(
           id: response[AuthScheme.userId]);
 
-      print('id ${response[AuthScheme.userId]}');
-      print('email $email');
-      print('password $password');
-      print('username ${userData[AuthScheme.username]}');
-      print('accessToken ${response[AuthScheme.accessToken]}');
-      print('refreshToken ${response[AuthScheme.refreshToken]}');
-      print('created AT  ${userData[AuthScheme.createdAt]}');
-      print('avatarUrl  ${userData[AuthScheme.avatarUrl]}');
+      log('id ${response[AuthScheme.userId]}');
+      log('email $email');
+      log('password $password');
+      log('username ${userData[AuthScheme.username]}');
+      log('accessToken ${response[AuthScheme.accessToken]}');
+      log('refreshToken ${response[AuthScheme.refreshToken]}');
+      log('created AT  ${userData[AuthScheme.createdAt]}');
+      log('avatarUrl  ${userData[AuthScheme.avatarUrl]}');
 
-      //  storageSource.storageApi.putUserData(email: email, password: password, username: userData[AuthScheme.username], refreshToken: response[AuthScheme.refreshToken], accessToken: response[AuthScheme.accessToken], id: response[UserDataScheme.id],createdAt: response[UserDataScheme.createdAt],avatarUrl: response[UserDataScheme.avatarUrl]);
-
+      storageSource.storageApi.saveUserData(
+        email: email,
+        username: userData[AuthScheme.username],
+        refreshToken: response[AuthScheme.refreshToken],
+        accessToken: response[AuthScheme.accessToken],
+        id: response[AuthScheme.userId],
+        avatarUrl: userData[AuthScheme.avatarUrl],
+      );
     } catch (e) {
       ErrorService.printError('Error in signIn() controller: $e');
       rethrow;

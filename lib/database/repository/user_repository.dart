@@ -44,7 +44,7 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
   Future<Map<String, dynamic>> fetchCurrentUser({required String id}) async {
     try {
       final response = await _userProfileDataSource.fetchCurrentUser(id: id);
-      print('reponse data : ${response.data}');
+
       return response.data[UserDataScheme.data];
     } catch (e) {
       ErrorService.printError(

@@ -59,28 +59,31 @@ class SecureStorageService {
     }
   }
 
-  Future<void> saveAvatarUrl({required String avatarUrl}) async {
+  Future<void> saveUserData(
+      {required StorageDataType type, required String value}) async {
     try {
-      await _storage.write(key: AuthScheme.avatarUrl, value: avatarUrl);
-    } catch (e) {
-      ErrorService.printError('SecureStorageService putAvatarUrl error: $e');
-      rethrow;
-    }
-  }
+      switch (type) {
+        case StorageDataType.id:
+          await _storage.write(key: AuthScheme.userId, value: value);
+          break;
+        case StorageDataType.email:
+          await _storage.write(key: AuthScheme.email, value: value);
+          break;
+        case StorageDataType.accessToken:
+          await _storage.write(key: AuthScheme.accessToken, value: value);
+          break;
 
-  Future<void> saveUserData({
-    required String id,
-    required String email,
-    required String username,
-    required String refreshToken,
-    required String accessToken,
-  }) async {
-    try {
-      await _storage.write(key: AuthScheme.userId, value: id);
-      await _storage.write(key: AuthScheme.email, value: email);
-      await _storage.write(key: AuthScheme.username, value: username);
-      await _storage.write(key: AuthScheme.accessToken, value: accessToken);
-      await _storage.write(key: AuthScheme.refreshToken, value: refreshToken);
+        case StorageDataType.username:
+          await _storage.write(key: AuthScheme.username, value: value);
+          break;
+        case StorageDataType.refreshToken:
+          await _storage.write(key: AuthScheme.refreshToken, value: value);
+          break;
+        case StorageDataType.avatarUrl:
+          await _storage.write(key: AuthScheme.avatarUrl, value: value);
+          break;
+        default:
+      }
     } catch (e) {
       ErrorService.printError('SecureStorageService putUserData error: $e');
       rethrow;

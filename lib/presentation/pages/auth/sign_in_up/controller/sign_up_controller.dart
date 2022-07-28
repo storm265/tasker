@@ -74,31 +74,31 @@ class SignUpController extends ChangeNotifier {
 // if response ok then
       final userSession = response[AuthScheme.userSession];
 
+      final imageResponse = await imagePickerController.uploadAvatar(
+          userId: response[AuthScheme.id]);
+
+      await _userProfileRepository.postProfile(
+        id: response[AuthScheme.id],
+        avatarUrl: imageResponse[AuthScheme.avatarUrl],
+        username: username,
+      );
+
       await _storageSource.storageApi.saveUserData(
         id: response[AuthScheme.id],
         email: email,
         username: username,
+        avatarUrl: imageResponse[AuthScheme.avatarUrl],
         refreshToken: userSession[AuthScheme.refreshToken],
         accessToken: userSession[AuthScheme.accessToken],
       );
 
-      final imageResponse = await imagePickerController.uploadAvatar(
-          userId: response[AuthScheme.id]);
-
       print('image reposs: $imageResponse');
 
-      // await _storageSource.storageApi
-      //     .saveAvatarUrl(avatarUrl: imageResponse[AuthScheme.avatarUrl]);
-
-      // await userProfileRepository
-      //     .postProfile(
-      //   id: response[AuthScheme.id],
-      //   avatarUrl: imageResponse[AuthScheme.avatarUrl],
-      //   username: username,
-      // )
-      //     .then((_) {
-      //   NavigationService.navigateTo(context, Pages.home);
-      // });
+      await _storageSource.storageApi
+          .saveAvatarUrl(avatarUrl: imageResponse[AuthScheme.avatarUrl])
+          .then((_) {
+        NavigationService.navigateTo(context, Pages.home);
+      });
     } catch (e, t) {
       ErrorService.printError('$e, $t');
     }

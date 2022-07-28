@@ -15,13 +15,12 @@ abstract class UserProfileDataSource {
   });
   Future<Response<dynamic>> fetchCurrentUser({required String id});
   Future<Response<dynamic>> fetchUsersWhere({required String userName});
-  Future<Response<dynamic>> updateAvatar({required String avatarUrl});
 }
 
 class UserProfileDataSourceImpl implements UserProfileDataSource {
   final _network = NetworkSource().networkApiClient;
-  final _path = '/users-avatar';
-  final _userPath = '/users/';
+
+  final _userPath = '/users';
   final _userAvatarPath = '/users-avatar/';
   final _storage = SecureStorageService();
   @override
@@ -32,17 +31,15 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
   }) async {
     try {
       final response = await _network.dio.post(
-        _path,
+        _userAvatarPath,
         data: {
           UserDataScheme.id: id,
           UserDataScheme.username: username,
           UserDataScheme.avatarUrl: avatarUrl,
           UserDataScheme.createdAt: DateTime.now().toString(),
         },
-        options: _network.getRequestOptions(),
+        options: await _network.getRequestOptions(),
       );
-      log('response data insertUserProfile : ${response.data}');
-      log('response data insertUserProfile : ${response.statusCode}');
       return response;
     } catch (e) {
       ErrorService.printError(
@@ -54,11 +51,22 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
   @override
   Future<Response<dynamic>> fetchCurrentUser({required String id}) async {
     try {
+      print('$_userPath/$id');
+      final data = await _network.getRequestOptions();
+      print('headers: ${data.headers}');
       final response = await _network.dio.get(
-        _userPath,
-        queryParameters: {UserDataScheme.id: id},
-        options: _network.getRequestOptions(),
+        'https://todolist.dev2.cogniteq.com/api/v1/users/f4d90fa5-1285-4cda-859d-973fbbfcd47e',
+        
+        // options: await _network.getRequestOptions(),
+        options: Options(
+          headers: {
+            'Authorization':
+                'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJodHRwOi8vMC4wLjAuMDo4MDgwLyIsImlzcyI6Imh0dHA6Ly8wLjAuMC4wOjgwODAvIiwiZXhwIjoxNjU5MTkyNzUxLCJlbWFpbCI6ImNsb3duMjFAbWFpbC5ydSJ9.O7hVTkbTnv9Tgqs2L3YTdVJ4IPheDlNtomirJ1cVnM0',
+          },
+        ),
       );
+      log(' data : ${response.data}');
+
       return response;
     } catch (e) {
       ErrorService.printError(
@@ -75,29 +83,12 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
         queryParameters: {
           UserDataScheme.id: _storage.getUserData(type: StorageDataType.id)
         },
-        options: _network.getRequestOptions(),
+        options: await _network.getRequestOptions(),
       );
       return response;
     } catch (e) {
       ErrorService.printError(
           'Error in UserProfileDataSourceImpl fetchAvatar(): $e');
-      rethrow;
-    }
-  }
-
-  @override
-  Future<Response<dynamic>> updateAvatar({required String avatarUrl}) async {
-    try {
-      // final response = await _supabase
-      //     .from(_table)
-      //     .update({UserProfileScheme.avatarUrl: avatarUrl})
-      //     .eq(UserProfileScheme.uuid, _supabase.auth.currentUser!.id)
-      //     .execute();
-      // return response;
-      return Future.delayed(Duration(seconds: 1));
-    } catch (e) {
-      ErrorService.printError(
-          'Error in UserProfileDataSourceImpl updateAvatar(): $e');
       rethrow;
     }
   }
