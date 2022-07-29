@@ -33,6 +33,7 @@ class NetworkConfiguration {
       print(" Upload Resposne 12 ${e.error}");
       return handler.next(e); //continue
     }));
+    
   final String tokenType = 'Bearer';
 
   final Options authOptions = Options(
@@ -43,20 +44,25 @@ class NetworkConfiguration {
   );
   final _storageSource = SecureStorageSource().storageApi;
 
-  Future<Options> getLocalRequestOptions() async {
+  Future<Options> getLocalRequestOptions({bool useContentType = false}) async {
     return Options(
       validateStatus: (_) => true,
       headers: {
         'Authorization':
-            '$tokenType ${await _storageSource.getUserData(type: StorageDataType.accessToken)}'
+            '$tokenType ${await _storageSource.getUserData(type: StorageDataType.accessToken)}',
+        useContentType ? 'Content-Type' : 'application/json': null,
       },
     );
   }
 
-  Options getRequestOptions({required String accessToken}) {
+  Options getRequestOptions(
+      {required String accessToken, bool useContentType = false}) {
     return Options(
       validateStatus: (_) => true,
-      headers: {'Authorization': '$tokenType $accessToken'},
+      headers: {
+        'Authorization': '$tokenType $accessToken',
+        useContentType ? 'Content-Type' : 'application/json': null,
+      },
     );
   }
 }

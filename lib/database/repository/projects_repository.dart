@@ -1,11 +1,12 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:todo2/database/data_source/projects_user_data_source.dart';
+import 'package:todo2/database/data_source/projects_data_source.dart';
 import 'package:todo2/database/database_scheme/project_user_scheme.dart';
 import 'package:todo2/database/model/projects_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
+import 'package:todo2/services/storage/secure_storage_service.dart';
 
 abstract class ProjectRepository<T> {
-  Future fetchProject();
+  Future fetchOneProject();
 
   Future postProject({
     required String color,
@@ -28,11 +29,14 @@ abstract class ProjectRepository<T> {
 }
 
 class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
-  final _projectDataSource = ProjectUserDataImpl();
+  final _projectDataSource = ProjectUserDataImpl(
+    secureStorageService: SecureStorageService(),
+  );
+
   @override
-  Future<Map<String, dynamic>> fetchProject() async {
+  Future<Map<String, dynamic>> fetchOneProject() async {
     try {
-      final response = await _projectDataSource.fetchProject();
+      final response = await _projectDataSource.fetchOneProject();
       return response.data[ProjectDataScheme.data];
     } catch (e) {
       ErrorService.printError(
@@ -47,7 +51,7 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
     required String title,
   }) async {
     try {
-      await _projectDataSource.postProject(color: color, title: title);
+      await _projectDataSource.createProject(color: color, title: title);
     } catch (e) {
       ErrorService.printError(
           'Error in ProjectRepositoryImpl postProject() $e');

@@ -49,7 +49,7 @@ class ProfileController extends ChangeNotifier {
   Future<Map<String, dynamic>> fetchProject(
       {required BuildContext context}) async {
     try {
-      return projectsRepository.fetchProject();
+      return projectsRepository.fetchOneProject();
     } catch (e) {
       ErrorService.printError(
           "Error in ProfileController  fetchProject() :$e ");

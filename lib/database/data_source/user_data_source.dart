@@ -13,7 +13,11 @@ abstract class UserProfileDataSource {
     required String username,
     required String id,
   });
-  Future<Response<dynamic>> fetchCurrentUser({required String id , required String accessToken});
+  Future<Response<dynamic>> fetchCurrentUser({
+    required String id,
+    required String accessToken,
+  });
+  
   Future<Response<dynamic>> fetchUsersWhere({required String userName});
 }
 
@@ -49,16 +53,13 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
   }
 
   @override
-  Future<Response<dynamic>> fetchCurrentUser({required String id , required String accessToken}) async {
+  Future<Response<dynamic>> fetchCurrentUser(
+      {required String id, required String accessToken}) async {
     try {
-   
       final response = await _network.dio.get(
-        'https://todolist.dev2.cogniteq.com/api/v1/users/f4d90fa5-1285-4cda-859d-973fbbfcd47e',
-        
-        options:  _network.getRequestOptions(accessToken:accessToken ),
-      
+        '$_userPath/$id',
+        options: _network.getRequestOptions(accessToken: accessToken),
       );
-      log(' data : ${response.data}');
 
       return response;
     } catch (e) {
@@ -76,7 +77,8 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
         queryParameters: {
           UserDataScheme.id: _storage.getUserData(type: StorageDataType.id)
         },
-        options: await _network.getLocalRequestOptions(),
+        // TODO with headers
+        options: await _network.getLocalRequestOptions(useContentType: true),
       );
       return response;
     } catch (e) {

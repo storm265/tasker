@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:todo2/database/data_source/storage/avatar_storage_data_source.dart';
+import 'package:todo2/database/repository/storage/avatar_storage_repository.dart';
 import 'package:todo2/presentation/controller/image_picker_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
@@ -6,7 +8,11 @@ import 'package:todo2/services/theme_service/theme_data_controller.dart';
 Future<void> showSettingsDialog(
     {required BuildContext context,
     required ProfileController profileController}) async {
-  final imageController = ImageController();
+  final imageController = ImageController(
+    avatarRepository: AvatarStorageReposiroryImpl(
+      avatarDataSource: AvatarStorageDataSourceImpl(),
+    ),
+  );
   final List<String> items = ['Update avatar', 'Sign out'];
   final List<IconData> iconDataItems = [Icons.image, Icons.logout];
 
@@ -16,7 +22,7 @@ Future<void> showSettingsDialog(
       return AlertDialog(
         contentPadding: const EdgeInsets.all(0),
         content: SizedBox(
-          height: 200,
+          height: 140,
           width: 250,
           child: ListView.separated(
             separatorBuilder: (_, __) {
@@ -31,12 +37,14 @@ Future<void> showSettingsDialog(
             scrollDirection: Axis.vertical,
             itemCount: items.length,
             shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
             itemBuilder: ((_, index) {
               return GestureDetector(
                 onTap: () async {
                   switch (index) {
                     case 0:
-                      imageController.pushUpdatedAvatar(
+                      imageController.uploadAvatar(
+                        
                         profileController: profileController,
                         context: context,
                       );

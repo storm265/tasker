@@ -78,7 +78,7 @@ class ProjectController extends ChangeNotifier {
 
   Future<Map<String, dynamic>> fetchProjects() async {
     try {
-      final projects = await _projectsRepository.fetchProject();
+      final projects = await _projectsRepository.fetchOneProject();
       return projects;
     } catch (e) {
       ErrorService.printError('Error in fetchProjects(): $e');

@@ -36,8 +36,10 @@ Map<String, Widget Function(BuildContext)> routes = {
 };
 
 class NavigationService {
-  static Future<void> navigateTo(BuildContext context, Pages page,
-      {Object? arguments}) async {
+  static Future<void> navigateTo(
+    BuildContext context,
+    Pages page,
+  ) async {
     switch (page) {
       case Pages.welcome:
         await Navigator.pushNamedAndRemoveUntil(

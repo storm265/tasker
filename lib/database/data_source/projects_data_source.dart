@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/database/database_scheme/project_user_scheme.dart';
 import 'package:todo2/database/model/projects_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
@@ -9,26 +10,31 @@ import 'package:todo2/services/network/constants.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 abstract class ProjectUserData {
-  Future fetchProject();
   Future updateProject({
     required String color,
     required String title,
     required String oldTitle,
   });
   Future deleteProject({required ProjectModel projectModel});
-  Future postProject({required String color, required String title});
+  Future createProject({required String color, required String title});
   Future fetchProjectsWhere({required String title});
   Future fetchProjectId({required String project});
   Future findDublicates({required String title});
+
+  Future fetchOneProject();
+  Future fetchAllProjects();
 }
 
 class ProjectUserDataImpl implements ProjectUserData {
-  final SecureStorageService _secureStorageService = SecureStorageService();
+  ProjectUserDataImpl({required SecureStorageService secureStorageService})
+      : _secureStorageService = secureStorageService;
+
+  final SecureStorageService _secureStorageService;
   final _path = '/projects';
   final _network = NetworkSource().networkApiClient;
 
   @override
-  Future<Response<dynamic>> postProject({
+  Future<Response<dynamic>> createProject({
     required String color,
     required String title,
   }) async {
@@ -42,6 +48,7 @@ class ProjectUserDataImpl implements ProjectUserData {
           ProjectDataScheme.title: title,
           ProjectDataScheme.createdAt: DateTime.now().toIso8601String(),
         },
+        // TODO with header
         options: await _network.getLocalRequestOptions(),
       );
 
@@ -53,15 +60,34 @@ class ProjectUserDataImpl implements ProjectUserData {
   }
 
   @override
-  Future<PostgrestResponse<dynamic>> fetchProject() async {
+  Future<Response<dynamic>> fetchOneProject() async {
     try {
-      // final response = await _supabase
-      //     .from(_table)
-      //     .select()
-      //     .eq(ProjectDataScheme.ownerId, _supabase.auth.currentUser!.id)
-      //     .execute();
-      // return response;
-      return Future.delayed(Duration(seconds: 1));
+      final response = await _network.dio.get(
+        _path,
+        options: await _network.getLocalRequestOptions(),
+      );
+
+      return response;
+    } catch (e) {
+      ErrorService.printError(
+          'Error in ProjectUserDataImpl fetchProject() dataSource:  $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Response<dynamic>> fetchAllProjects() async {
+    try {
+      final response = await _network.dio.get(
+        _path,
+        queryParameters: {
+          AuthScheme.accessToken:
+              await _secureStorageService.getUserData(type: StorageDataType.id)
+        },
+        options: await _network.getLocalRequestOptions(useContentType: true),
+      );
+
+      return response;
     } catch (e) {
       ErrorService.printError(
           'Error in ProjectUserDataImpl fetchProject() dataSource:  $e');

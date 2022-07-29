@@ -12,8 +12,8 @@ abstract class ChecklistItemsDataSource {
 }
 
 class ChecklistItemsDataSourceImpl implements ChecklistItemsDataSource {
-  final _table = 'checklist_items';
-  final _supabase = NetworkSource().networkApiClient;
+  final _table = '/checklists';
+  final _network = NetworkSource().networkApiClient;
 
   @override
   Future<PostgrestResponse<dynamic>> putCheckListItem({

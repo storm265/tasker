@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:todo2/database/data_source/storage/avatar_storage_data_source.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
-import 'package:todo2/database/repository/user_repository.dart';
+import 'package:todo2/database/repository/storage/avatar_storage_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/controller/image_picker_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
@@ -18,11 +19,9 @@ import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/sign_up_button_
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/subtitle_widget.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/textfield_widget.dart';
 import 'package:todo2/presentation/pages/auth/widgets/title_widget.dart';
-import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
-import 'package:todo2/services/network/constants.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -41,7 +40,11 @@ class _SignUpPageState extends State<SignUpPage> {
     AuthRepositoryImpl(),
     UserProfileRepositoryImpl(),
     FormValidatorController(),
-    ImageController(),
+    ImageController(
+      avatarRepository: AvatarStorageReposiroryImpl(
+        avatarDataSource: AvatarStorageDataSourceImpl(),
+      ),
+    ),
     ProjectController(ProjectRepositoryImpl(), ColorPalleteController()),
     SecureStorageSource(),
   );

@@ -3,13 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:todo2/database/data_source/storage/avatar_storage_data_source.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
-import 'package:todo2/database/model/auth_model.dart';
-import 'package:todo2/database/repository/auth_repository.dart';
-import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/storage/avatar_storage_repository.dart';
-import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
@@ -17,15 +12,15 @@ import 'package:todo2/services/message_service/message_service.dart';
 const _defaultAssetPath = 'assets/grey_avatar.jpg';
 
 class ImageController extends ChangeNotifier {
-  final avatarStorageRepository = AvatarStorageReposiroryImpl(
-      avatarDataSource: AvatarStorageDataSourceImpl());
+  ImageController({required AvatarStorageReposiroryImpl avatarRepository})
+      : _avatarStorageRepository = avatarRepository;
+  final AvatarStorageReposiroryImpl _avatarStorageRepository;
 
   final pickedFile = ValueNotifier(XFile(_defaultAssetPath));
   final picker = ImagePicker();
 
   bool get _isWrongImageFormat =>
       pickedFile.value.path.endsWith('.jpg') ||
-      pickedFile.value.path.endsWith('.gif') ||
       pickedFile.value.path.endsWith('.png');
 
   Future<void> pickAvatar() async {
@@ -65,29 +60,6 @@ class ImageController extends ChangeNotifier {
     }
   }
 
-  Future<void> pushUpdatedAvatar({
-    required BuildContext context,
-    required ProfileController profileController,
-  }) async {
-    try {
-      final pushBack = Navigator.pop(context);
-      await pickAvatar();
-      bool isValidImage = isValidAvatar(context: context);
-      if (isValidImage) {
-        final response =
-            await updateAvatar(profileController: profileController);
-        if (response.error == null) {
-          MessageService.displaySnackbar(
-            context: context,
-            message: 'Avatar updated',
-          );
-          pushBack;
-        }
-      }
-    } catch (e) {
-      ErrorService.printError('ImageController pushUpdatedAvatar error: $e');
-    }
-  }
 
   Future<Map<dynamic, dynamic>> uploadAvatar({
     required String userId,
@@ -96,16 +68,21 @@ class ImageController extends ChangeNotifier {
   }) async {
     try {
       bool isValidImage = isValidAvatar(context: context);
+      log('isValidImage: $isValidImage');
       if (isValidImage) {
-        final response = await avatarStorageRepository.uploadAvatar(
+        final response = await _avatarStorageRepository.uploadAvatar(
           accessToken: accessToken,
           userId: userId,
           name: pickedFile.value.name,
           file: File(pickedFile.value.path),
         );
         return response.data[AuthScheme.data];
-      }else{
-        return Map();
+      } else {
+        MessageService.displaySnackbar(
+          context: context,
+          message: 'Invalid Image Format',
+        );
+        return {};
       }
     } catch (e) {
       ErrorService.printError('uploadAvatar error: $e');
@@ -113,19 +90,6 @@ class ImageController extends ChangeNotifier {
     }
   }
 
-  Future<StorageResponse<String>> updateAvatar(
-      {required ProfileController profileController}) async {
-    try {
-      final response = await avatarStorageRepository.updateAvatar(
-        bucketImage: profileController.image,
-        file: File(pickedFile.value.path),
-      );
-      return response;
-    } catch (e) {
-      ErrorService.printError('uploadAvatar error: $e');
-      rethrow;
-    }
-  }
 
   void disposeValues() {
     try {
