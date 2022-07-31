@@ -62,8 +62,7 @@ class ImageController extends ChangeNotifier {
 
 
   Future<Map<dynamic, dynamic>> uploadAvatar({
-    required String userId,
-    required String accessToken,
+
     required BuildContext context,
   }) async {
     try {
@@ -71,8 +70,7 @@ class ImageController extends ChangeNotifier {
       log('isValidImage: $isValidImage');
       if (isValidImage) {
         final response = await _avatarStorageRepository.uploadAvatar(
-          accessToken: accessToken,
-          userId: userId,
+        
           name: pickedFile.value.name,
           file: File(pickedFile.value.path),
         );

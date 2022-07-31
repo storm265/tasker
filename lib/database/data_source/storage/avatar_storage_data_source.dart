@@ -11,8 +11,6 @@ abstract class AvatarStorageDataSource {
   Future uploadAvatar({
     required String name,
     required File file,
-    required String userId,
-    required String accessToken,
   });
   Future updateAvatar({required String bucketImage, required File file});
 }
@@ -20,7 +18,7 @@ abstract class AvatarStorageDataSource {
 class AvatarStorageDataSourceImpl implements AvatarStorageDataSource {
   final _storagePath = '/users-avatar';
   final _network = NetworkSource().networkApiClient;
-  // final _storageSource = SecureStorageSource().storageApi;
+  final _storageSource = SecureStorageSource().storageApi;
   @override
   Future<StorageResponse<String>> updateAvatar(
       {required String bucketImage, required File file}) async {
@@ -41,8 +39,6 @@ class AvatarStorageDataSourceImpl implements AvatarStorageDataSource {
   Future<Response<dynamic>> uploadAvatar({
     required String name,
     required File file,
-    required String userId,
-    required String accessToken,
   }) async {
     try {
       String fileName = file.path.split('/').last;
@@ -52,14 +48,18 @@ class AvatarStorageDataSourceImpl implements AvatarStorageDataSource {
             file.path,
             filename: fileName,
           ),
-          AuthScheme.userId: userId,
+          AuthScheme.userId:
+              await _storageSource.getUserData(type: StorageDataType.id),
         },
       );
       log(' file.path: ${file.path}');
       log(' fileName: $fileName');
       final response = await _network.dio.post(_storagePath,
           data: formData,
-          options: _network.getRequestOptions(accessToken: accessToken));
+          options: _network.getRequestOptions(
+              accessToken: await _storageSource.getUserData(
+                      type: StorageDataType.accessToken) ??
+                  'null'));
       log('response.data: ${response.data}');
       return response;
     } catch (e) {

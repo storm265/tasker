@@ -74,12 +74,8 @@ class SignUpController extends ChangeNotifier {
       );
 
       final userSession = response[AuthScheme.userSession];
-      final imageResponse = await imagePickerController.uploadAvatar(
-          context: context,
-          accessToken: userSession[AuthScheme.accessToken],
-          userId: response[AuthScheme.id]);
-
-      Future.wait([
+      log(response.toString());
+      await Future.wait([
         _storageSource.storageApi.saveUserData(
             type: StorageDataType.id, value: response[AuthScheme.id]),
         _storageSource.storageApi
@@ -87,15 +83,20 @@ class SignUpController extends ChangeNotifier {
         _storageSource.storageApi
             .saveUserData(type: StorageDataType.username, value: username),
         _storageSource.storageApi.saveUserData(
-            type: StorageDataType.avatarUrl,
-            value: imageResponse[AuthScheme.avatarUrl]),
-        _storageSource.storageApi.saveUserData(
             type: StorageDataType.refreshToken,
             value: userSession[AuthScheme.refreshToken]),
         _storageSource.storageApi.saveUserData(
             type: StorageDataType.accessToken,
             value: userSession[AuthScheme.accessToken]),
       ]);
+
+      final imageResponse = await imagePickerController.uploadAvatar(
+        context: context,
+      );
+
+      _storageSource.storageApi.saveUserData(
+          type: StorageDataType.avatarUrl,
+          value: imageResponse[AuthScheme.avatarUrl]);
 
       await _userProfileRepository
           .postProfile(

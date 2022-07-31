@@ -44,8 +44,6 @@ Future<void> showSettingsDialog(
                   switch (index) {
                     case 0:
                       imageController.uploadAvatar(
-                        
-                        profileController: profileController,
                         context: context,
                       );
                       break;

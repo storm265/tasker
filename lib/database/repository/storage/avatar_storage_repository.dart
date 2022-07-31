@@ -8,8 +8,6 @@ abstract class AvatarStorageDataSource {
   Future uploadAvatar({
     required String name,
     required File file,
-    required String userId,
-    required String accessToken,
   });
 }
 
@@ -36,15 +34,11 @@ class AvatarStorageReposiroryImpl implements AvatarStorageDataSource {
   Future<Response<dynamic>> uploadAvatar({
     required String name,
     required File file,
-    required String userId,
-    required String accessToken,
   }) async {
     try {
       final response = await avatarDataSource.uploadAvatar(
-        accessToken: accessToken,
         name: name,
         file: file,
-        userId: userId,
       );
       return response;
     } catch (e) {
