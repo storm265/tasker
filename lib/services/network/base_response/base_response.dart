@@ -7,11 +7,6 @@ abstract class BaseResponse<T> {
 
   BaseResponse({required this.response, required this.error});
 
-// converts json to object
-  T getModel(T model) {
-    return model;
-  }
-
   dynamic isSuccessful();
 }
 
@@ -22,7 +17,7 @@ class MyClass extends BaseResponse<Response> {
   @override
   dynamic isSuccessful() {
     if (NetworkErrorService().returnResponse(response) == 'ok') {
-      return getModel;
+      return response;
     } else {
       // returns error message by status code
       return NetworkErrorService().returnResponse(response);

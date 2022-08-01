@@ -23,6 +23,8 @@ class NetworkConfiguration {
   final Dio dio = Dio()
     ..options.baseUrl = 'https://todolist.dev2.cogniteq.com/api/v1'
     ..interceptors.add(InterceptorsWrapper(onRequest: (options, handler) {
+      // Check token status
+      
       // Do something before request is sent
       print(" Upload Resposne 1 ${options.data}");
       return handler.next(options); //continue

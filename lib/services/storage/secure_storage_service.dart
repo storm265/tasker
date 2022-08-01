@@ -4,6 +4,7 @@ import 'package:todo2/services/error_service/error_service.dart';
 
 enum StorageDataType {
   email,
+  password,
   username,
   accessToken,
   refreshToken,
@@ -28,31 +29,33 @@ class SecureStorageService {
 
   Future<String?> getUserData({required StorageDataType type}) async {
     try {
-      String? username;
+      String? data;
       switch (type) {
         case StorageDataType.id:
-          username = await _storage.read(key: AuthScheme.userId);
+          data = await _storage.read(key: AuthScheme.userId);
           break;
         case StorageDataType.email:
-          username = await _storage.read(key: AuthScheme.email);
+          data = await _storage.read(key: AuthScheme.email);
+          break;
+        case StorageDataType.password:
+          data = await _storage.read(key: AuthScheme.password);
           break;
         case StorageDataType.accessToken:
-          username = await _storage.read(key: AuthScheme.accessToken);
+          data = await _storage.read(key: AuthScheme.accessToken);
           break;
-
         case StorageDataType.username:
-          username = await _storage.read(key: AuthScheme.username);
+          data = await _storage.read(key: AuthScheme.username);
           break;
         case StorageDataType.refreshToken:
-          username = await _storage.read(key: AuthScheme.refreshToken);
+          data = await _storage.read(key: AuthScheme.refreshToken);
           break;
         case StorageDataType.avatarUrl:
-          username = await _storage.read(key: AuthScheme.avatarUrl);
+          data = await _storage.read(key: AuthScheme.avatarUrl);
           break;
         default:
       }
 
-      return username;
+      return data;
     } catch (e) {
       ErrorService.printError('SecureStorageService getUserData error: $e');
       rethrow;
@@ -68,6 +71,9 @@ class SecureStorageService {
           break;
         case StorageDataType.email:
           await _storage.write(key: AuthScheme.email, value: value);
+          break;
+        case StorageDataType.password:
+          await _storage.write(key: AuthScheme.password, value: value);
           break;
         case StorageDataType.accessToken:
           await _storage.write(key: AuthScheme.accessToken, value: value);

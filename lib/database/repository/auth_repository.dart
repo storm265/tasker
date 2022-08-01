@@ -18,6 +18,7 @@ abstract class AuthRepository {
   });
 
   Future signOut();
+  Future refreshToken();
 }
 
 class AuthRepositoryImpl implements AuthRepository {
@@ -69,6 +70,17 @@ class AuthRepositoryImpl implements AuthRepository {
       return response;
     } catch (e) {
       ErrorService.printError('Error in AuthRepositoryImpl signOut(): $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>>  refreshToken() async {
+    try {
+      final response = await _authDataSource.refreshToken();
+      return response.data[AuthScheme.data];
+    } catch (e) {
+      ErrorService.printError('Error in AuthRepositoryImpl refreshToken(): $e');
       rethrow;
     }
   }

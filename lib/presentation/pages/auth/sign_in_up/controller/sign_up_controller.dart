@@ -81,6 +81,8 @@ class SignUpController extends ChangeNotifier {
         _storageSource.storageApi
             .saveUserData(type: StorageDataType.email, value: email),
         _storageSource.storageApi
+            .saveUserData(type: StorageDataType.password, value: password),
+        _storageSource.storageApi
             .saveUserData(type: StorageDataType.username, value: username),
         _storageSource.storageApi.saveUserData(
             type: StorageDataType.refreshToken,

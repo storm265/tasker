@@ -16,6 +16,7 @@ abstract class AuthDataSource {
     required String password,
   });
   Future signOut();
+  Future refreshToken();
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
@@ -32,6 +33,7 @@ class AuthDataSourceImpl implements AuthDataSource {
   final _signInUrl = '/sign-in';
   final _signUpUrl = '/sign-up';
   final _signOutUrl = '/sign-out';
+  final _refreshUrl = '/refresh-token';
 
   @override
   Future<Response<dynamic>> signIn({
@@ -97,6 +99,24 @@ class AuthDataSourceImpl implements AuthDataSource {
       return response;
     } catch (e) {
       ErrorService.printError('Error in signUp() dataSource: $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Response<dynamic>> refreshToken() async {
+    try {
+      Response response = await _network.dio.post(
+        _refreshUrl,
+        data: {
+          AuthScheme.refreshToken: _secureStorageService.getUserData(
+              type: StorageDataType.refreshToken),
+        },
+        options: _network.authOptions,
+      );
+      return response;
+    } catch (e) {
+      ErrorService.printError('Error in refreshToken() dataSource: $e');
       rethrow;
     }
   }

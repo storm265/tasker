@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
 class NetworkErrorService {
-  String returnResponse(Response response) {
+  dynamic returnResponse(Response response) {
     switch (response.statusCode) {
       case 200:
         return 'ok';
