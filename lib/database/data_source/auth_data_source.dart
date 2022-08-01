@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/network/constants.dart';
+import 'package:todo2/services/network/error_network/network_error_service.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 abstract class AuthDataSource {
@@ -18,9 +19,13 @@ abstract class AuthDataSource {
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
+  final NetworkErrorService _networkErrorService;
   final SecureStorageService _secureStorageService;
-  AuthDataSourceImpl({required SecureStorageService secureStorageService})
-      : _secureStorageService = secureStorageService;
+  AuthDataSourceImpl(
+      {required SecureStorageService secureStorageService,
+      required NetworkErrorService networkErrorService})
+      : _secureStorageService = secureStorageService,
+        _networkErrorService = networkErrorService;
 
   final _network = NetworkSource().networkApiClient;
 
@@ -43,7 +48,11 @@ class AuthDataSourceImpl implements AuthDataSource {
         options: _network.authOptions,
       );
 
-      return response;
+      if (_networkErrorService.returnResponse(response) == 'ok') {
+        return response;
+      } else {
+        return _networkErrorService.returnResponse(response);
+      }
     } catch (e) {
       ErrorService.printError('Error in signIn() dataSource: $e');
       rethrow;

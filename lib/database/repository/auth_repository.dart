@@ -1,11 +1,8 @@
-import 'dart:collection';
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:todo2/database/data_source/auth_data_source.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
-import 'package:todo2/database/model/auth_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
+import 'package:todo2/services/network/error_network/network_error_service.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 abstract class AuthRepository {
@@ -24,8 +21,10 @@ abstract class AuthRepository {
 }
 
 class AuthRepositoryImpl implements AuthRepository {
-  final _authDataSource =
-      AuthDataSourceImpl(secureStorageService: SecureStorageService());
+  final _authDataSource = AuthDataSourceImpl(
+    secureStorageService: SecureStorageService(),
+    networkErrorService: NetworkErrorService(),
+  );
 
   @override
   Future<Map<String, dynamic>> signIn({

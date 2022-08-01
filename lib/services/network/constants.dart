@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
@@ -17,6 +15,10 @@ class NetworkSource {
   NetworkConfiguration get networkApiClient => _supabaseClient;
 }
 
+const _contentType = 'Content-Type';
+const _authorization = 'Authorization';
+const _jsonApp = 'application/json';
+
 class NetworkConfiguration {
   final Dio dio = Dio()
     ..options.baseUrl = 'https://todolist.dev2.cogniteq.com/api/v1'
@@ -33,13 +35,13 @@ class NetworkConfiguration {
       print(" Upload Resposne 12 ${e.error}");
       return handler.next(e); //continue
     }));
-    
+
   final String tokenType = 'Bearer';
 
   final Options authOptions = Options(
     validateStatus: (_) => true,
     headers: {
-      'Content-Type': 'application/json',
+      _contentType: _jsonApp,
     },
   );
   final _storageSource = SecureStorageSource().storageApi;
@@ -48,9 +50,9 @@ class NetworkConfiguration {
     return Options(
       validateStatus: (_) => true,
       headers: {
-        'Authorization':
+        _authorization:
             '$tokenType ${await _storageSource.getUserData(type: StorageDataType.accessToken)}',
-        useContentType ? 'Content-Type' : 'application/json': null,
+        useContentType ? _contentType : _jsonApp: null,
       },
     );
   }
@@ -60,9 +62,11 @@ class NetworkConfiguration {
     return Options(
       validateStatus: (_) => true,
       headers: {
-        'Authorization': '$tokenType $accessToken',
-        useContentType ? 'Content-Type' : 'application/json': null,
+        _authorization: '$tokenType $accessToken',
+        useContentType ? _contentType : _jsonApp: null,
       },
     );
   }
+
+  
 }
