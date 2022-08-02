@@ -60,7 +60,7 @@ class ProjectController extends ChangeNotifier {
                   color: selectedModel.value.color,
                   title: title,
                 )
-              : await _projectsRepository.postProject(
+              : await _projectsRepository.createProject(
                   color: colors[colorPalleteController.selectedIndex.value]
                       .value
                       .toString(),
@@ -113,7 +113,7 @@ class ProjectController extends ChangeNotifier {
     required String title,
   }) async {
     try {
-      await _projectsRepository.postProject(color: color, title: title);
+      await _projectsRepository.createProject(color: color, title: title);
     } catch (e) {
       ErrorService.printError('Error in fetchProjects(): $e');
       rethrow;

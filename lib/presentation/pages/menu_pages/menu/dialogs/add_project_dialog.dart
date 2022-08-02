@@ -9,7 +9,6 @@ Future<void> showAddProjectDialog({
   required ProjectController projectController,
   required TextEditingController titleController,
 }) async {
-
   await showDialog(
     context: context,
     builder: (_) => AlertDialog(
@@ -42,16 +41,6 @@ Future<void> showAddProjectDialog({
                   ),
                 ),
                 const SizedBox(height: 50),
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      'Choose Color',
-                      style: TextStyle(fontWeight: FontWeight.w300),
-                    ),
-                  ),
-                ),
                 ColorPalleteWidget(
                     colorController: projectController.colorPalleteController)
               ],
@@ -75,7 +64,7 @@ Future<void> showAddProjectDialog({
                               status == ProjectDialogStatus.add ? false : true,
                           onSuccessCallback: () => Navigator.of(context).pop(),
                         );
-                      
+
                         projectController.setClickedValue(true);
                       }
                     : null,

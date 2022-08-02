@@ -1,21 +1,28 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:todo2/services/message_service/message_service.dart';
 
 class NetworkErrorService {
-  dynamic returnResponse(Response response) {
+  Response<dynamic> returnResponse(
+      {required Response response, required BuildContext context}) {
     switch (response.statusCode) {
       case 200:
-        return 'ok';
+        return response.data;
       case 201:
-        return 'ok';
+        return response.data;
       case 400:
-        return response.data.toString();
+        throw MessageService.displaySnackbar(
+            context: context, message: 'error 400');
       case 401:
-        return response.data.toString();
+        throw MessageService.displaySnackbar(
+            context: context, message: 'error 401');
       case 403:
-        return response.data.toString();
+        throw MessageService.displaySnackbar(
+            context: context, message: 'error 403');
       case 500:
-      default:
-        return 'Communication server error: ${response.statusCode}';
+        throw MessageService.displaySnackbar(
+            context: context, message: 'error 500');
     }
+    return response.data;
   }
 }

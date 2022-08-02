@@ -3,6 +3,13 @@ import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_cont
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/dialogs/add_project_dialog.dart';
 
+/*
+Color(0xfff44336)
+            .toString()
+            .replaceAll('Color(0xff', '#')
+            .replaceAll(')', '')
+            .toUpperCase()
+*/
 class AddProjectButton extends StatelessWidget {
   final Function notifyParent;
   final ProjectController projectController;

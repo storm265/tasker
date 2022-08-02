@@ -58,6 +58,7 @@ class SignInController extends ChangeNotifier {
   }) async {
     try {
       final response = await _authRepository.signIn(
+        context: context,
         email: email,
         password: password,
       );

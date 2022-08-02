@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/auth_data_source.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/services/error_service/error_service.dart';
@@ -15,6 +16,7 @@ abstract class AuthRepository {
   Future signIn({
     required String email,
     required String password,
+    required BuildContext context,
   });
 
   Future signOut();
@@ -31,9 +33,11 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Map<String, dynamic>> signIn({
     required String email,
     required String password,
+    required BuildContext context,
   }) async {
     try {
       final response = await _authDataSource.signIn(
+        context: context,
         email: email,
         password: password,
       );
@@ -75,7 +79,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Map<String, dynamic>>  refreshToken() async {
+  Future<Map<String, dynamic>> refreshToken() async {
     try {
       final response = await _authDataSource.refreshToken();
       return response.data[AuthScheme.data];

@@ -1,26 +1,19 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:todo2/services/network/error_network/network_error_service.dart';
 
-abstract class BaseResponse<T> {
-  T response;
+class BaseResponse {
+  Response response;
   NetworkErrorService error;
+  BuildContext context;
 
-  BaseResponse({required this.response, required this.error});
+  BaseResponse({
+    required this.response,
+    required this.error,
+    required this.context,
+  });
 
-  dynamic isSuccessful();
-}
-
-class MyClass extends BaseResponse<Response> {
-  MyClass({required Response response, required NetworkErrorService error})
-      : super(response: response, error: error);
-
-  @override
-  dynamic isSuccessful() {
-    if (NetworkErrorService().returnResponse(response) == 'ok') {
-      return response;
-    } else {
-      // returns error message by status code
-      return NetworkErrorService().returnResponse(response);
-    }
+  Response isSuccessful() {
+    return error.returnResponse(response: response, context: context);
   }
 }

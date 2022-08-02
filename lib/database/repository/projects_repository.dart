@@ -8,7 +8,7 @@ import 'package:todo2/services/storage/secure_storage_service.dart';
 abstract class ProjectRepository<T> {
   Future fetchOneProject();
 
-  Future postProject({
+  Future createProject({
     required String color,
     required String title,
   });
@@ -46,7 +46,7 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
   }
 
   @override
-  Future<void> postProject({
+  Future<void> createProject({
     required String color,
     required String title,
   }) async {

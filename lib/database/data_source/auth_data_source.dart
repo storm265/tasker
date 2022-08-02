@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/services/error_service/error_service.dart';
+import 'package:todo2/services/network/base_response/base_response.dart';
 import 'package:todo2/services/network/constants.dart';
 import 'package:todo2/services/network/error_network/network_error_service.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
@@ -14,6 +18,7 @@ abstract class AuthDataSource {
   Future signIn({
     required String email,
     required String password,
+    required BuildContext context,
   });
   Future signOut();
   Future refreshToken();
@@ -36,9 +41,10 @@ class AuthDataSourceImpl implements AuthDataSource {
   final _refreshUrl = '/refresh-token';
 
   @override
-  Future<Response<dynamic>> signIn({
+  Future<Response> signIn({
     required String email,
     required String password,
+    required BuildContext context,
   }) async {
     try {
       Response response = await _network.dio.post(
@@ -49,12 +55,12 @@ class AuthDataSourceImpl implements AuthDataSource {
         },
         options: _network.authOptions,
       );
-
-      if (_networkErrorService.returnResponse(response) == 'ok') {
-        return response;
-      } else {
-        return _networkErrorService.returnResponse(response);
-      }
+      return response;
+      // return BaseResponse(
+      //   response: response,
+      //   error: NetworkErrorService(),
+      //   context: context,
+      // ).isSuccessful();
     } catch (e) {
       ErrorService.printError('Error in signIn() dataSource: $e');
       rethrow;

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/services/error_service/error_service.dart';
@@ -15,7 +16,7 @@ class UpdateTokenService {
   })  : _authRepository = authRepository,
         _secureStorageService = secureStorageService;
 
-  Future<void> updateToken() async {
+  Future<void> updateToken({required BuildContext context}) async {
     try {
       final email = await _secureStorageService.getUserData(
               type: StorageDataType.email) ??
@@ -24,8 +25,8 @@ class UpdateTokenService {
               type: StorageDataType.password) ??
           '';
 
-      final response =
-          await _authRepository.signIn(email: email, password: password);
+      final response = await _authRepository.signIn(
+          email: email, password: password, context: context);
 
       final expiresAt = DateTime.fromMillisecondsSinceEpoch(
           response[AuthScheme.expiresIn] * 1000);
@@ -35,10 +36,10 @@ class UpdateTokenService {
       if (DateTime.now().isAfter(expiresAt)) {
         log('*** Token is expired *** ');
         log('*** Updating token *** ');
-        final response = await _authRepository.refreshToken();
-        await _secureStorageService.saveUserData(
-            type: StorageDataType.refreshToken,
-            value: response[AuthScheme.refreshToken]);
+        // final response = await _authRepository.refreshToken();
+        // await _secureStorageService.saveUserData(
+        //     type: StorageDataType.refreshToken,
+        //     value: response[AuthScheme.refreshToken]);
         log('*** Token updated *** ');
       }
     } catch (e) {

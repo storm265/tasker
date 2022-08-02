@@ -20,7 +20,6 @@ abstract class ProjectUserData {
   Future fetchProjectsWhere({required String title});
   Future fetchProjectId({required String project});
   Future findDublicates({required String title});
-
   Future fetchOneProject();
   Future fetchAllProjects();
 }
@@ -30,7 +29,8 @@ class ProjectUserDataImpl implements ProjectUserData {
       : _secureStorageService = secureStorageService;
 
   final SecureStorageService _secureStorageService;
-  final _path = '/projects';
+  final _projects = '/projects';
+  final _projectsSearch = '/projects-search';
   final _network = NetworkSource().networkApiClient;
 
   @override
@@ -40,18 +40,16 @@ class ProjectUserDataImpl implements ProjectUserData {
   }) async {
     try {
       final response = await _network.dio.post(
-        _path,
+        _projects,
         data: {
           ProjectDataScheme.ownerId:
               await _secureStorageService.getUserData(type: StorageDataType.id),
           ProjectDataScheme.color: color,
           ProjectDataScheme.title: title,
-          ProjectDataScheme.createdAt: DateTime.now().toIso8601String(),
         },
-        // TODO with header
-        options: await _network.getLocalRequestOptions(),
+        options: await _network.getLocalRequestOptions(useContentType: true),
       );
-
+      log('createProject ${response.data}');
       return response;
     } catch (e) {
       ErrorService.printError('Error in ProjectUserDataImpl postProject(): $e');
@@ -63,14 +61,14 @@ class ProjectUserDataImpl implements ProjectUserData {
   Future<Response<dynamic>> fetchOneProject() async {
     try {
       final response = await _network.dio.get(
-        _path,
+        _projects,
         options: await _network.getLocalRequestOptions(),
       );
-
+      log('fetchOneProject ${response.data}');
       return response;
     } catch (e) {
       ErrorService.printError(
-          'Error in ProjectUserDataImpl fetchProject() dataSource:  $e');
+          'Error in ProjectUserDataImpl fetchOneProject() dataSource:  $e');
       rethrow;
     }
   }
@@ -79,34 +77,32 @@ class ProjectUserDataImpl implements ProjectUserData {
   Future<Response<dynamic>> fetchAllProjects() async {
     try {
       final response = await _network.dio.get(
-        _path,
+        _projects,
         queryParameters: {
           AuthScheme.accessToken:
               await _secureStorageService.getUserData(type: StorageDataType.id)
         },
-        options: await _network.getLocalRequestOptions(useContentType: true),
+        options: await _network.getLocalRequestOptions(),
       );
-
+      log('fetchAllProjects${response.data}');
       return response;
     } catch (e) {
       ErrorService.printError(
-          'Error in ProjectUserDataImpl fetchProject() dataSource:  $e');
+          'Error in ProjectUserDataImpl fetchAllProjects() dataSource:  $e');
       rethrow;
     }
   }
 
   @override
-  Future<PostgrestResponse<dynamic>> findDublicates(
-      {required String title}) async {
+  Future<Response<dynamic>> findDublicates({required String title}) async {
     try {
-      // final response = await _supabase
-      //     .from(_table)
-      //     .select()
-      //     .eq(ProjectDataScheme.ownerId, _supabase.auth.currentUser!.id)
-      //     .eq(ProjectDataScheme.title, title)
-      //     .execute();
-      // return response;
-      return Future.delayed(Duration(seconds: 1));
+      final response = await _network.dio.get(
+        _projectsSearch,
+        queryParameters: {ProjectDataScheme.query: title},
+        options: await _network.getLocalRequestOptions(useContentType: true),
+      );
+      log('find dublicates ${response.data}');
+      return response;
     } catch (e) {
       ErrorService.printError(
           'Error in ProjectUserDataImpl findDublicates() dataSource:  $e');
