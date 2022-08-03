@@ -28,8 +28,8 @@ class UpdateTokenService {
       final response = await _authRepository.signIn(
           email: email, password: password, context: context);
 
-      final expiresAt = DateTime.fromMillisecondsSinceEpoch(
-          response[AuthScheme.expiresIn] * 1000);
+      final expiresAt =
+          DateTime.fromMillisecondsSinceEpoch(response.model.expiresIn * 1000);
 
       log('Time now: ${DateTime.now()}');
       log('expiresAt: $expiresAt');

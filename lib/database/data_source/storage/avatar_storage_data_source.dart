@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/services/error_service/error_service.dart';
-import 'package:todo2/services/network/constants.dart';
+import 'package:todo2/services/network/network_config.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 abstract class AvatarStorageDataSource {

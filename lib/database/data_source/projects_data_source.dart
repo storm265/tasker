@@ -6,7 +6,7 @@ import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/database/database_scheme/project_user_scheme.dart';
 import 'package:todo2/database/model/projects_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
-import 'package:todo2/services/network/constants.dart';
+import 'package:todo2/services/network/network_config.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 abstract class ProjectUserData {

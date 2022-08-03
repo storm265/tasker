@@ -2,7 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/auth_data_source.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
+import 'package:todo2/database/model/auth_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
+import 'package:todo2/services/network/base_response/base_response.dart';
 import 'package:todo2/services/network/error_network/network_error_service.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
@@ -30,7 +32,7 @@ class AuthRepositoryImpl implements AuthRepository {
   );
 
   @override
-  Future<Map<String, dynamic>> signIn({
+  Future<BaseResponse<AuthModel>> signIn({
     required String email,
     required String password,
     required BuildContext context,
@@ -41,7 +43,7 @@ class AuthRepositoryImpl implements AuthRepository {
         email: email,
         password: password,
       );
-      return response.data[AuthScheme.data];
+      return response;
     } catch (e) {
       ErrorService.printError('Error in AuthRepositoryImpl signIn(): $e');
       rethrow;

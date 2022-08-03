@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:todo2/database/database_scheme/user_data_scheme..dart';
 import 'package:todo2/services/error_service/error_service.dart';
-import 'package:todo2/services/network/constants.dart';
+import 'package:todo2/services/network/network_config.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 abstract class UserProfileDataSource {

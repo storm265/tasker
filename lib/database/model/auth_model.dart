@@ -3,7 +3,7 @@ import 'package:todo2/database/database_scheme/auth_scheme.dart';
 class AuthModel {
   String accessToken;
   String refreshToken;
-  String expiresIn;
+  int expiresIn;
 
   AuthModel({
     required this.accessToken,

@@ -4,7 +4,7 @@ import 'package:todo2/database/model/users_profile_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/widgets/add_member_widget/add_member_dialog.dart';
 
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/controller_inherited.dart';
-import 'package:todo2/services/network/constants.dart';
+import 'package:todo2/services/network/network_config.dart';
 
 class AddUserWidget extends StatefulWidget {
   const AddUserWidget({Key? key}) : super(key: key);

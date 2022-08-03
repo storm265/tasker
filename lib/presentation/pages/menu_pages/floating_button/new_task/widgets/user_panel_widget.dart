@@ -5,7 +5,7 @@ import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/add_task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/controller_inherited.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
-import 'package:todo2/services/network/constants.dart';
+import 'package:todo2/services/network/network_config.dart';
 
 class UserPanelPickerWidget extends StatelessWidget {
   UserPanelPickerWidget({Key? key}) : super(key: key);

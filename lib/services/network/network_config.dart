@@ -20,11 +20,14 @@ const _authorization = 'Authorization';
 const _jsonApp = 'application/json';
 
 class NetworkConfiguration {
-  final Dio dio = Dio()
-    ..options.baseUrl = 'https://todolist.dev2.cogniteq.com/api/v1'
+  final Dio dio = Dio(BaseOptions(
+    baseUrl: 'https://todolist.dev2.cogniteq.com/api/v1',
+    connectTimeout: 5 * 1000, // 5 sec
+    receiveTimeout: 5 * 1000,
+  ))
     ..interceptors.add(InterceptorsWrapper(onRequest: (options, handler) {
       // Check token status
-      
+
       // Do something before request is sent
       print(" Upload Resposne 1 ${options.data}");
       return handler.next(options); //continue
@@ -69,6 +72,4 @@ class NetworkConfiguration {
       },
     );
   }
-
-  
 }

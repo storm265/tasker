@@ -1,28 +1,23 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:todo2/services/message_service/message_service.dart';
 
-class NetworkErrorService {
-  Response<dynamic> returnResponse(
-      {required Response response, required BuildContext context}) {
-    switch (response.statusCode) {
-      case 200:
-        return response.data;
-      case 201:
-        return response.data;
-      case 400:
-        throw MessageService.displaySnackbar(
-            context: context, message: 'error 400');
-      case 401:
-        throw MessageService.displaySnackbar(
-            context: context, message: 'error 401');
-      case 403:
-        throw MessageService.displaySnackbar(
-            context: context, message: 'error 403');
-      case 500:
-        throw MessageService.displaySnackbar(
-            context: context, message: 'error 500');
+
+class NetworkErrorService implements Exception {
+  bool isError({required Response response}) {
+    final int statusCode = response.statusCode ?? 0;
+
+    if (statusCode.isBetween(100, 103)) {
+      return true;
+    } else if (statusCode.isBetween(200, 226)) {
+      return false;
+    } else if (statusCode > 226) {
+      return true;
     }
-    return response.data;
+    return false;
+  }
+}
+
+extension Range on num {
+  bool isBetween(num from, num to) {
+    return from < this && this < to;
   }
 }

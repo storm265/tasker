@@ -115,7 +115,7 @@ class _SignInPageState extends State<SignInPage> {
                                   text: 'Validating...')),
                         ),
                         const SignInButtonWidget(buttonText: 'Sign Up'),
-                        RaisedButton(onPressed: () {
+                        RaisedButton(onPressed: () async {
                           _signInController.signInValidate(
                             context: context,
                             emailController: _emailController.text,
