@@ -13,6 +13,7 @@ import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/navig
 import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/profile_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_page.dart';
+import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/network_service/network_service.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
@@ -27,8 +28,6 @@ import 'services/theme_service/theme_data_controller.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChromeProvider.setSystemChrome();
-
-  //await initSupabase();
   // await updateToken();
   runApp(const MyApp());
 }
@@ -77,6 +76,7 @@ class _MyAppState extends State<MyApp> {
         child: InheritedNewTaskController(
           addTaskController: _newTaskConroller,
           child: MaterialApp(
+            scaffoldMessengerKey: MessageService.scaffoldKey,
             debugShowCheckedModeBanner: false,
             title: 'Todo2',
             theme: _themeDataController.themeData,

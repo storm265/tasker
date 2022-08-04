@@ -1,8 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:todo2/database/database_scheme/project_user_scheme.dart';
 
 class ProjectModel {
   String title;
-  String color;
+  Color color;
   String ownerId;
   String createdAt;
 
@@ -15,7 +16,7 @@ class ProjectModel {
 
   factory ProjectModel.fromJson(Map<String, dynamic> json) => ProjectModel(
         title: json[ProjectDataScheme.title],
-        color: json[ProjectDataScheme.color],
+        color: json[ProjectDataScheme.color] as Color,
         createdAt: json[ProjectDataScheme.createdAt],
         ownerId: json[ProjectDataScheme.ownerId],
       );

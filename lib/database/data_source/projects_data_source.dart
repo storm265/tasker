@@ -1,22 +1,23 @@
 import 'dart:developer';
-
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/database/database_scheme/project_user_scheme.dart';
 import 'package:todo2/database/model/projects_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
+import 'package:todo2/services/extensions/color_extension/color_string_extension.dart';
 import 'package:todo2/services/network/network_config.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 abstract class ProjectUserData {
   Future updateProject({
-    required String color,
+    required Color color,
     required String title,
     required String oldTitle,
   });
   Future deleteProject({required ProjectModel projectModel});
-  Future createProject({required String color, required String title});
+  Future createProject({required Color color, required String title});
   Future fetchProjectsWhere({required String title});
   Future fetchProjectId({required String project});
   Future findDublicates({required String title});
@@ -35,7 +36,7 @@ class ProjectUserDataImpl implements ProjectUserData {
 
   @override
   Future<Response<dynamic>> createProject({
-    required String color,
+    required Color color,
     required String title,
   }) async {
     try {
@@ -44,7 +45,7 @@ class ProjectUserDataImpl implements ProjectUserData {
         data: {
           ProjectDataScheme.ownerId:
               await _secureStorageService.getUserData(type: StorageDataType.id),
-          ProjectDataScheme.color: color,
+          ProjectDataScheme.color: '$color'.toStringColor(),
           ProjectDataScheme.title: title,
         },
         options: await _network.getLocalRequestOptions(useContentType: true),
@@ -169,7 +170,7 @@ class ProjectUserDataImpl implements ProjectUserData {
 
   @override
   Future<PostgrestResponse> updateProject({
-    required String color,
+    required Color color,
     required String title,
     required String oldTitle,
   }) async {

@@ -24,7 +24,7 @@ class ProjectController extends ChangeNotifier {
   final titleController = TextEditingController();
   final selectedModel = ValueNotifier(
     ProjectModel(
-      color: '',
+      color: Colors.red,
       createdAt: '',
       title: '',
       ownerId: '',
@@ -40,6 +40,7 @@ class ProjectController extends ChangeNotifier {
     isClickedSubmitButton.value = newValue;
     isClickedSubmitButton.notifyListeners();
   }
+
 
   Future<void> validate({
     required bool isEdit,
@@ -62,8 +63,7 @@ class ProjectController extends ChangeNotifier {
                 )
               : await _projectsRepository.createProject(
                   color: colors[colorPalleteController.selectedIndex.value]
-                      .value
-                      .toString(),
+                    ,
                   title: title,
                 );
         }
@@ -95,7 +95,6 @@ class ProjectController extends ChangeNotifier {
           await _projectsRepository.findDublicates(title: title);
       if (title.trim() == foundTitle.trim()) {
         MessageService.displaySnackbar(
-          context: context,
           message: 'This project is already exist',
         );
         return true;
@@ -109,7 +108,7 @@ class ProjectController extends ChangeNotifier {
   }
 
   Future<void> postProject({
-    required String color,
+    required Color color,
     required String title,
   }) async {
     try {
@@ -121,7 +120,7 @@ class ProjectController extends ChangeNotifier {
   }
 
   Future<void> updateProject({
-    required String color,
+    required Color color,
     required String title,
     required String oldTitle,
   }) async {

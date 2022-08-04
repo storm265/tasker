@@ -5,13 +5,7 @@ import 'package:todo2/presentation/pages/menu_pages/menu/dialogs/add_project_dia
 
 
 
-/*
-Color(0xfff44336)
-            .toString()
-            .replaceAll('Color(0xff', '#')
-            .replaceAll(')', '')
-            .toUpperCase()
-*/
+
 class AddProjectButton extends StatelessWidget {
   final Function notifyParent;
   final ProjectController projectController;
@@ -28,11 +22,12 @@ class AddProjectButton extends StatelessWidget {
     return Align(
       alignment: Alignment.topLeft,
       child: GestureDetector(
-        onTap: () async => await showAddProjectDialog(
-          titleController: titleController,
-          context: context,
-          projectController: projectController,
-        ).then((_) => notifyParent()),
+        onTap: () async => print(Color(int.parse('0xFF42A5F5'))),
+        // await showAddProjectDialog(
+        //   titleController: titleController,
+        //   context: context,
+        //   projectController: projectController,
+        // ).then((_) => notifyParent()),
         child: Padding(
           padding: const EdgeInsets.only(top: 15),
           child: Container(

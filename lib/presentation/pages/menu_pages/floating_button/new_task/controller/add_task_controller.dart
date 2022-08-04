@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:todo2/database/model/projects_model.dart';
 import 'package:todo2/database/model/users_profile_model.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
@@ -74,7 +75,7 @@ class AddTaskController extends ChangeNotifier {
   }
 
   final pickedProject = ValueNotifier<ProjectModel>(
-    ProjectModel(color: '', createdAt: '', title: '', ownerId: ''),
+    ProjectModel(color: Colors.red, createdAt: '', title: '', ownerId: ''),
   );
 
   void pickProject({
@@ -114,8 +115,7 @@ class AddTaskController extends ChangeNotifier {
 
       if (result!.files.first.size >= maxSize) {
         result.files.clear();
-        MessageService.displaySnackbar(
-            context: context, message: 'You cant put huge file');
+        MessageService.displaySnackbar(message: 'You cant put huge file');
       } else {
         PlatformFile file = result.files.first;
         files.value.add(file);
@@ -132,8 +132,8 @@ class AddTaskController extends ChangeNotifier {
   Future<List<String>> fetchCommentInfo() async {
     try {
       // TODO fix it
-     // image = await userProfileRepository.fetchAvatarFromStorage();
-     // userName = await userProfileRepository.fetchUserName();
+      // image = await userProfileRepository.fetchAvatarFromStorage();
+      // userName = await userProfileRepository.fetchUserName();
       return [image, userName];
     } catch (e) {
       ErrorService.printError("Error in ProfileController  getUserData() :$e ");
@@ -177,7 +177,7 @@ class AddTaskController extends ChangeNotifier {
     required String description,
   }) async {
     try {
-      int userId =0;
+      int userId = 0;
       // await userProfileRepository.fetchId();
       int projectId = await projectRepository.fetchProjectId(
           project: pickedProject.value.title);

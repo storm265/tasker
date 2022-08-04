@@ -44,12 +44,10 @@ class ImageController extends ChangeNotifier {
   bool isValidAvatar({required BuildContext context}) {
     try {
       if (pickedFile.value.path == _defaultAssetPath) {
-        MessageService.displaySnackbar(
-            context: context, message: 'Pick image!');
+        MessageService.displaySnackbar(message: 'Pick image!');
         return false;
       } else if (!_isWrongImageFormat) {
-        MessageService.displaySnackbar(
-            context: context, message: 'Wrong image format');
+        MessageService.displaySnackbar(message: 'Wrong image format');
         return false;
       } else {
         return true;
@@ -60,9 +58,7 @@ class ImageController extends ChangeNotifier {
     }
   }
 
-
   Future<Map<dynamic, dynamic>> uploadAvatar({
-
     required BuildContext context,
   }) async {
     try {
@@ -70,16 +66,12 @@ class ImageController extends ChangeNotifier {
       log('isValidImage: $isValidImage');
       if (isValidImage) {
         final response = await _avatarStorageRepository.uploadAvatar(
-        
           name: pickedFile.value.name,
           file: File(pickedFile.value.path),
         );
         return response.data[AuthScheme.data];
       } else {
-        MessageService.displaySnackbar(
-          context: context,
-          message: 'Invalid Image Format',
-        );
+        MessageService.displaySnackbar(message: 'Invalid Image Format');
         return {};
       }
     } catch (e) {
@@ -87,7 +79,6 @@ class ImageController extends ChangeNotifier {
       rethrow;
     }
   }
-
 
   void disposeValues() {
     try {

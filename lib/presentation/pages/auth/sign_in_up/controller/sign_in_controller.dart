@@ -45,9 +45,6 @@ class SignInController extends ChangeNotifier {
         email: emailController,
         password: passwordController,
       );
-
-      isClickedSubmitButton.value = true;
-      isClickedSubmitButton.notifyListeners();
     }
   }
 
@@ -58,42 +55,43 @@ class SignInController extends ChangeNotifier {
   }) async {
     try {
       final response = await _authRepository.signIn(
-        context: context,
         email: email,
         password: password,
       );
 
-      // final userData = await _userProfileRepository.fetchCurrentUser(
-      //   accessToken: response[AuthScheme.accessToken],
-      //   id: response[AuthScheme.userId],
-      // );
+      final userData = await _userProfileRepository.fetchCurrentUser(
+        accessToken: response.model.accessToken,
+        id: response.model.userId,
+      );
 
-      // Future.wait([
-      //   _storageSource.storageApi.saveUserData(
-      //     type: StorageDataType.id,
-      //     value: response[AuthScheme.userId],
-      //   ),
-      //   _storageSource.storageApi.saveUserData(
-      //     type: StorageDataType.email,
-      //     value: email,
-      //   ),
-      //   _storageSource.storageApi.saveUserData(
-      //     type: StorageDataType.username,
-      //     value: userData[AuthScheme.username],
-      //   ),
-      //   _storageSource.storageApi.saveUserData(
-      //     type: StorageDataType.avatarUrl,
-      //     value: userData[AuthScheme.avatarUrl],
-      //   ),
-      //   _storageSource.storageApi.saveUserData(
-      //     type: StorageDataType.refreshToken,
-      //     value: response[AuthScheme.refreshToken],
-      //   ),
-      //   _storageSource.storageApi.saveUserData(
-      //     type: StorageDataType.accessToken,
-      //     value: response[AuthScheme.accessToken],
-      //   ),
-      // ]).then((value) => NavigationService.navigateTo(context, Pages.home));
+      Future.wait([
+        _storageSource.storageApi.saveUserData(
+          type: StorageDataType.id,
+          value: response.model.userId,
+        ),
+        _storageSource.storageApi.saveUserData(
+          type: StorageDataType.email,
+          value: email,
+        ),
+        _storageSource.storageApi.saveUserData(
+          type: StorageDataType.username,
+          value: userData[AuthScheme.username],
+        ),
+        _storageSource.storageApi.saveUserData(
+          type: StorageDataType.avatarUrl,
+          value: userData[AuthScheme.avatarUrl],
+        ),
+        _storageSource.storageApi.saveUserData(
+          type: StorageDataType.refreshToken,
+          value: response.model.refreshToken,
+        ),
+        _storageSource.storageApi.saveUserData(
+          type: StorageDataType.accessToken,
+          value: response.model.accessToken,
+        ),
+      ]).then((value) => NavigationService.navigateTo(context, Pages.home));
+      isClickedSubmitButton.value = true;
+      isClickedSubmitButton.notifyListeners();
     } catch (e) {
       ErrorService.printError('Error in signIn() controller: $e');
       rethrow;

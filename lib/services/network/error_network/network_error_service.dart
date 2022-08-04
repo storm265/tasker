@@ -1,5 +1,7 @@
-import 'package:dio/dio.dart';
+import 'dart:developer';
 
+import 'package:dio/dio.dart';
+import 'package:todo2/services/extensions/num_range/num_randge.dart';
 
 class NetworkErrorService implements Exception {
   bool isError({required Response response}) {
@@ -9,6 +11,9 @@ class NetworkErrorService implements Exception {
       return true;
     } else if (statusCode.isBetween(200, 226)) {
       return false;
+    } else if (statusCode == 401) {
+      log('TOKEN EXPIRED');
+      return true;
     } else if (statusCode > 226) {
       return true;
     }
@@ -16,8 +21,4 @@ class NetworkErrorService implements Exception {
   }
 }
 
-extension Range on num {
-  bool isBetween(num from, num to) {
-    return from < this && this < to;
-  }
-}
+

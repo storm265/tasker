@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
+import 'package:todo2/services/network/error_network/network_error_service.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 class NetworkSource {
@@ -25,19 +28,13 @@ class NetworkConfiguration {
     connectTimeout: 5 * 1000, // 5 sec
     receiveTimeout: 5 * 1000,
   ))
-    ..interceptors.add(InterceptorsWrapper(onRequest: (options, handler) {
-      // Check token status
+    ..interceptors.add(InterceptorsWrapper(onResponse: (response, handler) {
+      if (response.statusCode == 401) {
+        log('NetworkConfiguration TOKEN EXPIRED');
+      }
 
-      // Do something before request is sent
-      print(" Upload Resposne 1 ${options.data}");
-      return handler.next(options); //continue
-    }, onResponse: (response, handler) {
-      print(" Upload Resposne 2 ${response.statusCode}");
-      print(" Upload Resposne 2 ${response.data}");
       return handler.next(response); // continue
     }, onError: (DioError e, handler) {
-      // Do something with response error
-      print(" Upload Resposne 12 ${e.error}");
       return handler.next(e); //continue
     }));
 

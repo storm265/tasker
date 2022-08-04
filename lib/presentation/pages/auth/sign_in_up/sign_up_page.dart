@@ -124,10 +124,10 @@ class _SignUpPageState extends State<SignUpPage> {
                           text: 'Username',
                         ),
                         ValueListenableBuilder<bool>(
-                          valueListenable:
-                              _signUpController.isClickedSubmitButton,
-                          builder: (context, isClicked, _) => isClicked
-                              ? SubmitUpButtonWidget(
+                            valueListenable:
+                                _signUpController.isClickedSubmitButton,
+                            builder: (context, isClicked, _) =>
+                                SubmitUpButtonWidget(
                                   buttonText: 'Sign Up',
                                   onPressed: isClicked
                                       ? () => _signUpController.signUpValidate(
@@ -137,10 +137,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                             password: _passwordController.text,
                                           )
                                       : null,
-                                )
-                              : const ProgressIndicatorWidget(
-                                  text: 'Validating...'),
-                        ),
+                                )),
                         const SignInButtonWidget(
                           buttonText: 'Sign In',
                         ),

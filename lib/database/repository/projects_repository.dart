@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/data_source/projects_data_source.dart';
 import 'package:todo2/database/database_scheme/project_user_scheme.dart';
@@ -9,7 +10,7 @@ abstract class ProjectRepository<T> {
   Future fetchOneProject();
 
   Future createProject({
-    required String color,
+    required Color color,
     required String title,
   });
 
@@ -20,7 +21,7 @@ abstract class ProjectRepository<T> {
   Future deleteProject({required ProjectModel projectModel});
 
   Future updateProject({
-    required String color,
+    required Color color,
     required String title,
     required String oldTitle,
   });
@@ -47,7 +48,7 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
 
   @override
   Future<void> createProject({
-    required String color,
+    required Color color,
     required String title,
   }) async {
     try {
@@ -89,7 +90,7 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
 
   @override
   Future<PostgrestResponse> updateProject({
-    required String color,
+    required Color color,
     required String title,
     required String oldTitle,
   }) async {

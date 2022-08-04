@@ -18,7 +18,6 @@ abstract class AuthRepository {
   Future signIn({
     required String email,
     required String password,
-    required BuildContext context,
   });
 
   Future signOut();
@@ -35,11 +34,9 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<BaseResponse<AuthModel>> signIn({
     required String email,
     required String password,
-    required BuildContext context,
   }) async {
     try {
       final response = await _authDataSource.signIn(
-        context: context,
         email: email,
         password: password,
       );

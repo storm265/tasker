@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class MessageService {
-  static ScaffoldFeatureController<SnackBar, SnackBarClosedReason>
-      displaySnackbar({
-    required BuildContext context,
+  static GlobalKey<ScaffoldMessengerState> scaffoldKey =
+      GlobalKey<ScaffoldMessengerState>();
+
+  static displaySnackbar({
     required String message,
     int milliseconds = 2500,
   }) {
-
-    return ScaffoldMessenger.of(context).showSnackBar(
+    scaffoldKey.currentState?.showSnackBar(
       SnackBar(
         elevation: 0,
         margin: const EdgeInsets.only(

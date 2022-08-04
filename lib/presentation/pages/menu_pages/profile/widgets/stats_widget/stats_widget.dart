@@ -62,12 +62,10 @@ class StatsWidget extends StatelessWidget {
                                   center: Text(
                                     "100%",
                                     style: TextStyle(
-                                      color: Color(
-                                        int.parse(data.color),
-                                      ),
+                                      color: data.color
                                     ),
                                   ),
-                                  progressColor: Color(int.parse(data.color)),
+                                  progressColor:data.color,
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(top: 10),

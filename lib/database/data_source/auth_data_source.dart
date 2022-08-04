@@ -19,7 +19,6 @@ abstract class AuthDataSource {
   Future signIn({
     required String email,
     required String password,
-    required BuildContext context,
   });
   Future signOut();
   Future refreshToken();
@@ -45,27 +44,19 @@ class AuthDataSourceImpl implements AuthDataSource {
   Future<BaseResponse<AuthModel>> signIn({
     required String email,
     required String password,
-    required BuildContext context,
   }) async {
     try {
-      // Response response = await _network.dio.post(
-      //   _signInUrl,
-      //   data: {
-      //     AuthScheme.email: email,
-      //     AuthScheme.password: password,
-      //   },
-      //   options: _network.authOptions,
-      // );
-      Response response = Response(data: {
-        "data": {
-          "access_token":
-              "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJodHRwOi8vMC4wLjAuMDo4MDgwLyIsImlzcyI6Imh0dHA6Ly8wLjAuMC4wOjgwODAvIiwiZXhwIjoxNjU3Njk3MjQwLCJlbWFpbCI6ImFuZHJlaS5rYXN0c2l1a0Bjb2duaXRlcS5jb20ifQ.FFAkja_ai6GuGdlVSnpV3gu4vPnIVi8zP2UG_dHJSWY",
-          "token_type": "Bearer",
-          "refresh_token": "6694c4bf-3caa-479e-ab3f-4319d21bd808",
-          "expires_in": 1657697240688
-        }
-      }, requestOptions: RequestOptions(path: 'path'));
+      Response response = await _network.dio.post(
+        _signInUrl,
+        data: {
+          AuthScheme.email: email,
+          AuthScheme.password: password,
+        },
+        options: _network.authOptions,
+      );
+
       log('signIn response ${response.data}');
+
       final baseResponse = BaseResponse<AuthModel>.fromJson(
         json: response.data,
         build: (Map<String, dynamic> json) => AuthModel.fromJson(json),
@@ -73,7 +64,7 @@ class AuthDataSourceImpl implements AuthDataSource {
         response: response,
       );
       log('base response ${baseResponse.model}');
-      //  log(' sign in ${BaseResponse<AuthModel>(response: response, data: response.data['data'], errorService: NetworkErrorService())}');
+
       return baseResponse;
     } catch (e) {
       ErrorService.printError('Error in signIn() dataSource: $e');

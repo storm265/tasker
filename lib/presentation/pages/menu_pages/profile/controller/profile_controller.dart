@@ -31,7 +31,6 @@ class ProfileController extends ChangeNotifier {
       final response = await authRepository.signOut();
       if (response.statusCode != 200) {
         MessageService.displaySnackbar(
-          context: context,
           message: '${response.statusMessage}',
         );
       } else {
