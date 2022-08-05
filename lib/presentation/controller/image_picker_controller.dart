@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -39,7 +38,7 @@ class ImageController extends ChangeNotifier {
     }
   }
 
-  bool isValidAvatar({required BuildContext context}) {
+  bool isValidAvatar() {
     try {
       if (pickedFile.value.path == _defaultAssetPath) {
         MessageService.displaySnackbar(message: 'Pick image!');
@@ -56,12 +55,9 @@ class ImageController extends ChangeNotifier {
     }
   }
 
-  Future<Map<dynamic, dynamic>> uploadAvatar({
-    required BuildContext context,
-  }) async {
+  Future<Map<String, dynamic>> uploadAvatar() async {
     try {
-      bool isValidImage = isValidAvatar(context: context);
-      log('isValidImage: $isValidImage');
+      bool isValidImage = isValidAvatar();
       if (isValidImage) {
         final response = await _avatarStorageRepository.uploadAvatar(
           name: pickedFile.value.name,
@@ -69,8 +65,7 @@ class ImageController extends ChangeNotifier {
         );
         return response.data[AuthScheme.data];
       } else {
-        MessageService.displaySnackbar(message: 'Invalid Image Format');
-        return {};
+        throw MessageService.displaySnackbar(message: 'Invalid Image Format');
       }
     } catch (e) {
       ErrorService.printError('uploadAvatar error: $e');

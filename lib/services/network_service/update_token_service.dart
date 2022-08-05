@@ -22,10 +22,10 @@ class UpdateTokenService {
       log('expiresAt: $expiresAt');
       if (DateTime.now().isAfter(expiresAt)) {
         log('*** Token is expired *** ');
-        final authResponse = await _authRepository.refreshToken();
-        await _secureStorageService.saveUserData(
-            type: StorageDataType.refreshToken,
-            value: authResponse.model.refreshToken);
+        // final authResponse = await _authRepository.refreshToken();
+        // await _secureStorageService.saveUserData(
+        //     type: StorageDataType.refreshToken,
+        //     value: authResponse.model.refreshToken);
         log('*** Token updated *** ');
       }
     } catch (e) {

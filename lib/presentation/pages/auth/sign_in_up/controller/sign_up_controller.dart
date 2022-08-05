@@ -6,10 +6,7 @@ import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/controller/image_picker_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_controller.dart';
-import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/error_service/error_service.dart';
-import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
@@ -19,7 +16,6 @@ class SignUpController extends ChangeNotifier {
     this._userProfileRepository,
     this.formValidatorController,
     this.imagePickerController,
-    this._projectController,
     this._storageSource,
   );
 
@@ -27,10 +23,14 @@ class SignUpController extends ChangeNotifier {
   final UserProfileRepositoryImpl _userProfileRepository;
   final FormValidatorController formValidatorController;
   final ImageController imagePickerController;
-  final ProjectController _projectController;
   final SecureStorageSource _storageSource;
   final formKey = GlobalKey<FormState>();
-  final isClickedSubmitButton = ValueNotifier(true);
+  final isActiveSubmitButton = ValueNotifier(true);
+
+  void changeSubmitButtonValue({required bool newValue}) {
+    isActiveSubmitButton.value = newValue;
+    isActiveSubmitButton.notifyListeners();
+  }
 
   Future<void> signUpValidate({
     required BuildContext context,
@@ -39,20 +39,14 @@ class SignUpController extends ChangeNotifier {
     required String password,
   }) async {
     try {
-      if (imagePickerController.isValidAvatar(context: context)) {
+      if (imagePickerController.isValidAvatar()) {
         if (formKey.currentState!.validate()) {
-          isClickedSubmitButton.value = false;
-          isClickedSubmitButton.notifyListeners();
-
           await signUp(
             context: context,
             username: userName,
             email: email,
             password: password,
           );
-
-          isClickedSubmitButton.value = true;
-          isClickedSubmitButton.notifyListeners();
         }
       }
     } catch (e) {
@@ -61,63 +55,60 @@ class SignUpController extends ChangeNotifier {
   }
 
   Future<void> signUp({
-    required BuildContext context,
     required String email,
     required String password,
     required String username,
+    required BuildContext context,
   }) async {
     try {
-      final response = await _authRepository.signUp(
+      changeSubmitButtonValue(newValue: false);
+
+      final response = await _authRepository
+          .signUp(
         nickname: username,
         email: email,
         password: password,
       );
+      // final authModel = response.model;
 
-      final userSession = response[AuthScheme.userSession];
-      log(response.toString());
-      await Future.wait([
-        _storageSource.storageApi.saveUserData(
-            type: StorageDataType.id, value: response[AuthScheme.id]),
-        _storageSource.storageApi
-            .saveUserData(type: StorageDataType.email, value: email),
-        _storageSource.storageApi
-            .saveUserData(type: StorageDataType.password, value: password),
-        _storageSource.storageApi
-            .saveUserData(type: StorageDataType.username, value: username),
-        _storageSource.storageApi.saveUserData(
-            type: StorageDataType.refreshToken,
-            value: userSession[AuthScheme.refreshToken]),
-        _storageSource.storageApi.saveUserData(
-            type: StorageDataType.accessToken,
-            value: userSession[AuthScheme.accessToken]),
-      ]);
+      // await Future.wait([
+      //   _storageSource.storageApi
+      //       .saveUserData(type: StorageDataType.id, value: authModel.id),
+      //   _storageSource.storageApi
+      //       .saveUserData(type: StorageDataType.email, value: email),
+      //   _storageSource.storageApi
+      //       .saveUserData(type: StorageDataType.password, value: password),
+      //   _storageSource.storageApi
+      //       .saveUserData(type: StorageDataType.username, value: username),
+      //   _storageSource.storageApi.saveUserData(
+      //       type: StorageDataType.refreshToken, value: authModel.refreshToken),
+      //   _storageSource.storageApi.saveUserData(
+      //     type: StorageDataType.accessToken,
+      //     value: authModel.accessToken,
+      //   ),
+      // ]);
 
-      final imageResponse = await imagePickerController.uploadAvatar(
-        context: context,
-      );
+      // final imageResponse = await imagePickerController.uploadAvatar();
 
-      _storageSource.storageApi.saveUserData(
-          type: StorageDataType.avatarUrl,
-          value: imageResponse[AuthScheme.avatarUrl]);
+      // await _storageSource.storageApi.saveUserData(
+      //     type: StorageDataType.avatarUrl,
+      //     value: imageResponse[AuthScheme.avatarUrl]);
 
-      await _userProfileRepository
-          .postProfile(
-        id: response[AuthScheme.id],
-        avatarUrl: imageResponse[AuthScheme.avatarUrl],
-        username: username,
-      )
-          .then((_) {
-        NavigationService.navigateTo(context, Pages.home);
-      });
+      // await _userProfileRepository
+      //     .postProfile(
+      //       id: authModel.id,
+      //       avatarUrl: imageResponse[AuthScheme.avatarUrl],
+      //       username: username,
+      //     )
 
-      print('image reposs: $imageResponse');
-    } catch (e, t) {
-      ErrorService.printError('$e, $t');
+      changeSubmitButtonValue(newValue: true);
+    } catch (e) {
+      ErrorService.printError('Error in signUp() controller: $e');
     }
   }
 
   void disposeValues() {
     imagePickerController.dispose();
-    isClickedSubmitButton.dispose();
+    isActiveSubmitButton.dispose();
   }
 }

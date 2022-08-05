@@ -20,8 +20,8 @@ class _ProfileWidgetState extends State<ProfileWidget>
   @override
   void initState() {
     widget.profileController.rotateSettingsIcon(ticker: this);
-    widget.profileController.fetchProfileInfo(
-        context: context, updateStateCallback: () => setState(() {}));
+    // widget.profileController.fetchProfileInfo(
+    //     context: context, updateStateCallback: () => setState(() {}));
     super.initState();
   }
 

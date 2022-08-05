@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/storage/avatar_storage_data_source.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
@@ -22,6 +24,7 @@ import 'package:todo2/presentation/pages/auth/widgets/title_widget.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
+import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -45,7 +48,6 @@ class _SignUpPageState extends State<SignUpPage> {
         avatarDataSource: AvatarStorageDataSourceImpl(),
       ),
     ),
-    ProjectController(ProjectRepositoryImpl(), ColorPalleteController()),
     SecureStorageSource(),
   );
   @override
@@ -124,23 +126,22 @@ class _SignUpPageState extends State<SignUpPage> {
                           text: 'Username',
                         ),
                         ValueListenableBuilder<bool>(
-                            valueListenable:
-                                _signUpController.isClickedSubmitButton,
-                            builder: (context, isClicked, _) =>
-                                SubmitUpButtonWidget(
-                                  buttonText: 'Sign Up',
-                                  onPressed: isClicked
-                                      ? () => _signUpController.signUpValidate(
-                                            context: context,
-                                            userName: _usernameController.text,
-                                            email: _emailController.text,
-                                            password: _passwordController.text,
-                                          )
-                                      : null,
-                                )),
-                        const SignInButtonWidget(
-                          buttonText: 'Sign In',
+                          valueListenable:
+                              _signUpController.isActiveSubmitButton,
+                          builder: (context, isClicked, _) =>
+                              SubmitUpButtonWidget(
+                            buttonText: 'Sign Up',
+                            onPressed: isClicked
+                                ? () => _signUpController.signUpValidate(
+                                      context: context,
+                                      userName: _usernameController.text,
+                                      email: _emailController.text,
+                                      password: _passwordController.text,
+                                    )
+                                : null,
+                          ),
                         ),
+                        const SignInButtonWidget(buttonText: 'Sign In'),
                       ],
                     ),
                   ),

@@ -1,7 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/auth_data_source.dart';
-import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/database/model/auth_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/network_service/base_response/base_response.dart';
@@ -48,7 +46,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Map<String, dynamic>> signUp({
+  Future<BaseResponse<AuthModel>> signUp({
     required String email,
     required String password,
     required String nickname,
@@ -59,7 +57,7 @@ class AuthRepositoryImpl implements AuthRepository {
         password: password,
         nickname: nickname,
       );
-      return response.data[AuthScheme.data];
+      return response;
     } catch (e) {
       ErrorService.printError('Error in AuthRepositoryImpl signUp(): $e');
       rethrow;

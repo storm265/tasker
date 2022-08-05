@@ -45,69 +45,73 @@ class AuthDataSourceImpl implements AuthDataSource {
     required String password,
   }) async {
     try {
-      Response response = await _network.dio.post(
-        _signInUrl,
-        data: {
-          AuthScheme.email: email,
-          AuthScheme.password: password,
-        },
-        options: _network.authOptions,
-      );
+      // Response response = await _network.dio.post(
+      //   _signInUrl,
+      //   data: {
+      //     AuthScheme.email: email,
+      //     AuthScheme.password: password,
+      //   },
+      //   options: _network.authOptions,
+      // );
+      Response response = Response(
+          statusCode: 500,
+          requestOptions: RequestOptions(path: 'path'),
+          data: {
+            "data": {
+              "access_token":
+                  "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJodHRwOi8vMC4wLjAuMDo4MDgwLyIsImlzcyI6Imh0dHA6Ly8wLjAuMC4wOjgwODAvIiwiZXhwIjoxNjU3Njk3MjQwLCJlbWFpbCI6ImFuZHJlaS5rYXN0c2l1a0Bjb2duaXRlcS5jb20ifQ.FFAkja_ai6GuGdlVSnpV3gu4vPnIVi8zP2UG_dHJSWY",
+              "token_type": "Bearer",
+              "refresh_token": "6694c4bf-3caa-479e-ab3f-4319d21bd808",
+              "expires_in": 1657697240688
+            }
+          });
 
       log('signIn response ${response.data}');
 
       final baseResponse = BaseResponse<AuthModel>.fromJson(
         json: response.data,
         build: (Map<String, dynamic> json) => AuthModel.fromJson(json),
-        errorService: _networkErrorService,
         response: response,
       );
-      log('base response ${baseResponse.model}');
 
       return baseResponse;
-    } catch (e) {
-      ErrorService.printError('Error in signIn() dataSource: $e');
-      rethrow;
-    }
-  }
-
-  @override
-  Future<Response<dynamic>> signOut() async {
-    try {
-      Response response = await _network.dio.post(
-        _signOutUrl,
-        data: {
-          AuthScheme.email: await _secureStorageService.getUserData(
-              type: StorageDataType.email)
-        },
-        options: _network.authOptions,
-      );
-      await _secureStorageService.removeAllUserData();
-      return response;
-    } catch (e) {
-      ErrorService.printError('Error in signOut() dataSource: $e');
+    } catch (e, t) {
+      ErrorService.printError('Error in signIn() dataSource: $e, $t');
       rethrow;
     }
   }
 
 // TODo fix it
   @override
-  Future<Response<dynamic>> signUp({
+  Future<BaseResponse<AuthModel>> signUp({
     required String email,
     required String password,
     required String nickname,
   }) async {
     try {
-      Response response = await _network.dio.post(
-        _signUpUrl,
-        data: {
-          AuthScheme.email: email,
-          AuthScheme.password: password,
-          AuthScheme.username: nickname,
-        },
-        options: _network.authOptions,
+      // Response response = await _network.dio.post(
+      //   _signUpUrl,
+      //   data: {
+      //     AuthScheme.email: email,
+      //     AuthScheme.password: password,
+      //     AuthScheme.username: nickname,
+      //   },
+      //   options: _network.authOptions,
+      // );
+      //fake
+      Response response = Response(
+          statusCode: 500,
+          requestOptions: RequestOptions(path: 'path'),
+          data: {
+            "data": {"message": "Invalid credentials.", "code": 401}
+          });
+      final baseResponse = BaseResponse<AuthModel>.fromJson(
+        json: response.data,
+        build: (Map<String, dynamic> json) => AuthModel.fromJson(json),
+        response: response,
       );
-      return response;
+      log('model ${baseResponse.model.accessToken}');
+      return baseResponse;
     } catch (e) {
       ErrorService.printError('Error in signUp() dataSource: $e');
       rethrow;
@@ -129,13 +133,31 @@ class AuthDataSourceImpl implements AuthDataSource {
       final baseResponse = BaseResponse<AuthModel>.fromJson(
         json: response.data,
         build: (Map<String, dynamic> json) => AuthModel.fromJson(json),
-        errorService: _networkErrorService,
         response: response,
       );
 
       return baseResponse;
     } catch (e) {
       ErrorService.printError('Error in refreshToken() dataSource: $e');
+      rethrow;
+    }
+  }
+
+  @override
+  Future<Response<dynamic>> signOut() async {
+    try {
+      Response response = await _network.dio.post(
+        _signOutUrl,
+        data: {
+          AuthScheme.email: await _secureStorageService.getUserData(
+              type: StorageDataType.email)
+        },
+        options: _network.authOptions,
+      );
+      await _secureStorageService.removeAllUserData();
+      return response;
+    } catch (e) {
+      ErrorService.printError('Error in signOut() dataSource: $e');
       rethrow;
     }
   }

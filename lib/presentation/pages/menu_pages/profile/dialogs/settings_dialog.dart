@@ -43,9 +43,7 @@ Future<void> showSettingsDialog(
                 onTap: () async {
                   switch (index) {
                     case 0:
-                      imageController.uploadAvatar(
-                        context: context,
-                      );
+                      imageController.uploadAvatar();
                       break;
                     case 1:
                       await profileController.signOut(context: context);

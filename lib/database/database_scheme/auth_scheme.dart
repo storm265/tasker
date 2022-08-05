@@ -1,5 +1,5 @@
 class AuthScheme {
-    static String id = 'id';
+  static String id = 'id';
   static String userId = 'user_id';
   static String data = 'data';
   static String email = 'email';

@@ -1,11 +1,6 @@
-import 'dart:collection';
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:todo2/database/database_scheme/auth_scheme.dart';
-import 'package:todo2/database/database_scheme/user_data_scheme..dart';
-import 'package:todo2/database/model/auth_model.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
@@ -29,22 +24,29 @@ class SignInController extends ChangeNotifier {
         _userProfileRepository = userProfileRepository;
 
   final formKey = GlobalKey<FormState>();
-  final isClickedSubmitButton = ValueNotifier(true);
+  final isActiveSubmitButton = ValueNotifier(true);
+
+  void changeSubmitButtonValue({required bool newValue}) {
+    isActiveSubmitButton.value = newValue;
+    isActiveSubmitButton.notifyListeners();
+  }
 
   Future<void> signInValidate({
     required BuildContext context,
     required String emailController,
     required String passwordController,
   }) async {
+    changeSubmitButtonValue(newValue: false);
     if (formKey.currentState!.validate()) {
-      isClickedSubmitButton.value = false;
-      isClickedSubmitButton.notifyListeners();
-
       await signIn(
         context: context,
         email: emailController,
         password: passwordController,
-      );
+      ).then((_) {
+        log('NAVIGATION');
+//NavigationService.navigateTo(context, Pages.home)
+      });
+      changeSubmitButtonValue(newValue: true);
     }
   }
 
@@ -58,16 +60,17 @@ class SignInController extends ChangeNotifier {
         email: email,
         password: password,
       );
+      final authModel = response.model;
 
       final userData = await _userProfileRepository.fetchCurrentUser(
         accessToken: response.model.accessToken,
-        id: response.model.userId,
+        id: authModel.id,
       );
 
       Future.wait([
         _storageSource.storageApi.saveUserData(
           type: StorageDataType.id,
-          value: response.model.userId,
+          value: authModel.id,
         ),
         _storageSource.storageApi.saveUserData(
           type: StorageDataType.email,
@@ -75,23 +78,21 @@ class SignInController extends ChangeNotifier {
         ),
         _storageSource.storageApi.saveUserData(
           type: StorageDataType.username,
-          value: userData[AuthScheme.username],
+          value: userData.model.username,
         ),
         _storageSource.storageApi.saveUserData(
           type: StorageDataType.avatarUrl,
-          value: userData[AuthScheme.avatarUrl],
+          value: userData.model.avatarUrl,
         ),
         _storageSource.storageApi.saveUserData(
           type: StorageDataType.refreshToken,
-          value: response.model.refreshToken,
+          value: authModel.refreshToken,
         ),
         _storageSource.storageApi.saveUserData(
           type: StorageDataType.accessToken,
-          value: response.model.accessToken,
+          value: authModel.accessToken,
         ),
-      ]).then((value) => NavigationService.navigateTo(context, Pages.home));
-      isClickedSubmitButton.value = true;
-      isClickedSubmitButton.notifyListeners();
+      ]);
     } catch (e) {
       ErrorService.printError('Error in signIn() controller: $e');
       rethrow;
@@ -99,6 +100,6 @@ class SignInController extends ChangeNotifier {
   }
 
   void disposeObjects() {
-    isClickedSubmitButton.dispose();
+    isActiveSubmitButton.dispose();
   }
 }

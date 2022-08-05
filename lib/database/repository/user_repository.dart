@@ -4,6 +4,7 @@ import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/database_scheme/user_data_scheme..dart';
 import 'package:todo2/database/model/users_profile_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
+import 'package:todo2/services/network_service/base_response/base_response.dart';
 
 abstract class UserProfileRepository {
   Future fetchAvatarFromStorage({required String publicUrl});
@@ -41,13 +42,13 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
   }
 
   @override
-  Future<Map<String, dynamic>> fetchCurrentUser(
+  Future<BaseResponse<UserProfileModel>> fetchCurrentUser(
       {required String id, required String accessToken}) async {
     try {
       final response = await _userProfileDataSource.fetchCurrentUser(
           id: id, accessToken: accessToken);
 
-      return response.data[UserDataScheme.data];
+      return response;
     } catch (e) {
       ErrorService.printError(
           'Error in UserProfileRepositoryImpl fetchCurrentUser(): $e');

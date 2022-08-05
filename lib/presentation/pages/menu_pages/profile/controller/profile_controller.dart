@@ -45,10 +45,10 @@ class ProfileController extends ChangeNotifier {
     }
   }
 
-  Future<Map<String, dynamic>> fetchProject(
-      {required BuildContext context}) async {
+  Future<Map<String, dynamic>> fetchProject() async {
     try {
-      return projectsRepository.fetchOneProject();
+      final response = await projectsRepository.fetchOneProject();
+      return response;
     } catch (e) {
       ErrorService.printError(
           "Error in ProfileController  fetchProject() :$e ");
@@ -56,23 +56,23 @@ class ProfileController extends ChangeNotifier {
     }
   }
 
-  Future<void> fetchProfileInfo({
-    required VoidCallback updateStateCallback,
-    required BuildContext context,
-  }) async {
-    try {
-      image = await userProfileRepository.fetchAvatar();
-      imageStoragePublicUrl =
-          await userProfileRepository.fetchAvatarFromStorage(publicUrl: image);
-      userName = '';
-      // await userProfileRepository.fetchUserName();
-      updateStateCallback();
-    } catch (e) {
-      ErrorService.printError(
-          "Error in ProfileController  fetchProfileInfo() :$e ");
-      rethrow;
-    }
-  }
+  // Future<void> fetchProfileInfo({
+  //   required VoidCallback updateStateCallback,
+  //   required BuildContext context,
+  // }) async {
+  //   try {
+  //     image = await userProfileRepository.fetchAvatar();
+  //     imageStoragePublicUrl =
+  //         await userProfileRepository.fetchAvatarFromStorage(publicUrl: image);
+  //     userName = '';
+  //     // await userProfileRepository.fetchUserName();
+  //     updateStateCallback();
+  //   } catch (e) {
+  //     ErrorService.printError(
+  //         "Error in ProfileController  fetchProfileInfo() :$e ");
+  //     rethrow;
+  //   }
+  // }
 
   Future<String> fetchAvatar() async {
     try {

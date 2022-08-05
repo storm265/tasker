@@ -95,7 +95,7 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                         ValueListenableBuilder<bool>(
                           valueListenable:
-                              _signInController.isClickedSubmitButton,
+                              _signInController.isActiveSubmitButton,
                           builder: ((context, isClicked, _) =>
                               SubmitUpButtonWidget(
                                 buttonText: 'Sign In',

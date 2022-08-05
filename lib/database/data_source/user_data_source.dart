@@ -2,23 +2,25 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:todo2/database/database_scheme/user_data_scheme..dart';
+import 'package:todo2/database/model/users_profile_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
-import 'package:todo2/services/network/network_config.dart';
+import 'package:todo2/services/network_service/base_response/base_response.dart';
+import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 abstract class UserProfileDataSource {
-  Future<Response<dynamic>> downloadAvatar();
-  Future<Response<dynamic>> postUserProfile({
+  Future downloadAvatar();
+  Future postUserProfile({
     required String avatarUrl,
     required String username,
     required String id,
   });
-  Future<Response<dynamic>> fetchCurrentUser({
+  Future fetchCurrentUser({
     required String id,
     required String accessToken,
   });
-  
-  Future<Response<dynamic>> fetchUsersWhere({required String userName});
+
+  Future fetchUsersWhere({required String userName});
 }
 
 class UserProfileDataSourceImpl implements UserProfileDataSource {
@@ -53,15 +55,23 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
   }
 
   @override
-  Future<Response<dynamic>> fetchCurrentUser(
-      {required String id, required String accessToken}) async {
+  Future<BaseResponse<UserProfileModel>> fetchCurrentUser({
+    required String id,
+    required String accessToken,
+  }) async {
     try {
       final response = await _network.dio.get(
         '$_userPath/$id',
         options: _network.getRequestOptions(accessToken: accessToken),
       );
 
-      return response;
+      final baseResponse = BaseResponse<UserProfileModel>.fromJson(
+        json: response.data,
+        build: (Map<String, dynamic> json) => UserProfileModel.fromJson(json),
+        response: response,
+      );
+      log('base response ${baseResponse.model}');
+      return baseResponse;
     } catch (e) {
       ErrorService.printError(
           'Error in UserProfileDataSourceImpl fetchCurrentUser(): $e');
