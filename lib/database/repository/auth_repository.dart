@@ -4,8 +4,8 @@ import 'package:todo2/database/data_source/auth_data_source.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/database/model/auth_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
-import 'package:todo2/services/network/base_response/base_response.dart';
-import 'package:todo2/services/network/error_network/network_error_service.dart';
+import 'package:todo2/services/network_service/base_response/base_response.dart';
+import 'package:todo2/services/network_service/error_network/network_error_service.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 abstract class AuthRepository {
@@ -78,10 +78,10 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Map<String, dynamic>> refreshToken() async {
+  Future<String> refreshToken() async {
     try {
       final response = await _authDataSource.refreshToken();
-      return response.data[AuthScheme.data];
+      return response.model.refreshToken;
     } catch (e) {
       ErrorService.printError('Error in AuthRepositoryImpl refreshToken(): $e');
       rethrow;

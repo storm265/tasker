@@ -1,13 +1,12 @@
 import 'dart:developer';
-
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/database/model/auth_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
-import 'package:todo2/services/network/base_response/base_response.dart';
-import 'package:todo2/services/network/network_config.dart';
-import 'package:todo2/services/network/error_network/network_error_service.dart';
+import 'package:todo2/services/network_service/base_response/base_response.dart';
+import 'package:todo2/services/network_service/error_network/network_error_service.dart';
+
+import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 abstract class AuthDataSource {
@@ -91,6 +90,7 @@ class AuthDataSourceImpl implements AuthDataSource {
     }
   }
 
+// TODo fix it
   @override
   Future<Response<dynamic>> signUp({
     required String email,
@@ -115,7 +115,7 @@ class AuthDataSourceImpl implements AuthDataSource {
   }
 
   @override
-  Future<Response<dynamic>> refreshToken() async {
+  Future<BaseResponse<AuthModel>> refreshToken() async {
     try {
       Response response = await _network.dio.post(
         _refreshUrl,
@@ -125,7 +125,15 @@ class AuthDataSourceImpl implements AuthDataSource {
         },
         options: _network.authOptions,
       );
-      return response;
+
+      final baseResponse = BaseResponse<AuthModel>.fromJson(
+        json: response.data,
+        build: (Map<String, dynamic> json) => AuthModel.fromJson(json),
+        errorService: _networkErrorService,
+        response: response,
+      );
+
+      return baseResponse;
     } catch (e) {
       ErrorService.printError('Error in refreshToken() dataSource: $e');
       rethrow;

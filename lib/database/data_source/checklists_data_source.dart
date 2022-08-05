@@ -1,7 +1,9 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:dio/dio.dart';
+
 
 import 'package:todo2/services/error_service/error_service.dart';
-import 'package:todo2/services/network/network_config.dart';
+
+import 'package:todo2/services/network_service/network_config.dart';
 
 abstract class CheckListsDataSource {
   Future putCheckList({
@@ -16,7 +18,7 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
   final _table = 'checklists';
   final _supabase = NetworkSource().networkApiClient;
   @override
-  Future<PostgrestResponse<dynamic>> putCheckList({
+  Future<Response<dynamic>> putCheckList({
     required String title,
     required String color,
   }) async {
@@ -28,7 +30,7 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
       //   CheckListsScheme.createdAt: DateTime.now().toString(),
       // }).execute();
       // return response;
-               return     Future.delayed( Duration(seconds: 1));
+      return Future.delayed(Duration(seconds: 1));
     } catch (e) {
       ErrorService.printError(
           'Error in CheckListsDataSourceImpl putChecklistItem: $e');
@@ -37,7 +39,7 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
   }
 
   @override
-  Future<PostgrestResponse<dynamic>> fetchCheckList() async {
+  Future<Response<dynamic>> fetchCheckList() async {
     try {
       // final response = await _supabase
       //     .from(_table)
@@ -45,7 +47,7 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
       //     .eq(CheckListsScheme.ownerId, _supabase.auth.currentUser!.id)
       //     .execute();
       // return response;
-               return     Future.delayed( Duration(seconds: 1));
+      return Future.delayed(Duration(seconds: 1));
     } catch (e) {
       ErrorService.printError(
           'Error in CheckListsDataSourceImpl fetchCheckList: $e');
@@ -63,7 +65,7 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
       //     .eq(CheckListsScheme.title, title)
       //     .execute();
       // return response.data[0][CheckListsScheme.id];
-               return     Future.delayed( Duration(seconds: 1));
+      return Future.delayed(Duration(seconds: 1));
     } catch (e) {
       ErrorService.printError(
           'Error in CheckListsDataSourceImpl fetchCheckId: $e');

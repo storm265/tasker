@@ -1,5 +1,5 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/data_source/projects_data_source.dart';
 import 'package:todo2/database/database_scheme/project_user_scheme.dart';
 import 'package:todo2/database/model/projects_model.dart';
@@ -89,7 +89,7 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
   }
 
   @override
-  Future<PostgrestResponse> updateProject({
+  Future<Response<dynamic>> updateProject({
     required Color color,
     required String title,
     required String oldTitle,
@@ -109,7 +109,7 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
   }
 
   @override
-  Future<PostgrestResponse<dynamic>> deleteProject(
+  Future<Response<dynamic>> deleteProject(
       {required ProjectModel projectModel}) async {
     try {
       final response =

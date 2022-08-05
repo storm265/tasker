@@ -15,7 +15,7 @@ import 'package:todo2/presentation/pages/menu_pages/profile/profile_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_page.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
-import 'package:todo2/services/network_service/network_service.dart';
+
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 import 'package:todo2/services/system_service/system_chrome.dart';

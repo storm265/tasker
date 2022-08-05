@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/data_source/storage/avatar_storage_data_source.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 
@@ -17,7 +16,7 @@ class AvatarStorageReposiroryImpl implements AvatarStorageDataSource {
   AvatarStorageReposiroryImpl({required this.avatarDataSource});
 
   @override
-  Future<StorageResponse<String>> updateAvatar(
+  Future<Response<String>> updateAvatar(
       {required String bucketImage, required File file}) async {
     try {
       final response = await avatarDataSource.updateAvatar(

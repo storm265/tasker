@@ -1,10 +1,9 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/services/error_service/error_service.dart';
-import 'package:todo2/services/network/network_config.dart';
+import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 abstract class AvatarStorageDataSource {
@@ -20,7 +19,7 @@ class AvatarStorageDataSourceImpl implements AvatarStorageDataSource {
   final _network = NetworkSource().networkApiClient;
   final _storageSource = SecureStorageSource().storageApi;
   @override
-  Future<StorageResponse<String>> updateAvatar(
+  Future<Response<String>> updateAvatar(
       {required String bucketImage, required File file}) async {
     try {
       // final response = await _network.storage.from(_storagePath).update(

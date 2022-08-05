@@ -1,13 +1,12 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/database/database_scheme/project_user_scheme.dart';
 import 'package:todo2/database/model/projects_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/extensions/color_extension/color_string_extension.dart';
-import 'package:todo2/services/network/network_config.dart';
+import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 abstract class ProjectUserData {
@@ -112,8 +111,7 @@ class ProjectUserDataImpl implements ProjectUserData {
   }
 
   @override
-  Future<PostgrestResponse<dynamic>> fetchProjectId(
-      {required String project}) async {
+  Future<Response<dynamic>> fetchProjectId({required String project}) async {
     try {
       // final response = await _supabase
       //     .from(_table)
@@ -131,8 +129,7 @@ class ProjectUserDataImpl implements ProjectUserData {
   }
 
   @override
-  Future<PostgrestResponse<dynamic>> fetchProjectsWhere(
-      {required String title}) async {
+  Future<Response<dynamic>> fetchProjectsWhere({required String title}) async {
     try {
       // final response = await _supabase
       //     .from(_table)
@@ -151,7 +148,7 @@ class ProjectUserDataImpl implements ProjectUserData {
   }
 
   @override
-  Future<PostgrestResponse<dynamic>> deleteProject(
+  Future<Response<dynamic>> deleteProject(
       {required ProjectModel projectModel}) async {
     try {
       // final response = await _supabase
@@ -169,7 +166,7 @@ class ProjectUserDataImpl implements ProjectUserData {
   }
 
   @override
-  Future<PostgrestResponse> updateProject({
+  Future<Response> updateProject({
     required Color color,
     required String title,
     required String oldTitle,

@@ -1,6 +1,6 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:dio/dio.dart';
 import 'package:todo2/services/error_service/error_service.dart';
-import 'package:todo2/services/network/network_config.dart';
+import 'package:todo2/services/network_service/network_config.dart';
 
 abstract class ChecklistItemsDataSource {
   Future putCheckListItem({
@@ -16,7 +16,7 @@ class ChecklistItemsDataSourceImpl implements ChecklistItemsDataSource {
   final _network = NetworkSource().networkApiClient;
 
   @override
-  Future<PostgrestResponse<dynamic>> putCheckListItem({
+  Future<Response<dynamic>> putCheckListItem({
     required String content,
     required int checklistId,
     required bool isCompleted,
@@ -30,7 +30,7 @@ class ChecklistItemsDataSourceImpl implements ChecklistItemsDataSource {
       //   CheckListItemsScheme.createdAt: DateTime.now().toString(),
       // }).execute();
       // return response;
-               return     Future.delayed( Duration(seconds: 1));
+      return Future.delayed(Duration(seconds: 1));
     } catch (e) {
       ErrorService.printError(
           'Error in ChecklistItemsDataSourceImpl putCheckListItem: $e');
@@ -39,7 +39,7 @@ class ChecklistItemsDataSourceImpl implements ChecklistItemsDataSource {
   }
 
   @override
-  Future<PostgrestResponse<dynamic>> fetchChecklistItem() async {
+  Future<Response<dynamic>> fetchChecklistItem() async {
     try {
       // final response = await _supabase
       //     .from(_table)
@@ -48,7 +48,7 @@ class ChecklistItemsDataSourceImpl implements ChecklistItemsDataSource {
       //     .eq(CheckListItemsScheme.ownerId, _supabase.auth.currentUser!.id)
       //     .execute();
       // return response;
-               return     Future.delayed( Duration(seconds: 1));
+      return Future.delayed(Duration(seconds: 1));
     } catch (e) {
       ErrorService.printError(
           'Error in ChecklistItemsDataSourceImpl fetchChecklistItem: $e');

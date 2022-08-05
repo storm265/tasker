@@ -1,9 +1,9 @@
 import 'dart:developer';
+import 'package:dio/dio.dart';
 
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo2/database/database_scheme/task_scheme.dart';
 import 'package:todo2/services/error_service/error_service.dart';
-import 'package:todo2/services/network/network_config.dart';
+import 'package:todo2/services/network_service/network_config.dart';
 
 abstract class TaskDataSource {
   Future fetchTask();
@@ -21,7 +21,7 @@ class TaskDataSourceImpl implements TaskDataSource {
   final String _table = 'tasks';
   final _supabase = NetworkSource().networkApiClient;
   @override
-  Future<PostgrestResponse<dynamic>> fetchTask() async {
+  Future<Response<dynamic>> fetchTask() async {
     try {
       // final response = await _supabase
       //     .from(_table)
@@ -32,7 +32,7 @@ class TaskDataSourceImpl implements TaskDataSource {
       //   log(response.error!.message);
       // }
       // return response;
-               return     Future.delayed( Duration(seconds: 1));
+      return Future.delayed(Duration(seconds: 1));
     } catch (e) {
       ErrorService.printError(
           'Error in ProjectUserDataImpl fetchProject():  $e');
@@ -41,8 +41,7 @@ class TaskDataSourceImpl implements TaskDataSource {
   }
 
   @override
-  Future<PostgrestResponse<dynamic>> fetchTaskId(
-      {required String title}) async {
+  Future<Response<dynamic>> fetchTaskId({required String title}) async {
     try {
       // final response = await _supabase
       //     .from(_table)
@@ -51,7 +50,7 @@ class TaskDataSourceImpl implements TaskDataSource {
       //     .eq(TaskScheme.title, title)
       //     .execute();
       // return response;
-               return     Future.delayed( Duration(seconds: 1));
+      return Future.delayed(Duration(seconds: 1));
     } catch (e) {
       ErrorService.printError(
           'Error in ProjectUserDataImpl fetchProject():  $e');
@@ -60,7 +59,7 @@ class TaskDataSourceImpl implements TaskDataSource {
   }
 
   @override
-  Future<PostgrestResponse<dynamic>> putTask({
+  Future<Response<dynamic>> putTask({
     required String title,
     required String description,
     required int assignedTo,
@@ -79,7 +78,7 @@ class TaskDataSourceImpl implements TaskDataSource {
       //   TaskScheme.createdAt: DateTime.now().toString(),
       // }).execute();
       // return response;
-               return     Future.delayed( Duration(seconds: 1));
+      return Future.delayed(Duration(seconds: 1));
     } catch (e) {
       ErrorService.printError('Error in ProjectUserDataImpl putTask():$e');
       rethrow;

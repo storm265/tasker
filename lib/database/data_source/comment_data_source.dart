@@ -13,7 +13,7 @@
 //   final _supabase = NetworkSource().networkApiClient;
 
 //   @override
-//   Future<PostgrestResponse<dynamic>> postComment(
+//   Future<Response<dynamic>> postComment(
 //       {required String content}) async {
 //     try {
 //       final response = await _supabase.from(_table).insert({

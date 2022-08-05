@@ -1,7 +1,6 @@
 import 'dart:developer';
-
 import 'package:dio/dio.dart';
-import 'package:todo2/services/network/error_network/network_error_service.dart';
+import 'package:todo2/services/network_service/update_token_service.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 class NetworkSource {
@@ -31,6 +30,7 @@ class NetworkConfiguration {
     ..interceptors.add(InterceptorsWrapper(onResponse: (response, handler) {
       if (response.statusCode == 401) {
         log('NetworkConfiguration TOKEN EXPIRED');
+        UpdateTokenService().updateToken(response: response);
       }
 
       return handler.next(response); // continue
@@ -59,8 +59,10 @@ class NetworkConfiguration {
     );
   }
 
-  Options getRequestOptions(
-      {required String accessToken, bool useContentType = false}) {
+  Options getRequestOptions({
+    required String accessToken,
+    bool useContentType = false,
+  }) {
     return Options(
       validateStatus: (_) => true,
       headers: {

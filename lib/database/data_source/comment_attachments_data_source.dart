@@ -16,7 +16,7 @@
 //   final _supabase = NetworkSource().networkApiClient;
 
 //   @override
-//   Future<PostgrestResponse<dynamic>> putCommentAttachment({
+//   Future<Response<dynamic>> putCommentAttachment({
 //     required String commentId,
 //     required String url,
 //   }) async {
@@ -35,7 +35,7 @@
 //   }
 
 //   @override
-//   Future<PostgrestResponse<dynamic>> fetchCommentAttachment() async {
+//   Future<Response<dynamic>> fetchCommentAttachment() async {
 //     try {
 //       final response = await _supabase
 //           .from(_table)
