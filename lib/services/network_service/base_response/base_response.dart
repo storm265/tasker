@@ -27,14 +27,10 @@ class BaseResponse<T> {
 }
 
 class BaseListResponse<T> {
-  Response response;
   List<T>? model;
-  NetworkErrorService errorService;
 
   BaseListResponse({
-    required this.response,
     required this.model,
-    required this.errorService,
   });
   factory BaseListResponse.fromJson({
     required Map<String, dynamic> json,
@@ -47,8 +43,6 @@ class BaseListResponse<T> {
           message: 'Error ${response.statusCode}: ${response.statusMessage}');
     } else {
       return BaseListResponse<T>(
-        errorService: errorService,
-        response: response,
         model: build(json[AuthScheme.data]),
       );
     }

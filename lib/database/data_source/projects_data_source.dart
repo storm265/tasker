@@ -82,9 +82,14 @@ class ProjectUserDataImpl implements ProjectUserData {
           AuthScheme.accessToken:
               await _secureStorageService.getUserData(type: StorageDataType.id)
         },
-        options: await _network.getLocalRequestOptions(),
+        options: await _network.getLocalRequestOptions(useContentType: true),
       );
       log('fetchAllProjects${response.data}');
+            final baseResponse = BaseResponse<AuthModel>.fromJson(
+        json: response.data,
+        build: (Map<String, dynamic> json) => AuthModel.fromJson(json),
+        response: response,
+      );
       return response;
     } catch (e) {
       ErrorService.printError(

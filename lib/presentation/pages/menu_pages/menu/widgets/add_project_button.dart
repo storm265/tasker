@@ -3,9 +3,6 @@ import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_cont
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/dialogs/add_project_dialog.dart';
 
-
-
-
 class AddProjectButton extends StatelessWidget {
   final Function notifyParent;
   final ProjectController projectController;
@@ -22,12 +19,11 @@ class AddProjectButton extends StatelessWidget {
     return Align(
       alignment: Alignment.topLeft,
       child: GestureDetector(
-        onTap: () async => print(Color(int.parse('0xFF42A5F5'))),
-        // await showAddProjectDialog(
-        //   titleController: titleController,
-        //   context: context,
-        //   projectController: projectController,
-        // ).then((_) => notifyParent()),
+        onTap: () async => await showAddProjectDialog(
+          titleController: titleController,
+          context: context,
+          projectController: projectController,
+        ).then((_) => notifyParent()),
         child: Padding(
           padding: const EdgeInsets.only(top: 15),
           child: Container(
@@ -35,7 +31,7 @@ class AddProjectButton extends StatelessWidget {
             height: 80,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: colors[0],
+              color: getAppColor(color: CategoryColor.blue),
             ),
             child: const Center(
               child: Icon(

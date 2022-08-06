@@ -25,7 +25,7 @@ class TaskCardWidget extends StatelessWidget {
                 width: 5,
                 height: 25,
                 child: ColoredBox(
-                  color: data.isCompleted ? Colors.red : colors[0],
+                  color: data.isCompleted ? Colors.red : getAppColor(color: CategoryColor.blue),
                 ),
               ),
             ),
@@ -39,7 +39,7 @@ class TaskCardWidget extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: CustomPaint(
                         size: const Size(20, 20),
-                        painter: CirclePainter(circleColor: colors[0]),
+                        painter: CirclePainter(circleColor: getAppColor(color: CategoryColor.blue),),
                       ),
                     ),
               subtitle: Text(

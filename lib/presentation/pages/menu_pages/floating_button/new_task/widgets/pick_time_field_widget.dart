@@ -28,7 +28,7 @@ class PickTimeFieldWidget extends StatelessWidget {
                 child: ValueListenableBuilder<DateTime?>(
                   valueListenable: addTaskController.pickedTime,
                   builder: (context, time, _) => ElevatedButton(
-                    style: ElevatedButton.styleFrom(primary: colors[0]),
+                    style: ElevatedButton.styleFrom(primary: getAppColor(color: CategoryColor.blue)),
                     onPressed: () => showCalendarDatePicker(context),
                     child: Text(
                       time == null

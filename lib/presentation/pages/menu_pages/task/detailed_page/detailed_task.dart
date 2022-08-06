@@ -167,7 +167,7 @@ class _DetailedTaskPageState extends State<DetailedTaskPage> {
                                               child: Text(
                                                 'Personal',
                                                 style: TextStyle(
-                                                  color: colors[0],
+                                                  color: getAppColor(color: CategoryColor.blue),
                                                   fontStyle: FontStyle.italic,
                                                 ),
                                               ),
@@ -188,7 +188,7 @@ class _DetailedTaskPageState extends State<DetailedTaskPage> {
                         valueListenable:
                             detailedController.isSubmitButtonClicked,
                         builder: (_, isClicked, __) => ConfirmButtonWidget(
-                          color: colors[0],
+                          color: getAppColor(color: CategoryColor.blue),
                           title: 'Complete Task',
                           onPressed: isClicked
                               ? () async {

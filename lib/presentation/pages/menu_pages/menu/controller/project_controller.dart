@@ -107,7 +107,7 @@ class ProjectController extends ChangeNotifier {
     }
   }
 
-  Future<void> postProject({
+  Future<void> pushProject({
     required Color color,
     required String title,
   }) async {

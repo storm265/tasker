@@ -48,7 +48,7 @@ class _MenuPageState extends State<MenuPage> {
                 children: [
                   FutureBuilder<List<ProjectModel>>(
                     initialData: const [],
-                    // future: _projectController.fetchProjects(),
+                     future: _projectController.fetchProjects(),
                     builder: (_, AsyncSnapshot<List<ProjectModel>> snapshot) {
                       if (snapshot.data!.isEmpty) {
                         return const Text('No projects');
@@ -77,8 +77,7 @@ class _MenuPageState extends State<MenuPage> {
                                             ? null
                                             : () {
                                                 _projectController.pickProject(
-                                                  pickedModel: data,
-                                                );
+                                                    pickedModel: data);
                                                 showOptionsDialog(
                                                   titleController:
                                                       titleController,
