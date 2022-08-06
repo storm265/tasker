@@ -96,21 +96,23 @@ class _SignInPageState extends State<SignInPage> {
                         ValueListenableBuilder<bool>(
                           valueListenable:
                               _signInController.isActiveSubmitButton,
-                          builder: ((context, isClicked, _) =>
-                              SubmitUpButtonWidget(
-                                buttonText: 'Sign In',
-                                onPressed: isClicked
-                                    ? () async {
-                                        _signInController.signInValidate(
-                                          context: context,
-                                          emailController:
-                                              _emailController.text,
-                                          passwordController:
-                                              _passwordController.text,
-                                        );
-                                      }
-                                    : null,
-                              )),
+                          builder: ((context, isClicked, _) => isClicked
+                              ? SubmitUpButtonWidget(
+                                  buttonText: 'Sign In',
+                                  onPressed: isClicked
+                                      ? () async {
+                                          _signInController.signInValidate(
+                                            context: context,
+                                            emailController:
+                                                _emailController.text,
+                                            passwordController:
+                                                _passwordController.text,
+                                          );
+                                        }
+                                      : null,
+                                )
+                              : const ProgressIndicatorWidget(
+                                  text: 'Validating...')),
                         ),
                         const SignInButtonWidget(buttonText: 'Sign Up'),
                       ],

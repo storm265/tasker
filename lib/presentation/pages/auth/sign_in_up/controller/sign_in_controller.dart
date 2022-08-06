@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
@@ -32,21 +30,16 @@ class SignInController extends ChangeNotifier {
   }
 
   Future<void> signInValidate({
-    required BuildContext context,
     required String emailController,
     required String passwordController,
+    required BuildContext context,
   }) async {
-    changeSubmitButtonValue(newValue: false);
     if (formKey.currentState!.validate()) {
       await signIn(
         context: context,
         email: emailController,
         password: passwordController,
-      ).then((_) {
-        log('NAVIGATION');
-//NavigationService.navigateTo(context, Pages.home)
-      });
-      changeSubmitButtonValue(newValue: true);
+      );
     }
   }
 
@@ -56,46 +49,53 @@ class SignInController extends ChangeNotifier {
     required String password,
   }) async {
     try {
+      changeSubmitButtonValue(newValue: false);
+
       final response = await _authRepository.signIn(
         email: email,
         password: password,
       );
-      final authModel = response.model;
 
-      final userData = await _userProfileRepository.fetchCurrentUser(
-        accessToken: response.model.accessToken,
-        id: authModel.id,
-      );
+      if (response.model.userId != 'null') {
+        final authModel = response.model;
 
-      Future.wait([
-        _storageSource.storageApi.saveUserData(
-          type: StorageDataType.id,
-          value: authModel.id,
-        ),
-        _storageSource.storageApi.saveUserData(
-          type: StorageDataType.email,
-          value: email,
-        ),
-        _storageSource.storageApi.saveUserData(
-          type: StorageDataType.username,
-          value: userData.model.username,
-        ),
-        _storageSource.storageApi.saveUserData(
-          type: StorageDataType.avatarUrl,
-          value: userData.model.avatarUrl,
-        ),
-        _storageSource.storageApi.saveUserData(
-          type: StorageDataType.refreshToken,
-          value: authModel.refreshToken,
-        ),
-        _storageSource.storageApi.saveUserData(
-          type: StorageDataType.accessToken,
-          value: authModel.accessToken,
-        ),
-      ]);
+        final userData = await _userProfileRepository.fetchCurrentUser(
+          accessToken: response.model.accessToken,
+          id: authModel.userId,
+        );
+
+        Future.wait([
+          _storageSource.storageApi.saveUserData(
+            type: StorageDataType.id,
+            value: authModel.userId,
+          ),
+          _storageSource.storageApi.saveUserData(
+            type: StorageDataType.email,
+            value: email,
+          ),
+          _storageSource.storageApi.saveUserData(
+            type: StorageDataType.username,
+            value: userData.model.username,
+          ),
+          _storageSource.storageApi.saveUserData(
+            type: StorageDataType.avatarUrl,
+            value: userData.model.avatarUrl,
+          ),
+          _storageSource.storageApi.saveUserData(
+            type: StorageDataType.refreshToken,
+            value: authModel.refreshToken,
+          ),
+          _storageSource.storageApi.saveUserData(
+            type: StorageDataType.accessToken,
+            value: authModel.accessToken,
+          ),
+        ]).then((_) => NavigationService.navigateTo(context, Pages.home));
+      }
     } catch (e) {
       ErrorService.printError('Error in signIn() controller: $e');
       rethrow;
+    } finally {
+      changeSubmitButtonValue(newValue: true);
     }
   }
 

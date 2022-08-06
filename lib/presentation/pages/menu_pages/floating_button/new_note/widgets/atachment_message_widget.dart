@@ -87,7 +87,7 @@ class _AttachementWidgetState extends State<AttachementWidget> {
               shrinkWrap: true,
             );
           } else {
-            return const  ProgressIndicatorWidget();
+            return const ProgressIndicatorWidget();
           }
         }),
       ),

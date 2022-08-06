@@ -46,7 +46,7 @@ class _AddQuickNoteState extends State<AddQuickNote> {
           WhiteBoxWidget(
             height: 500,
             child: Padding(
-                padding: const EdgeInsets.all(30.0),
+              padding: const EdgeInsets.all(30.0),
               child: Column(
                 children: [
                   Form(

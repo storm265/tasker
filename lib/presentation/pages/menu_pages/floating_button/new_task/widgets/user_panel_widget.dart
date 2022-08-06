@@ -5,7 +5,6 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/con
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/controller_inherited.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 
-
 class UserPanelPickerWidget extends StatelessWidget {
   UserPanelPickerWidget({Key? key}) : super(key: key);
 

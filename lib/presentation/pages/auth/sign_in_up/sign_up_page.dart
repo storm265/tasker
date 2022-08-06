@@ -1,9 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/storage/avatar_storage_data_source.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
-import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/storage/avatar_storage_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/controller/image_picker_controller.dart';
@@ -11,8 +8,6 @@ import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validat
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/sign_up_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/padding_contstant.dart';
 import 'package:todo2/presentation/pages/auth/widgets/unfocus_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_controller.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/pages/auth/widgets/constants.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/avatar_widget.dart';
@@ -24,7 +19,6 @@ import 'package:todo2/presentation/pages/auth/widgets/title_widget.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
-import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -40,15 +34,15 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _usernameController = TextEditingController();
 
   final _signUpController = SignUpController(
-    AuthRepositoryImpl(),
-    UserProfileRepositoryImpl(),
-    FormValidatorController(),
-    ImageController(
+    authRepository: AuthRepositoryImpl(),
+    userProfileRepository: UserProfileRepositoryImpl(),
+    imagePickerController: ImageController(
       avatarRepository: AvatarStorageReposiroryImpl(
         avatarDataSource: AvatarStorageDataSourceImpl(),
       ),
     ),
-    SecureStorageSource(),
+    formValidatorController: FormValidatorController(),
+    storageSource: SecureStorageSource(),
   );
   @override
   void dispose() {
@@ -128,18 +122,21 @@ class _SignUpPageState extends State<SignUpPage> {
                         ValueListenableBuilder<bool>(
                           valueListenable:
                               _signUpController.isActiveSubmitButton,
-                          builder: (context, isClicked, _) =>
-                              SubmitUpButtonWidget(
-                            buttonText: 'Sign Up',
-                            onPressed: isClicked
-                                ? () => _signUpController.signUpValidate(
-                                      context: context,
-                                      userName: _usernameController.text,
-                                      email: _emailController.text,
-                                      password: _passwordController.text,
-                                    )
-                                : null,
-                          ),
+                          builder: (context, isClicked, _) => isClicked
+                              ? SubmitUpButtonWidget(
+                                  buttonText: 'Sign Up',
+                                  onPressed: isClicked
+                                      ? () async =>
+                                          _signUpController.signUpValidate(
+                                            context: context,
+                                            userName: _usernameController.text,
+                                            email: _emailController.text,
+                                            password: _passwordController.text,
+                                          )
+                                      : null,
+                                )
+                              : const ProgressIndicatorWidget(
+                                  text: 'Validating...'),
                         ),
                         const SignInButtonWidget(buttonText: 'Sign In'),
                       ],

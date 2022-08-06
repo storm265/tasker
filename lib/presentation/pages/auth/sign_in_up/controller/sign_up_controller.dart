@@ -11,13 +11,15 @@ import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 class SignUpController extends ChangeNotifier {
-  SignUpController(
-    this._authRepository,
-    this._userProfileRepository,
-    this.formValidatorController,
-    this.imagePickerController,
-    this._storageSource,
-  );
+  SignUpController({
+    required AuthRepositoryImpl authRepository,
+    required UserProfileRepositoryImpl userProfileRepository,
+    required this.formValidatorController,
+    required this.imagePickerController,
+    required SecureStorageSource storageSource,
+  })  : _authRepository = authRepository,
+        _userProfileRepository = userProfileRepository,
+        _storageSource = storageSource;
 
   final AuthRepositoryImpl _authRepository;
   final UserProfileRepositoryImpl _userProfileRepository;
@@ -62,48 +64,51 @@ class SignUpController extends ChangeNotifier {
   }) async {
     try {
       changeSubmitButtonValue(newValue: false);
-
-      final response = await _authRepository
-          .signUp(
+      final response = await _authRepository.signUp(
         nickname: username,
         email: email,
         password: password,
       );
-      // final authModel = response.model;
 
-      // await Future.wait([
-      //   _storageSource.storageApi
-      //       .saveUserData(type: StorageDataType.id, value: authModel.id),
-      //   _storageSource.storageApi
-      //       .saveUserData(type: StorageDataType.email, value: email),
-      //   _storageSource.storageApi
-      //       .saveUserData(type: StorageDataType.password, value: password),
-      //   _storageSource.storageApi
-      //       .saveUserData(type: StorageDataType.username, value: username),
-      //   _storageSource.storageApi.saveUserData(
-      //       type: StorageDataType.refreshToken, value: authModel.refreshToken),
-      //   _storageSource.storageApi.saveUserData(
-      //     type: StorageDataType.accessToken,
-      //     value: authModel.accessToken,
-      //   ),
-      // ]);
+      if (response.model.userId != 'null') {
+        final authModel = response.model;
 
-      // final imageResponse = await imagePickerController.uploadAvatar();
+        await Future.wait([
+          _storageSource.storageApi
+              .saveUserData(type: StorageDataType.id, value: authModel.userId),
+          _storageSource.storageApi
+              .saveUserData(type: StorageDataType.email, value: email),
+          _storageSource.storageApi
+              .saveUserData(type: StorageDataType.password, value: password),
+          _storageSource.storageApi
+              .saveUserData(type: StorageDataType.username, value: username),
+          _storageSource.storageApi.saveUserData(
+              type: StorageDataType.refreshToken,
+              value: authModel.refreshToken),
+          _storageSource.storageApi.saveUserData(
+            type: StorageDataType.accessToken,
+            value: authModel.accessToken,
+          ),
+        ]);
 
-      // await _storageSource.storageApi.saveUserData(
-      //     type: StorageDataType.avatarUrl,
-      //     value: imageResponse[AuthScheme.avatarUrl]);
+        final imageResponse = await imagePickerController.uploadAvatar();
 
-      // await _userProfileRepository
-      //     .postProfile(
-      //       id: authModel.id,
-      //       avatarUrl: imageResponse[AuthScheme.avatarUrl],
-      //       username: username,
-      //     )
+        await _storageSource.storageApi.saveUserData(
+            type: StorageDataType.avatarUrl,
+            value: imageResponse[AuthScheme.avatarUrl]);
 
-      changeSubmitButtonValue(newValue: true);
+        await _userProfileRepository
+            .postProfile(
+              id: authModel.userId,
+              avatarUrl: imageResponse[AuthScheme.avatarUrl],
+              username: username,
+            )
+            .then((_) => NavigationService.navigateTo(context, Pages.home));
+      }
     } catch (e) {
       ErrorService.printError('Error in signUp() controller: $e');
+    } finally {
+      changeSubmitButtonValue(newValue: true);
     }
   }
 

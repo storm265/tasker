@@ -16,16 +16,16 @@ class UpdateTokenService {
   Future<void> updateToken({required Response response}) async {
     try {
       final expiresAt = DateTime.fromMillisecondsSinceEpoch(
-          response.data[AuthScheme.data]!.expiresIn);
+          response.data[AuthScheme.data].expiresIn);
 
       log('Time now: ${DateTime.now()}');
       log('expiresAt: $expiresAt');
       if (DateTime.now().isAfter(expiresAt)) {
         log('*** Token is expired *** ');
-        // final authResponse = await _authRepository.refreshToken();
-        // await _secureStorageService.saveUserData(
-        //     type: StorageDataType.refreshToken,
-        //     value: authResponse.model.refreshToken);
+        final authResponse = await _authRepository.refreshToken();
+        await _secureStorageService.saveUserData(
+            type: StorageDataType.refreshToken,
+            value: authResponse.model.refreshToken);
         log('*** Token updated *** ');
       }
     } catch (e) {
