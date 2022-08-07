@@ -3,13 +3,11 @@ import 'package:dio/dio.dart';
 import 'package:todo2/database/data_source/auth_data_source.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/services/error_service/error_service.dart';
-import 'package:todo2/services/network_service/error_network/network_error_service.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 class UpdateTokenService {
   final SecureStorageService _secureStorageService = SecureStorageService();
   final AuthDataSourceImpl _authRepository = AuthDataSourceImpl(
-    networkErrorService: NetworkErrorService(),
     secureStorageService: SecureStorageService(),
   );
 

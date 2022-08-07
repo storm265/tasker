@@ -53,7 +53,9 @@ class _MenuPageState extends State<MenuPage> {
                     builder: (_,
                         AsyncSnapshot<BaseListResponse<ProjectModel>>
                             snapshot) {
-                      if (snapshot.hasData) {
+                      if (snapshot.data!.model.isEmpty) {
+                        return const Text('No projects');
+                      } else if (snapshot.hasData) {
                         return GridView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
@@ -94,9 +96,6 @@ class _MenuPageState extends State<MenuPage> {
                                       ),
                                     );
                             });
-                      }
-                      if (snapshot.data!.model.isEmpty) {
-                        return const Text('No projects');
                       } else {
                         return const ProgressIndicatorWidget();
                       }

@@ -47,17 +47,15 @@ class ProjectController extends ChangeNotifier {
     required BuildContext context,
     required String title,
     required VoidCallback onSuccessCallback,
-    required String oldTitle,
   }) async {
     try {
       if (formKey.currentState!.validate()) {
         setClickedValue(false);
-        final bool isDublicateProject =
-            await findDublicates(context: context, title: title);
+        final bool isDublicateProject = await findDublicates(title: title);
         if (!isDublicateProject) {
           isEdit
               ? await _projectsRepository.updateProject(
-                  oldTitle: oldTitle,
+                 
                   color: selectedModel.value.color,
                   title: title,
                 )
@@ -85,14 +83,11 @@ class ProjectController extends ChangeNotifier {
     }
   }
 
-  Future<bool> findDublicates({
-    required String title,
-    required BuildContext context,
-  }) async {
+  Future<bool> findDublicates({required String title}) async {
     try {
-      String foundTitle =
-          await _projectsRepository.findDublicates(title: title);
-      if (title.trim() == foundTitle.trim()) {
+      bool isDublicated =
+          await _projectsRepository.isDublicatedProject(title: title);
+      if (isDublicated) {
         MessageService.displaySnackbar(
           message: 'This project is already exist',
         );
@@ -106,7 +101,7 @@ class ProjectController extends ChangeNotifier {
     }
   }
 
-  Future<void> pushProject({
+  Future<void> createProject({
     required Color color,
     required String title,
   }) async {
@@ -121,13 +116,11 @@ class ProjectController extends ChangeNotifier {
   Future<void> updateProject({
     required Color color,
     required String title,
-    required String oldTitle,
   }) async {
     try {
       await _projectsRepository.updateProject(
         color: color,
         title: title,
-        oldTitle: oldTitle,
       );
     } catch (e) {
       ErrorService.printError('Error in fetchProjects(): $e');

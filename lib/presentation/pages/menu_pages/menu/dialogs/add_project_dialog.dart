@@ -57,7 +57,6 @@ Future<void> showAddProjectDialog({
                     ? () async {
                         projectController.setClickedValue(false);
                         await projectController.validate(
-                          oldTitle: projectController.selectedModel.value.title,
                           title: titleController.text,
                           context: context,
                           isEdit:

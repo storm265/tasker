@@ -24,13 +24,9 @@ abstract class AuthDataSource {
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
-  final NetworkErrorService _networkErrorService;
   final SecureStorageService _secureStorageService;
-  AuthDataSourceImpl(
-      {required SecureStorageService secureStorageService,
-      required NetworkErrorService networkErrorService})
-      : _secureStorageService = secureStorageService,
-        _networkErrorService = networkErrorService;
+  AuthDataSourceImpl({required SecureStorageService secureStorageService})
+      : _secureStorageService = secureStorageService;
 
   final _network = NetworkSource().networkApiClient;
 

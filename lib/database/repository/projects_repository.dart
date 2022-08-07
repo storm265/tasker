@@ -15,8 +15,6 @@ abstract class ProjectRepository<T> {
     required String title,
   });
 
-
-
   Future fetchProjectsWhere({required String title});
 
   Future deleteProject({required ProjectModel projectModel});
@@ -24,10 +22,9 @@ abstract class ProjectRepository<T> {
   Future updateProject({
     required Color color,
     required String title,
-    required String oldTitle,
   });
 
-  Future findDublicates({required String title});
+  Future isDublicatedProject({required String title});
 }
 
 class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
@@ -88,13 +85,10 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
     }
   }
 
-
-
   @override
   Future<BaseResponse<ProjectModel>> updateProject({
     required Color color,
     required String title,
-    required String oldTitle,
   }) async {
     try {
       final response = await _projectDataSource.updateProject(
@@ -124,14 +118,17 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
   }
 
   @override
-  Future<String> findDublicates({required String title}) async {
+  Future<bool> isDublicatedProject({required String title}) async {
     try {
       final response = await _projectDataSource.findDublicates(title: title);
-      if (response.data.toString().length == 2) {
-        return 'no';
-      } else {
-        return response.data[0][ProjectDataScheme.title];
+      for (int i = 0; i < response.model.length; i++) {
+        if (response.model[i].title == title) {
+          return true;
+        } else {
+          return false;
+        }
       }
+      return false;
     } catch (e) {
       ErrorService.printError(
           'Error in ProjectRepositoryImpl findDublicates(): $e');

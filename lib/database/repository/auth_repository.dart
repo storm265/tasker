@@ -3,7 +3,6 @@ import 'package:todo2/database/data_source/auth_data_source.dart';
 import 'package:todo2/database/model/auth_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/network_service/base_response/base_response.dart';
-import 'package:todo2/services/network_service/error_network/network_error_service.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 abstract class AuthRepository {
@@ -25,7 +24,6 @@ abstract class AuthRepository {
 class AuthRepositoryImpl implements AuthRepository {
   final _authDataSource = AuthDataSourceImpl(
     secureStorageService: SecureStorageService(),
-    networkErrorService: NetworkErrorService(),
   );
 
   @override
