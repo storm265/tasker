@@ -180,8 +180,7 @@ class AddTaskController extends ChangeNotifier {
     try {
       int userId = 0;
       // await userProfileRepository.fetchId();
-      int projectId = await projectRepository.fetchProjectId(
-          project: pickedProject.value.title);
+      int projectId = 0;
 
       await taskRepository.postTask(
         title: title,

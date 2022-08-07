@@ -48,6 +48,7 @@ class _MenuPageState extends State<MenuPage> {
               child: Column(
                 children: [
                   FutureBuilder<BaseListResponse<ProjectModel>>(
+                    initialData: BaseListResponse<ProjectModel>(model: []),
                     future: _projectController.fetchAllProjects(),
                     builder: (_,
                         AsyncSnapshot<BaseListResponse<ProjectModel>>

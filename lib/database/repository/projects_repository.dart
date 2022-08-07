@@ -15,7 +15,7 @@ abstract class ProjectRepository<T> {
     required String title,
   });
 
-  Future fetchProjectId({required String project});
+
 
   Future fetchProjectsWhere({required String title});
 
@@ -88,21 +88,10 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
     }
   }
 
-  @override
-  Future<int> fetchProjectId({required String project}) async {
-    try {
-      final response =
-          await _projectDataSource.fetchProjectId(project: project);
-      return response.data[0][ProjectDataScheme.id];
-    } catch (e) {
-      ErrorService.printError(
-          'Error in ProjectRepositoryImpl fetchProjectId(): $e');
-      rethrow;
-    }
-  }
+
 
   @override
-  Future<Response<dynamic>> updateProject({
+  Future<BaseResponse<ProjectModel>> updateProject({
     required Color color,
     required String title,
     required String oldTitle,
@@ -111,7 +100,6 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
       final response = await _projectDataSource.updateProject(
         color: color,
         title: title,
-        oldTitle: oldTitle,
       );
       return response;
     } catch (e) {

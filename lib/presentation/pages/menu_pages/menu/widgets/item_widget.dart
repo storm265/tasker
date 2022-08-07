@@ -31,12 +31,8 @@ class ProjectItemWidget extends StatelessWidget {
                 spacing: 5,
                 direction: Axis.vertical,
                 children: [
-                  CategoryWidget(
-                    title: model.title,
-                  ),
-                  const CategoryLengthWidget(
-                    taskLenght: 10,
-                  )
+                  CategoryWidget(title: model.title),
+                  const CategoryLengthWidget(taskLenght: 10)
                 ],
               ),
             ),

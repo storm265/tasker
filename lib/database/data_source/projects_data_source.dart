@@ -14,12 +14,11 @@ abstract class ProjectUserData {
   Future updateProject({
     required Color color,
     required String title,
-    required String oldTitle,
   });
   Future deleteProject({required ProjectModel projectModel});
   Future createProject({required Color color, required String title});
   Future fetchProjectsWhere({required String title});
-  Future fetchProjectId({required String project});
+
   Future findDublicates({required String title});
   Future fetchOneProject();
   Future fetchAllProjects();
@@ -113,7 +112,6 @@ class ProjectUserDataImpl implements ProjectUserData {
                 .toList(),
         response: response,
       );
-      log(baseResponse.model[0].ownerId);
       return baseResponse;
     } catch (e) {
       ErrorService.printError(
@@ -139,23 +137,7 @@ class ProjectUserDataImpl implements ProjectUserData {
     }
   }
 
-  @override
-  Future<Response<dynamic>> fetchProjectId({required String project}) async {
-    try {
-      // final response = await _supabase
-      //     .from(_table)
-      //     .select(ProjectDataScheme.id)
-      //     .eq(ProjectDataScheme.ownerId, _supabase.auth.currentUser!.id)
-      //     .eq(ProjectDataScheme.title, project)
-      //     .execute();
-      // return response;
-      return Future.delayed(Duration(seconds: 1));
-    } catch (e) {
-      ErrorService.printError(
-          'Error in ProjectUserDataImpl fetchProjectId() dataSource:  $e');
-      rethrow;
-    }
-  }
+
 
   @override
   Future<Response<dynamic>> fetchProjectsWhere({required String title}) async {
@@ -180,14 +162,12 @@ class ProjectUserDataImpl implements ProjectUserData {
   Future<Response<dynamic>> deleteProject(
       {required ProjectModel projectModel}) async {
     try {
-      // final response = await _supabase
-      //     .from(_table)
-      //     .delete()
-      //     .eq(ProjectDataScheme.ownerId, projectModel.ownerId)
-      //     .eq(ProjectDataScheme.title, projectModel.title)
-      //     .execute();
-      // return response;
-      return Future.delayed(Duration(seconds: 1));
+      final Response response = await _network.dio.delete(
+        _projects,
+        queryParameters: {ProjectDataScheme.id: projectModel.ownerId},
+        options: await _network.getLocalRequestOptions(),
+      );
+      return response;
     } catch (e) {
       ErrorService.printError('Error in dataSource deleteProject() : $e');
       rethrow;
@@ -195,23 +175,27 @@ class ProjectUserDataImpl implements ProjectUserData {
   }
 
   @override
-  Future<Response> updateProject({
+  Future<BaseResponse<ProjectModel>> updateProject({
     required Color color,
     required String title,
-    required String oldTitle,
   }) async {
     try {
-      // final response = await _supabase
-      //     .from(_table)
-      //     .update({
-      //       ProjectDataScheme.title: title,
-      //       ProjectDataScheme.createdAt: DateTime.now().toString(),
-      //       ProjectDataScheme.color: color,
-      //     })
-      //     .eq(ProjectDataScheme.title, oldTitle)
-      //     .execute();
-      // return response;
-      return Future.delayed(Duration(seconds: 1));
+      final response = await _network.dio.put(
+        _projects,
+        data: {
+          ProjectDataScheme.color: color.toString().toStringColor(),
+          ProjectDataScheme.title: title,
+          ProjectDataScheme.id:
+              await _secureStorageService.getUserData(type: StorageDataType.id)
+        },
+        options: await _network.getLocalRequestOptions(useContentType: true),
+      );
+
+      return BaseResponse<ProjectModel>.fromJson(
+        json: response.data,
+        build: (Map<String, dynamic> json) => ProjectModel.fromJson(json),
+        response: response,
+      );
     } catch (e) {
       ErrorService.printError('Error in dataSource updateProject() : $e');
       rethrow;

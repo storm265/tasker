@@ -47,6 +47,10 @@ class BaseListResponse<T> {
   }
 }
 /*
+
+Usage:
+
+
       final baseResponse = BaseListResponse<ProjectModel>.fromJson(
         json: response.data[AuthScheme.data],
         build: (List<Map<String, dynamic>> json) =>
