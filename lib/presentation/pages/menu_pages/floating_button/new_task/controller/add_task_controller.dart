@@ -75,7 +75,8 @@ class AddTaskController extends ChangeNotifier {
   }
 
   final pickedProject = ValueNotifier<ProjectModel>(
-    ProjectModel(color: Colors.red, createdAt: '', title: '', ownerId: ''),
+    ProjectModel(
+        color: Colors.red, createdAt: DateTime.now(), title: '', ownerId: ''),
   );
 
   void pickProject({

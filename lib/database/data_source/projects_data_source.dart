@@ -6,6 +6,7 @@ import 'package:todo2/database/database_scheme/project_user_scheme.dart';
 import 'package:todo2/database/model/projects_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/extensions/color_extension/color_string_extension.dart';
+import 'package:todo2/services/network_service/base_response/base_response.dart';
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
@@ -74,23 +75,46 @@ class ProjectUserDataImpl implements ProjectUserData {
   }
 
   @override
-  Future<Response<dynamic>> fetchAllProjects() async {
+  Future<BaseListResponse<ProjectModel>> fetchAllProjects() async {
     try {
-      final response = await _network.dio.get(
-        _projects,
-        queryParameters: {
-          AuthScheme.accessToken:
-              await _secureStorageService.getUserData(type: StorageDataType.id)
-        },
-        options: await _network.getLocalRequestOptions(useContentType: true),
-      );
-      log('fetchAllProjects${response.data}');
-            final baseResponse = BaseResponse<AuthModel>.fromJson(
-        json: response.data,
-        build: (Map<String, dynamic> json) => AuthModel.fromJson(json),
+      // final response = await _network.dio.get(
+      //   _projects,
+      //   queryParameters: {
+      //     AuthScheme.accessToken:
+      //         await _secureStorageService.getUserData(type: StorageDataType.id)
+      //   },
+      //   options: await _network.getLocalRequestOptions(useContentType: true),
+      // );
+      Response response =
+          Response(requestOptions: RequestOptions(path: 'darkpath'), data: {
+        "data": [
+          {
+            "id": "ce8f3cac-5c07-4e74-a286-017e39fdd9b3",
+            "title": "Personal",
+            "color": "#6074F9",
+            "owner_id": "76d2fab4-fd06-4909-bf8e-875c6b55c1f7",
+            "created_at": "2022-07-12T14:46:44.793558"
+          },
+          {
+            "id": "eda45acd-22d1-4dc6-9f75-0c0e7b172d0f",
+            "title": "Project 1",
+            "color": "#FFFFD4",
+            "owner_id": "76d2fab4-fd06-4909-bf8e-875c6b55c1f7",
+            "created_at": "2022-07-13T08:43:24.147065"
+          },
+        ]
+      });
+
+      final baseResponse = BaseListResponse<ProjectModel>.fromJson(
+        json: response.data[AuthScheme.data],
+        build: (List<Map<String, dynamic>> json) =>
+            (response.data[AuthScheme.data] as List<Map<String, String>>)
+                .map((e) => ProjectModel.fromJson(e))
+                .toList(),
         response: response,
       );
-      return response;
+      log(baseResponse.model[0].ownerId);
+      return baseResponse;
     } catch (e) {
       ErrorService.printError(
           'Error in ProjectUserDataImpl fetchAllProjects() dataSource:  $e');

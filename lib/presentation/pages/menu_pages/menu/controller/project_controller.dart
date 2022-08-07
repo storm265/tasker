@@ -5,6 +5,7 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/c
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
+import 'package:todo2/services/network_service/base_response/base_response.dart';
 
 enum ProjectDialogStatus {
   add,
@@ -25,7 +26,7 @@ class ProjectController extends ChangeNotifier {
   final selectedModel = ValueNotifier(
     ProjectModel(
       color: Colors.red,
-      createdAt: '',
+      createdAt: DateTime.now(),
       title: '',
       ownerId: '',
     ),
@@ -40,7 +41,6 @@ class ProjectController extends ChangeNotifier {
     isClickedSubmitButton.value = newValue;
     isClickedSubmitButton.notifyListeners();
   }
-
 
   Future<void> validate({
     required bool isEdit,
@@ -62,8 +62,7 @@ class ProjectController extends ChangeNotifier {
                   title: title,
                 )
               : await _projectsRepository.createProject(
-                  color: colors[colorPalleteController.selectedIndex.value]
-                    ,
+                  color: colors[colorPalleteController.selectedIndex.value],
                   title: title,
                 );
         }
@@ -76,9 +75,9 @@ class ProjectController extends ChangeNotifier {
     }
   }
 
-  Future<Map<String, dynamic>> fetchProjects() async {
+  Future<BaseListResponse<ProjectModel>> fetchAllProjects() async {
     try {
-      final projects = await _projectsRepository.fetchOneProject();
+      final projects = await _projectsRepository.fetchAllProjects();
       return projects;
     } catch (e) {
       ErrorService.printError('Error in fetchProjects(): $e');

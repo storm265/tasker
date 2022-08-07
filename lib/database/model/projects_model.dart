@@ -1,11 +1,12 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:todo2/database/database_scheme/project_user_scheme.dart';
+import 'package:todo2/services/extensions/color_extension/color_string_extension.dart';
 
 class ProjectModel {
   String title;
   Color color;
   String ownerId;
-  String createdAt;
+  DateTime createdAt;
 
   ProjectModel({
     required this.title,
@@ -14,10 +15,15 @@ class ProjectModel {
     required this.ownerId,
   });
 
-  factory ProjectModel.fromJson(Map<String, dynamic> json) => ProjectModel(
-        title: json[ProjectDataScheme.title],
-        color: json[ProjectDataScheme.color] as Color,
-        createdAt: json[ProjectDataScheme.createdAt],
-        ownerId: json[ProjectDataScheme.ownerId],
-      );
+  factory ProjectModel.fromJson(Map<String, dynamic> json) {
+    return ProjectModel(
+      title: json[ProjectDataScheme.title],
+      color: Color(
+        int.parse(
+            json[ProjectDataScheme.color].toString().replaceColorSymbol()),
+      ),
+      createdAt: DateTime.parse(json[ProjectDataScheme.createdAt]),
+      ownerId: json[ProjectDataScheme.ownerId],
+    );
+  }
 }

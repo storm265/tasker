@@ -11,6 +11,7 @@ import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
+import 'package:todo2/services/network_service/base_response/base_response.dart';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({Key? key}) : super(key: key);
@@ -46,17 +47,16 @@ class _MenuPageState extends State<MenuPage> {
               padding: const EdgeInsets.all(10.0),
               child: Column(
                 children: [
-                  FutureBuilder<List<ProjectModel>>(
-                    initialData: const [],
-                     future: _projectController.fetchProjects(),
-                    builder: (_, AsyncSnapshot<List<ProjectModel>> snapshot) {
-                      if (snapshot.data!.isEmpty) {
-                        return const Text('No projects');
-                      } else if (snapshot.hasData) {
+                  FutureBuilder<BaseListResponse<ProjectModel>>(
+                    future: _projectController.fetchAllProjects(),
+                    builder: (_,
+                        AsyncSnapshot<BaseListResponse<ProjectModel>>
+                            snapshot) {
+                      if (snapshot.hasData) {
                         return GridView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: snapshot.data!.length,
+                            itemCount: snapshot.data!.model.length,
                             gridDelegate:
                                 const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
@@ -64,7 +64,7 @@ class _MenuPageState extends State<MenuPage> {
                               mainAxisSpacing: 5.0,
                             ),
                             itemBuilder: (BuildContext context, index) {
-                              final data = snapshot.data![index];
+                              final data = snapshot.data!.model[index];
                               return snapshot.connectionState ==
                                       ConnectionState.waiting
                                   ? ShimmerProjectItem(model: data)
@@ -72,7 +72,7 @@ class _MenuPageState extends State<MenuPage> {
                                       padding: const EdgeInsets.all(4),
                                       child: InkWell(
                                         onLongPress: snapshot
-                                                    .data![index].title ==
+                                                    .data!.model[index].title ==
                                                 'Personal'
                                             ? null
                                             : () {
@@ -93,6 +93,9 @@ class _MenuPageState extends State<MenuPage> {
                                       ),
                                     );
                             });
+                      }
+                      if (snapshot.data!.model.isEmpty) {
+                        return const Text('No projects');
                       } else {
                         return const ProgressIndicatorWidget();
                       }

@@ -4,11 +4,12 @@ import 'package:todo2/database/data_source/projects_data_source.dart';
 import 'package:todo2/database/database_scheme/project_user_scheme.dart';
 import 'package:todo2/database/model/projects_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
+import 'package:todo2/services/network_service/base_response/base_response.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 abstract class ProjectRepository<T> {
   Future fetchOneProject();
-
+  Future fetchAllProjects();
   Future createProject({
     required Color color,
     required String title,
@@ -35,7 +36,7 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
   );
 
   @override
-  Future<Map<String, dynamic>> fetchOneProject() async {
+  Future<BaseListResponse<ProjectModel>> fetchOneProject() async {
     try {
       final response = await _projectDataSource.fetchOneProject();
       return response.data[ProjectDataScheme.data];
@@ -46,8 +47,18 @@ class ProjectRepositoryImpl implements ProjectRepository<ProjectModel> {
     }
   }
 
+  @override
+  Future<BaseListResponse<ProjectModel>> fetchAllProjects() async {
+    try {
+      final response = await _projectDataSource.fetchAllProjects();
+      return response;
+    } catch (e) {
+      ErrorService.printError(
+          'Error in ProjectRepositoryImpl fetchAllProjects() $e');
+      rethrow;
+    }
+  }
 
-  
   @override
   Future<void> createProject({
     required Color color,

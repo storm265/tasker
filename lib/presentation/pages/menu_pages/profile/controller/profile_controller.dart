@@ -6,6 +6,7 @@ import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
+import 'package:todo2/services/network_service/base_response/base_response.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 class ProfileController extends ChangeNotifier {
@@ -45,7 +46,7 @@ class ProfileController extends ChangeNotifier {
     }
   }
 
-  Future<Map<String, dynamic>> fetchProject() async {
+  Future<BaseListResponse<ProjectModel>> fetchProject() async {
     try {
       final response = await projectsRepository.fetchOneProject();
       return response;
