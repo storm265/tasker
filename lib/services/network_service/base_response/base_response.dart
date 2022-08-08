@@ -17,7 +17,8 @@ class BaseResponse<T> {
   }) {
     _errorService.isError(response: response)
         ? MessageService.displaySnackbar(
-            message: 'Error ${response.statusCode}: ${response.statusMessage}')
+            message:
+                'Error ${response.statusCode}: ${response.data[AuthScheme.data][AuthScheme.message]}')
         : null;
 
     return BaseResponse<T>(

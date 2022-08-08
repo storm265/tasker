@@ -3,9 +3,6 @@ import 'package:todo2/database/model/projects_model.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
-import 'package:todo2/services/error_service/error_service.dart';
-import 'package:todo2/services/message_service/message_service.dart';
-import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/network_service/base_response/base_response.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
@@ -27,34 +24,13 @@ class ProfileController extends ChangeNotifier {
   late String imageStoragePublicUrl = '';
   late AnimationController iconAnimationController;
 
-  Future<void> signOut({required BuildContext context}) async {
-    try {
-      final response = await authRepository.signOut();
-      if (response.statusCode != 200) {
-        MessageService.displaySnackbar(
-          message: '${response.statusMessage}',
-        );
-      } else {
-        await tokenStorageService.removeAllUserData();
-        await Future.delayed(
-          Duration.zero,
-          () async => NavigationService.navigateTo(context, Pages.welcome),
-        );
-      }
-    } catch (e) {
-      ErrorService.printError('Error in ProfileController  signOut : $e');
-    }
+  Future<void> signOut() async {
+    await authRepository.signOut();
   }
 
   Future<BaseListResponse<ProjectModel>> fetchProject() async {
-    try {
-      final response = await projectsRepository.fetchOneProject();
-      return response;
-    } catch (e) {
-      ErrorService.printError(
-          "Error in ProfileController  fetchProject() :$e ");
-      rethrow;
-    }
+    final response = await projectsRepository.fetchOneProject();
+    return response;
   }
 
   // Future<void> fetchProfileInfo({
@@ -76,14 +52,8 @@ class ProfileController extends ChangeNotifier {
   // }
 
   Future<String> fetchAvatar() async {
-    try {
-      final response = await userProfileRepository.fetchAvatar();
-      return response;
-    } catch (e) {
-      ErrorService.printError(
-          'Error in UserProfileRepositoryImpl fetchAvatar() : $e');
-      rethrow;
-    }
+    final response = await userProfileRepository.downloadAvatar();
+    return response;
   }
 
   void rotateSettingsIcon({required TickerProvider ticker}) {

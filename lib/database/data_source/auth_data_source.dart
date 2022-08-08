@@ -10,17 +10,17 @@ import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 abstract class AuthDataSource {
-  Future signUp({
+  Future<BaseResponse<AuthModel>> signUp({
     required String email,
     required String password,
     required String nickname,
   });
-  Future signIn({
+  Future<BaseResponse<AuthModel>> signIn({
     required String email,
     required String password,
   });
-  Future signOut();
-  Future refreshToken();
+  Future<void> signOut();
+  Future<BaseResponse<AuthModel>> refreshToken();
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
@@ -78,6 +78,7 @@ class AuthDataSourceImpl implements AuthDataSource {
         },
         options: _network.authOptions,
       );
+      log('signUp response ${response.data}');
 
       final baseResponse = BaseResponse<AuthModel>.fromJson(
         json: response.data,
@@ -97,12 +98,11 @@ class AuthDataSourceImpl implements AuthDataSource {
       Response response = await _network.dio.post(
         _refreshUrl,
         data: {
-          AuthScheme.refreshToken: _secureStorageService.getUserData(
+          AuthScheme.refreshToken: await _secureStorageService.getUserData(
               type: StorageDataType.refreshToken),
         },
         options: _network.authOptions,
       );
-
       final baseResponse = BaseResponse<AuthModel>.fromJson(
         json: response.data,
         build: (Map<String, dynamic> json) => AuthModel.fromJson(json),
@@ -117,9 +117,9 @@ class AuthDataSourceImpl implements AuthDataSource {
   }
 
   @override
-  Future<Response<dynamic>> signOut() async {
+  Future<void> signOut() async {
     try {
-      Response response = await _network.dio.post(
+      await _network.dio.post(
         _signOutUrl,
         data: {
           AuthScheme.email: await _secureStorageService.getUserData(
@@ -128,7 +128,6 @@ class AuthDataSourceImpl implements AuthDataSource {
         options: _network.authOptions,
       );
       await _secureStorageService.removeAllUserData();
-      return response;
     } catch (e) {
       ErrorService.printError('Error in signOut() dataSource: $e');
       rethrow;

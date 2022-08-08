@@ -44,7 +44,6 @@ class ProjectController extends ChangeNotifier {
 
   Future<void> validate({
     required bool isEdit,
-    required BuildContext context,
     required String title,
     required VoidCallback onSuccessCallback,
   }) async {
@@ -55,7 +54,6 @@ class ProjectController extends ChangeNotifier {
         if (!isDublicateProject) {
           isEdit
               ? await _projectsRepository.updateProject(
-                 
                   color: selectedModel.value.color,
                   title: title,
                 )
@@ -74,30 +72,18 @@ class ProjectController extends ChangeNotifier {
   }
 
   Future<BaseListResponse<ProjectModel>> fetchAllProjects() async {
-    try {
-      final projects = await _projectsRepository.fetchAllProjects();
-      return projects;
-    } catch (e) {
-      ErrorService.printError('Error in fetchProjects(): $e');
-      rethrow;
-    }
+    final projects = await _projectsRepository.fetchAllProjects();
+    return projects;
   }
 
   Future<bool> findDublicates({required String title}) async {
-    try {
-      bool isDublicated =
-          await _projectsRepository.isDublicatedProject(title: title);
-      if (isDublicated) {
-        MessageService.displaySnackbar(
-          message: 'This project is already exist',
-        );
-        return true;
-      } else {
-        return false;
-      }
-    } catch (e) {
-      ErrorService.printError('Error in findDublicates(): $e');
-      rethrow;
+    bool isDublicated =
+        await _projectsRepository.isDublicatedProject(title: title);
+    if (isDublicated) {
+      MessageService.displaySnackbar(message: 'This project is already exist');
+      return true;
+    } else {
+      return false;
     }
   }
 
@@ -105,36 +91,21 @@ class ProjectController extends ChangeNotifier {
     required Color color,
     required String title,
   }) async {
-    try {
-      await _projectsRepository.createProject(color: color, title: title);
-    } catch (e) {
-      ErrorService.printError('Error in fetchProjects(): $e');
-      rethrow;
-    }
+    await _projectsRepository.createProject(color: color, title: title);
   }
 
   Future<void> updateProject({
     required Color color,
     required String title,
   }) async {
-    try {
-      await _projectsRepository.updateProject(
-        color: color,
-        title: title,
-      );
-    } catch (e) {
-      ErrorService.printError('Error in fetchProjects(): $e');
-      rethrow;
-    }
+    await _projectsRepository.updateProject(
+      color: color,
+      title: title,
+    );
   }
 
   Future<void> deleteProject({required ProjectModel projectModel}) async {
-    try {
-      await _projectsRepository.deleteProject(projectModel: projectModel);
-    } catch (e) {
-      ErrorService.printError('Error in fetchProjects(): $e');
-      rethrow;
-    }
+    await _projectsRepository.deleteProject(projectModel: projectModel);
   }
 
   void disposeValues() {

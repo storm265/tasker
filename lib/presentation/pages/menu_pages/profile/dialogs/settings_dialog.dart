@@ -46,7 +46,7 @@ Future<void> showSettingsDialog(
                       imageController.uploadAvatar();
                       break;
                     case 1:
-                      await profileController.signOut(context: context);
+                      await profileController.signOut();
                       break;
                   }
                 },

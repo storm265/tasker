@@ -29,8 +29,7 @@ class NetworkConfiguration {
   ))
     ..interceptors.add(InterceptorsWrapper(onResponse: (response, handler) {
       if (response.statusCode == 401) {
-        log('NetworkConfiguration TOKEN EXPIRED');
-        UpdateTokenService().updateToken(response: response);
+        UpdateTokenService().updateToken();
       }
 
       return handler.next(response); // continue

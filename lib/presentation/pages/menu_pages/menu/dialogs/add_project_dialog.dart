@@ -58,7 +58,6 @@ Future<void> showAddProjectDialog({
                         projectController.setClickedValue(false);
                         await projectController.validate(
                           title: titleController.text,
-                          context: context,
                           isEdit:
                               status == ProjectDialogStatus.add ? false : true,
                           onSuccessCallback: () => Navigator.of(context).pop(),

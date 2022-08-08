@@ -7,7 +7,6 @@ import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/network_service/base_response/base_response.dart';
 
 abstract class UserProfileRepository {
-  Future fetchAvatarFromStorage({required String publicUrl});
   Future postProfile({
     required String avatarUrl,
     required String username,
@@ -15,7 +14,7 @@ abstract class UserProfileRepository {
   });
   Future fetchCurrentUser({required String id, required String accessToken});
   Future fetchUserWhere({required String userName});
-  Future fetchAvatar();
+  Future downloadAvatar();
 }
 
 class UserProfileRepositoryImpl implements UserProfileRepository {
@@ -27,57 +26,32 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
     required String username,
     required String id,
   }) async {
-    try {
-      final response = await _userProfileDataSource.postUserProfile(
-        id: id,
-        avatarUrl: avatarUrl,
-        username: username,
-      );
-      return response;
-    } catch (e) {
-      ErrorService.printError(
-          'Error in UserProfileRepositoryImpl postProfile(: $e');
-      rethrow;
-    }
+    final response = await _userProfileDataSource.postUserProfile(
+      id: id,
+      avatarUrl: avatarUrl,
+      username: username,
+    );
+    return response;
   }
 
   @override
-  Future<BaseResponse<UserProfileModel>> fetchCurrentUser(
-      {required String id, required String accessToken}) async {
-    try {
-      final response = await _userProfileDataSource.fetchCurrentUser(
-          id: id, accessToken: accessToken);
+  Future<BaseResponse<UserProfileModel>> fetchCurrentUser({
+    required String id,
+    required String accessToken,
+  }) async {
+    final response = await _userProfileDataSource.fetchCurrentUser(
+        id: id, accessToken: accessToken);
 
-      return response;
-    } catch (e) {
-      ErrorService.printError(
-          'Error in UserProfileRepositoryImpl fetchCurrentUser(): $e');
-      rethrow;
-    }
+    return response;
   }
 
   @override
-  Future<String> fetchAvatarFromStorage({required String publicUrl}) async {
-    try {
-      // final imageResponce =
-      //     _supabase.storage.from(_storage).getPublicUrl(publicUrl);
-      // final image = imageResponce.data;
-      // return image!;
-      return Future.delayed(Duration(seconds: 1));
-    } catch (e) {
-      ErrorService.printError(
-          'Error in UserProfileRepositoryImpl fetchAvatarFromStorage() : $e');
-      rethrow;
-    }
-  }
-
-  @override
-  Future<String> fetchAvatar() async {
+  Future<String> downloadAvatar() async {
     try {
       final response = await _userProfileDataSource.downloadAvatar();
       final image = await response.data[0][UserDataScheme.avatarUrl];
       log(' fetchAvatar repo: $image');
-      return image;
+      return response.data[''];
     } catch (e) {
       ErrorService.printError(
           'Error in UserProfileRepositoryImpl fetchAvatar() : $e');

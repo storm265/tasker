@@ -28,7 +28,6 @@ import 'services/theme_service/theme_data_controller.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChromeProvider.setSystemChrome();
-  // await updateToken();
   runApp(const MyApp());
 }
 

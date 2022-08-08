@@ -84,28 +84,16 @@ class ProjectUserDataImpl implements ProjectUserData {
         },
         options: await _network.getLocalRequestOptions(useContentType: true),
       );
-      // Response response =
-      //     Response(requestOptions: RequestOptions(path: 'darkpath'), data: {
-      //   "data": [
-      //     {
-      //       "id": "ce8f3cac-5c07-4e74-a286-017e39fdd9b3",
-      //       "title": "Personal",
-      //       "color": "#6074F9",
-      //       "owner_id": "76d2fab4-fd06-4909-bf8e-875c6b55c1f7",
-      //       "created_at": "2022-07-12T14:46:44.793558"
-      //     },
-      //     {
-      //       "id": "eda45acd-22d1-4dc6-9f75-0c0e7b172d0f",
-      //       "title": "Project 1",
-      //       "color": "#FFFFD4",
-      //       "owner_id": "76d2fab4-fd06-4909-bf8e-875c6b55c1f7",
-      //       "created_at": "2022-07-13T08:43:24.147065"
-      //     },
-      //   ]
-      // });      print('acces: $access');
 
+      log('adadada ${response.data[AuthScheme.data].toString()}');
+      if (response.data[AuthScheme.data].toString().isEmpty) {
+        log(' IS NULL');
+      }
+
+      BaseListResponse<ProjectModel> empty =
+          BaseListResponse<ProjectModel>(model: []);
       final baseResponse = BaseListResponse<ProjectModel>.fromJson(
-        json: response.data[AuthScheme.data] ?? [],
+        json: response.data[AuthScheme.data],
         build: (List<Map<String, dynamic>> json) =>
             (response.data[AuthScheme.data] as List<Map<String, String>>)
                 .map((e) => ProjectModel.fromJson(e))
@@ -113,9 +101,9 @@ class ProjectUserDataImpl implements ProjectUserData {
         response: response,
       );
       return baseResponse;
-    } catch (e, t) {
+    } catch (e) {
       ErrorService.printError(
-          'Error in ProjectUserDataImpl fetchAllProjects() dataSource:  $e, $t');
+          'Error in ProjectUserDataImpl fetchAllProjects() dataSource:  $e');
       rethrow;
     }
   }

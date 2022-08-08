@@ -92,7 +92,7 @@ class SignUpController extends ChangeNotifier {
         ]);
 
         final imageResponse = await imagePickerController.uploadAvatar();
-
+        log('imageResponse: $imageResponse');
         await _storageSource.storageApi.saveUserData(
             type: StorageDataType.avatarUrl,
             value: imageResponse[AuthScheme.avatarUrl]);

@@ -46,6 +46,7 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
         },
         options: await _network.getLocalRequestOptions(),
       );
+      log(' postUserProfile repo: ${response.data}');
       return response;
     } catch (e) {
       ErrorService.printError(
@@ -87,9 +88,9 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
         queryParameters: {
           UserDataScheme.id: _storage.getUserData(type: StorageDataType.id)
         },
-        // TODO with headers
         options: await _network.getLocalRequestOptions(useContentType: true),
       );
+      log('download avatar response: ${response.data}');
       return response;
     } catch (e) {
       ErrorService.printError(
