@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
@@ -35,6 +36,13 @@ class AuthDataSourceImpl implements AuthDataSource {
   final _signOutUrl = '/sign-out';
   final _refreshUrl = '/refresh-token';
 
+  String _encodePassword(String text) {
+    List<int> encodedText = utf8.encode(text);
+    String base64Str = base64.encode(encodedText);
+    log('text $text encodedText: $base64Str');
+    return base64Str;
+  }
+
   @override
   Future<BaseResponse<AuthModel>> signIn({
     required String email,
@@ -45,7 +53,7 @@ class AuthDataSourceImpl implements AuthDataSource {
         _signInUrl,
         data: {
           AuthScheme.email: email,
-          AuthScheme.password: password,
+          AuthScheme.password: _encodePassword(password),
         },
         options: _network.authOptions,
       );
@@ -74,15 +82,16 @@ class AuthDataSourceImpl implements AuthDataSource {
         _signUpUrl,
         data: {
           AuthScheme.email: email,
-          AuthScheme.password: password,
+          AuthScheme.password: _encodePassword(password),
           AuthScheme.username: nickname,
         },
         options: _network.authOptions,
       );
+      log('baseResponse signUp: ${response.data}');
       final baseResponse = BaseResponse<AuthModel>.fromJson(
         json: response.data,
         build: (Map<String, dynamic> json) =>
-            AuthModel.fromJson(json: json, response: response),
+            AuthModel.fromJson(json: json, response: response, isSignUp: true),
         response: response,
       );
 

@@ -53,12 +53,14 @@ class AvatarStorageDataSourceImpl implements AvatarStorageDataSource {
       );
       log(' fileName: $fileName');
 
-      final response = await _network.dio.post(_storagePath,
-          data: formData,
-          options: _network.getRequestOptions(
-              accessToken: await _storageSource.getUserData(
-                      type: StorageDataType.accessToken) ??
-                  'null'));
+      final response = await _network.dio.post(
+        _storagePath,
+        data: formData,
+        options: _network.getRequestOptions(
+            accessToken: await _storageSource.getUserData(
+                    type: StorageDataType.accessToken) ??
+                'null'),
+      );
       log('uploadAvatar.data: ${response.data}');
       return response;
     } catch (e) {

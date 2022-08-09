@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/controller/image_picker_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
 import 'package:todo2/services/error_service/error_service.dart';
+import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
@@ -87,20 +90,14 @@ class SignUpController extends ChangeNotifier {
             value: authModel.accessToken,
           ),
         ]);
-
         final imageResponse = await imagePickerController.uploadAvatar();
 
         await _storageSource.storageApi
             .saveUserData(type: StorageDataType.avatarUrl, value: imageResponse)
-            .then((_) => NavigationService.navigateTo(context, Pages.home));
-
-        // await _userProfileRepository
-        //     .postProfile(
-        //       id: authModel.id,
-        //       avatarUrl: imageResponse,
-        //       username: username,
-        //     )
-
+            .then((_) {
+          MessageService.displaySnackbar(message: 'Sign up success!');
+          NavigationService.navigateTo(context, Pages.home);
+        });
       }
     } catch (e) {
       ErrorService.printError('Error in signUp() controller: $e');

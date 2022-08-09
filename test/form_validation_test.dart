@@ -1,30 +1,41 @@
 import 'package:flutter_test/flutter_test.dart';
 
-bool isValidPassword(String yourText) {
-  String pattern = "^[a-zA-Z][1-9]\$";
-  // String pattern = r"^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}\$";
-  RegExp regex = RegExp(pattern);
-  if (!regex.hasMatch(yourText)) {
-    return true;
-  } else {
-    return false;
+String? validatePassword({required String password}) {
+  // String passwordPattern = "(?=.*?[0-9])(?=.*?[A-Za-z]).+";
+  String passwordPattern = "r^(?=.*[A-Za-z])(?=.*d)[A-Za-zd]{8,}\$";
+  final regex = RegExp(passwordPattern);
+  if (password.length < 8 && !regex.hasMatch(password)) {
+    return 'WRONG';
   }
+  return null;
 }
 
 void main() {
   group('lol', () {
-    test('test', () {
-      expect(isValidPassword('DAOSdaos1'), true);
+    test('1', () {
+      expect(validatePassword(password: 'DAOSdaos1'), null);
     });
-    test('test', () {
-      expect(isValidPassword('daosDaos1'), true);
-    });
-    test('password1', () => expect(isValidPassword('daos90321FIXED'), true));
 
-    test('abcdefC1', () => expect(isValidPassword('daos90321FIXED'), true));
-    test('password2',
-        () => expect(isValidPassword('smesomesomesome32910390123'), true));
-    test('password3', () => expect(isValidPassword('MTIzNDU2Nzhx'), true));
-    test('password4', () => expect(isValidPassword('Wewedsddsadasdas'), true));
+    test('2', () {
+      expect(validatePassword(password: 'daosDaos1'), null);
+    });
+
+    test('3', () => expect(validatePassword(password: 'daos90321FIXED'), null));
+
+    test('4', () => expect(validatePassword(password: 'daos90321FIXED'), null));
+
+    test(
+        '5',
+        () => expect(
+            validatePassword(password: 'smesomesomesome32910390123'), null));
+
+    test('6', () => expect(validatePassword(password: 'MTIzNDU2Nzhx'), null));
+
+    test('7',
+        () => expect(validatePassword(password: 'Wewedsddsadasdas'), null));
+        test('8',
+        () => expect(validatePassword(password: 'adad'), null));
+            test('8',
+        () => expect(validatePassword(password: 'adadD9'), null));
   });
 }

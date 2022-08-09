@@ -18,7 +18,7 @@ class ImageController extends ChangeNotifier {
   final picker = ImagePicker();
 
   bool get _isWrongImageFormat =>
-      pickedFile.value.path.endsWith('.jpg') ||
+      pickedFile.value.path.endsWith('.jpeg') ||
       pickedFile.value.path.endsWith('.png');
 
   Future<void> pickAvatar() async {
