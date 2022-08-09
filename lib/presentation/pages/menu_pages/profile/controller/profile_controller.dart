@@ -3,6 +3,7 @@ import 'package:todo2/database/model/projects_model.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
+import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/network_service/base_response/base_response.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
@@ -24,8 +25,8 @@ class ProfileController extends ChangeNotifier {
   late String imageStoragePublicUrl = '';
   late AnimationController iconAnimationController;
 
-  Future<void> signOut() async {
-    await authRepository.signOut();
+  Future<void> signOut({required BuildContext context}) async {
+    await authRepository.signOut().then((value) => NavigationService.navigateTo(context, Pages.welcome));
   }
 
   Future<BaseListResponse<ProjectModel>> fetchProject() async {

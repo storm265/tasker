@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:todo2/services/extensions/num_range/num_randge.dart';
 
-
 class NetworkErrorService implements Exception {
   bool isError({required Response response}) {
     final int statusCode = response.statusCode ?? 0;
@@ -10,12 +9,9 @@ class NetworkErrorService implements Exception {
       return true;
     } else if (statusCode.isBetween(200, 226)) {
       return false;
-    }
-    else if (statusCode > 226) {
+    } else if (statusCode > 226) {
       return true;
     }
     return false;
   }
 }
-
-

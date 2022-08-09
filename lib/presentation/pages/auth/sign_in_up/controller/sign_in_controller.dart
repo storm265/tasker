@@ -66,7 +66,7 @@ class SignInController extends ChangeNotifier {
           id: authModel.userId,
         );
 
-        Future.wait([
+        await Future.wait([
           _storageSource.storageApi.saveUserData(
             type: StorageDataType.id,
             value: authModel.userId,

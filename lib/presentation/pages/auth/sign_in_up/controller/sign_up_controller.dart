@@ -1,7 +1,4 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
-import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/controller/image_picker_controller.dart';
@@ -70,12 +67,11 @@ class SignUpController extends ChangeNotifier {
         password: password,
       );
 
-      if (response.model.userId != 'null') {
+      if (response.model.id != 'null') {
         final authModel = response.model;
-
         await Future.wait([
           _storageSource.storageApi
-              .saveUserData(type: StorageDataType.id, value: authModel.userId),
+              .saveUserData(type: StorageDataType.id, value: authModel.id),
           _storageSource.storageApi
               .saveUserData(type: StorageDataType.email, value: email),
           _storageSource.storageApi
@@ -83,8 +79,9 @@ class SignUpController extends ChangeNotifier {
           _storageSource.storageApi
               .saveUserData(type: StorageDataType.username, value: username),
           _storageSource.storageApi.saveUserData(
-              type: StorageDataType.refreshToken,
-              value: authModel.refreshToken),
+            type: StorageDataType.refreshToken,
+            value: authModel.refreshToken,
+          ),
           _storageSource.storageApi.saveUserData(
             type: StorageDataType.accessToken,
             value: authModel.accessToken,
@@ -92,18 +89,18 @@ class SignUpController extends ChangeNotifier {
         ]);
 
         final imageResponse = await imagePickerController.uploadAvatar();
-        log('imageResponse: $imageResponse');
-        await _storageSource.storageApi.saveUserData(
-            type: StorageDataType.avatarUrl,
-            value: imageResponse[AuthScheme.avatarUrl]);
 
-        await _userProfileRepository
-            .postProfile(
-              id: authModel.userId,
-              avatarUrl: imageResponse[AuthScheme.avatarUrl],
-              username: username,
-            )
+        await _storageSource.storageApi
+            .saveUserData(type: StorageDataType.avatarUrl, value: imageResponse)
             .then((_) => NavigationService.navigateTo(context, Pages.home));
+
+        // await _userProfileRepository
+        //     .postProfile(
+        //       id: authModel.id,
+        //       avatarUrl: imageResponse,
+        //       username: username,
+        //     )
+
       }
     } catch (e) {
       ErrorService.printError('Error in signUp() controller: $e');

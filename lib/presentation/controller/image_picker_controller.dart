@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -55,20 +56,21 @@ class ImageController extends ChangeNotifier {
     }
   }
 
-  Future<Map<String, dynamic>> uploadAvatar() async {
+  Future<String> uploadAvatar() async {
     try {
       bool isValidImage = isValidAvatar();
       if (isValidImage) {
-        final response = await _avatarStorageRepository.uploadAvatar(
+        final avatarUrl = await _avatarStorageRepository.uploadAvatar(
           name: pickedFile.value.name,
           file: File(pickedFile.value.path),
         );
-        return response.data[AuthScheme.data];
+
+        return avatarUrl;
       } else {
         throw MessageService.displaySnackbar(message: 'Invalid Image Format');
       }
-    } catch (e) {
-      ErrorService.printError('uploadAvatar error: $e');
+    } catch (e, t) {
+      ErrorService.printError('uploadAvatar error: $e,$t');
       rethrow;
     }
   }

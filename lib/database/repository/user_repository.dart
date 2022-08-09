@@ -7,11 +7,11 @@ import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/network_service/base_response/base_response.dart';
 
 abstract class UserProfileRepository {
-  Future postProfile({
-    required String avatarUrl,
-    required String username,
-    required String id,
-  });
+  // Future postProfile({
+  //   required String avatarUrl,
+  //   required String username,
+  //   required String id,
+  // });
   Future fetchCurrentUser({required String id, required String accessToken});
   Future fetchUserWhere({required String userName});
   Future downloadAvatar();
@@ -20,19 +20,19 @@ abstract class UserProfileRepository {
 class UserProfileRepositoryImpl implements UserProfileRepository {
   final _userProfileDataSource = UserProfileDataSourceImpl();
 
-  @override
-  Future<Response<dynamic>> postProfile({
-    required String avatarUrl,
-    required String username,
-    required String id,
-  }) async {
-    final response = await _userProfileDataSource.postUserProfile(
-      id: id,
-      avatarUrl: avatarUrl,
-      username: username,
-    );
-    return response;
-  }
+  // @override
+  // Future<Response<dynamic>> postProfile({
+  //   required String avatarUrl,
+  //   required String username,
+  //   required String id,
+  // }) async {
+  //   final response = await _userProfileDataSource.postUserProfile(
+  //     id: id,
+  //     avatarUrl: avatarUrl,
+  //     username: username,
+  //   );
+  //   return response;
+  // }
 
   @override
   Future<BaseResponse<UserProfileModel>> fetchCurrentUser({

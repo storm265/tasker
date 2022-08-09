@@ -10,11 +10,11 @@ import 'package:todo2/services/storage/secure_storage_service.dart';
 
 abstract class UserProfileDataSource {
   Future downloadAvatar();
-  Future postUserProfile({
-    required String avatarUrl,
-    required String username,
-    required String id,
-  });
+  // Future postUserProfile({
+  //   required String avatarUrl,
+  //   required String username,
+  //   required String id,
+  // });
   Future fetchCurrentUser({
     required String id,
     required String accessToken,
@@ -29,31 +29,31 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
   final _userPath = '/users';
   final _userAvatarPath = '/users-avatar/';
   final _storage = SecureStorageService();
-  @override
-  Future<Response<dynamic>> postUserProfile({
-    required String avatarUrl,
-    required String username,
-    required String id,
-  }) async {
-    try {
-      final response = await _network.dio.post(
-        _userAvatarPath,
-        data: {
-          UserDataScheme.id: id,
-          UserDataScheme.username: username,
-          UserDataScheme.avatarUrl: avatarUrl,
-          UserDataScheme.createdAt: DateTime.now().toString(),
-        },
-        options: await _network.getLocalRequestOptions(),
-      );
-      log(' postUserProfile repo: ${response.data}');
-      return response;
-    } catch (e) {
-      ErrorService.printError(
-          'Error in UserProfileDataSourceImpl insertUserProfile(): $e');
-      rethrow;
-    }
-  }
+  // @override
+  // Future<Response<dynamic>> postUserProfile({
+  //   required String avatarUrl,
+  //   required String username,
+  //   required String id,
+  // }) async {
+  //   try {
+  //     final response = await _network.dio.post(
+  //       _userAvatarPath,
+  //       data: {
+  //         UserDataScheme.id: id,
+  //         UserDataScheme.username: username,
+  //         UserDataScheme.avatarUrl: avatarUrl,
+  //         UserDataScheme.createdAt: DateTime.now().toString(),
+  //       },
+  //       options: await _network.getLocalRequestOptions(),
+  //     );
+  //     log(' postUserProfile repo: ${response.data}');
+  //     return response;
+  //   } catch (e) {
+  //     ErrorService.printError(
+  //         'Error in UserProfileDataSourceImpl insertUserProfile(): $e');
+  //     rethrow;
+  //   }
+  // }
 
   @override
   Future<BaseResponse<UserProfileModel>> fetchCurrentUser({

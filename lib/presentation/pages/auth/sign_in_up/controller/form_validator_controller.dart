@@ -6,7 +6,7 @@ String _emailPattern = ("^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]|[\\w-]{2,}))@"
     "([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})\$");
 
 //Regex pattern to match at least 1 number and 1 character
-String _passwordPattern = '/^(?=.*[0-8])(?=.*[a-zA-Z])([a-zA-Z0-8]+)\$/';
+String _passwordPattern = r"^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}\$";
 
 String _nicknamePattern =
     "^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]\$";
@@ -26,7 +26,7 @@ class FormValidatorController {
     RegExp regex = RegExp(_passwordPattern);
     if (password.isEmpty || password.trim().isEmpty) {
       return 'This field is required 😐';
-    } else if (!(password.length >= 8 && !regex.hasMatch(password))) {
+    } else if (!regex.hasMatch(password)) {
       return 'Minimum eight characters, at least one letter and one number 🔒';
     }
     return null;

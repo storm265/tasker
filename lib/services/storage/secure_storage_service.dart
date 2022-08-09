@@ -52,7 +52,6 @@ class SecureStorageService {
         case StorageDataType.avatarUrl:
           data = await _storage.read(key: AuthScheme.avatarUrl);
           break;
-        default:
       }
 
       return data;
