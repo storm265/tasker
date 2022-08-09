@@ -5,6 +5,7 @@ import 'package:todo2/database/database_scheme/user_data_scheme..dart';
 import 'package:todo2/database/model/users_profile_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/network_service/base_response/base_response.dart';
+import 'package:todo2/services/storage/secure_storage_service.dart';
 
 abstract class UserProfileRepository {
   // Future postProfile({
@@ -12,13 +13,14 @@ abstract class UserProfileRepository {
   //   required String username,
   //   required String id,
   // });
-  Future fetchCurrentUser({required String id, required String accessToken});
+  Future fetchCurrentUser();
   Future fetchUserWhere({required String userName});
   Future downloadAvatar();
 }
 
 class UserProfileRepositoryImpl implements UserProfileRepository {
-  final _userProfileDataSource = UserProfileDataSourceImpl();
+  final _userProfileDataSource =
+      UserProfileDataSourceImpl(secureStorageService: SecureStorageService());
 
   // @override
   // Future<Response<dynamic>> postProfile({
@@ -35,12 +37,8 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
   // }
 
   @override
-  Future<BaseResponse<UserProfileModel>> fetchCurrentUser({
-    required String id,
-    required String accessToken,
-  }) async {
-    final response = await _userProfileDataSource.fetchCurrentUser(
-        id: id, accessToken: accessToken);
+  Future<BaseResponse<UserProfileModel>> fetchCurrentUser() async {
+    final response = await _userProfileDataSource.fetchCurrentUser();
 
     return response;
   }

@@ -61,10 +61,7 @@ class SignInController extends ChangeNotifier {
       if (response.model.userId != 'null') {
         final authModel = response.model;
 
-        final userData = await _userProfileRepository.fetchCurrentUser(
-          accessToken: response.model.accessToken,
-          id: authModel.userId,
-        );
+        final userData = await _userProfileRepository.fetchCurrentUser();
 
         await Future.wait([
           _storageSource.storageApi.saveUserData(
