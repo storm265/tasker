@@ -1,19 +1,15 @@
 import 'package:flutter_test/flutter_test.dart';
 
-// Write Regex Minimum eight characters, at least one letter and one number
-
 bool isValidPassword(String yourText) {
-  // String pattern = ("^[a-zA-Z][1-9]\$");
-  String pattern = r"^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}\$";
+  String pattern = "^[a-zA-Z][1-9]\$";
+  // String pattern = r"^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}\$";
   RegExp regex = RegExp(pattern);
-  if (yourText.length > 8 && !regex.hasMatch(yourText)) {
+  if (!regex.hasMatch(yourText)) {
     return true;
   } else {
     return false;
   }
 }
-
-// String _passwordPattern = ("^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}\$");
 
 void main() {
   group('lol', () {
