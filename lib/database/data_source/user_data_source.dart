@@ -15,7 +15,10 @@ abstract class UserProfileDataSource {
   //   required String username,
   //   required String id,
   // });
-  Future fetchCurrentUser();
+  Future fetchCurrentUser({
+       required String id,
+    required String accessToken,
+  });
 
   Future fetchUsersWhere({required String userName});
 }
@@ -56,23 +59,16 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
   //   }
   // }
 
-  @override
-  Future<BaseResponse<UserProfileModel>> fetchCurrentUser() async {
+   @override
+  Future<BaseResponse<UserProfileModel>> fetchCurrentUser({
+    required String id,
+    required String accessToken,
+  }) async {
     try {
-      // final response = await _network.dio.get(
-      //   '$_userPath/$id',
-      //   options: _network.getRequestOptions(accessToken: accessToken),
-      // );
-      final response = Response(
-          requestOptions: RequestOptions(path: '', data: {
-        UserDataScheme.id:
-            await _secureStorageService.getUserData(type: StorageDataType.id),
-        UserDataScheme.username: await _secureStorageService.getUserData(
-            type: StorageDataType.username),
-        UserDataScheme.avatarUrl: await _secureStorageService.getUserData(
-            type: StorageDataType.avatarUrl),
-        // UserDataScheme.createdAt:await  _secureStorageService.getUserData(type: StorageDataType .id) ,};
-      }));
+      final response = await _network.dio.get(
+        '$_userPath/$id',
+        options: _network.getRequestOptions(accessToken: accessToken),
+      );
 
       final baseResponse = BaseResponse<UserProfileModel>.fromJson(
         json: response.data,

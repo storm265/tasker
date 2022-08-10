@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/storage/avatar_storage_data_source.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/storage/avatar_storage_repository.dart';
-import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/controller/image_picker_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/sign_up_controller.dart';
@@ -35,7 +34,6 @@ class _SignUpPageState extends State<SignUpPage> {
 
   final _signUpController = SignUpController(
     authRepository: AuthRepositoryImpl(),
-    userProfileRepository: UserProfileRepositoryImpl(),
     imagePickerController: ImageController(
       avatarRepository: AvatarStorageReposiroryImpl(
         avatarDataSource: AvatarStorageDataSourceImpl(),

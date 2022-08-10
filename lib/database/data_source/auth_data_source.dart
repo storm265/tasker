@@ -5,8 +5,6 @@ import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/database/model/auth_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/network_service/base_response/base_response.dart';
-import 'package:todo2/services/network_service/error_network/network_error_service.dart';
-
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 

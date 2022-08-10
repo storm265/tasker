@@ -1,8 +1,6 @@
-import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
-import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/controller/image_picker_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
 import 'package:todo2/services/error_service/error_service.dart';
@@ -13,16 +11,14 @@ import 'package:todo2/services/storage/secure_storage_service.dart';
 class SignUpController extends ChangeNotifier {
   SignUpController({
     required AuthRepositoryImpl authRepository,
-    required UserProfileRepositoryImpl userProfileRepository,
     required this.formValidatorController,
     required this.imagePickerController,
     required SecureStorageSource storageSource,
   })  : _authRepository = authRepository,
-        _userProfileRepository = userProfileRepository,
+  
         _storageSource = storageSource;
 
   final AuthRepositoryImpl _authRepository;
-  final UserProfileRepositoryImpl _userProfileRepository;
   final FormValidatorController formValidatorController;
   final ImageController imagePickerController;
   final SecureStorageSource _storageSource;
