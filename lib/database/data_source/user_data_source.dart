@@ -16,7 +16,7 @@ abstract class UserProfileDataSource {
   //   required String id,
   // });
   Future fetchCurrentUser({
-       required String id,
+    required String id,
     required String accessToken,
   });
 
@@ -32,34 +32,8 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
 
   final _userPath = '/users';
   final _userAvatarPath = '/users-avatar/';
-  final _storage = SecureStorageService();
-  // @override
-  // Future<Response<dynamic>> postUserProfile({
-  //   required String avatarUrl,
-  //   required String username,
-  //   required String id,
-  // }) async {
-  //   try {
-  //     final response = await _network.dio.post(
-  //       _userAvatarPath,
-  //       data: {
-  //         UserDataScheme.id: id,
-  //         UserDataScheme.username: username,
-  //         UserDataScheme.avatarUrl: avatarUrl,
-  //         UserDataScheme.createdAt: DateTime.now().toString(),
-  //       },
-  //       options: await _network.getLocalRequestOptions(),
-  //     );
-  //     log(' postUserProfile repo: ${response.data}');
-  //     return response;
-  //   } catch (e) {
-  //     ErrorService.printError(
-  //         'Error in UserProfileDataSourceImpl insertUserProfile(): $e');
-  //     rethrow;
-  //   }
-  // }
 
-   @override
+  @override
   Future<BaseResponse<UserProfileModel>> fetchCurrentUser({
     required String id,
     required String accessToken,
@@ -87,14 +61,15 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
   @override
   Future<Response<dynamic>> downloadAvatar() async {
     try {
-      final response = await _network.dio.get(
-        _userAvatarPath,
-        queryParameters: {
-          UserDataScheme.id: _storage.getUserData(type: StorageDataType.id)
-        },
-        options: await _network.getLocalRequestOptions(useContentType: true),
+      final userId = await _secureStorageService.getUserData(
+        type: StorageDataType.id,
       );
-      log('download avatar response: ${response.data}');
+
+      final response = await _network.dio.get(
+        '$_userAvatarPath$userId',
+        options: await _network.getLocalRequestOptions(),
+      );
+      print('response ${response.data}');
       return response;
     } catch (e) {
       ErrorService.printError(

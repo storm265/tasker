@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -9,10 +11,12 @@ class CachedAvatarWidget extends StatelessWidget {
       : super(key: key);
   @override
   Widget build(BuildContext context) {
+    log('CachedAvatarWidget image $image');
     return SizedBox(
       width: radius,
       height: radius,
-      child: CachedNetworkImage(
+      child: 
+      CachedNetworkImage(
       memCacheHeight: 300,
       memCacheWidth: 300,
       maxWidthDiskCache: 300,

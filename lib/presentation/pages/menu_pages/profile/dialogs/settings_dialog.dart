@@ -5,9 +5,10 @@ import 'package:todo2/presentation/controller/image_picker_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
-Future<void> showSettingsDialog(
-    {required BuildContext context,
-    required ProfileController profileController}) async {
+Future<void> showSettingsDialog({
+  required BuildContext context,
+  required ProfileController profileController,
+}) async {
   final imageController = ImageController(
     avatarRepository: AvatarStorageReposiroryImpl(
       avatarDataSource: AvatarStorageDataSourceImpl(),
@@ -43,7 +44,7 @@ Future<void> showSettingsDialog(
                 onTap: () async {
                   switch (index) {
                     case 0:
-                      imageController.uploadAvatar();
+                      await imageController.uploadAvatar();
                       break;
                     case 1:
                       await profileController.signOut(context: context);

@@ -1,25 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/task_attachment_repository.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/tasks_member_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
-import 'package:todo2/presentation/pages/auth/welcome/welcome_page.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/add_check_list/add_checklist_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/controller_inherited.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/new_task.dart';
 import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/profile/profile_page.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/tasks_page.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
-
 import 'package:todo2/services/storage/secure_storage_service.dart';
-
 import 'package:todo2/services/system_service/system_chrome.dart';
-
 import 'presentation/pages/menu_pages/floating_button/new_task/controller/add_task_controller.dart';
 import 'presentation/pages/menu_pages/navigation/controllers/inherited_navigation_controller.dart';
 import 'presentation/pages/menu_pages/profile/controller/inherited_profile.dart';
@@ -52,16 +45,25 @@ class _MyAppState extends State<MyApp> {
     tasksMembers: TasksMembersRepositoryImpl(),
     taskRepository: TaskRepositoryImpl(),
     projectRepository: ProjectRepositoryImpl(),
-    userProfileRepository: UserProfileRepositoryImpl(),
+    userProfileRepository: UserProfileRepositoryImpl(
+      userProfileDataSource: UserProfileDataSourceImpl(
+        secureStorageService: SecureStorageService(),
+      ),
+    ),
     taskAttachment: TaskAttachmentRepositoryImpl(),
   );
 
   final _themeDataController = ThemeDataService();
   final _profileController = ProfileController(
+    secureStorageService: SecureStorageService(),
     tokenStorageService: SecureStorageService(),
     authRepository: AuthRepositoryImpl(),
     projectsRepository: ProjectRepositoryImpl(),
-    userProfileRepository: UserProfileRepositoryImpl(),
+    userProfileRepository: UserProfileRepositoryImpl(
+      userProfileDataSource: UserProfileDataSourceImpl(
+        secureStorageService: SecureStorageService(),
+      ),
+    ),
   );
 
   final _navigationController = NavigationController();

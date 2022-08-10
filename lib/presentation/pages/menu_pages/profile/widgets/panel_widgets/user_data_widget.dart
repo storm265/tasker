@@ -4,25 +4,24 @@ import 'package:todo2/presentation/pages/menu_pages/profile/widgets/panel_widget
 class UserDataWidget extends StatelessWidget {
   final String avatarImage;
   final String email;
-  final String nickname;
+  final String username;
 
   const UserDataWidget({
     Key? key,
     required this.avatarImage,
     required this.email,
-    required this.nickname,
+    required this.username,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ListTile( 
+    return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 35),
       leading: avatarImage != ''
           ? CachedAvatarWidget(image: avatarImage)
-          //  : const ProgressIndicatorWidget(),
           : const SizedBox(),
       title: Text(
-        nickname,
+        username,
         style: const TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.w300,

@@ -7,7 +7,8 @@ import 'package:todo2/presentation/pages/menu_pages/profile/widgets/panel_widget
 
 class ProfileWidget extends StatefulWidget {
   final ProfileController profileController;
-  const ProfileWidget({Key? key,required this.profileController}) : super(key: key);
+  const ProfileWidget({Key? key, required this.profileController})
+      : super(key: key);
 
   @override
   State<ProfileWidget> createState() => _ProfileWidgetState();
@@ -15,13 +16,11 @@ class ProfileWidget extends StatefulWidget {
 
 class _ProfileWidgetState extends State<ProfileWidget>
     with SingleTickerProviderStateMixin {
-
-
   @override
   void initState() {
     widget.profileController.rotateSettingsIcon(ticker: this);
-    // widget.profileController.fetchProfileInfo(
-    //     context: context, updateStateCallback: () => setState(() {}));
+    widget.profileController
+        .fetchProfileInfo(updateStateCallback: () => setState(() {}));
     super.initState();
   }
 
@@ -44,7 +43,9 @@ class _ProfileWidgetState extends State<ProfileWidget>
             alignment: Alignment.topRight,
             child: IconButton(
               onPressed: () => showSettingsDialog(
-                  context: context, profileController: widget.profileController),
+                context: context,
+                profileController: widget.profileController,
+              ),
               icon: RotationTransition(
                 turns: Tween(begin: 0.0, end: 1.0)
                     .animate(widget.profileController.iconAnimationController),
@@ -56,10 +57,9 @@ class _ProfileWidgetState extends State<ProfileWidget>
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               UserDataWidget(
-                avatarImage: widget.profileController.imageStoragePublicUrl,
-             //   email: '${widget.profileController.supabase!.email}',
-             email: '',
-                nickname: widget.profileController.userName,
+                avatarImage: widget.profileController.image,
+                email: widget.profileController.email,
+                username: widget.profileController.username,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,

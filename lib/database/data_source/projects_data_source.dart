@@ -51,8 +51,9 @@ class ProjectUserDataImpl implements ProjectUserData {
       );
       log('createProject ${response.data}');
       return response;
-    } catch (e) {
-      ErrorService.printError('Error in ProjectUserDataImpl postProject(): $e');
+    } catch (e, t) {
+      ErrorService.printError(
+          'Error in ProjectUserDataImpl postProject(): $e,$t');
       rethrow;
     }
   }
@@ -118,15 +119,23 @@ class ProjectUserDataImpl implements ProjectUserData {
         options: await _network.getLocalRequestOptions(useContentType: true),
       );
       log('find dublicates ${response.data}');
-      final baseResponse = BaseListResponse<ProjectModel>.fromJson(
-        json: response.data[AuthScheme.data],
-        build: (List<Map<String, dynamic>> json) =>
-            (response.data[AuthScheme.data] as List<Map<String, String>>)
-                .map((e) => ProjectModel.fromJson(e))
-                .toList(),
-        response: response,
-      );
-      return baseResponse;
+
+      BaseListResponse<ProjectModel> empty =
+          BaseListResponse<ProjectModel>(model: []);
+
+      if ((response.data[AuthScheme.data] as List<dynamic>).isEmpty) {
+        return empty;
+      } else {
+        final baseResponse = BaseListResponse<ProjectModel>.fromJson(
+          json: response.data[AuthScheme.data],
+          build: (List<Map<String, dynamic>> json) =>
+              (response.data[AuthScheme.data] as List<Map<String, String>>)
+                  .map((e) => ProjectModel.fromJson(e))
+                  .toList(),
+          response: response,
+        );
+        return baseResponse;
+      }
     } catch (e) {
       ErrorService.printError(
           'Error in ProjectUserDataImpl findDublicates() dataSource:  $e');
