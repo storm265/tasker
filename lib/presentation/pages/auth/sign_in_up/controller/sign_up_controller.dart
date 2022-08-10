@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/presentation/controller/image_picker_controller.dart';
@@ -15,7 +14,6 @@ class SignUpController extends ChangeNotifier {
     required this.imagePickerController,
     required SecureStorageSource storageSource,
   })  : _authRepository = authRepository,
-  
         _storageSource = storageSource;
 
   final AuthRepositoryImpl _authRepository;

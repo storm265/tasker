@@ -50,7 +50,7 @@ class AuthDataSourceImpl implements AuthDataSource {
       Response response = await _network.dio.post(
         _signInUrl,
         data: {
-          AuthScheme.email: email,
+          AuthScheme.email: email.toLowerCase(),
           AuthScheme.password: _encodePassword(password),
         },
         options: _network.authOptions,
@@ -79,7 +79,7 @@ class AuthDataSourceImpl implements AuthDataSource {
       Response response = await _network.dio.post(
         _signUpUrl,
         data: {
-          AuthScheme.email: email,
+          AuthScheme.email: email.toLowerCase(),
           AuthScheme.password: _encodePassword(password),
           AuthScheme.username: nickname,
         },

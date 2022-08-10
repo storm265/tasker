@@ -1,16 +1,11 @@
-String _emailPattern = ("^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]|[\\w-]{2,}))@"
-    "((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
-    "[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\."
-    "([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
-    "[0-9]{1,2}|25[0-5]|2[0-4][0-9]))|"
-    "([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})\$");
-
-String _nicknamePattern =
-    "^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]\$";
-
 class FormValidatorController {
-  RegExp regex = RegExp(_emailPattern);
   String? validateEmail({required String email}) {
+    RegExp regex = RegExp("^(([\\w-]+\\.)+[\\w-]+|([a-zA-Z]|[\\w-]{2,}))@"
+        "((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
+        "[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\."
+        "([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\\.([0-1]?"
+        "[0-9]{1,2}|25[0-5]|2[0-4][0-9]))|"
+        "([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})\$");
     if (email.isEmpty || email.trim().isEmpty) {
       return 'Email cant be empty';
     } else if (!regex.hasMatch(email)) {
@@ -31,7 +26,8 @@ class FormValidatorController {
   }
 
   String? validateNickname({required String username}) {
-    RegExp regex = RegExp(_nicknamePattern);
+    RegExp regex =
+        RegExp("^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]\$");
 
     if (username.isEmpty || username.trim().isEmpty) {
       return 'This field is required 😐';
