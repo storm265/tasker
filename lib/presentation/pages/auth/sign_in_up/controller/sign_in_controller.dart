@@ -5,6 +5,7 @@ import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
 import 'package:todo2/services/error_service/error_service.dart';
+import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
@@ -58,18 +59,16 @@ class SignInController extends ChangeNotifier {
         password: password,
       );
 
-      if (response.model.userId != 'null') {
-        final authModel = response.model;
-
+      if (response.userId != 'null') {
         final userData = await _userProfileRepository.fetchCurrentUser(
-          accessToken: response.model.accessToken,
-          id: authModel.userId,
+          accessToken: response.accessToken,
+          id: response.userId,
         );
 
         await Future.wait([
           _storageSource.storageApi.saveUserData(
             type: StorageDataType.id,
-            value: authModel.userId,
+            value: response.userId,
           ),
           _storageSource.storageApi.saveUserData(
             type: StorageDataType.email,
@@ -77,25 +76,25 @@ class SignInController extends ChangeNotifier {
           ),
           _storageSource.storageApi.saveUserData(
             type: StorageDataType.username,
-            value: userData.model.username,
+            value: userData.username,
           ),
           _storageSource.storageApi.saveUserData(
             type: StorageDataType.avatarUrl,
-            value: userData.model.avatarUrl,
+            value: userData.avatarUrl,
           ),
           _storageSource.storageApi.saveUserData(
             type: StorageDataType.refreshToken,
-            value: authModel.refreshToken,
+            value: response.refreshToken,
           ),
           _storageSource.storageApi.saveUserData(
             type: StorageDataType.accessToken,
-            value: authModel.accessToken,
+            value: response.accessToken,
           ),
         ]).then((_) => NavigationService.navigateTo(context, Pages.home));
       }
     } catch (e) {
-      ErrorService.printError('Error in signIn() controller: $e');
-      rethrow;
+      MessageService.displaySnackbar(message: e.toString(), context: context);
+      throw Failure(e.toString());
     } finally {
       changeSubmitButtonValue(newValue: true);
     }

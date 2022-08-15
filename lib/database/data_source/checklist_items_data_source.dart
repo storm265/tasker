@@ -30,11 +30,10 @@ class ChecklistItemsDataSourceImpl implements ChecklistItemsDataSource {
       //   CheckListItemsScheme.createdAt: DateTime.now().toString(),
       // }).execute();
       // return response;
-      return Future.delayed(Duration(seconds: 1));
+      return Future.delayed(const Duration(seconds: 1));
     } catch (e) {
-      ErrorService.printError(
-          'Error in ChecklistItemsDataSourceImpl putCheckListItem: $e');
-      rethrow;
+        throw Failure(e.toString());
+    
     }
   }
 
@@ -50,9 +49,7 @@ class ChecklistItemsDataSourceImpl implements ChecklistItemsDataSource {
       // return response;
       return Future.delayed(Duration(seconds: 1));
     } catch (e) {
-      ErrorService.printError(
-          'Error in ChecklistItemsDataSourceImpl fetchChecklistItem: $e');
-      rethrow;
+       throw Failure(e.toString());
     }
   }
 }

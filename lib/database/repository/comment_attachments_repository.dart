@@ -19,9 +19,7 @@ class CommentAttachmentRepositoryImpl implements CommentAttachmentRepository {
       //   commentId: commentId,
       // );
     } catch (e) {
-      ErrorService.printError(
-          'Error in CommentAttachmentRepositoryImpl putAttachment() : $e');
-      rethrow;
+      throw Failure(e.toString());
     }
   }
 }

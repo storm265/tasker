@@ -11,11 +11,9 @@ class TasksMembersRepositoryImpl implements TasksMembersRepository {
   @override
   Future<void> postComment({required String content}) async {
     try {
-   //   await _commentDataSource.postComment(content: content);
+      //   await _commentDataSource.postComment(content: content);
     } catch (e) {
-      ErrorService.printError(
-          'Error in TasksMembersRepositoryImpl putComment() :$e');
-      rethrow;
+      throw Failure(e.toString());
     }
   }
 }

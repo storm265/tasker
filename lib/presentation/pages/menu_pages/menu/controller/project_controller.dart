@@ -5,7 +5,6 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/c
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
-import 'package:todo2/services/network_service/base_response/base_response.dart';
 
 enum ProjectDialogStatus {
   add,
@@ -46,11 +45,15 @@ class ProjectController extends ChangeNotifier {
     required bool isEdit,
     required String title,
     required VoidCallback onSuccessCallback,
+    required BuildContext context,
   }) async {
     try {
       if (formKey.currentState!.validate()) {
         setClickedValue(false);
-        final bool isDublicateProject = await findDublicates(title: title);
+        final bool isDublicateProject = await findDublicates(
+          title: title,
+          context: context,
+        );
         if (!isDublicateProject) {
           isEdit
               ? await _projectsRepository.updateProject(
@@ -66,21 +69,33 @@ class ProjectController extends ChangeNotifier {
         setClickedValue(true);
         onSuccessCallback();
       }
-    } catch (e, t) {
-      ErrorService.printError('Error in validate(): $e, trace: $t');
+    } catch (e) {
+      throw Failure(e.toString());
     }
   }
 
-  Future<BaseListResponse<ProjectModel>> fetchAllProjects() async {
-    final projects = await _projectsRepository.fetchAllProjects();
-    return projects;
+  Future<List<ProjectModel>> fetchAllProjects() async {
+      try {
+       final projects = await _projectsRepository.fetchAllProjects();
+
+      return projects;
+    } catch (e) {
+      throw Failure(e.toString());
+    }
+   
   }
 
-  Future<bool> findDublicates({required String title}) async {
+  Future<bool> findDublicates({
+    required String title,
+    required BuildContext context,
+  }) async {
     bool isDublicated =
         await _projectsRepository.isDublicatedProject(title: title);
     if (isDublicated) {
-      MessageService.displaySnackbar(message: 'This project is already exist');
+      MessageService.displaySnackbar(
+        message: 'This project is already exist',
+        context: context,
+      );
       return true;
     } else {
       return false;

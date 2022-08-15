@@ -5,11 +5,12 @@ import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/database/database_scheme/project_user_scheme.dart';
 import 'package:todo2/database/model/projects_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
+import 'package:todo2/services/error_service/network_error_service.dart';
 import 'package:todo2/services/extensions/color_extension/color_string_extension.dart';
-import 'package:todo2/services/network_service/base_response/base_response.dart';
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
+// TODO generic
 abstract class ProjectUserData {
   Future updateProject({
     required Color color,
@@ -51,31 +52,29 @@ class ProjectUserDataImpl implements ProjectUserData {
       );
       log('createProject ${response.data}');
       return response;
-    } catch (e, t) {
-      ErrorService.printError(
-          'Error in ProjectUserDataImpl postProject(): $e,$t');
-      rethrow;
+    } catch (e) {
+      throw Failure(e.toString());
     }
   }
 
   @override
-  Future<Response<dynamic>> fetchOneProject() async {
+  Future<Map<String, dynamic>> fetchOneProject() async {
     try {
       final response = await _network.dio.get(
         _projects,
         options: await _network.getLocalRequestOptions(),
       );
-      log('fetchOneProject ${response.data}');
-      return response;
+      return NetworkErrorService.isSuccessful(response)
+          ? (response.data[AuthScheme.data] as Map<String, dynamic>)
+          : throw Failure(
+              'Error: ${response.data[AuthScheme.data][AuthScheme.message]}');
     } catch (e) {
-      ErrorService.printError(
-          'Error in ProjectUserDataImpl fetchOneProject() dataSource:  $e');
-      rethrow;
+      throw Failure(e.toString());
     }
   }
 
   @override
-  Future<BaseListResponse<ProjectModel>> fetchAllProjects() async {
+  Future<List<Map<String, dynamic>>> fetchAllProjects() async {
     try {
       final response = await _network.dio.get(
         _projects,
@@ -85,33 +84,18 @@ class ProjectUserDataImpl implements ProjectUserData {
         },
         options: await _network.getLocalRequestOptions(useContentType: true),
       );
-
-      log('adadada ${response.data[AuthScheme.data].toString()}');
-      if (response.data[AuthScheme.data].toString().isEmpty) {
-        log(' IS NULL');
-      }
-
-      BaseListResponse<ProjectModel> empty =
-          BaseListResponse<ProjectModel>(model: []);
-      final baseResponse = BaseListResponse<ProjectModel>.fromJson(
-        json: response.data[AuthScheme.data],
-        build: (List<Map<String, dynamic>> json) =>
-            (response.data[AuthScheme.data] as List<Map<String, String>>)
-                .map((e) => ProjectModel.fromJson(e))
-                .toList(),
-        response: response,
-      );
-      return baseResponse;
+      return NetworkErrorService.isSuccessful(response)
+          ? (response.data[AuthScheme.data] as Map<String, dynamic>)
+              as List<Map<String, dynamic>>
+          : throw Failure(
+              'Error: ${response.data[AuthScheme.data][AuthScheme.message]}');
     } catch (e) {
-      ErrorService.printError(
-          'Error in ProjectUserDataImpl fetchAllProjects() dataSource:  $e');
-      rethrow;
+      throw Failure(e.toString());
     }
   }
 
   @override
-  Future<BaseListResponse<ProjectModel>> findDublicates(
-      {required String title}) async {
+  Future<void> findDublicates({required String title}) async {
     try {
       final response = await _network.dio.get(
         _projectsSearch,
@@ -120,26 +104,24 @@ class ProjectUserDataImpl implements ProjectUserData {
       );
       log('find dublicates ${response.data}');
 
-      BaseListResponse<ProjectModel> empty =
-          BaseListResponse<ProjectModel>(model: []);
+      // BaseListResponse<ProjectModel> empty =
+      //     BaseListResponse<ProjectModel>(model: []);
 
-      if ((response.data[AuthScheme.data] as List<dynamic>).isEmpty) {
-        return empty;
-      } else {
-        final baseResponse = BaseListResponse<ProjectModel>.fromJson(
-          json: response.data[AuthScheme.data],
-          build: (List<Map<String, dynamic>> json) =>
-              (response.data[AuthScheme.data] as List<Map<String, String>>)
-                  .map((e) => ProjectModel.fromJson(e))
-                  .toList(),
-          response: response,
-        );
-        return baseResponse;
-      }
+      // if ((response.data[AuthScheme.data] as List<dynamic>).isEmpty) {
+      //   return empty;
+      // } else {
+      //   final baseResponse = BaseListResponse<ProjectModel>.fromJson(
+      //     json: response.data[AuthScheme.data],
+      //     build: (List<Map<String, dynamic>> json) =>
+      //         (response.data[AuthScheme.data] as List<Map<String, String>>)
+      //             .map((e) => ProjectModel.fromJson(e))
+      //             .toList(),
+      //     response: response,
+      //   );
+      //   return baseResponse;
+      // }
     } catch (e) {
-      ErrorService.printError(
-          'Error in ProjectUserDataImpl findDublicates() dataSource:  $e');
-      rethrow;
+      throw Failure(e.toString());
     }
   }
 
@@ -157,8 +139,7 @@ class ProjectUserDataImpl implements ProjectUserData {
       // return response;
       return Future.delayed(Duration(seconds: 1));
     } catch (e) {
-      ErrorService.printError('Error in dataSource fetchProjects() : $e');
-      rethrow;
+      throw Failure(e.toString());
     }
   }
 
@@ -173,13 +154,12 @@ class ProjectUserDataImpl implements ProjectUserData {
       );
       return response;
     } catch (e) {
-      ErrorService.printError('Error in dataSource deleteProject() : $e');
-      rethrow;
+      throw Failure(e.toString());
     }
   }
 
   @override
-  Future<BaseResponse<ProjectModel>> updateProject({
+  Future<void> updateProject({
     required Color color,
     required String title,
   }) async {
@@ -195,14 +175,14 @@ class ProjectUserDataImpl implements ProjectUserData {
         options: await _network.getLocalRequestOptions(useContentType: true),
       );
 
-      return BaseResponse<ProjectModel>.fromJson(
-        json: response.data,
-        build: (Map<String, dynamic> json) => ProjectModel.fromJson(json),
-        response: response,
-      );
+      // return BaseResponse<ProjectModel>.fromJson(
+      //   json: response.data,
+      //   build: (Map<String, dynamic> json) => ProjectModel.fromJson(json),
+      //   response: response,
+      // );
+
     } catch (e) {
-      ErrorService.printError('Error in dataSource updateProject() : $e');
-      rethrow;
+      throw Failure(e.toString());
     }
   }
 }

@@ -60,7 +60,7 @@ class AddCheckListController extends ChangeNotifier {
       await _checkListItemsRepository.putChecklistItem(
           id: id, checkboxItems: checkBoxItems.value);
     } catch (e) {
-      ErrorService.printError('Error in repository putChecklistItem: $e');
+      throw Failure(e.toString());
     }
   }
 
@@ -74,7 +74,7 @@ class AddCheckListController extends ChangeNotifier {
       id = await CheckListsRepositoryImpl().fetchCheckListId(title: title);
       log(id.toString());
     } catch (e) {
-      ErrorService.printError('Error in repository putChecklistItem: $e');
+      throw Failure(e.toString());
     }
   }
 }

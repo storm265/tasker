@@ -105,7 +105,6 @@ class AddTaskController extends ChangeNotifier {
   final pickedTime = ValueNotifier<DateTime?>(null);
   void pickTime({required DateTime newTime}) {
     pickedTime.value = newTime;
-    print(pickedTime.value);
     pickedTime.notifyListeners();
   }
 
@@ -116,7 +115,10 @@ class AddTaskController extends ChangeNotifier {
 
       if (result!.files.first.size >= maxSize) {
         result.files.clear();
-        MessageService.displaySnackbar(message: 'You cant put huge file');
+        MessageService.displaySnackbar(
+          message: 'You cant put huge file',
+          context: context,
+        );
       } else {
         PlatformFile file = result.files.first;
         files.value.add(file);
@@ -124,8 +126,7 @@ class AddTaskController extends ChangeNotifier {
       log(files.value[0].path.toString());
       files.notifyListeners();
     } catch (e) {
-      ErrorService.printError('pickAvatar error: $e');
-      rethrow;
+      throw Failure(e.toString());
     }
   }
 
@@ -137,8 +138,7 @@ class AddTaskController extends ChangeNotifier {
       // userName = await userProfileRepository.fetchUserName();
       return [image, userName];
     } catch (e) {
-      ErrorService.printError("Error in ProfileController  getUserData() :$e ");
-      rethrow;
+      throw Failure(e.toString());
     }
   }
 
@@ -169,7 +169,7 @@ class AddTaskController extends ChangeNotifier {
 
       }
     } catch (e) {
-      ErrorService.printError('Validation error : $e');
+      throw Failure(e.toString());
     }
   }
 
@@ -202,7 +202,7 @@ class AddTaskController extends ChangeNotifier {
       //   tasksMembers.putMember();
       // }
     } catch (e) {
-      ErrorService.printError('Error in add task controller putTask(): $e');
+      throw Failure(e.toString());
     }
   }
 
@@ -220,5 +220,3 @@ class AddTaskController extends ChangeNotifier {
     isClickedAddTask.dispose();
   }
 }
-
-class PanelController {}

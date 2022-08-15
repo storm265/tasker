@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/storage/avatar_storage_data_source.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/services/error_service/error_service.dart';
@@ -16,29 +17,20 @@ class AvatarStorageReposiroryImpl implements AvatarStorageDataSource {
 
   AvatarStorageReposiroryImpl({required this.avatarDataSource});
 
-  // @override
-  // Future<Response<String>> updateAvatar(
-  //     {required String bucketImage, required File file}) async {
-  //   try {
-  //     final response = await avatarDataSource.updateAvatar(
-  //         bucketImage: bucketImage, file: file);
-  //     return response;
-  //   } catch (e, t) {
-  //     ErrorService.printError(
-  //         'AvatarStorageReposiroryImpl updateAvatar  error: $e, $t');
-  //     rethrow;
-  //   }
-  // }
-
   @override
   Future<String> uploadAvatar({
     required String name,
     required File file,
   }) async {
-    final response = await avatarDataSource.uploadAvatar(
-      name: name,
-      file: file,
-    );
-    return response.data[AuthScheme.data][AuthScheme.avatarUrl];
+    try {
+      final response = await avatarDataSource.uploadAvatar(
+        name: name,
+        file: file,
+      );
+      debugPrint('avatar url ${response[AuthScheme.avatarUrl]}');
+      return response[AuthScheme.avatarUrl];
+    } catch (e) {
+      throw Failure(e.toString());
+    }
   }
 }

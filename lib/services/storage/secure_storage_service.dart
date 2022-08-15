@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/services/error_service/error_service.dart';
@@ -56,8 +57,7 @@ class SecureStorageService {
 
       return data;
     } catch (e) {
-      ErrorService.printError('SecureStorageService getUserData error: $e');
-      rethrow;
+      debugPrint('secure storage error: $e');
     }
   }
 
@@ -89,9 +89,8 @@ class SecureStorageService {
           break;
         default:
       }
-    } catch (e) {
-      ErrorService.printError('SecureStorageService putUserData error: $e');
-      rethrow;
+    } catch (e, t) {
+      debugPrint('secure storage error: $e, $t');
     }
   }
 
@@ -99,9 +98,7 @@ class SecureStorageService {
     try {
       await _storage.deleteAll();
     } catch (e) {
-      ErrorService.printError(
-          'SecureStorageService removeAllUserData error: $e');
-      rethrow;
+      throw Failure(e.toString());
     }
   }
 }

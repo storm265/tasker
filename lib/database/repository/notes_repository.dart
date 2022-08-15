@@ -20,8 +20,7 @@ class NoteRepositoryImpl implements NoteRepository<NotesModel> {
           .map((json) => NotesModel.fromJson(json))
           .toList();
     } catch (e) {
-      ErrorService.printError('Error in NoteRepositoryImpl fetchNotes() :$e');
-      rethrow;
+      throw Failure(e.toString());
     }
   }
 
@@ -36,8 +35,7 @@ class NoteRepositoryImpl implements NoteRepository<NotesModel> {
         description: description,
       );
     } catch (e) {
-      ErrorService.printError('Error in NoteRepositoryImpl fetchNotes():$e');
-      rethrow;
+      throw Failure(e.toString());
     }
   }
 }

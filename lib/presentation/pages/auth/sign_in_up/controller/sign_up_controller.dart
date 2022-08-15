@@ -35,7 +35,7 @@ class SignUpController extends ChangeNotifier {
     required String password,
   }) async {
     try {
-      if (imagePickerController.isValidAvatar()) {
+      if (imagePickerController.isValidAvatar(context: context)) {
         if (formKey.currentState!.validate()) {
           await signUp(
             context: context,
@@ -46,7 +46,7 @@ class SignUpController extends ChangeNotifier {
         }
       }
     } catch (e) {
-      ErrorService.printError('Error in signUpValidate() controller: $e');
+      throw Failure(e.toString());
     }
   }
 
@@ -64,11 +64,10 @@ class SignUpController extends ChangeNotifier {
         password: password,
       );
 
-      if (response.model.id != 'null') {
-        final authModel = response.model;
+      if (response.id != 'null') {
         await Future.wait([
           _storageSource.storageApi
-              .saveUserData(type: StorageDataType.id, value: authModel.id),
+              .saveUserData(type: StorageDataType.id, value: response.id),
           _storageSource.storageApi
               .saveUserData(type: StorageDataType.email, value: email),
           _storageSource.storageApi
@@ -77,24 +76,29 @@ class SignUpController extends ChangeNotifier {
               .saveUserData(type: StorageDataType.username, value: username),
           _storageSource.storageApi.saveUserData(
             type: StorageDataType.refreshToken,
-            value: authModel.refreshToken,
+            value: response.refreshToken,
           ),
           _storageSource.storageApi.saveUserData(
             type: StorageDataType.accessToken,
-            value: authModel.accessToken,
+            value: response.accessToken,
           ),
         ]);
-        final imageResponse = await imagePickerController.uploadAvatar();
-
+        final imageResponse =
+            await imagePickerController.uploadAvatar(context: context);
+        debugPrint(
+            'avatarUrl = ${await _storageSource.storageApi.getUserData(type: StorageDataType.avatarUrl)}');
         await _storageSource.storageApi
             .saveUserData(type: StorageDataType.avatarUrl, value: imageResponse)
             .then((_) {
-          MessageService.displaySnackbar(message: 'Sign up success!');
+          MessageService.displaySnackbar(
+              message: 'Sign up success!', context: context);
           NavigationService.navigateTo(context, Pages.home);
         });
       }
-    } catch (e) {
-      ErrorService.printError('Error in signUp() controller: $e');
+    } catch (e, t) {
+      MessageService.displaySnackbar(message: e.toString(), context: context);
+      debugPrint('trace $t');
+      throw Failure(e.toString());
     } finally {
       changeSubmitButtonValue(newValue: true);
     }

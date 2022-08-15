@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -33,43 +34,51 @@ class ImageController extends ChangeNotifier {
         return;
       }
     } catch (e) {
-      ErrorService.printError('ImageController pickAvatar error: $e');
+      throw Failure(e.toString());
     }
   }
 
-  bool isValidAvatar() {
+  bool isValidAvatar({required BuildContext context}) {
     try {
       if (pickedFile.value.path == _defaultAssetPath) {
-        MessageService.displaySnackbar(message: 'Pick image!');
+        MessageService.displaySnackbar(
+          message: 'Pick image!',
+          context: context,
+        );
         return false;
       } else if (!_isWrongImageFormat) {
-        MessageService.displaySnackbar(message: 'Wrong image format');
+        MessageService.displaySnackbar(
+          message: 'Wrong image format',
+          context: context,
+        );
         return false;
       } else {
         return true;
       }
     } catch (e) {
-      ErrorService.printError('ImageController isValidAvatar error: $e');
-      rethrow;
+      throw Failure(e.toString());
     }
   }
 
-  Future<String> uploadAvatar() async {
+  Future<String> uploadAvatar({required BuildContext context}) async {
     try {
-      bool isValidImage = isValidAvatar();
+      bool isValidImage = isValidAvatar(context: context);
       if (isValidImage) {
         final avatarUrl = await _avatarStorageRepository.uploadAvatar(
           name: pickedFile.value.name,
           file: File(pickedFile.value.path),
         );
-
+        log('avatarUrl: $avatarUrl');
         return avatarUrl;
       } else {
-        throw MessageService.displaySnackbar(message: 'Invalid Image Format');
+        throw MessageService.displaySnackbar(
+          message: 'Invalid Image Format',
+          context: context,
+        );
       }
-    } catch (e) {
-      ErrorService.printError('uploadAvatar error: $e');
-      rethrow;
+    } catch (e, t) {
+      log('upload avatar error Controller: $e,$t');
+      throw Failure(e.toString());
     }
   }
 
@@ -77,7 +86,7 @@ class ImageController extends ChangeNotifier {
     try {
       pickedFile.dispose();
     } catch (e) {
-      ErrorService.printError('ImageController disposeValues error: $e');
+      throw Failure(e.toString());
     }
   }
 }

@@ -37,9 +37,7 @@ class TaskAttachmentsDataSourceImpl implements TaskAttachmentsDataSource {
       // return response;
       return Future.delayed(Duration(seconds: 1));
     } catch (e) {
-      ErrorService.printError(
-          'Error in TaskAttachmentsDataSourceImpl fetchNotes():$e');
-      rethrow;
+      throw Failure(e.toString());
     }
   }
 
@@ -54,9 +52,7 @@ class TaskAttachmentsDataSourceImpl implements TaskAttachmentsDataSource {
       // return response;
       return Future.delayed(Duration(seconds: 1));
     } catch (e) {
-      ErrorService.printError(
-          'Error in TaskAttachmentsDataSourceImpl fetchAttachment() dataSource:  $e');
-      rethrow;
+      throw Failure(e.toString());
     }
   }
 
@@ -65,8 +61,7 @@ class TaskAttachmentsDataSourceImpl implements TaskAttachmentsDataSource {
     try {
       // await _supabase.storage.from(StorageScheme.avatar).upload(path, file);
     } catch (e) {
-      ErrorService.printError(
-          'TaskAttachmentsDataSourceImpl uploadAvatar error: $e');
+      throw Failure(e.toString());
     }
   }
 
@@ -81,9 +76,7 @@ class TaskAttachmentsDataSourceImpl implements TaskAttachmentsDataSource {
       // return response;
       return Future.delayed(Duration(seconds: 1));
     } catch (e) {
-      ErrorService.printError(
-          'Error in TaskAttachmentsDataSourceImpl fetchAvatar() dataSource: $e');
-      rethrow;
+      throw Failure(e.toString());
     }
   }
 }

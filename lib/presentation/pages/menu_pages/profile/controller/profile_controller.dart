@@ -7,7 +7,6 @@ import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
-import 'package:todo2/services/network_service/base_response/base_response.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 class ProfileController extends ChangeNotifier {
@@ -25,9 +24,9 @@ class ProfileController extends ChangeNotifier {
     required this.tokenStorageService,
   }) : _secureStorageService = secureStorageService;
 
-  late String username='';
-  late String image='';
-  late String email='';
+  late String username = '';
+  late String image = '';
+  late String email = '';
   late AnimationController iconAnimationController;
 
   Future<void> signOut({required BuildContext context}) async {
@@ -36,7 +35,7 @@ class ProfileController extends ChangeNotifier {
         .then((_) => NavigationService.navigateTo(context, Pages.welcome));
   }
 
-  Future<BaseListResponse<ProjectModel>> fetchProject() async {
+  Future<ProjectModel> fetchProject() async {
     final response = await projectsRepository.fetchOneProject();
     return response;
   }
@@ -54,9 +53,7 @@ class ProfileController extends ChangeNotifier {
 
       updateStateCallback();
     } catch (e) {
-      ErrorService.printError(
-          "Error in ProfileController  fetchProfileInfo() :$e ");
-      rethrow;
+      throw Failure(e.toString());
     }
   }
 

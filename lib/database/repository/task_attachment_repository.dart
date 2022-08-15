@@ -18,9 +18,7 @@ class TaskAttachmentRepositoryImpl implements TaskAttachmentRepository {
         taskId: taskId,
       );
     } catch (e) {
-      ErrorService.printError(
-          'Error in TaskAttachmentsRepositoryImpl putAttachment() : $e');
-      rethrow;
+      throw Failure(e.toString());
     }
   }
 
@@ -29,8 +27,7 @@ class TaskAttachmentRepositoryImpl implements TaskAttachmentRepository {
     try {
       await _taskAttachmentDataSource.uploadFile(path: path, file: file);
     } catch (e) {
-      ErrorService.printError(
-          'TaskAttachmentsRepositoryImpl uploadAvatar error: $e');
+      throw Failure(e.toString());
     }
   }
 

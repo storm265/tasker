@@ -1,64 +1,84 @@
 import 'package:todo2/database/data_source/auth_data_source.dart';
 import 'package:todo2/database/model/auth_model.dart';
-import 'package:todo2/services/network_service/base_response/base_response.dart';
+import 'package:todo2/services/error_service/error_service.dart';
+import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 abstract class AuthRepository {
-  Future<BaseResponse<AuthModel>> signUp({
+  Future<AuthModel> signUp({
     required String email,
     required String password,
     required String nickname,
   });
 
-  Future<BaseResponse<AuthModel>> signIn({
+  Future<AuthModel> signIn({
     required String email,
     required String password,
   });
 
-  Future<void>  signOut();
-  Future<String> refreshToken();
+  Future<void> signOut();
+  Future<AuthModel> refreshToken();
 }
 
 class AuthRepositoryImpl implements AuthRepository {
   final _authDataSource = AuthDataSourceImpl(
+    network: NetworkSource(),
     secureStorageService: SecureStorageService(),
   );
 
   @override
-  Future<BaseResponse<AuthModel>> signIn({
+  Future<AuthModel> signIn({
     required String email,
     required String password,
   }) async {
-    final response = await _authDataSource.signIn(
-      email: email,
-      password: password,
-    );
-    return response;
+    try {
+      final response = await _authDataSource.signIn(
+        email: email,
+        password: password,
+      );
+      return AuthModel.fromJson(json: response);
+    } catch (e) {
+      throw Failure(e.toString());
+    }
   }
 
   @override
-  Future<BaseResponse<AuthModel>> signUp({
+  Future<AuthModel> signUp({
     required String email,
     required String password,
     required String nickname,
   }) async {
-    final response = await _authDataSource.signUp(
-      email: email,
-      password: password,
-      nickname: nickname,
-    );
-    return response;
+    try {
+      final response = await _authDataSource.signUp(
+        email: email,
+        password: password,
+        nickname: nickname,
+      );
+      return AuthModel.fromJson(
+        json: response,
+        isSignUp: true,
+      );
+    } catch (e) {
+      throw Failure(e.toString());
+    }
+  }
+
+  @override
+  Future<AuthModel> refreshToken() async {
+    try {
+      final response = await _authDataSource.refreshToken();
+      return AuthModel.fromJson(json: response);
+    } catch (e) {
+      throw Failure(e.toString());
+    }
   }
 
   @override
   Future<void> signOut() async {
-     await _authDataSource.signOut();
-
-  }
-
-  @override
-  Future<String> refreshToken() async {
-    final response = await _authDataSource.refreshToken();
-    return response.model.refreshToken;
+    try {
+      await _authDataSource.signOut();
+    } catch (e) {
+      throw Failure(e.toString());
+    }
   }
 }

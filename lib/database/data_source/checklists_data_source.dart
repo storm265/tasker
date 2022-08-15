@@ -32,9 +32,7 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
       // return response;
       return Future.delayed(Duration(seconds: 1));
     } catch (e) {
-      ErrorService.printError(
-          'Error in CheckListsDataSourceImpl putChecklistItem: $e');
-      rethrow;
+       throw Failure(e.toString());
     }
   }
 
@@ -49,9 +47,7 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
       // return response;
       return Future.delayed(Duration(seconds: 1));
     } catch (e) {
-      ErrorService.printError(
-          'Error in CheckListsDataSourceImpl fetchCheckList: $e');
-      rethrow;
+     throw Failure(e.toString());
     }
   }
 
@@ -67,9 +63,7 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
       // return response.data[0][CheckListsScheme.id];
       return Future.delayed(Duration(seconds: 1));
     } catch (e) {
-      ErrorService.printError(
-          'Error in CheckListsDataSourceImpl fetchCheckId: $e');
-      rethrow;
+       throw Failure(e.toString());
     }
   }
 }

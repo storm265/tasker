@@ -13,9 +13,7 @@ class TasksMembersRepositoryImpl implements TasksMembersRepository {
     try {
       await _tasksMembersDataSource.putMember();
     } catch (e) {
-      ErrorService.printError(
-          'Error in TasksMembersRepositoryImpl putMember() :$e');
-      rethrow;
+      throw Failure(e.toString());
     }
   }
 }

@@ -34,9 +34,7 @@ class TaskDataSourceImpl implements TaskDataSource {
       // return response;
       return Future.delayed(Duration(seconds: 1));
     } catch (e) {
-      ErrorService.printError(
-          'Error in ProjectUserDataImpl fetchProject():  $e');
-      rethrow;
+      throw Failure(e.toString());
     }
   }
 
@@ -52,9 +50,7 @@ class TaskDataSourceImpl implements TaskDataSource {
       // return response;
       return Future.delayed(Duration(seconds: 1));
     } catch (e) {
-      ErrorService.printError(
-          'Error in ProjectUserDataImpl fetchProject():  $e');
-      rethrow;
+      throw Failure(e.toString());
     }
   }
 
@@ -80,8 +76,7 @@ class TaskDataSourceImpl implements TaskDataSource {
       // return response;
       return Future.delayed(Duration(seconds: 1));
     } catch (e) {
-      ErrorService.printError('Error in ProjectUserDataImpl putTask():$e');
-      rethrow;
+      throw Failure(e.toString());
     }
   }
 }

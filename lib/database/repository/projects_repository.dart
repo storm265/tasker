@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/projects_data_source.dart';
 import 'package:todo2/database/database_scheme/project_user_scheme.dart';
 import 'package:todo2/database/model/projects_model.dart';
-import 'package:todo2/services/network_service/base_response/base_response.dart';
+import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 abstract class ProjectRepository {
@@ -34,15 +34,26 @@ class ProjectRepositoryImpl implements ProjectRepository {
   );
 
   @override
-  Future<BaseListResponse<ProjectModel>> fetchOneProject() async {
+  Future<ProjectModel> fetchOneProject() async {
     final response = await _projectDataSource.fetchOneProject();
-    return response.data[ProjectDataScheme.data];
+    //  return response.data[ProjectDataScheme.data];
+    return ProjectModel(
+      color: Colors.red,
+      createdAt: DateTime.now(),
+      ownerId: '',
+      title: '',
+    );
   }
 
   @override
-  Future<BaseListResponse<ProjectModel>> fetchAllProjects() async {
-    final response = await _projectDataSource.fetchAllProjects();
-    return response;
+  Future<List<ProjectModel>> fetchAllProjects() async {
+    try {
+      final response = await _projectDataSource.fetchAllProjects();
+      // return ProjectModel.fromJson(response) as List<ProjectModel>;
+      return [];
+    } catch (e) {
+      throw Failure(e.toString());
+    }
   }
 
   @override
@@ -65,7 +76,7 @@ class ProjectRepositoryImpl implements ProjectRepository {
   }
 
   @override
-  Future<BaseResponse<ProjectModel>> updateProject({
+  Future<ProjectModel> updateProject({
     required Color color,
     required String title,
   }) async {
@@ -73,7 +84,12 @@ class ProjectRepositoryImpl implements ProjectRepository {
       color: color,
       title: title,
     );
-    return response;
+    return ProjectModel(
+        title: 'title',
+        color: Colors.red,
+        createdAt: DateTime.now(),
+        ownerId: 'title');
+    ;
   }
 
   @override
@@ -87,13 +103,13 @@ class ProjectRepositoryImpl implements ProjectRepository {
   @override
   Future<bool> isDublicatedProject({required String title}) async {
     final response = await _projectDataSource.findDublicates(title: title);
-    for (int i = 0; i < response.model.length; i++) {
-      if (response.model[i].title == title) {
-        return true;
-      } else {
-        return false;
-      }
-    }
+    // for (int i = 0; i < response.model.length; i++) {
+    //   if (response.model[i].title == title) {
+    //     return true;
+    //   } else {
+    //     return false;
+    //   }
+    // }
     return false;
   }
 }

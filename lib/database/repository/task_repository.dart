@@ -25,9 +25,7 @@ class TaskRepositoryImpl implements TaskRepository {
           .map((json) => TaskModel.fromJson(json))
           .toList();
     } catch (e) {
-      ErrorService.printError(
-          'Error in ProjectRepositoryImpl fetchTask() repository $e');
-      rethrow;
+      throw Failure(e.toString());
     }
   }
 
@@ -37,9 +35,7 @@ class TaskRepositoryImpl implements TaskRepository {
       final response = await _taskDataSource.fetchTaskId(title: title);
       return response.data[0][TaskScheme.id];
     } catch (e) {
-      ErrorService.printError(
-          'Error in TaskRepositoryImpl fetchTaskId() repository $e');
-      rethrow;
+      throw Failure(e.toString());
     }
   }
 
@@ -60,8 +56,7 @@ class TaskRepositoryImpl implements TaskRepository {
         projectId: projectId,
       );
     } catch (e) {
-      ErrorService.printError('Error in  ProjectRepositoryImpl putTask(): $e');
-      rethrow;
+      throw Failure(e.toString());
     }
   }
 }

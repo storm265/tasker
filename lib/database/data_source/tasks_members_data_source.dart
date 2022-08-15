@@ -20,9 +20,7 @@ class TasksMembersDataSourceImpl implements TasksMembersDataSource {
       // return response;
       return Future.delayed(Duration(seconds: 1));
     } catch (e) {
-      ErrorService.printError(
-          'Error in TasksMembersDataSourceImpl putMember() :$e');
-      rethrow;
+      throw Failure(e.toString());
     }
   }
 }

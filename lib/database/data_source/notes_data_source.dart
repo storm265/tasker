@@ -27,8 +27,7 @@ class NotesDataSourceImpl implements NotesDataSource {
       // return response;
       return Future.delayed(Duration(seconds: 1));
     } catch (e) {
-      ErrorService.printError('Error in NotesDataSourceImpl fetchNotes() :$e');
-      rethrow;
+       throw Failure(e.toString());
     }
   }
 
@@ -48,8 +47,7 @@ class NotesDataSourceImpl implements NotesDataSource {
       // return response;
       return Future.delayed(Duration(seconds: 1));
     } catch (e) {
-      ErrorService.printError('Error in NotesDataSourceImpl putNote() :$e');
-      rethrow;
+       throw Failure(e.toString());
     }
   }
 }

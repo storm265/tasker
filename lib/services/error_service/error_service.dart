@@ -1,5 +1,8 @@
-import 'dart:developer';
+class Failure {
+  final String message;
 
-class ErrorService {
-  static void printError(String text) => log(text);
+  Failure(this.message);
+
+  @override
+  String toString() => message;
 }
