@@ -94,7 +94,7 @@ class SignUpController extends ChangeNotifier {
               message: 'Sign up success!', context: context);
           NavigationService.navigateTo(context, Pages.home);
         });
-      }
+       }
     } catch (e, t) {
       MessageService.displaySnackbar(message: e.toString(), context: context);
       debugPrint('trace $t');

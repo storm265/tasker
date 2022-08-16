@@ -26,21 +26,24 @@ abstract class ProjectUserData {
 }
 
 class ProjectUserDataImpl implements ProjectUserData {
-  ProjectUserDataImpl({required SecureStorageService secureStorageService})
-      : _secureStorageService = secureStorageService;
-
   final SecureStorageService _secureStorageService;
+  final NetworkSource _network;
+  ProjectUserDataImpl(
+      {required SecureStorageService secureStorageService,
+      required NetworkSource network})
+      : _secureStorageService = secureStorageService,
+        _network = network;
+
   final _projects = '/projects';
   final _projectsSearch = '/projects-search';
-  final _network = NetworkSource().networkApiClient;
 
   @override
-  Future<Response<dynamic>> createProject({
+  Future<void> createProject({
     required Color color,
     required String title,
   }) async {
     try {
-      final response = await _network.dio.post(
+      final response = await _network.networkApiClient.dio.post(
         _projects,
         data: {
           ProjectDataScheme.ownerId:
@@ -48,10 +51,10 @@ class ProjectUserDataImpl implements ProjectUserData {
           ProjectDataScheme.color: '$color'.toStringColor(),
           ProjectDataScheme.title: title,
         },
-        options: await _network.getLocalRequestOptions(useContentType: true),
+        options: await _network.networkApiClient
+            .getLocalRequestOptions(useContentType: true),
       );
       log('createProject ${response.data}');
-      return response;
     } catch (e) {
       throw Failure(e.toString());
     }
@@ -60,36 +63,38 @@ class ProjectUserDataImpl implements ProjectUserData {
   @override
   Future<Map<String, dynamic>> fetchOneProject() async {
     try {
-      final response = await _network.dio.get(
-        _projects,
-        options: await _network.getLocalRequestOptions(),
+      final id =
+          await _secureStorageService.getUserData(type: StorageDataType.id);
+      final response = await _network.networkApiClient.dio.get(
+        '$_projects/$id',
+        options: await _network.networkApiClient.getLocalRequestOptions(),
       );
       return NetworkErrorService.isSuccessful(response)
           ? (response.data[AuthScheme.data] as Map<String, dynamic>)
           : throw Failure(
               'Error: ${response.data[AuthScheme.data][AuthScheme.message]}');
     } catch (e) {
+      debugPrint('fetchOneProject datasource  $e');
       throw Failure(e.toString());
     }
   }
 
+// works
   @override
-  Future<List<Map<String, dynamic>>> fetchAllProjects() async {
+  Future<List<dynamic>> fetchAllProjects() async {
     try {
-      final response = await _network.dio.get(
-        _projects,
-        queryParameters: {
-          AuthScheme.accessToken:
-              await _secureStorageService.getUserData(type: StorageDataType.id)
-        },
-        options: await _network.getLocalRequestOptions(useContentType: true),
+      final id =
+          await _secureStorageService.getUserData(type: StorageDataType.id);
+      final response = await _network.networkApiClient.dio.get(
+        '$_projects/$id',
+        options: await _network.networkApiClient.getLocalRequestOptions(),
       );
+
       return NetworkErrorService.isSuccessful(response)
-          ? (response.data[AuthScheme.data] as Map<String, dynamic>)
-              as List<Map<String, dynamic>>
-          : throw Failure(
-              'Error: ${response.data[AuthScheme.data][AuthScheme.message]}');
+          ? (response.data![AuthScheme.data] as List<dynamic>)
+          : throw Failure('Error: get project error');
     } catch (e) {
+      debugPrint('fetchAllProjects datasource  $e');
       throw Failure(e.toString());
     }
   }
@@ -97,10 +102,11 @@ class ProjectUserDataImpl implements ProjectUserData {
   @override
   Future<void> findDublicates({required String title}) async {
     try {
-      final response = await _network.dio.get(
+      final response = await _network.networkApiClient.dio.get(
         _projectsSearch,
         queryParameters: {ProjectDataScheme.query: title},
-        options: await _network.getLocalRequestOptions(useContentType: true),
+        options: await _network.networkApiClient
+            .getLocalRequestOptions(useContentType: true),
       );
       log('find dublicates ${response.data}');
 
@@ -144,15 +150,19 @@ class ProjectUserDataImpl implements ProjectUserData {
   }
 
   @override
-  Future<Response<dynamic>> deleteProject(
-      {required ProjectModel projectModel}) async {
+  Future<void> deleteProject({required ProjectModel projectModel}) async {
     try {
-      final Response response = await _network.dio.delete(
-        _projects,
-        queryParameters: {ProjectDataScheme.id: projectModel.ownerId},
-        options: await _network.getLocalRequestOptions(),
+      final id =
+          await _secureStorageService.getUserData(type: StorageDataType.id);
+      final Response response = await _network.networkApiClient.dio.delete(
+        '$_projects/$id',
+        queryParameters: {ProjectDataScheme.id: projectModel.id},
+        options: await _network.networkApiClient.getLocalRequestOptions(),
       );
-      return response;
+      if (!NetworkErrorService.isSuccessful(response)) {
+        throw Failure(
+            'Error: ${response.data[AuthScheme.data][AuthScheme.message]}');
+      }
     } catch (e) {
       throw Failure(e.toString());
     }
@@ -164,23 +174,22 @@ class ProjectUserDataImpl implements ProjectUserData {
     required String title,
   }) async {
     try {
-      final response = await _network.dio.put(
-        _projects,
+      final id =
+          await _secureStorageService.getUserData(type: StorageDataType.id);
+      final response = await _network.networkApiClient.dio.put(
+        '$_projects/$id',
         data: {
           ProjectDataScheme.color: color.toString().toStringColor(),
           ProjectDataScheme.title: title,
-          ProjectDataScheme.id:
-              await _secureStorageService.getUserData(type: StorageDataType.id)
+          ProjectDataScheme.id: id
         },
-        options: await _network.getLocalRequestOptions(useContentType: true),
+        options: await _network.networkApiClient
+            .getLocalRequestOptions(useContentType: true),
       );
-
-      // return BaseResponse<ProjectModel>.fromJson(
-      //   json: response.data,
-      //   build: (Map<String, dynamic> json) => ProjectModel.fromJson(json),
-      //   response: response,
-      // );
-
+      if (!NetworkErrorService.isSuccessful(response)) {
+        throw Failure(
+            'Error: ${response.data[AuthScheme.data][AuthScheme.message]}');
+      }
     } catch (e) {
       throw Failure(e.toString());
     }

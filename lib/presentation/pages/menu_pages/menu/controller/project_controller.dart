@@ -24,6 +24,7 @@ class ProjectController extends ChangeNotifier {
   final titleController = TextEditingController();
   final selectedModel = ValueNotifier(
     ProjectModel(
+      id: '',
       color: Colors.red,
       createdAt: DateTime.now(),
       title: '',
@@ -60,7 +61,8 @@ class ProjectController extends ChangeNotifier {
                   color: selectedModel.value.color,
                   title: title,
                 )
-              : await _projectsRepository.createProject(
+              : await createProject(
+                  context: context,
                   color: colors[colorPalleteController.selectedIndex.value],
                   title: title,
                 );
@@ -75,14 +77,14 @@ class ProjectController extends ChangeNotifier {
   }
 
   Future<List<ProjectModel>> fetchAllProjects() async {
-      try {
-       final projects = await _projectsRepository.fetchAllProjects();
-
+    try {
+      final projects = await _projectsRepository.fetchAllProjects();
+      print('projects $projects');
       return projects;
     } catch (e) {
+      debugPrint('error $e');
       throw Failure(e.toString());
     }
-   
   }
 
   Future<bool> findDublicates({
@@ -105,22 +107,42 @@ class ProjectController extends ChangeNotifier {
   Future<void> createProject({
     required Color color,
     required String title,
+    required BuildContext context,
   }) async {
-    await _projectsRepository.createProject(color: color, title: title);
+    try {
+      await _projectsRepository.createProject(color: color, title: title);
+    } catch (e) {
+      MessageService.displaySnackbar(message: e.toString(), context: context);
+      throw Failure(e.toString());
+    }
   }
 
   Future<void> updateProject({
     required Color color,
     required String title,
+    required BuildContext context,
   }) async {
-    await _projectsRepository.updateProject(
-      color: color,
-      title: title,
-    );
+    try {
+      await _projectsRepository.updateProject(
+        color: color,
+        title: title,
+      );
+    } catch (e) {
+      MessageService.displaySnackbar(message: e.toString(), context: context);
+      throw Failure(e.toString());
+    }
   }
 
-  Future<void> deleteProject({required ProjectModel projectModel}) async {
-    await _projectsRepository.deleteProject(projectModel: projectModel);
+  Future<void> deleteProject({
+    required ProjectModel projectModel,
+    required BuildContext context,
+  }) async {
+    try {
+      await _projectsRepository.deleteProject(projectModel: projectModel);
+    } catch (e) {
+      MessageService.displaySnackbar(message: e.toString(), context: context);
+      throw Failure(e.toString());
+    }
   }
 
   void disposeValues() {

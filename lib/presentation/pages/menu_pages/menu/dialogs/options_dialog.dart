@@ -36,7 +36,10 @@ Future<void> showOptionsDialog({
                       break;
                     case 1:
                       await projectController
-                          .deleteProject(projectModel: projectModel)
+                          .deleteProject(
+                        projectModel: projectModel,
+                        context: context,
+                      )
                           .then((_) {
                         Navigator.pop(context);
                         notifyParent();

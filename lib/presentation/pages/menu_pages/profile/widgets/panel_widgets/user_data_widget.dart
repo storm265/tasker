@@ -17,9 +17,9 @@ class UserDataWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 35),
-      leading: avatarImage != ''
-          ? CachedAvatarWidget(image: avatarImage)
-          : const SizedBox(),
+      // leading: avatarImage != ''
+      //     ? CachedAvatarWidget(image: avatarImage)
+      //     : const SizedBox(),
       title: Text(
         username,
         style: const TextStyle(

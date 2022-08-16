@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
+import 'package:todo2/presentation/controller/user_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/sign_in_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/padding_contstant.dart';
@@ -30,9 +31,11 @@ class _SignInPageState extends State<SignInPage> {
   final TextEditingController _passwordController = TextEditingController();
 
   final _signInController = SignInController(
-    userProfileRepository: UserProfileRepositoryImpl(
-      userProfileDataSource: UserProfileDataSourceImpl(
-        secureStorageService: SecureStorageService(),
+    userController: UserController(
+      userProfileRepository: UserProfileRepositoryImpl(
+        userProfileDataSource: UserProfileDataSourceImpl(
+          secureStorageService: SecureStorageService(),
+        ),
       ),
     ),
     storageSource: SecureStorageSource(),

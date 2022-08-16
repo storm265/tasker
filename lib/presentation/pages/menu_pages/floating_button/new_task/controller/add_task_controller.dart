@@ -3,7 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/projects_model.dart';
-import 'package:todo2/database/model/users_profile_model.dart';
+import 'package:todo2/database/model/profile_models/users_profile_model.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/task_attachment_repository.dart';
 import 'package:todo2/database/repository/task_repository.dart';
@@ -76,6 +76,7 @@ class AddTaskController extends ChangeNotifier {
 
   final pickedProject = ValueNotifier<ProjectModel>(
     ProjectModel(
+      id: '',
         color: Colors.red, createdAt: DateTime.now(), title: '', ownerId: ''),
   );
 

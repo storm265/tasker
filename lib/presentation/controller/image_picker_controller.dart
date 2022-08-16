@@ -9,16 +9,18 @@ import 'package:todo2/services/message_service/message_service.dart';
 const _defaultAssetPath = 'assets/grey_avatar.jpg';
 
 class ImageController extends ChangeNotifier {
+  final AvatarStorageReposiroryImpl _avatarStorageRepository;
+
   ImageController({required AvatarStorageReposiroryImpl avatarRepository})
       : _avatarStorageRepository = avatarRepository;
-  final AvatarStorageReposiroryImpl _avatarStorageRepository;
 
   final pickedFile = ValueNotifier(XFile(_defaultAssetPath));
   final picker = ImagePicker();
 
   bool get _isWrongImageFormat =>
       pickedFile.value.path.endsWith('.jpeg') ||
-      pickedFile.value.path.endsWith('.png');
+      pickedFile.value.path.endsWith('.png') ||
+      pickedFile.value.path.endsWith('.jpg');
 
   Future<void> pickAvatar() async {
     try {
@@ -30,6 +32,8 @@ class ImageController extends ChangeNotifier {
           ) ??
           XFile(_defaultAssetPath));
       pickedFile.notifyListeners();
+
+      log(pickedFile.value.name);
       if (pickedFile.value.name.isEmpty) {
         return;
       }
