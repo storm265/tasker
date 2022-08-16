@@ -14,31 +14,30 @@ class SubmitUpButtonWidget extends StatelessWidget {
     this.alignment = Alignment.center,
     this.backgroundColor = Palette.red,
     this.textColor = Colors.white,
-
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Align(
-        alignment: alignment,
-        child: ElevatedButton(
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(backgroundColor),
-            fixedSize: MaterialStateProperty.all(
-              const Size(380, 50),
-            ),
-          ),
-          onPressed: onPressed,
-          child: Text(
-            buttonText,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w300,
-              fontStyle: FontStyle.italic,
-              color: Colors.white,
-            ),
+      alignment: alignment,
+      child: ElevatedButton(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(backgroundColor),
+          fixedSize: MaterialStateProperty.all(
+            const Size(380, 50),
           ),
         ),
-      );
+        onPressed: onPressed,
+        child: Text(
+          buttonText,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w300,
+            fontStyle: FontStyle.italic,
+            color: Colors.white,
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -3,12 +3,14 @@ import 'package:todo2/database/database_scheme/project_user_scheme.dart';
 import 'package:todo2/services/extensions/color_extension/color_string_extension.dart';
 
 class ProjectModel {
+  String id;
   String title;
   Color color;
   String ownerId;
   DateTime createdAt;
 
   ProjectModel({
+    required this.id,
     required this.title,
     required this.color,
     required this.createdAt,
@@ -17,6 +19,7 @@ class ProjectModel {
 
   factory ProjectModel.fromJson(Map<String, dynamic> json) {
     return ProjectModel(
+      id:  json[ProjectDataScheme.id],
       title: json[ProjectDataScheme.title],
       color: Color(
         int.parse(
