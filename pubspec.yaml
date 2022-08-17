@@ -20,7 +20,6 @@ dependencies:
   simple_gesture_detector:
   percent_indicator:
   flutter_slidable:
-  image_picker: 
   file_picker:
   dio:
   json_annotation:
@@ -48,7 +47,6 @@ flutter:
     - assets/changed_password.png
     - assets/nav_bar_icons/
     - assets/work_list/
-    - assets/grey_avatar.jpg
     - assets/detailed_task/
 
 
