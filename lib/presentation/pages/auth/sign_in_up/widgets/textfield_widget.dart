@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class TextFieldWidget extends StatelessWidget {
   final TextEditingController textController;
-  final String text, labelText;
+  final String text;
+  final String labelText;
   final bool isEmail;
   final bool isObcecure;
   final double top;
@@ -38,7 +39,12 @@ class TextFieldWidget extends StatelessWidget {
           validator: (value) => validateCallback!(value),
           obscureText: isObcecure,
           controller: textController,
-          decoration: InputDecoration(hintText: labelText),
+          decoration: InputDecoration(
+            hintText: labelText,
+            enabledBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(color: Color(0xFFD8D8D8)),
+            ),
+          ),
         ),
       ],
     );

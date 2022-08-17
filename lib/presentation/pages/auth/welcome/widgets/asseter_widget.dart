@@ -29,11 +29,11 @@ class AsseterWidget extends StatelessWidget {
               ),
               Flexible(
                 child: Padding(
-                  padding: const EdgeInsets.all(5.0),
+                  padding: const EdgeInsets.all(6.0),
                   child: Text(
                     assets.titleText,
-                    style: TextStyle(
-                      color: Colors.black.withOpacity(0.6),
+                    style: const TextStyle(
+                      color: Colors.black,
                       fontWeight: FontWeight.w300,
                       fontStyle: FontStyle.italic,
                       fontSize: 24,
@@ -43,7 +43,7 @@ class AsseterWidget extends StatelessWidget {
               ),
               Flexible(
                 child: Padding(
-                  padding: const EdgeInsets.all(5.0),
+                  padding: const EdgeInsets.all(6.0),
                   child: Text(
                     assets.subText,
                     style: const TextStyle(

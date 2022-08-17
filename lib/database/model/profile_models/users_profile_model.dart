@@ -1,12 +1,10 @@
-import 'package:json_annotation/json_annotation.dart';
-part 'users_profile_model.g.dart';
+import 'package:todo2/database/database_scheme/user_data_scheme..dart';
 
-@JsonSerializable()
 class UserProfileModel {
- final String id;
-final  String username;
- final String avatarUrl;
- final String createdAt;
+  final String id;
+  final String username;
+  final String avatarUrl;
+  final String createdAt;
 
   UserProfileModel({
     required this.id,
@@ -16,6 +14,10 @@ final  String username;
   });
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) =>
-      _$UserProfileModelFromJson(json);
-      
+      UserProfileModel(
+        id: json[UserDataScheme.id],
+        avatarUrl: json[UserDataScheme.avatarUrl],
+        username: json[UserDataScheme.username],
+        createdAt: json[UserDataScheme.createdAt],
+      );
 }

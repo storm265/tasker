@@ -66,7 +66,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                 children: const [
                   TasksTextWidget(
                     title: '120',
-                    subtitle: 'Created Tasks',
+                    subtitle: 'Created Task',
                   ),
                   TasksTextWidget(
                     title: '999',

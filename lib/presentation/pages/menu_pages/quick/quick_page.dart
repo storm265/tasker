@@ -60,7 +60,7 @@ class QuickPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopWrapper(
       child: AppbarWrapperWidget(
-        title: 'Quick notes',
+        title: 'Quick Notes',
         isRedAppBar: false,
         child: FutureBuilder<List<CheckListLinkedModel>>(
           initialData: const [],

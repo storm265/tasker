@@ -19,7 +19,6 @@ class _WelcomePageState extends State<WelcomePage> {
   Widget build(BuildContext context) {
     return WillPopWrapper(
       child: AppbarWrapperWidget(
-        
         showAppBar: true,
         isRedAppBar: false,
         child: Stack(

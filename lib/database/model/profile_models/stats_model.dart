@@ -1,8 +1,5 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:todo2/database/database_scheme/stats_scheme.dart';
 
-part 'stats_model.g.dart';
-
-@JsonSerializable()
 class StatsModel {
   final int createdTasks;
   final int completedTasks;
@@ -18,8 +15,11 @@ class StatsModel {
     required this.todo,
   });
 
-  factory StatsModel.fromJson(Map<String, dynamic> json) =>
-      _$StatsModelFromJson(json);
-
-  Map toJson() => _$StatsModelToJson(this);
+  factory StatsModel.fromJson(Map<String, dynamic> json) => StatsModel(
+        createdTasks: json[StatsScheme.createdTasks],
+        completedTasks: json[StatsScheme.completedTasks],
+        events: json[StatsScheme.events],
+        quickNotes: json[StatsScheme.quickNotes],
+        todo: json[StatsScheme.todo],
+      );
 }

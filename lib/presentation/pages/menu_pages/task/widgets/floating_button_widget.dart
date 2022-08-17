@@ -9,18 +9,27 @@ class FloatingButtonWidget extends StatelessWidget {
     return GestureDetector(
       onTap: () => showAddDialog(context),
       child: Container(
-        width: 56,
-        height: 56,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xFFF96060), Color(0xFFF96060)],
+          width: 56,
+          height: 56,
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [Color(0xFFF68888), Color(0xFFF96060)],
+            ),
+            shape: BoxShape.circle,
           ),
-          shape: BoxShape.circle,
-        ),
-        child: const Icon(Icons.add, color: Colors.white),
-      ),
+          child: const Center(
+            child: Text(
+              '+',
+              style: TextStyle(
+                fontSize: 24,
+                color: Colors.white,
+                fontWeight: FontWeight.w300,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          )),
     );
   }
 }

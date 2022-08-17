@@ -60,8 +60,8 @@ class _SignUpPageState extends State<SignUpPage> {
         shouldUsePopMethod: true,
         showLeadingButton: true,
         isRedAppBar: false,
-        child: DisabledGlowWidget(
-          child: SingleChildScrollView(
+        child: SingleChildScrollView(
+          child: DisabledGlowWidget(
             child: UnfocusWidget(
               child: SizedBox(
                 width: size.width - minFactor,
@@ -81,6 +81,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: const [
                               TitleTextWidget(text: 'Welcome'),
+                              SizedBox(height: 5),
                               SubTitleWidget(text: 'Sign up to continue'),
                             ],
                           ),
@@ -107,7 +108,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           isEmail: false,
                           isObcecure: true,
                           textController: _passwordController,
-                          labelText: 'Password:',
+                          labelText: 'Enter your password:',
                           text: 'Password',
                         ),
                         TextFieldWidget(

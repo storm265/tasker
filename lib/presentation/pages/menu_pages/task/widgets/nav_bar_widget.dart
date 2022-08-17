@@ -25,7 +25,12 @@ class NavBarItem extends StatelessWidget {
           ),
           Text(
             label,
-            style: TextStyle(color: iconColor),
+            style: TextStyle(
+              color: iconColor,
+              fontSize: 12,
+              fontWeight: FontWeight.w300,
+              fontStyle: FontStyle.italic,
+            ),
           )
         ],
       ),
