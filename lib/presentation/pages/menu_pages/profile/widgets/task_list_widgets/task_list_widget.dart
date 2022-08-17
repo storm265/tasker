@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/database/model/projects_model.dart';
+import 'package:todo2/database/model/project_models/projects_model.dart';
 
 class TaskListWidget extends StatelessWidget {
   final AsyncSnapshot<List<ProjectModel>> snapshot;

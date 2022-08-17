@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/model/profile_models/stats_model.dart';
-import 'package:todo2/database/model/projects_model.dart';
+import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/controller/user_controller.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
@@ -66,7 +66,7 @@ class StatsWidget extends StatelessWidget {
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
                                   final color = projectList.data![index].color;
-                               
+                           
                                   return Padding(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 24),
@@ -80,7 +80,7 @@ class StatsWidget extends StatelessWidget {
                                           center: Text(
                                             "100%",
                                             style: TextStyle(
-                                                color: color),
+                                                color: color,),
                                           ),
                                           progressColor:color,
                                         ),

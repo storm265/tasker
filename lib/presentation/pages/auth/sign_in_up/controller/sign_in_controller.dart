@@ -55,22 +55,21 @@ class SignInController extends ChangeNotifier {
     try {
       changeSubmitButtonValue(newValue: false);
 
-      final response = await _authRepository.signIn(
+      final authResponse = await _authRepository.signIn(
         email: email,
         password: password,
       );
 
-      if (response.userId != 'null') {
-        // TODO remove repo use controller instead
+      if (authResponse.userId != 'null') {
         final userData = await _userController.fetchCurrentUser(
-          accessToken: response.accessToken,
-          id: response.userId,
+          accessToken: authResponse.accessToken,
+          id: authResponse.userId,
         );
 
         await Future.wait([
           _storageSource.storageApi.saveUserData(
             type: StorageDataType.id,
-            value: response.userId,
+            value: authResponse.userId,
           ),
           _storageSource.storageApi.saveUserData(
             type: StorageDataType.email,
@@ -86,11 +85,11 @@ class SignInController extends ChangeNotifier {
           ),
           _storageSource.storageApi.saveUserData(
             type: StorageDataType.refreshToken,
-            value: response.refreshToken,
+            value: authResponse.refreshToken,
           ),
           _storageSource.storageApi.saveUserData(
             type: StorageDataType.accessToken,
-            value: response.accessToken,
+            value: authResponse.accessToken,
           ),
         ]).then((_) => NavigationService.navigateTo(context, Pages.home));
       }

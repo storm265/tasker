@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/database/model/projects_model.dart';
+import 'package:todo2/database/model/project_models/project_stats_model.dart';
+import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_controller.dart';
@@ -7,6 +8,7 @@ import 'package:todo2/presentation/pages/menu_pages/menu/dialogs/options_dialog.
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/add_project_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/item_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/project_shimmer_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/profile/controller/inherited_profile.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
@@ -34,6 +36,7 @@ class _MenuPageState extends State<MenuPage> {
 
   @override
   Widget build(BuildContext context) {
+    final profileController = ProfileInherited.of(context).profileController;
     return WillPopWrapper(
       child: AppbarWrapperWidget(
         title: 'Projects',
@@ -87,7 +90,21 @@ class _MenuPageState extends State<MenuPage> {
                                                     projectModel: data,
                                                   );
                                                 },
-                                          child: ProjectItemWidget(model: data),
+                                          child: FutureBuilder(
+                                            initialData: const <
+                                                ProjectStatsModel>[],
+                                            future: profileController
+                                                .fetchProjectStats(),
+                                            builder: (context,
+                                                    AsyncSnapshot<
+                                                            List<
+                                                                ProjectStatsModel>>
+                                                        snapshot) =>
+                                                ProjectItemWidget(
+                                                    model: data,
+                                                    taskLength: snapshot
+                                                        .data![i].tasksNumber),
+                                          ),
                                         ),
                                       );
                               });

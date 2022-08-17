@@ -2,8 +2,8 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
-import 'package:todo2/database/database_scheme/project_user_scheme.dart';
-import 'package:todo2/database/model/projects_model.dart';
+import 'package:todo2/database/database_scheme/project_schemes/project_user_scheme.dart';
+import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/error_service/network_error_service.dart';
 import 'package:todo2/services/extensions/color_extension/color_string_extension.dart';
@@ -23,6 +23,8 @@ abstract class ProjectUserData {
   Future findDublicates({required String title});
   Future fetchOneProject();
   Future fetchAllProjects();
+
+  Future<Map<String, dynamic>> fetchProjectStats();
 }
 
 class ProjectUserDataImpl implements ProjectUserData {
@@ -36,6 +38,7 @@ class ProjectUserDataImpl implements ProjectUserData {
 
   final _projects = '/projects';
   final _projectsSearch = '/projects-search';
+  final _projectsStats = '/projects-statistics';
 
   @override
   Future<void> createProject({
@@ -190,6 +193,27 @@ class ProjectUserDataImpl implements ProjectUserData {
         throw Failure(
             'Error: ${response.data[AuthScheme.data][AuthScheme.message]}');
       }
+    } catch (e) {
+      throw Failure(e.toString());
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> fetchProjectStats() async {
+    try {
+      final userId =
+          await _secureStorageService.getUserData(type: StorageDataType.id);
+
+      final response = await _network.networkApiClient.dio.get(
+        _projectsStats,
+        options: await _network.networkApiClient.getLocalRequestOptions(),
+      );
+      debugPrint('response ${response.data}');
+      log('fetchProjectStats ${response.data}');
+      return NetworkErrorService.isSuccessful(response)
+          ? (response.data[AuthScheme.data] as Map<String, dynamic>)
+          : throw Failure(
+              'Error: ${response.data[AuthScheme.data][AuthScheme.message]}');
     } catch (e) {
       throw Failure(e.toString());
     }

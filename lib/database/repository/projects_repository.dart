@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/projects_data_source.dart';
-import 'package:todo2/database/database_scheme/project_user_scheme.dart';
-import 'package:todo2/database/model/projects_model.dart';
+import 'package:todo2/database/database_scheme/project_schemes/project_user_scheme.dart';
+import 'package:todo2/database/model/project_models/project_stats_model.dart';
+import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
@@ -27,6 +28,8 @@ abstract class ProjectRepository {
   });
 
   Future isDublicatedProject({required String title});
+
+  Future<List<ProjectStatsModel>> fetchProjectStats();
 }
 
 class ProjectRepositoryImpl implements ProjectRepository {
@@ -83,6 +86,20 @@ class ProjectRepositoryImpl implements ProjectRepository {
     return (response.data as List<dynamic>)
         .map((json) => ProjectModel.fromJson(json))
         .toList();
+  }
+
+  @override
+  Future<List<ProjectStatsModel>> fetchProjectStats() async {
+    try {
+      final response = await _projectDataSource.fetchProjectStats();
+      List<ProjectStatsModel> statsModels = [];
+      for (int i = 0; i < response.length; i++) {
+        statsModels.add(ProjectStatsModel.fromJson(response[i]));
+      }
+      return statsModels;
+    } catch (e) {
+      throw Failure(e.toString());
+    }
   }
 
   @override

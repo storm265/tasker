@@ -8,8 +8,8 @@ import 'package:todo2/services/storage/secure_storage_service.dart';
 
 // TODO add generic
 abstract class UserProfileDataSource {
-  Future downloadAvatar();
-  Future fetchCurrentUser({
+  Future<Response<dynamic>> downloadAvatar();
+  Future<Map<String, dynamic>> fetchCurrentUser({
     required String id,
     required String accessToken,
   });

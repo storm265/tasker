@@ -1,7 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:todo2/database/model/projects_model.dart';
+import 'package:todo2/database/model/project_models/project_stats_model.dart';
+import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
@@ -38,6 +39,17 @@ class ProfileController extends ChangeNotifier {
   Future<ProjectModel> fetchProject() async {
     final response = await projectsRepository.fetchOneProject();
     return response;
+  }
+
+
+  Future<List<ProjectStatsModel>> fetchProjectStats() async {
+    try {
+      final response = await projectsRepository.fetchProjectStats();
+
+      return response;
+    } catch (e) {
+      throw Failure(e.toString());
+    }
   }
 
   Future<void> fetchProfileInfo(

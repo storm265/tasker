@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/database/model/projects_model.dart';
+import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/dialogs/add_project_dialog.dart';
 

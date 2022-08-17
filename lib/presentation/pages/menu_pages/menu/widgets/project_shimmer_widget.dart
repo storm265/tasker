@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:todo2/database/model/projects_model.dart';
+import 'package:todo2/database/model/project_models/projects_model.dart';
 
 class ShimmerProjectItem extends StatelessWidget {
   final ProjectModel model;

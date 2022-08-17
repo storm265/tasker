@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/database/model/projects_model.dart';
+import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/category_length_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/category_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/circle_widget.dart';
 
 class ProjectItemWidget extends StatelessWidget {
   final ProjectModel model;
-  const ProjectItemWidget({Key? key, required this.model}) : super(key: key);
+  final int taskLength;
+  const ProjectItemWidget({
+    Key? key,
+    required this.model,
+    required this.taskLength,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +37,7 @@ class ProjectItemWidget extends StatelessWidget {
                 direction: Axis.vertical,
                 children: [
                   CategoryWidget(title: model.title),
-                  const CategoryLengthWidget(taskLenght: 10)
+                  CategoryLengthWidget(taskLength: taskLength)
                 ],
               ),
             ),
