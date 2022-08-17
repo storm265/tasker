@@ -1,12 +1,10 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:todo2/database/repository/storage/avatar_storage_repository.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
-
-const _defaultAssetPath = 'assets/grey_avatar.jpg';
 
 class ImageController extends ChangeNotifier {
   final AvatarStorageReposiroryImpl _avatarStorageRepository;
@@ -14,28 +12,37 @@ class ImageController extends ChangeNotifier {
   ImageController({required AvatarStorageReposiroryImpl avatarRepository})
       : _avatarStorageRepository = avatarRepository;
 
-  final pickedFile = ValueNotifier(XFile(_defaultAssetPath));
-  final picker = ImagePicker();
+  var pickedFile =
+      ValueNotifier(const PlatformFile(name: '', size: 0, path: ''));
 
   bool get _isWrongImageFormat =>
-      pickedFile.value.path.endsWith('.jpeg') ||
-      pickedFile.value.path.endsWith('.png') ||
-      pickedFile.value.path.endsWith('.jpg');
+      pickedFile.value.extension == 'jpeg' ||
+      pickedFile.value.extension == 'png';
 
-  Future<void> pickAvatar() async {
+  Future<PlatformFile> pickAvatar({
+    required BuildContext context,
+    bool isImagePicker = true,
+  }) async {
+    final int maxSize = isImagePicker ? 8000000 : 26214400;
     try {
-      pickedFile.value = (await picker.pickImage(
-            source: ImageSource.gallery,
-            imageQuality: 50,
-            maxHeight: 500,
-            maxWidth: 500,
+      FilePickerResult result = await FilePicker.platform.pickFiles(
+            allowCompression: true,
+            type: FileType.custom,
+            allowedExtensions: [
+              'jpeg',
+              'png',
+            ],
           ) ??
-          XFile(_defaultAssetPath));
+          const FilePickerResult([]);
       pickedFile.notifyListeners();
-
-      log(pickedFile.value.name);
-      if (pickedFile.value.name.isEmpty) {
-        return;
+      if (result.files.last.size >= maxSize) {
+        result.files.clear();
+        throw MessageService.displaySnackbar(
+          message: 'You cant put huge file',
+          context: context,
+        );
+      } else {
+        return pickedFile.value = result.files.last;
       }
     } catch (e) {
       throw Failure(e.toString());
@@ -44,7 +51,7 @@ class ImageController extends ChangeNotifier {
 
   bool isValidAvatar({required BuildContext context}) {
     try {
-      if (pickedFile.value.path == _defaultAssetPath) {
+      if (pickedFile.value.path!.isEmpty) {
         MessageService.displaySnackbar(
           message: 'Pick image!',
           context: context,
@@ -52,11 +59,15 @@ class ImageController extends ChangeNotifier {
         return false;
       } else if (!_isWrongImageFormat) {
         MessageService.displaySnackbar(
-          message: 'Wrong image format',
+          message: 'Wrong image, supported formats: .jpeg, .png',
           context: context,
         );
         return false;
       } else {
+        MessageService.displaySnackbar(
+          message: 'Right',
+          context: context,
+        );
         return true;
       }
     } catch (e) {
@@ -70,7 +81,7 @@ class ImageController extends ChangeNotifier {
       if (isValidImage) {
         final avatarUrl = await _avatarStorageRepository.uploadAvatar(
           name: pickedFile.value.name,
-          file: File(pickedFile.value.path),
+          file: File(pickedFile.value.path!),
         );
         log('avatarUrl: $avatarUrl');
         return avatarUrl;

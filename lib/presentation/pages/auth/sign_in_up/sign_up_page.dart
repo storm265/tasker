@@ -100,7 +100,10 @@ class _SignUpPageState extends State<SignUpPage> {
                         TextFieldWidget(
                           validateCallback: (text) => _signUpController
                               .formValidatorController
-                              .validatePassword(password: text!),
+                              .validatePassword(
+                            password: text!,
+                            isSignIn: false,
+                          ),
                           isEmail: false,
                           isObcecure: true,
                           textController: _passwordController,

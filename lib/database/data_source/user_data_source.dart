@@ -2,25 +2,22 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/database/database_scheme/user_data_scheme..dart';
-import 'package:todo2/database/model/users_profile_model.dart';
+import 'package:todo2/database/model/profile_models/users_profile_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
+import 'package:todo2/services/error_service/network_error_service.dart';
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
+// TODO add generic
 abstract class UserProfileDataSource {
   Future downloadAvatar();
-  // Future postUserProfile({
-  //   required String avatarUrl,
-  //   required String username,
-  //   required String id,
-  // });
   Future fetchCurrentUser({
     required String id,
     required String accessToken,
   });
-
-  Future fetchUsersWhere({required String userName});
+  Future<Map<String, dynamic>> fetchUserStatistics();
 }
 
 class UserProfileDataSourceImpl implements UserProfileDataSource {
@@ -32,6 +29,7 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
 
   final _userPath = '/users';
   final _userAvatarPath = '/users-avatar/';
+  final _userStats = '/users-statistics';
 
   @override
   Future<Map<String, dynamic>> fetchCurrentUser({
@@ -43,14 +41,10 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
         '$_userPath/$id',
         options: _network.getRequestOptions(accessToken: accessToken),
       );
-
-      // final baseResponse = BaseResponse<UserProfileModel>.fromJson(
-      //   json: response.data,
-      //   build: (Map<String, dynamic> json) => UserProfileModel.fromJson(json),
-      //   response: response,
-      // );
-      // log('base response ${baseResponse.model}');
-      return Map();
+      return NetworkErrorService.isSuccessful(response)
+          ? response.data[AuthScheme.data] as Map<String, dynamic>
+          : throw Failure(
+              'Error: ${response.data[AuthScheme.data][AuthScheme.message]}');
     } catch (e) {
       throw Failure(e.toString());
     }
@@ -75,19 +69,18 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
   }
 
   @override
-  Future<Response<dynamic>> fetchUsersWhere({required String userName}) async {
+  Future<Map<String, dynamic>> fetchUserStatistics() async {
     try {
-      // final response = await NetworkSource()
-      //     .networkApiClient
-      //     .from(_table)
-      //     .select()
-      //     .ilike(
-      //       UserProfileScheme.username,
-      //       '%$userName%',
-      //     )
-      //     .execute();
-      // return response;
-      return Future.delayed(Duration(seconds: 1));
+      final id = await _secureStorageService.getUserData(
+        type: StorageDataType.id,
+      );
+
+      final response = await _network.dio.get('$_userStats/$id',
+          options: await _network.getLocalRequestOptions());
+      return NetworkErrorService.isSuccessful(response)
+          ? response.data[AuthScheme.data] as Map<String, dynamic>
+          : throw Failure(
+              'Error: ${response.data[AuthScheme.data][AuthScheme.message]}');
     } catch (e) {
       throw Failure(e.toString());
     }

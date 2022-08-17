@@ -1,15 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:todo2/database/data_source/user_data_source.dart';
+import 'package:todo2/database/model/profile_models/stats_model.dart';
 import 'package:todo2/database/model/projects_model.dart';
+import 'package:todo2/database/repository/user_repository.dart';
+import 'package:todo2/presentation/controller/user_controller.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
+import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
+import 'package:todo2/services/storage/secure_storage_service.dart';
 
 class StatsWidget extends StatelessWidget {
-  final AsyncSnapshot<List<ProjectModel>> snapshot;
-  const StatsWidget({Key? key, required this.snapshot}) : super(key: key);
-
+  final AsyncSnapshot<List<ProjectModel>> projectList;
+   StatsWidget({Key? key, required this.projectList}) : super(key: key);
+  final UserController userController = UserController(
+    userProfileRepository: UserProfileRepositoryImpl(
+      userProfileDataSource: UserProfileDataSourceImpl(
+        secureStorageService: SecureStorageService(),
+      ),
+    ),
+  );
   @override
   Widget build(BuildContext context) {
-    return snapshot.data!.isEmpty
+    return projectList.data!.isEmpty
         ? const SizedBox()
         : Container(
             decoration: BoxDecoration(
@@ -44,38 +56,46 @@ class StatsWidget extends StatelessWidget {
                     SizedBox(
                       width: double.infinity,
                       height: 120,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: snapshot.data!.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          final data = snapshot.data![index];
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 24),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                CircularPercentIndicator(
-                                  radius: 32.0,
-                                  lineWidth: 2.0,
-                                  percent: 0.5,
-                                  center: Text(
-                                    "100%",
-                                    style: TextStyle(
-                                      color: data.color
+                      child: FutureBuilder(
+                        future: userController.fetchUserStatistics(),
+                        builder: (_,AsyncSnapshot<StatsModel> snapshot) {
+                        return snapshot.hasData
+                            ? ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: 4,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  final color = projectList.data![index].color;
+                               
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 24),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        CircularPercentIndicator(
+                                          radius: 32.0,
+                                          lineWidth: 2.0,
+                                          percent: 0.5,
+                                          center: Text(
+                                            "100%",
+                                            style: TextStyle(
+                                                color: color),
+                                          ),
+                                          progressColor:color,
+                                        ),
+                                        // Padding(
+                                        //   padding:
+                                        //       const EdgeInsets.only(top: 10),
+                                        //   child: Text(model[index]),
+                                        // ),
+                                      ],
                                     ),
-                                  ),
-                                  progressColor:data.color,
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 10),
-                                  child: Text(data.title),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
+                                  );
+                                },
+                              )
+                            : const ProgressIndicatorWidget();
+                      }),
                     ),
                   ],
                 ),

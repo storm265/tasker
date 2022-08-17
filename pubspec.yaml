@@ -4,7 +4,7 @@ description: A new Flutter project.
 publish_to: 'none' 
 
 
-version: 3.7.4+1
+version: 3.7.5+1
 
 environment:
   sdk: ">=2.16.2 <3.0.0"
@@ -13,8 +13,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-  cupertino_icons: ^1.0.2
   flutter_secure_storage: 
   connectivity_plus:
   intl:
@@ -22,9 +20,9 @@ dependencies:
   simple_gesture_detector:
   percent_indicator:
   flutter_slidable:
-  image_picker: 
   file_picker:
   dio:
+  json_annotation:
   # animations
   flutter_spinkit: ^5.1.0
   shimmer:
@@ -36,6 +34,8 @@ dev_dependencies:
     sdk: flutter
   flutter_lints:
   flutter_native_splash:
+  build_runner:
+  json_serializable:
 
 flutter:
 
@@ -47,7 +47,6 @@ flutter:
     - assets/changed_password.png
     - assets/nav_bar_icons/
     - assets/work_list/
-    - assets/grey_avatar.jpg
     - assets/detailed_task/
 
 

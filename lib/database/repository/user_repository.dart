@@ -1,17 +1,16 @@
 import 'dart:developer';
 import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/database_scheme/user_data_scheme..dart';
-import 'package:todo2/database/model/users_profile_model.dart';
+import 'package:todo2/database/model/profile_models/stats_model.dart';
+import 'package:todo2/database/model/profile_models/users_profile_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
-
 
 abstract class UserProfileRepository {
   Future<UserProfileModel> fetchCurrentUser({
     required String id,
     required String accessToken,
   });
-  Future fetchUserWhere({required String userName});
-  Future<String> downloadAvatar();
+  Future<String> downloadAvatar();  Future<StatsModel> fetchUserStatistics();
 }
 
 class UserProfileRepositoryImpl implements UserProfileRepository {
@@ -26,16 +25,16 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
     required String id,
     required String accessToken,
   }) async {
-    final response = await _userProfileDataSource.fetchCurrentUser(
-      id: id,
-      accessToken: accessToken,
-    );
-
-    return UserProfileModel(
+    try {
+      final response = await _userProfileDataSource.fetchCurrentUser(
         id: id,
-        username: 'username',
-        avatarUrl: 'username',
-        createdAt: 'username');
+        accessToken: accessToken,
+      );
+
+      return UserProfileModel.fromJson(response);
+    } catch (e) {
+      throw Failure(e.toString());
+    }
   }
 
   @override
@@ -48,15 +47,11 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
     }
   }
 
-  @override
-  Future<List<UserProfileModel>> fetchUserWhere(
-      {required String userName}) async {
+   @override
+  Future<StatsModel> fetchUserStatistics() async {
     try {
-      final response =
-          await _userProfileDataSource.fetchUsersWhere(userName: userName);
-      return (response.data as List<dynamic>)
-          .map((json) => UserProfileModel.fromJson(json))
-          .toList();
+      final response = await _userProfileDataSource.fetchUserStatistics();
+      return StatsModel.fromJson(response);
     } catch (e) {
       throw Failure(e.toString());
     }

@@ -7,19 +7,19 @@ class FormValidatorController {
         "[0-9]{1,2}|25[0-5]|2[0-4][0-9]))|"
         "([a-zA-Z]+[\\w-]+\\.)+[a-zA-Z]{2,4})\$");
     if (email.isEmpty || email.trim().isEmpty) {
-      return 'Email cant be empty';
+      return 'This field is required 😐';
     } else if (!regex.hasMatch(email)) {
       return 'Incorrect email';
     }
     return null;
   }
 
-  String? validatePassword({required String password}) {
+  String? validatePassword({required String password, isSignIn = true}) {
     final regex = RegExp(r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$");
     if (password.isEmpty || password.trim().isEmpty) {
       return 'This field is required 😐';
     } else if (!regex.hasMatch(password)) {
-      return 'Minimum 8 characters, at least 1 letter and 1 number';
+    return  isSignIn ?   'Incorrect password' : 'Minimum 8 characters, at least 1 letter and 1 number';
     } else {
       return null;
     }
@@ -32,7 +32,7 @@ class FormValidatorController {
     if (username.isEmpty || username.trim().isEmpty) {
       return 'This field is required 😐';
     } else if (!regex.hasMatch(username)) {
-      return 'Incorrent nickName';
+      return 'Incorrent username';
     }
     return null;
   }

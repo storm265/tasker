@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
+import 'package:todo2/presentation/controller/user_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
@@ -13,16 +14,16 @@ class SignInController extends ChangeNotifier {
   final AuthRepositoryImpl _authRepository;
   final FormValidatorController formValidatorController;
   final SecureStorageSource _storageSource;
-  final UserProfileRepositoryImpl _userProfileRepository;
+  final UserController _userController;
 
   SignInController({
     required AuthRepositoryImpl authRepository,
     required SecureStorageSource storageSource,
-    required UserProfileRepositoryImpl userProfileRepository,
+    required UserController userController,
     required this.formValidatorController,
   })  : _storageSource = storageSource,
         _authRepository = authRepository,
-        _userProfileRepository = userProfileRepository;
+        _userController = userController;
 
   final formKey = GlobalKey<FormState>();
   final isActiveSubmitButton = ValueNotifier(true);
@@ -60,7 +61,8 @@ class SignInController extends ChangeNotifier {
       );
 
       if (response.userId != 'null') {
-        final userData = await _userProfileRepository.fetchCurrentUser(
+        // TODO remove repo use controller instead
+        final userData = await _userController.fetchCurrentUser(
           accessToken: response.accessToken,
           id: response.userId,
         );

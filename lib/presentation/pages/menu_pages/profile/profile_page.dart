@@ -30,7 +30,7 @@ class ProfilePage extends StatelessWidget {
                     ? Column(
                         children: [
                           TaskListWidget(snapshot: snapshot),
-                          StatsWidget(snapshot: snapshot),
+                          StatsWidget(projectList: snapshot),
                         ],
                       )
                     : const SizedBox();

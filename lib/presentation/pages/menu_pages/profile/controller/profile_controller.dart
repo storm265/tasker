@@ -43,7 +43,8 @@ class ProfileController extends ChangeNotifier {
   Future<void> fetchProfileInfo(
       {required VoidCallback updateStateCallback}) async {
     try {
-      image = await userProfileRepository.downloadAvatar();
+      //  image = await userProfileRepository.downloadAvatar();
+      image = ' ';
       email = await _secureStorageService.getUserData(
               type: StorageDataType.email) ??
           '';

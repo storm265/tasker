@@ -58,43 +58,43 @@ class SignUpController extends ChangeNotifier {
   }) async {
     try {
       changeSubmitButtonValue(newValue: false);
-      final response = await _authRepository.signUp(
-        nickname: username,
-        email: email,
-        password: password,
-      );
+      // final response = await _authRepository.signUp(
+      //   nickname: username,
+      //   email: email,
+      //   password: password,
+      // );
 
-      if (response.id != 'null') {
-        await Future.wait([
-          _storageSource.storageApi
-              .saveUserData(type: StorageDataType.id, value: response.id),
-          _storageSource.storageApi
-              .saveUserData(type: StorageDataType.email, value: email),
-          _storageSource.storageApi
-              .saveUserData(type: StorageDataType.password, value: password),
-          _storageSource.storageApi
-              .saveUserData(type: StorageDataType.username, value: username),
-          _storageSource.storageApi.saveUserData(
-            type: StorageDataType.refreshToken,
-            value: response.refreshToken,
-          ),
-          _storageSource.storageApi.saveUserData(
-            type: StorageDataType.accessToken,
-            value: response.accessToken,
-          ),
-        ]);
-        final imageResponse =
-            await imagePickerController.uploadAvatar(context: context);
-        debugPrint(
-            'avatarUrl = ${await _storageSource.storageApi.getUserData(type: StorageDataType.avatarUrl)}');
-        await _storageSource.storageApi
-            .saveUserData(type: StorageDataType.avatarUrl, value: imageResponse)
-            .then((_) {
-          MessageService.displaySnackbar(
-              message: 'Sign up success!', context: context);
-          NavigationService.navigateTo(context, Pages.home);
-        });
-       }
+      // if (response.id != 'null') {
+      //   await Future.wait([
+      //     _storageSource.storageApi
+      //         .saveUserData(type: StorageDataType.id, value: response.id),
+      //     _storageSource.storageApi
+      //         .saveUserData(type: StorageDataType.email, value: email),
+      //     _storageSource.storageApi
+      //         .saveUserData(type: StorageDataType.password, value: password),
+      //     _storageSource.storageApi
+      //         .saveUserData(type: StorageDataType.username, value: username),
+      //     _storageSource.storageApi.saveUserData(
+      //       type: StorageDataType.refreshToken,
+      //       value: response.refreshToken,
+      //     ),
+      //     _storageSource.storageApi.saveUserData(
+      //       type: StorageDataType.accessToken,
+      //       value: response.accessToken,
+      //     ),
+      //   ]);
+      //   final imageResponse =
+      //       await imagePickerController.uploadAvatar(context: context);
+      //   debugPrint(
+      //       'avatarUrl = ${await _storageSource.storageApi.getUserData(type: StorageDataType.avatarUrl)}');
+      //   await _storageSource.storageApi
+      //       .saveUserData(type: StorageDataType.avatarUrl, value: imageResponse)
+      //       .then((_) {
+      //     MessageService.displaySnackbar(
+      //         message: 'Sign up success!', context: context);
+      //     NavigationService.navigateTo(context, Pages.home);
+      //   });
+      //  }
     } catch (e, t) {
       MessageService.displaySnackbar(message: e.toString(), context: context);
       debugPrint('trace $t');
