@@ -17,12 +17,14 @@ class UpdateTokenService {
 
       if (token != null) {
         log('*** Token is expired *** ');
-        // final authResponse = await refreshTokenController.updateToken();
-        // await _secureStorageService.saveUserData(
-        //     type: StorageDataType.refreshToken,
-        //     value: authResponse.refreshToken);
-        // await _secureStorageService.saveUserData(
-        //     type: StorageDataType.accessToken, value: authResponse.accessToken);
+        final authResponse = await refreshTokenController.updateToken();
+        await _secureStorageService.saveUserData(
+            type: StorageDataType.refreshToken,
+            value: authResponse.refreshToken);
+        await _secureStorageService.saveUserData(
+            type: StorageDataType.accessToken, value: authResponse.accessToken);
+
+        await Future.delayed(const Duration(seconds: 5));
       }
     } catch (e, t) {
       debugPrint('Update token error: $e,$t');

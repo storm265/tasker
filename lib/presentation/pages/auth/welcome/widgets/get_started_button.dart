@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 class GetStartedButton extends StatelessWidget {
-  const GetStartedButton({Key? key}) : super(key: key);
+  final int pageIndex;
+  GetStartedButton({
+    Key? key,
+    required this.pageIndex,
+  }) : super(key: key);
 
+  final List<Color> shadowColor = [
+    const Color(0xFFC84444),
+    const Color(0xFF4C62F1),
+    const Color(0xFF754BF8),
+  ];
   @override
   Widget build(BuildContext context) {
     return Align(
@@ -20,9 +30,9 @@ class GetStartedButton extends StatelessWidget {
               color: Colors.white,
               boxShadow: <BoxShadow>[
                 BoxShadow(
-                  color: const Color(0xFF000000).withOpacity(0.25),
-                  blurRadius: 4,
-                  offset: const Offset(0, 4),
+                  color: shadowColor[pageIndex],
+                  blurRadius: 10,
+                  offset: const Offset(10, 10),
                 ),
               ],
             ),
@@ -31,9 +41,8 @@ class GetStartedButton extends StatelessWidget {
                 'Get Started',
                 style: TextStyle(
                   fontSize: 18,
-                  fontWeight: FontWeight.w300,
+                  fontWeight: FontWeight.w200,
                   fontStyle: FontStyle.italic,
-                  color: Color(0xFF313131),
                 ),
               ),
             ),

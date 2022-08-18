@@ -1,13 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
-import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/controller/user_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
-import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 class SignInController extends ChangeNotifier {
@@ -38,12 +34,16 @@ class SignInController extends ChangeNotifier {
     required String passwordController,
     required BuildContext context,
   }) async {
-    if (formKey.currentState!.validate()) {
-      await signIn(
-        context: context,
-        email: emailController,
-        password: passwordController,
-      );
+    try {
+      if (formKey.currentState!.validate()) {
+        await signIn(
+          context: context,
+          email: emailController,
+          password: passwordController,
+        );
+      }
+    } catch (e) {
+      throw Failure(e.toString());
     }
   }
 
@@ -91,8 +91,13 @@ class SignInController extends ChangeNotifier {
             type: StorageDataType.accessToken,
             value: authResponse.accessToken,
           ),
-        ]).then((_) => NavigationService.navigateTo(context, Pages.home));
+        ]);
       }
+        // TODO testing, remove context
+      MessageService.displaySnackbar(
+        context: context,
+        message: 'Token will expire: ${DateTime.fromMillisecondsSinceEpoch(authResponse.expiresIn)}',
+      );
     } catch (e) {
       MessageService.displaySnackbar(message: e.toString(), context: context);
       throw Failure(e.toString());

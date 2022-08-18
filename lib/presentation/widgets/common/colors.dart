@@ -18,6 +18,7 @@ Color getAppColor({required CategoryColor color}) {
       return colors[5];
   }
 }
+ const Color darkGrey = Color(0xFF313131);
 
 final List<Color> colors = [
   const Color(0xff6074F9),

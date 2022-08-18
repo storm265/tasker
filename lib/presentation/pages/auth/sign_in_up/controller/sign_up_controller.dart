@@ -13,14 +13,14 @@ class SignUpController extends ChangeNotifier {
   SignUpController({
     required AuthRepositoryImpl authRepository,
     required this.formValidatorController,
-    required this.imagePickerController,
+    required this.imgPickerController,
     required SecureStorageSource storageSource,
   })  : _authRepository = authRepository,
         _storageSource = storageSource;
 
   final AuthRepositoryImpl _authRepository;
   final FormValidatorController formValidatorController;
-  final ImageController imagePickerController;
+  final ImageController imgPickerController;
   final SecureStorageSource _storageSource;
   final formKey = GlobalKey<FormState>();
   final isActiveSubmitButton = ValueNotifier(true);
@@ -37,18 +37,19 @@ class SignUpController extends ChangeNotifier {
     required String password,
   }) async {
     try {
-      // if (formKey.currentState!.validate()) {
-      //   await signUp(
-      //     context: context,
-      //     username: userName,
-      //     email: email,
-      //     password: password,
-      //   );
-      // }
-      throw Exception('test');
-    } catch (e, t) {
-      log('TRACE : $t');
+      if (formKey.currentState!.validate()) {
+        changeSubmitButtonValue(newValue: false);
+        await signUp(
+          context: context,
+          username: userName,
+          email: email,
+          password: password,
+        );
+      }
+    } catch (e) {
       throw Failure(e.toString());
+    } finally {
+      changeSubmitButtonValue(newValue: true);
     }
   }
 
@@ -59,17 +60,16 @@ class SignUpController extends ChangeNotifier {
     required BuildContext context,
   }) async {
     try {
-      changeSubmitButtonValue(newValue: false);
-      final response = await _authRepository.signUp(
+      final signUpResponse = await _authRepository.signUp(
         nickname: username,
         email: email,
         password: password,
       );
 
-      if (response.id != 'null') {
+      if (signUpResponse.id != 'null') {
         await Future.wait([
           _storageSource.storageApi
-              .saveUserData(type: StorageDataType.id, value: response.id),
+              .saveUserData(type: StorageDataType.id, value: signUpResponse.id),
           _storageSource.storageApi
               .saveUserData(type: StorageDataType.email, value: email),
           _storageSource.storageApi
@@ -78,33 +78,36 @@ class SignUpController extends ChangeNotifier {
               .saveUserData(type: StorageDataType.username, value: username),
           _storageSource.storageApi.saveUserData(
             type: StorageDataType.refreshToken,
-            value: response.refreshToken,
+            value: signUpResponse.refreshToken,
           ),
           _storageSource.storageApi.saveUserData(
             type: StorageDataType.accessToken,
-            value: response.accessToken,
+            value: signUpResponse.accessToken,
           ),
         ]);
       }
-      if (imagePickerController.shouldUploadAvatar()) {
+      if (imgPickerController.shouldUploadAvatar()) {
         log('should upload');
-        final imageResponse =
-            await imagePickerController.uploadAvatar(context: context);
+        final imageResponse = await imgPickerController.uploadAvatar();
 
         await _storageSource.storageApi.saveUserData(
             type: StorageDataType.avatarUrl, value: imageResponse);
       }
+      log('skip upload avatar upload ');
+      // TODO testing, remove context
+      MessageService.displaySnackbar(
+        context: context,
+        message:
+            'Token will expire: ${DateTime.fromMillisecondsSinceEpoch(signUpResponse.expiresIn)}',
+      );
     } catch (e) {
       MessageService.displaySnackbar(message: e.toString(), context: context);
-
       throw Failure(e.toString());
-    } finally {
-      changeSubmitButtonValue(newValue: true);
     }
   }
 
   void disposeValues() {
-    imagePickerController.dispose();
+    imgPickerController.dispose();
     isActiveSubmitButton.dispose();
   }
 }

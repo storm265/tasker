@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/inherited_navigation_controller.dart';
@@ -32,19 +34,19 @@ class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
   final double preferredHeight;
   final Color backgroundColor;
 
-  const AppbarWrapperWidget({
-    Key? key,
-    required this.child,
-    this.preferredHeight = 60,
-    this.bottom,
-    this.title,
-    this.actionWidget = const SizedBox(),
-    this.shouldUsePopMethod = false,
-    this.showLeadingButton = false,
-    this.showAppBar = true,
-    this.isRedAppBar = true,
-    this.backgroundColor = const Color(0xffFDFDFD)
-  }) : super(key: key);
+  const AppbarWrapperWidget(
+      {Key? key,
+      required this.child,
+      this.preferredHeight = 60,
+      this.bottom,
+      this.title,
+      this.actionWidget = const SizedBox(),
+      this.shouldUsePopMethod = false,
+      this.showLeadingButton = false,
+      this.showAppBar = true,
+      this.isRedAppBar = true,
+      this.backgroundColor = const Color(0xffFDFDFD)})
+      : super(key: key);
 
   @override
   Size get preferredSize => Size(double.infinity, preferredHeight);
@@ -55,7 +57,7 @@ class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
         InheritedNavigator.of(context)!.navigationController;
 
     return Scaffold(
-      backgroundColor: backgroundColor ,
+      backgroundColor: backgroundColor,
       appBar: showAppBar
           ? AppBar(
               systemOverlayStyle: isRedAppBar ? _redBar : _whiteBar,
@@ -70,7 +72,7 @@ class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
                             : inheritedNavigatorConroller
                                 .animateToPage(NavigationPages.tasks),
                         child: Icon(
-                          Icons.west,
+                          Icons.west_rounded,
                           size: 30,
                           color: isRedAppBar ? Colors.white : Colors.black,
                         ),

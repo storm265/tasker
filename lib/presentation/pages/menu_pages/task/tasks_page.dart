@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/dialogs/tasks_dialog.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/calendar_lib/dateline_lib.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/widgets/list/list_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/tabs/bottom_tabs.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
+import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 
 class TasksPage extends StatefulWidget {
   const TasksPage({Key? key}) : super(key: key);
@@ -16,7 +19,7 @@ class _TasksPageState extends State<TasksPage>
   late TabController _tabController;
   late final taskController = TaskRepositoryImpl();
 
-  final tuneIconPath = 'assets/work_list/tune.png';
+  final _tuneIconPath = 'assets/work_list/tune.svg';
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
@@ -37,7 +40,7 @@ class _TasksPageState extends State<TasksPage>
       actionWidget: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GestureDetector(
-          child: Image.asset(tuneIconPath),
+          child: SvgPicture.asset(_tuneIconPath),
           onTap: () => showTasksDialog(context),
         ),
       ),
@@ -54,48 +57,48 @@ class _TasksPageState extends State<TasksPage>
         ),
       ),
       child: Column(
-        children: const [
-          DayLineWidget(),
-          // Expanded(
-          //   child: TabBarView(
-          //     controller: _tabController,
-          //     children: [
-          //       Container(),
-          //       DisabledGlowWidget(
-          //         child: FutureBuilder<List<TaskModel>>(
-          //             future: taskController.fetchTask(),
-          //             initialData: const [],
-          //             builder:
-          //                 (context, AsyncSnapshot<List<TaskModel>> snapshot) {
-          //               if (snapshot.data!.isEmpty) {
-          //                 return const Center(
-          //                   child: Text(
-          //                     'No tasks',
-          //                     style:
-          //                         TextStyle(color: Colors.black, fontSize: 20),
-          //                   ),
-          //                 );
-          //               } else if (snapshot.hasData) {
-          //                 return ListView.builder(
-          //                   scrollDirection: Axis.vertical,
-          //                   itemCount: snapshot.data!.length,
-          //                   itemBuilder: ((context, index) => ListWidget(
-          //                         index: index,
-          //                         model: snapshot.data!,
-          //                       )),
-          //                 );
-          //               } else {
-          //                 return const Center(
-          //                   child:  ProgressIndicatorWidget(),
-          //                 );
-          //               }
-          //             }),
-          //       ),
-          //       // month
-          //       Column(children: const [Text('dadiadhjiajdad ')])
-          //     ],
-          //   ),
-          // ),
+        children: [
+          const DayLineWidget(),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                Container(),
+                // DisabledGlowWidget(
+                //   child: FutureBuilder<List<TaskModel>>(
+                //       future: taskController.fetchTask(),
+                //       initialData: const [],
+                //       builder:
+                //           (context, AsyncSnapshot<List<TaskModel>> snapshot) {
+                //         if (snapshot.data!.isEmpty) {
+                //           return const Center(
+                //             child: Text(
+                //               'No tasks',
+                //               style:
+                //                   TextStyle(color: Colors.black, fontSize: 20),
+                //             ),
+                //           );
+                //         } else if (snapshot.hasData) {
+                //           return ListView.builder(
+                //             scrollDirection: Axis.vertical,
+                //             itemCount: snapshot.data!.length,
+                //             itemBuilder: ((context, index) => ListWidget(
+                //                   index: index,
+                //                   model: snapshot.data!,
+                //                 )),
+                //           );
+                //         } else {
+                //           return const Center(
+                //             child:  ProgressIndicatorWidget(),
+                //           );
+                //         }
+                //       }),
+                // ),
+                // month
+                Column(children: const [Text('dadiadhjiajdad ')])
+              ],
+            ),
+          ),
         ],
       ),
     );

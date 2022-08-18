@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:todo2/presentation/widgets/common/colors.dart';
 
 class TextFieldWidget extends StatelessWidget {
   final TextEditingController textController;
-  final String text;
+  final String title;
   final String labelText;
   final bool isEmail;
   final bool isObcecure;
@@ -13,7 +14,7 @@ class TextFieldWidget extends StatelessWidget {
     required this.validateCallback,
     required this.labelText,
     required this.textController,
-    required this.text,
+    required this.title,
     final this.isObcecure = false,
     this.top = 0,
     required this.isEmail,
@@ -25,10 +26,9 @@ class TextFieldWidget extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          text,
+          title,
           style: const TextStyle(
             fontSize: 20,
-            color: Colors.black,
             fontWeight: FontWeight.w500,
           ),
         ),

@@ -61,7 +61,7 @@ class ImageController extends ChangeNotifier {
         );
         return false;
       } else {
-        await uploadAvatar(context: context);
+        await uploadAvatar();
         return true;
       }
     } catch (e) {
@@ -69,7 +69,7 @@ class ImageController extends ChangeNotifier {
     }
   }
 
-  Future<String> uploadAvatar({required BuildContext context}) async {
+  Future<String> uploadAvatar() async {
     try {
       final image = await _avatarStorageRepository.uploadAvatar(
         name: pickedFile.value.name,

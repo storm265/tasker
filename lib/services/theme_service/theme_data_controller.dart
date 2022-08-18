@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:todo2/presentation/widgets/common/colors.dart';
 
 class ThemeDataService {
   final themeData = ThemeData(
     fontFamily: 'Roboto',
+    textTheme: const TextTheme(
+      bodyText1: TextStyle(color: darkGrey),
+      bodyText2: TextStyle(color: darkGrey),
+      headline5: TextStyle(color: darkGrey),
+      headline6: TextStyle(color: darkGrey),
+    ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all(Palette.red),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/pages/auth/welcome/widgets/assets_content.dart';
+import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 
 class AsseterWidget extends StatelessWidget {
@@ -35,7 +36,8 @@ class AsseterWidget extends StatelessWidget {
                     assets.titleText,
                     style: const TextStyle(
                       fontStyle: FontStyle.italic,
-                      fontWeight: FontWeight.w300,
+                      fontWeight: FontWeight.w200,
+                
                       fontSize: 24,
                     ),
                   ),
@@ -47,7 +49,7 @@ class AsseterWidget extends StatelessWidget {
                   child: Text(
                     assets.subText,
                     style: const TextStyle(
-                      color: Color(0xFF313131),
+                     
                       fontWeight: FontWeight.w500,
                       fontSize: 18,
                     ),

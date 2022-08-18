@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class NavBarItem extends StatelessWidget {
   final String? icon;
@@ -22,8 +23,8 @@ class NavBarItem extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             const SizedBox(),
-            Image.asset(
-              'assets/nav_bar_icons/$icon.png',
+            SvgPicture.asset(
+              'assets/nav_bar_icons/$icon.svg',
               color: iconColor,
             ),
             Text(

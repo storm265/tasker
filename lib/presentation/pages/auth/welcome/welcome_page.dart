@@ -27,12 +27,10 @@ class _WelcomePageState extends State<WelcomePage> {
           children: [
             ForegroundWaveWidget(pageIndex: _pageIndex),
             BackgroundWaveWidget(pageIndex: _pageIndex),
-        
             AsseterWidget(
-              onChange: (index) => setState(() => _pageIndex = index),
-            ),
+                onChange: (index) => setState(() => _pageIndex = index)),
             DotsPagerWidget(pageIndex: _pageIndex),
-            const GetStartedButton(),
+            GetStartedButton(pageIndex: _pageIndex),
           ],
         ),
       ),

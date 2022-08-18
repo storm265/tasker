@@ -8,6 +8,7 @@ import 'package:todo2/presentation/pages/menu_pages/navigation/widgets/keep_aliv
 import 'package:todo2/presentation/pages/menu_pages/profile/profile_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_page.dart';
+
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/floating_button_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/nav_bar_widget.dart';
 
@@ -29,11 +30,11 @@ class _NavigationPageState extends State<NavigationPage> {
     super.didChangeDependencies();
   }
 
-  @override
-  void dispose() {
-    _statusBarController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _statusBarController.dispose();
+  //   super.dispose();
+  // }
 
   final Color _greyColor = const Color(0xff8E8E93);
   @override

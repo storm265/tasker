@@ -17,6 +17,7 @@ import 'package:todo2/presentation/pages/auth/widgets/title_widget.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
+import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 class SignInPage extends StatefulWidget {
@@ -88,7 +89,7 @@ class _SignInPageState extends State<SignInPage> {
                         isEmail: false,
                         textController: _emailController,
                         labelText: 'Email',
-                        text: 'Email',
+                        title: 'Email',
                       ),
                       TextFieldWidget(
                         validateCallback: (text) => _signInController
@@ -98,7 +99,7 @@ class _SignInPageState extends State<SignInPage> {
                         textController: _passwordController,
                         isObcecure: true,
                         labelText: 'Enter your password',
-                        text: 'Password',
+                        title: 'Password',
                       ),
                       ValueListenableBuilder<bool>(
                         valueListenable: _signInController.isActiveSubmitButton,
@@ -113,7 +114,7 @@ class _SignInPageState extends State<SignInPage> {
                                               _emailController.text,
                                           passwordController:
                                               _passwordController.text,
-                                        );
+                                        ).then((_) => NavigationService.navigateTo(context, Pages.home));
                                       }
                                     : null,
                               )
