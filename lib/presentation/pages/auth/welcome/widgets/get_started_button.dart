@@ -33,7 +33,7 @@ class GetStartedButton extends StatelessWidget {
                   fontSize: 18,
                   fontWeight: FontWeight.w300,
                   fontStyle: FontStyle.italic,
-                  color: Colors.black,
+                  color: Color(0xFF313131),
                 ),
               ),
             ),

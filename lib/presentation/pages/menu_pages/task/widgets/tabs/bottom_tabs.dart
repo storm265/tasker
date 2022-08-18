@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 
-const todayTab =  Tab(
+const todayTab = Tab(
   child: Text(
-    'Today',
+    '     Today     ',
     style: TextStyle(
       fontSize: 18,
     ),
   ),
 );
-const  monthTab =  Tab(
+const monthTab = Tab(
   child: Text(
-    'Month',
+    '     Month     ',
     style: TextStyle(
       fontSize: 18,
     ),

@@ -19,7 +19,7 @@ class TasksTextWidget extends StatelessWidget {
             title,
             style: const TextStyle(
               fontSize: 18,
-              fontWeight: FontWeight.w300,
+              fontWeight: FontWeight.w500,
               fontStyle: FontStyle.italic,
             ),
           ),

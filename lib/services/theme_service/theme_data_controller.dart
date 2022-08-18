@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class ThemeDataService {
   final themeData = ThemeData(
+    fontFamily: 'Roboto',
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all(Palette.red),

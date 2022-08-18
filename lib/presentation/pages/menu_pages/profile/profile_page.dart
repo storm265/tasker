@@ -26,12 +26,14 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     ),
   );
-  late StatsModel stats;
+   StatsModel stats = StatsModel(createdTasks: 0, completedTasks: 0, events: 'events', quickNotes: 'quickNotes', todo: 'todo',);
 
+  Future<void> getData() async {
+    stats = await userController.fetchUserStatistics();
+  }
   @override
   void initState() {
-    Future.delayed(Duration.zero,
-        () async => stats = await userController.fetchUserStatistics());
+    getData();
     super.initState();
   }
 
@@ -50,7 +52,7 @@ class _ProfilePageState extends State<ProfilePage> {
               completedTasks: stats.completedTasks,
               createdTask: stats.createdTasks,
             ),
-            StatsWidget(),
+            StatsWidget(statsModel: stats),
             // FutureBuilder<List<ProjectModel>>(
             //   initialData: const [],
             //   // future: inheritedProfile.profileController.

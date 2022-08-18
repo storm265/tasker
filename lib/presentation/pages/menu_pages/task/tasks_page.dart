@@ -15,6 +15,8 @@ class _TasksPageState extends State<TasksPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   late final taskController = TaskRepositoryImpl();
+
+  final tuneIconPath = 'assets/work_list/tune.png';
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
@@ -35,18 +37,24 @@ class _TasksPageState extends State<TasksPage>
       actionWidget: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GestureDetector(
-          child: const Icon(Icons.tune_outlined),
+          child: Image.asset(tuneIconPath),
           onTap: () => showTasksDialog(context),
         ),
       ),
       title: 'Work list',
       bottom: TabBar(
+        splashFactory: NoSplash.splashFactory,
         indicatorColor: Colors.white,
+        indicatorSize: TabBarIndicatorSize.label,
         controller: _tabController,
         tabs: const [todayTab, monthTab],
+        labelStyle: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w500,
+        ),
       ),
       child: Column(
-        children: [
+        children: const [
           DayLineWidget(),
           // Expanded(
           //   child: TabBarView(

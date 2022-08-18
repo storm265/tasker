@@ -27,6 +27,7 @@ class _WelcomePageState extends State<WelcomePage> {
           children: [
             ForegroundWaveWidget(pageIndex: _pageIndex),
             BackgroundWaveWidget(pageIndex: _pageIndex),
+        
             AsseterWidget(
               onChange: (index) => setState(() => _pageIndex = index),
             ),

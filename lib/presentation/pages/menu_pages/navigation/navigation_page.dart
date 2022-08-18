@@ -81,7 +81,7 @@ class _NavigationPageState extends State<NavigationPage> {
                         _statusBarController.setRedStatusMode(true);
                       },
                       child: NavBarItem(
-                        label: 'Tasks',
+                        label: 'My Tasks',
                         icon: 'tasks',
                         iconColor: pageIndex == 0 ? Colors.white : Colors.grey,
                       ),

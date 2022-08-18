@@ -68,7 +68,7 @@ class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
                             : inheritedNavigatorConroller
                                 .animateToPage(NavigationPages.tasks),
                         child: Icon(
-                          Icons.arrow_back,
+                          Icons.west,
                           size: 30,
                           color: isRedAppBar ? Colors.white : Colors.black,
                         ),
@@ -82,7 +82,7 @@ class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
                   fontStyle: FontStyle.italic,
                   color: isRedAppBar ? Colors.white : Colors.black,
                   fontSize: 20,
-                  fontWeight: FontWeight.w300,
+                  fontWeight: FontWeight.w200,
                 ),
               ),
               actions: [actionWidget],

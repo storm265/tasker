@@ -13,7 +13,7 @@ class ForegroundWaveWidget extends StatelessWidget {
       alignment: Alignment.bottomCenter,
       child: CustomPaint(
         painter: ForegroundWave(color: WaveColors.backgroundColors[pageIndex]),
-        size: const Size(double.infinity, 240),
+        size: const Size(double.infinity, 260),
       ),
     );
   }

@@ -8,13 +8,28 @@ import 'package:todo2/presentation/controller/user_controller.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
+import 'package:todo2/services/extensions/remove_last_element.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 class StatsWidget extends StatelessWidget {
-  StatsWidget({Key? key}) : super(key: key);
+  StatsWidget({
+    Key? key,
+    required this.statsModel,
+  }) : super(key: key);
+  final StatsModel statsModel;
+  final List<String> labels = [
+    'Events',
+    'Todo',
+    'Quick Notes',
+  ];
 
   @override
   Widget build(BuildContext context) {
+    final List<String> stats = [
+      statsModel.events,
+      statsModel.todo,
+      statsModel.quickNotes,
+    ];
     return Container(
       decoration: BoxDecoration(
         boxShadow: [
@@ -48,36 +63,46 @@ class StatsWidget extends StatelessWidget {
               SizedBox(
                   width: double.infinity,
                   height: 120,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 2,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            CircularPercentIndicator(
-                              radius: 32.0,
-                              lineWidth: 2.0,
-                              percent: 0.5,
-                              center: Text(
-                                "100%",
-                                style: TextStyle(
-                                  color: colors[index],
+                  child: Center(
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 3,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CircularPercentIndicator(
+                                radius: 32.0,
+                                lineWidth: 2.0,
+                                percent: double.parse(
+                                        stats[index].removeLastElement()) /
+                                    100,
+                                center: Text(
+                                  stats[index],
+                                  style: TextStyle(
+                                    color: colors[index],
+                                  ),
+                                ),
+                                progressColor: colors[index],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 10),
+                                child: Text(
+                                  labels[index],
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                               ),
-                              progressColor: colors[index],
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 10),
-                              child: Text('Default text'),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                   )),
             ],
           ),

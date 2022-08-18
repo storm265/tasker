@@ -29,6 +29,7 @@ class TextFieldWidget extends StatelessWidget {
           style: const TextStyle(
             fontSize: 20,
             color: Colors.black,
+            fontWeight: FontWeight.w500,
           ),
         ),
         TextFormField(

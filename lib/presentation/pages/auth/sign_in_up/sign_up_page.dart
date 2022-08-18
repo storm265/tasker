@@ -81,7 +81,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: const [
                               TitleTextWidget(text: 'Welcome'),
-                              SizedBox(height: 5),
+                              SizedBox(height: 6),
                               SubTitleWidget(text: 'Sign up to continue'),
                             ],
                           ),
