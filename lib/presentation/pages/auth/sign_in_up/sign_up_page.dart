@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/storage/avatar_storage_data_source.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
@@ -97,7 +99,7 @@ class _SignUpPageState extends State<SignUpPage> {
                               .validateEmail(email: text!),
                           isEmail: false,
                           textController: _emailController,
-                          labelText: 'Email:',
+                          labelText: 'Email',
                           text: 'Email',
                         ),
                         TextFieldWidget(
@@ -110,7 +112,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           isEmail: false,
                           isObcecure: true,
                           textController: _passwordController,
-                          labelText: 'Enter your password:',
+                          labelText: 'Enter your password',
                           text: 'Password',
                         ),
                         TextFieldWidget(
@@ -120,7 +122,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           isEmail: false,
                           textController: _usernameController,
                           isObcecure: false,
-                          labelText: 'Username:',
+                          labelText: 'Username',
                           text: 'Username',
                         ),
                         ValueListenableBuilder<bool>(
@@ -138,11 +140,12 @@ class _SignUpPageState extends State<SignUpPage> {
                                             password: _passwordController.text,
                                           )
                                               .then((_) {
-                                            NavigationService.navigateTo(
-                                                context, Pages.home);
-                                            MessageService.displaySnackbar(
-                                                message: 'Sign up success!',
-                                                context: context);
+                                            log('Sign up success');
+                                            // NavigationService.navigateTo(
+                                            //     context, Pages.home);
+                                            // MessageService.displaySnackbar(
+                                            //     message: 'Sign up success!',
+                                            //     context: context);
                                           })
                                       : null,
                                 )

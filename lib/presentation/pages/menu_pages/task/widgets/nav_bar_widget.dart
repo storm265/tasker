@@ -4,12 +4,12 @@ class NavBarItem extends StatelessWidget {
   final String? icon;
   final Color? iconColor;
   final String label;
-  const NavBarItem(
-      {Key? key,
-      required this.icon,
-      required this.iconColor,
-      required this.label})
-      : super(key: key);
+  const NavBarItem({
+    Key? key,
+    required this.icon,
+    required this.iconColor,
+    required this.label,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

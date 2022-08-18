@@ -4,7 +4,7 @@ import 'package:flutter/scheduler.dart';
 class TaskListController extends ChangeNotifier {
   ValueNotifier<DateTime> selectedDate = ValueNotifier(DateTime.now());
 
-  final pageController = PageController(viewportFraction: 0.18);
+  final pageController = PageController(viewportFraction: 0.15);
   List<DateTime> calendar = [];
 
   void generateCalendar() {

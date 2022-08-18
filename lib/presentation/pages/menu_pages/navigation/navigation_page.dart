@@ -35,6 +35,7 @@ class _NavigationPageState extends State<NavigationPage> {
     super.dispose();
   }
 
+  final Color _greyColor = const Color(0xff8E8E93);
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
@@ -83,7 +84,7 @@ class _NavigationPageState extends State<NavigationPage> {
                       child: NavBarItem(
                         label: 'My Tasks',
                         icon: 'tasks',
-                        iconColor: pageIndex == 0 ? Colors.white : Colors.grey,
+                        iconColor: pageIndex == 0 ? Colors.white : _greyColor,
                       ),
                     ),
                     GestureDetector(
@@ -95,7 +96,7 @@ class _NavigationPageState extends State<NavigationPage> {
                       child: NavBarItem(
                         label: 'Menu',
                         icon: 'menu',
-                        iconColor: pageIndex == 1 ? Colors.white : Colors.grey,
+                        iconColor: pageIndex == 1 ? Colors.white : _greyColor,
                       ),
                     ),
                     const SizedBox(width: 50),
@@ -108,7 +109,7 @@ class _NavigationPageState extends State<NavigationPage> {
                       child: NavBarItem(
                         label: 'Quick',
                         icon: 'quick',
-                        iconColor: pageIndex == 2 ? Colors.white : Colors.grey,
+                        iconColor: pageIndex == 2 ? Colors.white : _greyColor,
                       ),
                     ),
                     GestureDetector(
@@ -120,7 +121,7 @@ class _NavigationPageState extends State<NavigationPage> {
                       child: NavBarItem(
                         label: 'Profile',
                         icon: 'profile',
-                        iconColor: pageIndex == 3 ? Colors.white : Colors.grey,
+                        iconColor: pageIndex == 3 ? Colors.white : _greyColor,
                       ),
                     ),
                   ],

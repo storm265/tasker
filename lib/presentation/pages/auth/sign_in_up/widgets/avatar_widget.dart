@@ -28,7 +28,7 @@ class AvatarWidget extends StatelessWidget {
                       ),
                 border: Border.all(color: Colors.red, width: 1.5),
                 shape: BoxShape.circle,
-                color: Colors.black45,
+                color: const Color(0xffC4C4C4),
               ),
             );
           }),

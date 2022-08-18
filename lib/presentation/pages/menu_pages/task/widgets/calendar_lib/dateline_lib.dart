@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/calendar_lib/date_line_fonts.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/calendar_lib/task_list_controller.dart';
-
+import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 class DayLineWidget extends StatefulWidget {
   const DayLineWidget({Key? key}) : super(key: key);
@@ -41,7 +41,7 @@ class _DayLineWidgetState extends State<DayLineWidget> {
             return Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  padding: const EdgeInsets.symmetric(vertical: 7),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -54,10 +54,10 @@ class _DayLineWidgetState extends State<DayLineWidget> {
                           fontStyle: FontStyle.italic,
                         ),
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.expand_more),
-                        onPressed: () {},
-                      ),
+                      InkWell(
+                        child: const Icon(Icons.expand_more),
+                        onTap: () {},
+                      )
                     ],
                   ),
                 ),
@@ -84,11 +84,23 @@ class _DayLineWidgetState extends State<DayLineWidget> {
                                 style: const TextStyle(
                                     color: Color(0xFF9A9A9A), fontSize: 14),
                               ),
-                              Text(
-                                DateFormat('d').format(calendar[i]),
-                                style: (selectedDate == calendar[i])
-                                    ? DateLineFonts.t1
-                                    : DateLineFonts().t2,
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  DateFormat('d').format(calendar[i]),
+                                  style: (selectedDate == calendar[i])
+                                      ? DateLineFonts.t1
+                                      : DateLineFonts().t2,
+                                ),
+                              ),
+                              //circle container
+                              Container(
+                                width: 5,
+                                height: 5,
+                                decoration: const BoxDecoration(
+                                  color: Palette.red,
+                                  shape: BoxShape.circle,
+                                ),
                               ),
                             ],
                           ),

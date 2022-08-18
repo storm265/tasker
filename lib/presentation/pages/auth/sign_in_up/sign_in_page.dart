@@ -87,7 +87,7 @@ class _SignInPageState extends State<SignInPage> {
                             .validateEmail(email: text!),
                         isEmail: false,
                         textController: _emailController,
-                        labelText: 'Email:',
+                        labelText: 'Email',
                         text: 'Email',
                       ),
                       TextFieldWidget(
@@ -97,7 +97,7 @@ class _SignInPageState extends State<SignInPage> {
                         isEmail: false,
                         textController: _passwordController,
                         isObcecure: true,
-                        labelText: 'Enter your password:',
+                        labelText: 'Enter your password',
                         text: 'Password',
                       ),
                       ValueListenableBuilder<bool>(

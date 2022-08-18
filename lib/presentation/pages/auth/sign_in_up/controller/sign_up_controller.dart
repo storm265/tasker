@@ -37,14 +37,15 @@ class SignUpController extends ChangeNotifier {
     required String password,
   }) async {
     try {
-      if (formKey.currentState!.validate()) {
-        await signUp(
-          context: context,
-          username: userName,
-          email: email,
-          password: password,
-        );
-      }
+      // if (formKey.currentState!.validate()) {
+      //   await signUp(
+      //     context: context,
+      //     username: userName,
+      //     email: email,
+      //     password: password,
+      //   );
+      // }
+      throw Exception('test');
     } catch (e, t) {
       log('TRACE : $t');
       throw Failure(e.toString());

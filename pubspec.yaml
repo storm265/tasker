@@ -4,7 +4,7 @@ description: A new Flutter project.
 publish_to: 'none' 
 
 
-version: 3.7.6+1
+version: 3.7.7+1
 
 environment:
   sdk: ">=2.16.2 <3.0.0"
@@ -17,7 +17,6 @@ dependencies:
   connectivity_plus:
   intl:
   cached_network_image: 
-  simple_gesture_detector:
   percent_indicator:
   flutter_slidable:
   file_picker:
