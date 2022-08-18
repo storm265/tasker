@@ -13,15 +13,12 @@ class TasksTextWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.only(right: 60),
-          child: Text(
-            title,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-              fontStyle: FontStyle.italic,
-            ),
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w300,
+            fontStyle: FontStyle.italic,
           ),
         ),
         Text(

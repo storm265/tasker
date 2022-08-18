@@ -42,6 +42,11 @@ class TextFieldWidget extends StatelessWidget {
           controller: textController,
           decoration: InputDecoration(
             hintText: labelText,
+            hintStyle: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: Color(0xFFC6C6C6),
+            ),
             enabledBorder: const UnderlineInputBorder(
               borderSide: BorderSide(color: Color(0xFFD8D8D8)),
             ),

@@ -18,6 +18,8 @@ import 'package:todo2/presentation/pages/auth/widgets/title_widget.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
+import 'package:todo2/services/message_service/message_service.dart';
+import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -128,13 +130,20 @@ class _SignUpPageState extends State<SignUpPage> {
                               ? SubmitUpButtonWidget(
                                   buttonText: 'Sign Up',
                                   onPressed: isClicked
-                                      ? () async =>
-                                          _signUpController.signUpValidate(
+                                      ? () async => _signUpController
+                                              .signUpValidate(
                                             context: context,
                                             userName: _usernameController.text,
                                             email: _emailController.text,
                                             password: _passwordController.text,
                                           )
+                                              .then((_) {
+                                            NavigationService.navigateTo(
+                                                context, Pages.home);
+                                            MessageService.displaySnackbar(
+                                                message: 'Sign up success!',
+                                                context: context);
+                                          })
                                       : null,
                                 )
                               : const ProgressIndicatorWidget(

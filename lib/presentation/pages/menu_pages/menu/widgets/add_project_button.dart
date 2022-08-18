@@ -40,6 +40,7 @@ class AddProjectButton extends StatelessWidget {
                   color: Colors.white,
                   fontSize: 24,
                   fontStyle: FontStyle.italic,
+                  fontWeight: FontWeight.w200,
                 ),
               ),
             ),

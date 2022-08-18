@@ -26,11 +26,18 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     ),
   );
-   StatsModel stats = StatsModel(createdTasks: 0, completedTasks: 0, events: 'events', quickNotes: 'quickNotes', todo: 'todo',);
+  StatsModel stats = StatsModel(
+    createdTasks: 0,
+    completedTasks: 0,
+    events: 'events',
+    quickNotes: 'quickNotes',
+    todo: 'todo',
+  );
 
   Future<void> getData() async {
     stats = await userController.fetchUserStatistics();
   }
+
   @override
   void initState() {
     getData();
@@ -41,10 +48,13 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final inheritedProfile = ProfileInherited.of(context);
     return AppbarWrapperWidget(
-      title: 'Profiles',
+      title: 'Profile',
       isRedAppBar: false,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 10,
+        ),
         child: Wrap(
           children: [
             ProfileWidget(
@@ -52,7 +62,7 @@ class _ProfilePageState extends State<ProfilePage> {
               completedTasks: stats.completedTasks,
               createdTask: stats.createdTasks,
             ),
-            StatsWidget(statsModel: stats),
+            //  StatsWidget(statsModel: stats),
             // FutureBuilder<List<ProjectModel>>(
             //   initialData: const [],
             //   // future: inheritedProfile.profileController.

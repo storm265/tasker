@@ -30,6 +30,7 @@ class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
   final bool showAppBar;
   final bool isRedAppBar;
   final double preferredHeight;
+  final Color backgroundColor;
 
   const AppbarWrapperWidget({
     Key? key,
@@ -42,6 +43,7 @@ class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
     this.showLeadingButton = false,
     this.showAppBar = true,
     this.isRedAppBar = true,
+    this.backgroundColor = const Color(0xffFDFDFD)
   }) : super(key: key);
 
   @override
@@ -53,7 +55,7 @@ class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
         InheritedNavigator.of(context)!.navigationController;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: backgroundColor ,
       appBar: showAppBar
           ? AppBar(
               systemOverlayStyle: isRedAppBar ? _redBar : _whiteBar,

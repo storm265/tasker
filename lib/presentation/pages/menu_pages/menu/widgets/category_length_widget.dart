@@ -7,11 +7,14 @@ class CategoryLengthWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      '$taskLength tasks',
-      style: const TextStyle(
-        color: Colors.grey,
-        fontSize: 16,
+    return Align(
+      alignment: Alignment.bottomLeft,
+      child: Text(
+        '$taskLength ${taskLength == 1 ? 'task' : 'tasks'}',
+        style: const TextStyle(
+          color: Colors.grey,
+          fontSize: 16,
+        ),
       ),
     );
   }

@@ -25,7 +25,7 @@ class ImageController extends ChangeNotifier {
   }) async {
     final int maxSize = isImagePicker ? 8000000 : 26214400;
     try {
-      FilePickerResult result = await FilePicker.platform.pickFiles(
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
             allowCompression: true,
             type: FileType.custom,
             allowedExtensions: [
@@ -34,6 +34,7 @@ class ImageController extends ChangeNotifier {
             ],
           ) ??
           const FilePickerResult([]);
+
       pickedFile.notifyListeners();
       if (result.files.last.size >= maxSize) {
         result.files.clear();
@@ -49,25 +50,18 @@ class ImageController extends ChangeNotifier {
     }
   }
 
-  bool isValidAvatar({required BuildContext context}) {
+  bool shouldUploadAvatar() => pickedFile.value.path != '';
+
+  Future<bool> isValidAvatar({required BuildContext context}) async {
     try {
-      if (pickedFile.value.path!.isEmpty) {
-        MessageService.displaySnackbar(
-          message: 'Pick image!',
-          context: context,
-        );
-        return false;
-      } else if (!_isWrongImageFormat) {
+      if (!_isWrongImageFormat) {
         MessageService.displaySnackbar(
           message: 'Wrong image, supported formats: .jpeg, .png',
           context: context,
         );
         return false;
       } else {
-        MessageService.displaySnackbar(
-          message: 'Right',
-          context: context,
-        );
+        await uploadAvatar(context: context);
         return true;
       }
     } catch (e) {
@@ -77,22 +71,12 @@ class ImageController extends ChangeNotifier {
 
   Future<String> uploadAvatar({required BuildContext context}) async {
     try {
-      bool isValidImage = isValidAvatar(context: context);
-      if (isValidImage) {
-        final avatarUrl = await _avatarStorageRepository.uploadAvatar(
-          name: pickedFile.value.name,
-          file: File(pickedFile.value.path!),
-        );
-        log('avatarUrl: $avatarUrl');
-        return avatarUrl;
-      } else {
-        throw MessageService.displaySnackbar(
-          message: 'Invalid Image Format',
-          context: context,
-        );
-      }
-    } catch (e, t) {
-      log('upload avatar error Controller: $e,$t');
+      final image = await _avatarStorageRepository.uploadAvatar(
+        name: pickedFile.value.name,
+        file: File(pickedFile.value.path!),
+      );
+      return image;
+    } catch (e) {
       throw Failure(e.toString());
     }
   }

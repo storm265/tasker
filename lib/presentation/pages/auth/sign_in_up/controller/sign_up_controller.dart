@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/presentation/controller/image_picker_controller.dart';
@@ -35,17 +37,16 @@ class SignUpController extends ChangeNotifier {
     required String password,
   }) async {
     try {
-      if (imagePickerController.isValidAvatar(context: context)) {
-        if (formKey.currentState!.validate()) {
-          await signUp(
-            context: context,
-            username: userName,
-            email: email,
-            password: password,
-          );
-        }
+      if (formKey.currentState!.validate()) {
+        await signUp(
+          context: context,
+          username: userName,
+          email: email,
+          password: password,
+        );
       }
-    } catch (e) {
+    } catch (e, t) {
+      log('TRACE : $t');
       throw Failure(e.toString());
     }
   }
@@ -83,21 +84,18 @@ class SignUpController extends ChangeNotifier {
             value: response.accessToken,
           ),
         ]);
+      }
+      if (imagePickerController.shouldUploadAvatar()) {
+        log('should upload');
         final imageResponse =
             await imagePickerController.uploadAvatar(context: context);
-        debugPrint(
-            'avatarUrl = ${await _storageSource.storageApi.getUserData(type: StorageDataType.avatarUrl)}');
-        await _storageSource.storageApi
-            .saveUserData(type: StorageDataType.avatarUrl, value: imageResponse)
-            .then((_) {
-          MessageService.displaySnackbar(
-              message: 'Sign up success!', context: context);
-          NavigationService.navigateTo(context, Pages.home);
-        });
+
+        await _storageSource.storageApi.saveUserData(
+            type: StorageDataType.avatarUrl, value: imageResponse);
       }
-    } catch (e, t) {
+    } catch (e) {
       MessageService.displaySnackbar(message: e.toString(), context: context);
-      debugPrint('trace $t');
+
       throw Failure(e.toString());
     } finally {
       changeSubmitButtonValue(newValue: true);
