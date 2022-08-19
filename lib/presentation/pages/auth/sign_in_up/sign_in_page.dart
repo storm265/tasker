@@ -29,6 +29,12 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+  @override
+  void initState() {
+    _signInController.scrollController = ScrollController();
+    super.initState();
+  }
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -65,8 +71,11 @@ class _SignInPageState extends State<SignInPage> {
             valueListenable: _signInController.isActiveScrolling,
             builder: (__, isScrolling, _) =>
                 DynamicPhycicsSingleChildScrollView(
-              isDisabledScroll: isScrolling,
+              scrollController: _signInController.scrollController,
+              isActivesScrolling: isScrolling,
               child: UnfocusWidget(
+                onClick: () =>
+                    _signInController.changeScrollStatus(isActive: false),
                 child: SizedBox(
                   width: size.width - minFactor,
                   height: size.height - minFactor,
@@ -89,8 +98,7 @@ class _SignInPageState extends State<SignInPage> {
                             ),
                           ),
                           TextFieldWidget(
-                            onTap: () => _signInController.changeScrollStatus(
-                                isActive: false),
+                            signInController: _signInController,
                             validateCallback: (text) => _signInController
                                 .formValidatorController
                                 .validateEmail(email: text!),
@@ -100,8 +108,7 @@ class _SignInPageState extends State<SignInPage> {
                             title: 'Email',
                           ),
                           TextFieldWidget(
-                            onTap: () => _signInController.changeScrollStatus(
-                                isActive: false),
+                            signInController: _signInController,
                             validateCallback: (text) => _signInController
                                 .formValidatorController
                                 .validatePassword(password: text!),

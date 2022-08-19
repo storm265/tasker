@@ -77,6 +77,9 @@ class _MyAppState extends State<MyApp> {
         child: InheritedNewTaskController(
           addTaskController: _newTaskConroller,
           child: MaterialApp(
+            navigatorObservers: [NavigatorObserver(
+              
+            )],
             debugShowCheckedModeBanner: false,
             title: 'Todo2',
             theme: _themeDataController.themeData,

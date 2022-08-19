@@ -11,8 +11,6 @@ import 'package:todo2/services/storage/secure_storage_service.dart';
 
 class SignUpController extends ChangeNotifier
     implements IsScrollable, Submitable {
-
-      
   SignUpController({
     required AuthRepositoryImpl authRepository,
     required this.formValidatorController,
@@ -26,8 +24,9 @@ class SignUpController extends ChangeNotifier
   final ImageController imgPickerController;
   final SecureStorageSource _storageSource;
   final formKey = GlobalKey<FormState>();
-  final isActiveSubmitButton = ValueNotifier(true);
-  final isActiveScrolling = ValueNotifier(true);
+  final isActiveSubmitButton = ValueNotifier<bool>(true);
+  final isActiveScrolling = ValueNotifier<bool>(false);
+  final scrollController = ScrollController();
 
   @override
   void changeSubmitButtonValue({required bool isActive}) {
@@ -38,6 +37,20 @@ class SignUpController extends ChangeNotifier
   @override
   void changeScrollStatus({required bool isActive}) {
     isActiveScrolling.value = isActive;
+    isActiveScrolling.notifyListeners();
+    print('isActiveScrolling.value: ${isActiveScrolling.value}');
+    print('extend: ${scrollController.position.minScrollExtent}');
+    if (!isActiveScrolling.value) {
+      scrollController.animateTo(
+        scrollController.position.minScrollExtent - 0.2,
+        duration: const Duration(milliseconds: 600),
+        curve: Curves.ease,
+      );
+    }
+  }
+
+  void setTrue() {
+    isActiveScrolling.value = true;
     isActiveScrolling.notifyListeners();
   }
 
@@ -119,9 +132,10 @@ class SignUpController extends ChangeNotifier
     }
   }
 
-  void disposeValues() {
+  void disposeObjects() {
     imgPickerController.dispose();
     isActiveSubmitButton.dispose();
     isActiveScrolling.dispose();
+    scrollController.dispose();
   }
 }

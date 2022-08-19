@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 
 class UnfocusWidget extends StatelessWidget {
-  final VoidCallback? onClick;
+  final VoidCallback onClick;
   final Widget child;
-  const UnfocusWidget({Key? key, required this.child, this.onClick,}) : super(key: key);
+  const UnfocusWidget({
+    Key? key,
+    required this.child,
+    required this.onClick,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -11,8 +15,8 @@ class UnfocusWidget extends StatelessWidget {
       behavior: HitTestBehavior.translucent,
       onTap: () {
         FocusScope.of(context).unfocus();
-        onClick!();
-      } ,
+        onClick();
+      },
       child: child,
     );
   }
