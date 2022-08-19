@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
@@ -59,70 +61,78 @@ class _SignInPageState extends State<SignInPage> {
         shouldUsePopMethod: true,
         showLeadingButton: true,
         isRedAppBar: false,
-        child: SingleChildScrollView(
-          child: UnfocusWidget(
-            child: SizedBox(
-              width: size.width - minFactor,
-              height: size.height - minFactor,
-              child: Form(
-                key: _signInController.formKey,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                child: Padding(
-                  padding: const EdgeInsets.all(paddingAll),
-                  child: Wrap(
-                    runSpacing: 25,
-                    children: [
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            TitleTextWidget(text: 'Welcome back'),
-                            SubTitleWidget(text: 'Sign in to continue'),
-                          ],
+        child: DisabledGlowWidget(
+          child: SingleChildScrollView(
+            child: UnfocusWidget(
+              child: SizedBox(
+                width: size.width - minFactor,
+                height: size.height - minFactor,
+                child: Form(
+                  key: _signInController.formKey,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  child: Padding(
+                    padding: const EdgeInsets.all(paddingAll),
+                    child: Wrap(
+                      runSpacing: 25,
+                      children: [
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const [
+                              TitleTextWidget(text: 'Welcome back'),
+                              SubTitleWidget(text: 'Sign in to continue'),
+                            ],
+                          ),
                         ),
-                      ),
-                      TextFieldWidget(
-                        validateCallback: (text) => _signInController
-                            .formValidatorController
-                            .validateEmail(email: text!),
-                        isEmail: false,
-                        textController: _emailController,
-                        labelText: 'Email',
-                        title: 'Email',
-                      ),
-                      TextFieldWidget(
-                        validateCallback: (text) => _signInController
-                            .formValidatorController
-                            .validatePassword(password: text!),
-                        isEmail: false,
-                        textController: _passwordController,
-                        isObcecure: true,
-                        labelText: 'Enter your password',
-                        title: 'Password',
-                      ),
-                      ValueListenableBuilder<bool>(
-                        valueListenable: _signInController.isActiveSubmitButton,
-                        builder: ((context, isClicked, _) => isClicked
-                            ? SubmitUpButtonWidget(
-                                buttonText: 'Sign In',
-                                onPressed: isClicked
-                                    ? () async {
-                                        _signInController.signInValidate(
-                                          context: context,
-                                          emailController:
-                                              _emailController.text,
-                                          passwordController:
-                                              _passwordController.text,
-                                        ).then((_) => NavigationService.navigateTo(context, Pages.home));
-                                      }
-                                    : null,
-                              )
-                            : const ProgressIndicatorWidget(
-                                text: 'Validating...')),
-                      ),
-                      const SignInButtonWidget(buttonText: 'Sign Up'),
-                    ],
+                        TextFieldWidget(
+                          validateCallback: (text) => _signInController
+                              .formValidatorController
+                              .validateEmail(email: text!),
+                          isEmail: false,
+                          textController: _emailController,
+                          labelText: 'Email',
+                          title: 'Email',
+                        ),
+                        TextFieldWidget(
+                          validateCallback: (text) => _signInController
+                              .formValidatorController
+                              .validatePassword(password: text!),
+                          isEmail: false,
+                          textController: _passwordController,
+                          isObcecure: true,
+                          labelText: 'Enter your password',
+                          title: 'Password',
+                        ),
+                        ValueListenableBuilder<bool>(
+                          valueListenable:
+                              _signInController.isActiveSubmitButton,
+                          builder: ((context, isClicked, _) => isClicked
+                              ? SubmitUpButtonWidget(
+                                  buttonText: 'Sign In',
+                                  onPressed: isClicked
+                                      ? () async {
+                                          _signInController
+                                              .signInValidate(
+                                                context: context,
+                                                emailController:
+                                                    _emailController.text,
+                                                passwordController:
+                                                    _passwordController.text,
+                                              )
+                                              .then(
+                                                  (_) => log('sign in success')
+                                                  // NavigationService.navigateTo(context, Pages.home)
+                                                  );
+                                        }
+                                      : null,
+                                )
+                              : const ProgressIndicatorWidget(
+                                  text: 'Validating...')),
+                        ),
+                        const SignInButtonWidget(buttonText: 'Sign Up'),
+                      ],
+                    ),
                   ),
                 ),
               ),

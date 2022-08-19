@@ -23,10 +23,10 @@ class FloatingButtonWidget extends StatelessWidget {
             child: Text(
               '+',
               style: TextStyle(
-                fontSize: 24,
                 color: Colors.white,
-                fontWeight: FontWeight.w300,
+                fontSize: 24,
                 fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.w200,
               ),
             ),
           )),

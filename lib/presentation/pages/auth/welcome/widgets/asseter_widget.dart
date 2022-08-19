@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todo2/presentation/pages/auth/welcome/widgets/assets_content.dart';
-import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 
 class AsseterWidget extends StatelessWidget {
@@ -22,10 +22,8 @@ class AsseterWidget extends StatelessWidget {
               Flexible(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Image.asset(
-                    '${assets.assetsPath}${assets.avatarsTitle}.png',
-                    height: 230,
-                  ),
+                  child: SvgPicture.asset(
+                      '${assets.assetsPath}${assets.avatarsTitle}.svg'),
                 ),
               ),
               const SizedBox(height: 10),
@@ -37,7 +35,6 @@ class AsseterWidget extends StatelessWidget {
                     style: const TextStyle(
                       fontStyle: FontStyle.italic,
                       fontWeight: FontWeight.w200,
-                
                       fontSize: 24,
                     ),
                   ),
@@ -49,7 +46,6 @@ class AsseterWidget extends StatelessWidget {
                   child: Text(
                     assets.subText,
                     style: const TextStyle(
-                     
                       fontWeight: FontWeight.w500,
                       fontSize: 18,
                     ),

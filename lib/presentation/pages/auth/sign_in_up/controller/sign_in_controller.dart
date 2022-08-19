@@ -36,14 +36,19 @@ class SignInController extends ChangeNotifier {
   }) async {
     try {
       if (formKey.currentState!.validate()) {
+        changeSubmitButtonValue(newValue: false);
         await signIn(
           context: context,
           email: emailController,
           password: passwordController,
         );
+      } else {
+        throw Failure('Form is not valid');
       }
     } catch (e) {
       throw Failure(e.toString());
+    } finally {
+      changeSubmitButtonValue(newValue: true);
     }
   }
 
@@ -53,8 +58,6 @@ class SignInController extends ChangeNotifier {
     required String password,
   }) async {
     try {
-      changeSubmitButtonValue(newValue: false);
-
       final authResponse = await _authRepository.signIn(
         email: email,
         password: password,
@@ -92,17 +95,16 @@ class SignInController extends ChangeNotifier {
             value: authResponse.accessToken,
           ),
         ]);
-      }
         // TODO testing, remove context
-      MessageService.displaySnackbar(
-        context: context,
-        message: 'Token will expire: ${DateTime.fromMillisecondsSinceEpoch(authResponse.expiresIn)}',
-      );
+        MessageService.displaySnackbar(
+          context: context,
+          message:
+              'Token will expire: ${DateTime.fromMillisecondsSinceEpoch(authResponse.expiresIn)}',
+        );
+      }
     } catch (e) {
       MessageService.displaySnackbar(message: e.toString(), context: context);
       throw Failure(e.toString());
-    } finally {
-      changeSubmitButtonValue(newValue: true);
     }
   }
 

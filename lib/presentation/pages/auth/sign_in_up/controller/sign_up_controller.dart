@@ -45,6 +45,8 @@ class SignUpController extends ChangeNotifier {
           email: email,
           password: password,
         );
+      }else{
+       throw Failure('Form is not valid');
       }
     } catch (e) {
       throw Failure(e.toString());
