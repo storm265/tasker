@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/presentation/controller/user_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
+import 'package:todo2/presentation/pages/auth/sign_in_up/controller/interfaces/scrollable.dart';
+import 'package:todo2/presentation/pages/auth/sign_in_up/controller/interfaces/submitable.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
-class SignInController extends ChangeNotifier {
+class SignInController extends ChangeNotifier
+    implements IsScrollable, Submitable {
   final AuthRepositoryImpl _authRepository;
   final FormValidatorController formValidatorController;
   final SecureStorageSource _storageSource;
@@ -23,10 +26,18 @@ class SignInController extends ChangeNotifier {
 
   final formKey = GlobalKey<FormState>();
   final isActiveSubmitButton = ValueNotifier(true);
+  final isActiveScrolling = ValueNotifier(true);
 
-  void changeSubmitButtonValue({required bool newValue}) {
-    isActiveSubmitButton.value = newValue;
+  @override
+  void changeSubmitButtonValue({required bool isActive}) {
+    isActiveSubmitButton.value = isActive;
     isActiveSubmitButton.notifyListeners();
+  }
+
+  @override
+  void changeScrollStatus({required bool isActive}) {
+    isActiveScrolling.value = isActive;
+    isActiveScrolling.notifyListeners();
   }
 
   Future<void> signInValidate({
@@ -36,7 +47,7 @@ class SignInController extends ChangeNotifier {
   }) async {
     try {
       if (formKey.currentState!.validate()) {
-        changeSubmitButtonValue(newValue: false);
+        changeSubmitButtonValue(isActive: false);
         await signIn(
           context: context,
           email: emailController,
@@ -48,7 +59,7 @@ class SignInController extends ChangeNotifier {
     } catch (e) {
       throw Failure(e.toString());
     } finally {
-      changeSubmitButtonValue(newValue: true);
+      changeSubmitButtonValue(isActive: true);
     }
   }
 
@@ -110,5 +121,6 @@ class SignInController extends ChangeNotifier {
 
   void disposeObjects() {
     isActiveSubmitButton.dispose();
+    isActiveScrolling.dispose();
   }
 }

@@ -1,15 +1,18 @@
 import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/presentation/controller/image_picker_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
+import 'package:todo2/presentation/pages/auth/sign_in_up/controller/interfaces/scrollable.dart';
+import 'package:todo2/presentation/pages/auth/sign_in_up/controller/interfaces/submitable.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
-import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 
-class SignUpController extends ChangeNotifier {
+class SignUpController extends ChangeNotifier
+    implements IsScrollable, Submitable {
+
+      
   SignUpController({
     required AuthRepositoryImpl authRepository,
     required this.formValidatorController,
@@ -24,10 +27,18 @@ class SignUpController extends ChangeNotifier {
   final SecureStorageSource _storageSource;
   final formKey = GlobalKey<FormState>();
   final isActiveSubmitButton = ValueNotifier(true);
+  final isActiveScrolling = ValueNotifier(true);
 
-  void changeSubmitButtonValue({required bool newValue}) {
-    isActiveSubmitButton.value = newValue;
+  @override
+  void changeSubmitButtonValue({required bool isActive}) {
+    isActiveSubmitButton.value = isActive;
     isActiveSubmitButton.notifyListeners();
+  }
+
+  @override
+  void changeScrollStatus({required bool isActive}) {
+    isActiveScrolling.value = isActive;
+    isActiveScrolling.notifyListeners();
   }
 
   Future<void> signUpValidate({
@@ -38,20 +49,20 @@ class SignUpController extends ChangeNotifier {
   }) async {
     try {
       if (formKey.currentState!.validate()) {
-        changeSubmitButtonValue(newValue: false);
+        changeSubmitButtonValue(isActive: false);
         await signUp(
           context: context,
           username: userName,
           email: email,
           password: password,
         );
-      }else{
-       throw Failure('Form is not valid');
+      } else {
+        throw Failure('Form is not valid');
       }
     } catch (e) {
       throw Failure(e.toString());
     } finally {
-      changeSubmitButtonValue(newValue: true);
+      changeSubmitButtonValue(isActive: true);
     }
   }
 
@@ -111,5 +122,6 @@ class SignUpController extends ChangeNotifier {
   void disposeValues() {
     imgPickerController.dispose();
     isActiveSubmitButton.dispose();
+    isActiveScrolling.dispose();
   }
 }

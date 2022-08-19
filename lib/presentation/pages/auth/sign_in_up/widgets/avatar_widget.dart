@@ -5,16 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:todo2/presentation/controller/image_picker_controller.dart';
 
 class AvatarWidget extends StatelessWidget {
-  final ImageController imageController;
-  const AvatarWidget({Key? key, required this.imageController})
-      : super(key: key);
+  final ImageController imgController;
+  const AvatarWidget({Key? key, required this.imgController}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => imageController.pickAvatar(context: context),
+      onTap: () => imgController.pickAvatar(context: context),
       child: ValueListenableBuilder<PlatformFile>(
-          valueListenable: imageController.pickedFile,
+          valueListenable: imgController.pickedFile,
           builder: (__, imageFile, _) {
             return Container(
               width: 80,

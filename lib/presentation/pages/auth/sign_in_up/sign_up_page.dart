@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/storage/avatar_storage_data_source.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
@@ -18,6 +16,7 @@ import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/subtitle_widget
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/textfield_widget.dart';
 import 'package:todo2/presentation/pages/auth/widgets/title_widget.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
+import 'package:todo2/presentation/widgets/common/dynamic_single_scroller.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
 import 'package:todo2/services/message_service/message_service.dart';
@@ -46,6 +45,7 @@ class _SignUpPageState extends State<SignUpPage> {
     formValidatorController: FormValidatorController(),
     storageSource: SecureStorageSource(),
   );
+
   @override
   void dispose() {
     _emailController.dispose();
@@ -65,95 +65,110 @@ class _SignUpPageState extends State<SignUpPage> {
         showLeadingButton: true,
         isRedAppBar: false,
         child: DisabledGlowWidget(
-          child: SingleChildScrollView(
-            child: UnfocusWidget(
-              child: SizedBox(
-                width: size.width - minFactor,
-                height: size.height - minFactor,
-                child: Form(
-                  key: _signUpController.formKey,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  child: Padding(
-                    padding: const EdgeInsets.all(paddingAll),
-                    child: Wrap(
-                      alignment: WrapAlignment.center,
-                      runSpacing: 20,
-                      children: [
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              TitleTextWidget(text: 'Welcome'),
-                              SizedBox(height: 6),
-                              SubTitleWidget(text: 'Sign up to continue'),
-                            ],
+          child: ValueListenableBuilder<bool>(
+            valueListenable: _signUpController.isActiveScrolling,
+            builder: (__, isScrolling, _) =>
+                DynamicPhycicsSingleChildScrollView(
+              isDisabledScroll: isScrolling,
+              child: UnfocusWidget(
+                onClick: () =>
+                    _signUpController.changeScrollStatus(isActive: true),
+                child: SizedBox(
+                  width: size.width - minFactor,
+                  height: size.height - minFactor,
+                  child: Form(
+                    key: _signUpController.formKey,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    child: Padding(
+                      padding: const EdgeInsets.all(paddingAll),
+                      child: Wrap(
+                        alignment: WrapAlignment.center,
+                        runSpacing: 20,
+                        children: [
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: const [
+                                TitleTextWidget(text: 'Welcome'),
+                                SizedBox(height: 6),
+                                SubTitleWidget(text: 'Sign up to continue'),
+                              ],
+                            ),
                           ),
-                        ),
-                        AvatarWidget(
-                          imageController:
-                              _signUpController.imgPickerController,
-                        ),
-                        TextFieldWidget(
-                          validateCallback: (text) => _signUpController
-                              .formValidatorController
-                              .validateEmail(email: text!),
-                          isEmail: false,
-                          textController: _emailController,
-                          labelText: 'Email',
-                          title: 'Email',
-                        ),
-                        TextFieldWidget(
-                          validateCallback: (text) => _signUpController
-                              .formValidatorController
-                              .validatePassword(
-                            password: text!,
-                            isSignIn: false,
+                          AvatarWidget(
+                            imgController:
+                                _signUpController.imgPickerController,
                           ),
-                          isEmail: false,
-                          isObcecure: true,
-                          textController: _passwordController,
-                          labelText: 'Enter your password',
-                          title: 'Password',
-                        ),
-                        TextFieldWidget(
-                          validateCallback: (text) => _signUpController
-                              .formValidatorController
-                              .validateNickname(username: text!),
-                          isEmail: false,
-                          textController: _usernameController,
-                          isObcecure: false,
-                          labelText: 'Username',
-                          title: 'Username',
-                        ),
-                        ValueListenableBuilder<bool>(
-                          valueListenable:
-                              _signUpController.isActiveSubmitButton,
-                          builder: (context, isClicked, _) => isClicked
-                              ? SubmitUpButtonWidget(
-                                  buttonText: 'Sign Up',
-                                  onPressed: isClicked
-                                      ? () async => _signUpController
-                                              .signUpValidate(
-                                            context: context,
-                                            userName: _usernameController.text,
-                                            email: _emailController.text,
-                                            password: _passwordController.text,
-                                          )
-                                              .then((_) {
-                                            MessageService.displaySnackbar(
-                                                message: 'Sign up success!',
-                                                context: context);
-                                            // NavigationService.navigateTo(
-                                            //     context, Pages.home);
-                                          })
-                                      : null,
-                                )
-                              : const ProgressIndicatorWidget(
-                                  text: 'Validating...'),
-                        ),
-                        const SignInButtonWidget(buttonText: 'Sign In'),
-                      ],
+                          TextFieldWidget(
+                            onTap: () => _signUpController.changeScrollStatus(
+                                isActive: false),
+                            validateCallback: (text) => _signUpController
+                                .formValidatorController
+                                .validateEmail(email: text!),
+                            isEmail: false,
+                            textController: _emailController,
+                            labelText: 'Email',
+                            title: 'Email',
+                          ),
+                          TextFieldWidget(
+                            onTap: () => _signUpController.changeScrollStatus(
+                                isActive: false),
+                            validateCallback: (text) => _signUpController
+                                .formValidatorController
+                                .validatePassword(
+                              password: text!,
+                              isSignIn: false,
+                            ),
+                            isEmail: false,
+                            isObcecure: true,
+                            textController: _passwordController,
+                            labelText: 'Enter your password',
+                            title: 'Password',
+                          ),
+                          TextFieldWidget(
+                            onTap: () => _signUpController.changeScrollStatus(
+                                isActive: false),
+                            validateCallback: (text) => _signUpController
+                                .formValidatorController
+                                .validateNickname(username: text!),
+                            isEmail: false,
+                            textController: _usernameController,
+                            isObcecure: false,
+                            labelText: 'Username',
+                            title: 'Username',
+                          ),
+                          ValueListenableBuilder<bool>(
+                            valueListenable:
+                                _signUpController.isActiveSubmitButton,
+                            builder: (context, isClicked, _) => isClicked
+                                ? SubmitUpButtonWidget(
+                                    buttonText: 'Sign Up',
+                                    onPressed: isClicked
+                                        ? () async => _signUpController
+                                                .signUpValidate(
+                                              context: context,
+                                              userName:
+                                                  _usernameController.text,
+                                              email: _emailController.text,
+                                              password:
+                                                  _passwordController.text,
+                                            )
+                                                .then((_) {
+                                              MessageService.displaySnackbar(
+                                                  message: 'Sign up success!',
+                                                  context: context);
+                                              NavigationService.navigateTo(
+                                                  context, Pages.home);
+                                            })
+                                        : null,
+                                  )
+                                : const ProgressIndicatorWidget(
+                                    text: 'Validating...'),
+                          ),
+                          const SignInButtonWidget(buttonText: 'Sign In'),
+                        ],
+                      ),
                     ),
                   ),
                 ),

@@ -8,6 +8,7 @@ class TextFieldWidget extends StatelessWidget {
   final bool isEmail;
   final bool isObcecure;
   final double top;
+  final VoidCallback? onTap;
   final Function(String? text)? validateCallback;
   const TextFieldWidget({
     Key? key,
@@ -17,6 +18,7 @@ class TextFieldWidget extends StatelessWidget {
     required this.title,
     final this.isObcecure = false,
     this.top = 0,
+    this.onTap,
     required this.isEmail,
   }) : super(key: key);
 
@@ -33,6 +35,7 @@ class TextFieldWidget extends StatelessWidget {
           ),
         ),
         TextFormField(
+          onTap: onTap,
           scrollPhysics: const NeverScrollableScrollPhysics(),
           scrollPadding: const EdgeInsets.all(0),
           keyboardType:

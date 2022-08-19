@@ -57,7 +57,6 @@ class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
         InheritedNavigator.of(context)!.navigationController;
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       backgroundColor: isWhite == null ? Colors.white : const Color(0xffFDFDFD),
       appBar: showAppBar
           ? AppBar(
