@@ -51,15 +51,7 @@ class ProjectItemWidget extends StatelessWidget {
                       CategoryLengthWidget(taskLength: taskLength)
                     ],
                   )
-                  //  Wrap(
-                  //   spacing: 5,
-                  //   direction: Axis.vertical,
-                  //   children: [
-
-                  //     CategoryWidget(title: model.title),
-                  //     CategoryLengthWidget(taskLength: taskLength)
-                  //   ],
-                  // ),
+                 
                   ),
             ],
           ),

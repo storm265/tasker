@@ -38,8 +38,6 @@ class SignUpController extends ChangeNotifier
   void changeScrollStatus({required bool isActive}) {
     isActiveScrolling.value = isActive;
     isActiveScrolling.notifyListeners();
-    print('isActiveScrolling.value: ${isActiveScrolling.value}');
-    print('extend: ${scrollController.position.minScrollExtent}');
     if (!isActiveScrolling.value) {
       scrollController.animateTo(
         scrollController.position.minScrollExtent - 0.2,
@@ -61,19 +59,48 @@ class SignUpController extends ChangeNotifier
     required String password,
   }) async {
     try {
-      if (formKey.currentState!.validate()) {
-        changeSubmitButtonValue(isActive: false);
-        await signUp(
-          context: context,
-          username: userName,
-          email: email,
-          password: password,
-        );
+      changeSubmitButtonValue(isActive: false);
+      if (imgPickerController.shouldUploadAvatar()) {
+        if (imgPickerController.isValidAvatar(context: context)) {
+          log('is valid avatar');
+          if (formKey.currentState!.validate()) {
+            log('form is valid');
+
+            log('sign up with avatar avatr');
+            // await signUp(
+            //   context: context,
+            //   username: userName,
+            //   email: email,
+            //   password: password,
+            // );
+            // final imageResponse = await imgPickerController.uploadAvatar();
+            // await _storageSource.storageApi.saveUserData(
+            //     type: StorageDataType.avatarUrl, value: imageResponse);
+            throw Failure('sign up ok');
+          }
+        } else {
+          throw Failure('Form is not valid');
+        }
       } else {
-        throw Failure('Form is not valid');
+        log('withoud avatr');
+        if (formKey.currentState!.validate()) {
+          log('form is valid');
+          log('form is sign up');
+
+          // await signUp(
+          //   context: context,
+          //   username: userName,
+          //   email: email,
+          //   password: password,
+          // );
+          throw Failure('sign up ok');
+        } else {
+          throw Failure('Form is not valid');
+        }
       }
     } catch (e) {
-      throw Failure(e.toString());
+      MessageService.displaySnackbar(message: e.toString(), context: context);
+      throw Failure('Form is not valid');
     } finally {
       changeSubmitButtonValue(isActive: true);
     }
@@ -112,23 +139,13 @@ class SignUpController extends ChangeNotifier
           ),
         ]);
       }
-      if (imgPickerController.shouldUploadAvatar()) {
-        log('should upload');
-        final imageResponse = await imgPickerController.uploadAvatar();
-
-        await _storageSource.storageApi.saveUserData(
-            type: StorageDataType.avatarUrl, value: imageResponse);
-      }
-      log('skip upload avatar upload ');
-      // TODO testing, remove context
       MessageService.displaySnackbar(
         context: context,
         message:
             'Token will expire: ${DateTime.fromMillisecondsSinceEpoch(signUpResponse.expiresIn)}',
       );
-    } catch (e) {
-      MessageService.displaySnackbar(message: e.toString(), context: context);
-      throw Failure(e.toString());
+    } catch (e, t) {
+      throw Failure('Sign up failed $e : trace $t');
     }
   }
 

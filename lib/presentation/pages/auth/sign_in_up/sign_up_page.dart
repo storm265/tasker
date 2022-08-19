@@ -70,7 +70,6 @@ class _SignUpPageState extends State<SignUpPage> {
           child: ValueListenableBuilder<bool>(
               valueListenable: _signUpController.isActiveScrolling,
               builder: (__, isScrolling, _) {
-                log('isScrolling: $isScrolling');
                 return DynamicPhycicsSingleChildScrollView(
                   scrollController: _signUpController.scrollController,
                   isActivesScrolling: isScrolling,
@@ -82,7 +81,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       height: size.height - minFactor,
                       child: Form(
                         key: _signUpController.formKey,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        autovalidateMode: AutovalidateMode.always,
                         child: Padding(
                           padding: const EdgeInsets.all(paddingAll),
                           child: Wrap(
@@ -114,7 +113,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 labelText: 'Email',
                                 title: 'Email',
                               ),
-                              TextFieldWidget(   
+                              TextFieldWidget(
                                 signUpController: _signUpController,
                                 validateCallback: (text) => _signUpController
                                     .formValidatorController
@@ -128,8 +127,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                 labelText: 'Enter your password',
                                 title: 'Password',
                               ),
-                              TextFieldWidget(   signUpController: _signUpController,
-                               
+                              TextFieldWidget(
+                                signUpController: _signUpController,
                                 validateCallback: (text) => _signUpController
                                     .formValidatorController
                                     .validateNickname(username: text!),

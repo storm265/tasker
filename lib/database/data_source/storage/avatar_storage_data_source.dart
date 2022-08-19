@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
@@ -44,8 +45,10 @@ class AvatarStorageDataSourceImpl implements AvatarStorageDataSource {
               'null',
         ),
       );
+
       return response.data[AuthScheme.data] as Map<String, dynamic>;
-    } catch (e) {
+    } catch (e, t) {
+      log('Trace ${t.toString()}');
       throw Failure(e.toString());
     }
   }

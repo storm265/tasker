@@ -81,7 +81,7 @@ class _SignInPageState extends State<SignInPage> {
                   height: size.height - minFactor,
                   child: Form(
                     key: _signInController.formKey,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    autovalidateMode: AutovalidateMode.always,
                     child: Padding(
                       padding: const EdgeInsets.all(paddingAll),
                       child: Wrap(

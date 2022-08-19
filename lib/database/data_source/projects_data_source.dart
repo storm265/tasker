@@ -86,42 +86,42 @@ class ProjectUserDataImpl implements ProjectUserData {
   @override
   Future<List<dynamic>> fetchAllProjects() async {
     try {
-      final id =
-          await _secureStorageService.getUserData(type: StorageDataType.id);
-      final response = await _network.networkApiClient.dio.get(
-        '$_projects/$id',
-        options: await _network.networkApiClient.getLocalRequestOptions(),
-      );
+      // final id =
+      //     await _secureStorageService.getUserData(type: StorageDataType.id);
+      // final response = await _network.networkApiClient.dio.get(
+      //   '$_projects/$id',
+      //   options: await _network.networkApiClient.getLocalRequestOptions(),
+      // );
 // fake api
 
-      // final response = Response(
-      //     requestOptions: RequestOptions(path: ''),
-      //     statusCode: 200,
-      //     data: {
-      //       "data": [
-      //         {
-      //           "id": "ce8f3cac-5c07-4e74-a286-017e39fdd9b3",
-      //           "title": "Personal",
-      //           "color": "#6074F9",
-      //           "owner_id": "76d2fab4-fd06-4909-bf8e-875c6b55c1f7",
-      //           "created_at": "2022-07-12T14:46:44.793558"
-      //         },
-      //         {
-      //           "id": "eda45acd-22d1-4dc6-9f75-0c0e7b172d0f",
-      //           "title": "Project 1",
-      //           "color": "#FFFFD4",
-      //           "owner_id": "76d2fab4-fd06-4909-bf8e-875c6b55c1f7",
-      //           "created_at": "2022-07-13T08:43:24.147065"
-      //         },
-      //         {
-      //           "id": "85732d06-0d93-4be9-b1ec-30defc76fad0",
-      //           "title": "Project 2sdgfhsuhiisuhfreisfhusifhshiufhus",
-      //           "color": "#FFFFD4",
-      //           "owner_id": "76d2fab4-fd06-4909-bf8e-875c6b55c1f7",
-      //           "created_at": "2022-07-13T08:43:43.903710"
-      //         },
-      //       ]
-      //     });
+      final response = Response(
+          requestOptions: RequestOptions(path: ''),
+          statusCode: 200,
+          data: {
+            "data": [
+              {
+                "id": "ce8f3cac-5c07-4e74-a286-017e39fdd9b3",
+                "title": "Personal",
+                "color": "#6074F9",
+                "owner_id": "76d2fab4-fd06-4909-bf8e-875c6b55c1f7",
+                "created_at": "2022-07-12T14:46:44.793558"
+              },
+              {
+                "id": "eda45acd-22d1-4dc6-9f75-0c0e7b172d0f",
+                "title": "Project 1",
+                "color": "#FFFFD4",
+                "owner_id": "76d2fab4-fd06-4909-bf8e-875c6b55c1f7",
+                "created_at": "2022-07-13T08:43:24.147065"
+              },
+              {
+                "id": "85732d06-0d93-4be9-b1ec-30defc76fad0",
+                "title": "Project 2sdgfhsuhiisuhfreisfhusifhshiufhus",
+                "color": "#FFFFD4",
+                "owner_id": "76d2fab4-fd06-4909-bf8e-875c6b55c1f7",
+                "created_at": "2022-07-13T08:43:43.903710"
+              },
+            ]
+          });
       return NetworkErrorService.isSuccessful(response)
           ? (response.data![AuthScheme.data] as List<dynamic>)
           : throw Failure('Error: get project error');
@@ -229,18 +229,48 @@ class ProjectUserDataImpl implements ProjectUserData {
   @override
   Future<List<dynamic>> fetchProjectStats() async {
     try {
-      final userId =
-          await _secureStorageService.getUserData(type: StorageDataType.id);
+      // final userId =
+      //     await _secureStorageService.getUserData(type: StorageDataType.id);
 
-      final response = await _network.networkApiClient.dio.get(
-        '$_projectsStats/$userId',
-        options: await _network.networkApiClient.getLocalRequestOptions(),
-      );
+      // final response = await _network.networkApiClient.dio.get(
+      //   '$_projectsStats/$userId',
+      //   options: await _network.networkApiClient.getLocalRequestOptions(),
+      // );
+      final response = Response(
+          requestOptions: RequestOptions(path: ''),
+          statusCode: 200,
+          data: {
+            "data": [
+              {
+                "project_id": "ce8f3cac-5c07-4e74-a286-017e39fdd9b3",
+                "tasks_number": 0
+              },
+              {
+                "project_id": "eda45acd-22d1-4dc6-9f75-0c0e7b172d0f",
+                "tasks_number": 0
+              },
+              {
+                "project_id": "85732d06-0d93-4be9-b1ec-30defc76fad0",
+                "tasks_number": 0
+              },
+              {
+                "project_id": "2fe0fa38-9dec-4e1f-a259-161dde928258",
+                "tasks_number": 0
+              },
+              {
+                "project_id": "28ce0b43-78d5-4fc6-bd4f-9bea47d4b2d0",
+                "tasks_number": 0
+              }
+            ]
+          });
 
       return NetworkErrorService.isSuccessful(response)
-          ? (response.data[AuthScheme.data] as List<dynamic>)
-          : throw Failure(
-              'Error: ${response.data[AuthScheme.data][AuthScheme.message]}');
+          ? (response.data![AuthScheme.data] as List<dynamic>)
+          : throw Failure('Error: dd');
+      // return NetworkErrorService.isSuccessful(response)
+      //     ? (response.data[AuthScheme.data] as List<dynamic>)
+      //     : throw Failure(
+      //         'Error: ${response.data[AuthScheme.data][AuthScheme.message]}');
     } catch (e) {
       throw Failure(e.toString());
     }

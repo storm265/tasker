@@ -34,15 +34,27 @@ class ImageController extends ChangeNotifier {
             ],
           ) ??
           const FilePickerResult([]);
+      pickedFile.value = result.files.last;
+      log(' extension: ${pickedFile.value.extension}');
+      log('picker image : ${result.files.last.path}');
 
-      pickedFile.notifyListeners();
       if (result.files.last.size >= maxSize) {
         result.files.clear();
+        pickedFile.notifyListeners();
         throw MessageService.displaySnackbar(
           message: 'You cant put huge file',
           context: context,
         );
+      } else if (!isValidAvatar(context: context)) {
+        result.files.clear();
+        pickedFile.notifyListeners();
+        throw MessageService.displaySnackbar(
+          message: 'Wrong image, supported formats: .jpeg, .png. Image removed',
+          context: context,
+        );
       } else {
+        log('corrected image');
+        pickedFile.notifyListeners();
         return pickedFile.value = result.files.last;
       }
     } catch (e) {
@@ -52,16 +64,11 @@ class ImageController extends ChangeNotifier {
 
   bool shouldUploadAvatar() => pickedFile.value.path != '';
 
-  Future<bool> isValidAvatar({required BuildContext context}) async {
+  bool isValidAvatar({required BuildContext context}) {
     try {
       if (!_isWrongImageFormat) {
-        MessageService.displaySnackbar(
-          message: 'Wrong image, supported formats: .jpeg, .png',
-          context: context,
-        );
         return false;
       } else {
-        await uploadAvatar();
         return true;
       }
     } catch (e) {
