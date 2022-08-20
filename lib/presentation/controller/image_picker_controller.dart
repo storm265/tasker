@@ -12,12 +12,13 @@ class ImageController extends ChangeNotifier {
   ImageController({required AvatarStorageReposiroryImpl avatarRepository})
       : _avatarStorageRepository = avatarRepository;
 
+  final _emptyImage = const PlatformFile(name: '', size: 0, path: '');
   var pickedFile =
       ValueNotifier(const PlatformFile(name: '', size: 0, path: ''));
 
-  bool get _isWrongImageFormat =>
-      pickedFile.value.extension == 'jpeg' ||
-      pickedFile.value.extension == 'png';
+  bool get wrongFormat =>
+      pickedFile.value.extension != 'jpeg' &&
+      pickedFile.value.extension != 'png';
 
   Future<PlatformFile> pickAvatar({
     required BuildContext context,
@@ -35,25 +36,32 @@ class ImageController extends ChangeNotifier {
           ) ??
           const FilePickerResult([]);
       pickedFile.value = result.files.last;
-      log(' extension: ${pickedFile.value.extension}');
-      log('picker image : ${result.files.last.path}');
-
+      pickedFile.notifyListeners();
+      log('picker image path : ${pickedFile.value.path}');
+      log('picker extension : ${pickedFile.value.extension}');
+      log('wrongFormat: $wrongFormat');
+      log('contains jpeg : ${pickedFile.value.extension == 'jpeg'}');
+      log('contains png : ${pickedFile.value.extension == 'png'}');
       if (result.files.last.size >= maxSize) {
+        pickedFile.value = _emptyImage;
         result.files.clear();
         pickedFile.notifyListeners();
         throw MessageService.displaySnackbar(
           message: 'You cant put huge file',
           context: context,
         );
-      } else if (!isValidAvatar(context: context)) {
+      } else if (pickedFile.value.extension != 'jpeg' &&
+          pickedFile.value.extension != 'png') {
+        pickedFile.value = _emptyImage;
         result.files.clear();
         pickedFile.notifyListeners();
         throw MessageService.displaySnackbar(
-          message: 'Wrong image, supported formats: .jpeg, .png. Image removed',
+          message: 'Wrong image, supported formats: .jpeg, .png.',
           context: context,
         );
       } else {
         log('corrected image');
+        pickedFile.value = result.files.last;
         pickedFile.notifyListeners();
         return pickedFile.value = result.files.last;
       }
@@ -66,7 +74,7 @@ class ImageController extends ChangeNotifier {
 
   bool isValidAvatar({required BuildContext context}) {
     try {
-      if (!_isWrongImageFormat) {
+      if (wrongFormat) {
         return false;
       } else {
         return true;

@@ -47,11 +47,6 @@ class SignUpController extends ChangeNotifier
     }
   }
 
-  void setTrue() {
-    isActiveScrolling.value = true;
-    isActiveScrolling.notifyListeners();
-  }
-
   Future<void> signUpValidate({
     required BuildContext context,
     required String userName,
@@ -60,47 +55,49 @@ class SignUpController extends ChangeNotifier
   }) async {
     try {
       changeSubmitButtonValue(isActive: false);
+
       if (imgPickerController.shouldUploadAvatar()) {
         if (imgPickerController.isValidAvatar(context: context)) {
-          log('is valid avatar');
+          log('Valid avatar!');
           if (formKey.currentState!.validate()) {
             log('form is valid');
 
             log('sign up with avatar avatr');
-            // await signUp(
-            //   context: context,
-            //   username: userName,
-            //   email: email,
-            //   password: password,
-            // );
-            // final imageResponse = await imgPickerController.uploadAvatar();
-            // await _storageSource.storageApi.saveUserData(
-            //     type: StorageDataType.avatarUrl, value: imageResponse);
-            throw Failure('sign up ok');
+            await signUp(
+              context: context,
+              username: userName,
+              email: email,
+              password: password,
+            );
+            final imageResponse = await imgPickerController.uploadAvatar();
+            await _storageSource.storageApi.saveUserData(
+                type: StorageDataType.avatarUrl, value: imageResponse);
+            //  throw Failure('sign up ok');
+          } else {
+            throw Failure('Form is not valid');
           }
-        } else {
-          throw Failure('Form is not valid');
         }
       } else {
         log('withoud avatr');
         if (formKey.currentState!.validate()) {
           log('form is valid');
-          log('form is sign up');
+          log('sign up success');
 
-          // await signUp(
-          //   context: context,
-          //   username: userName,
-          //   email: email,
-          //   password: password,
-          // );
-          throw Failure('sign up ok');
+          await signUp(
+            context: context,
+            username: userName,
+            email: email,
+            password: password,
+          );
+          //  throw Failure('sign up ok');
         } else {
+          log('form is not valid');
           throw Failure('Form is not valid');
         }
       }
     } catch (e) {
       MessageService.displaySnackbar(message: e.toString(), context: context);
-      throw Failure('Form is not valid');
+      throw Failure(e.toString());
     } finally {
       changeSubmitButtonValue(isActive: true);
     }
@@ -145,7 +142,8 @@ class SignUpController extends ChangeNotifier
             'Token will expire: ${DateTime.fromMillisecondsSinceEpoch(signUpResponse.expiresIn)}',
       );
     } catch (e, t) {
-      throw Failure('Sign up failed $e : trace $t');
+      debugPrint(' error: $e, trace: $t');
+      throw Failure('Sign up failed');
     }
   }
 

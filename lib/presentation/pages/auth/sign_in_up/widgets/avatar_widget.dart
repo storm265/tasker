@@ -1,16 +1,20 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-
 import 'package:todo2/presentation/controller/image_picker_controller.dart';
+import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 class AvatarWidget extends StatelessWidget {
   final ImageController imgController;
-  const AvatarWidget({Key? key, required this.imgController}) : super(key: key);
+  const AvatarWidget({
+    Key? key,
+    required this.imgController,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      borderRadius: BorderRadius.circular(20),
       onTap: () => imgController.pickAvatar(context: context),
       child: ValueListenableBuilder<PlatformFile>(
           valueListenable: imgController.pickedFile,
@@ -25,7 +29,7 @@ class AvatarWidget extends StatelessWidget {
                         image: FileImage(File(imageFile.path!)),
                         fit: BoxFit.cover,
                       ),
-                border: Border.all(color: Colors.red, width: 1.5),
+                border: Border.all(color: Palette.red, width: 1.5),
                 shape: BoxShape.circle,
                 color: const Color(0xffC4C4C4),
               ),

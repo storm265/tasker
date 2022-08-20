@@ -1,0 +1,14 @@
+const String welcome = '/welcome';
+const String signIn = '/signIn';
+const String signUp = '/signUp';
+const String noConnection = '/noConnection';
+const String tasks = '/tasks';
+const String navigation = '/navigation';
+const String newTask = '/newTask';
+const String newNote = '/newNote';
+const String addCheckList = '/addCheckList';
+const String home = '/home';
+const String taskList = '/taskList';
+const String addTask = '/addTask';
+const String addNote = '/addNote';
+const String workList = '/workList';

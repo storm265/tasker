@@ -159,6 +159,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                                       message:
                                                           'Sign up success!',
                                                       context: context);
+                                                  log('next page');
                                                   NavigationService.navigateTo(
                                                       context, Pages.home);
                                                 })
