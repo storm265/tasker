@@ -58,6 +58,7 @@ class SecureStorageService {
       return data;
     } catch (e) {
       debugPrint('secure storage error: $e');
+      throw 'Secure storage error';
     }
   }
 

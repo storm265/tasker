@@ -6,8 +6,11 @@ import 'package:todo2/presentation/pages/auth/welcome/welcome_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/add_check_list/add_checklist_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/new_note_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/new_task.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/tasks_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/menu/menu_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/navigation/navigation_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/profile/profile_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/tasks_page.dart';
 import 'package:todo2/presentation/pages/no_connection_page.dart';
 import 'package:todo2/services/navigation_service/pages.dart';
 
@@ -17,8 +20,12 @@ enum Pages {
   signUpReplacement,
   signIn,
   signInReplacement,
-  home,
-  taskList,
+
+  navigationReplacement,
+  tasks,
+  menu,
+  quick,
+  profile,
   noConnection,
   addNote,
   addCheckList,
@@ -27,12 +34,15 @@ enum Pages {
 
 Map<String, Widget Function(BuildContext)> routes = {
   '/': (_) => const SplashPage(),
+  navigation: (_) => const NavigationPage(),
   noConnection: (_) => const NoConnectionPage(),
   welcome: (_) => const WelcomePage(),
   signUp: (_) => const SignUpPage(),
   signIn: (_) => const SignInPage(),
-  home: (_) => const NavigationPage(),
-  taskList: (_) => const TasksPage(),
+  tasks: (_) => const TasksPage(),
+  menu: (_) => const MenuPage(),
+  quick: (_) => QuickPage(),
+  profile: (_) => const ProfilePage(),
   addTask: (_) => const AddTaskPage(),
   addNote: (_) => const AddQuickNote(),
   addCheckList: (_) => const AddCheckListPage()
@@ -44,6 +54,10 @@ class NavigationService {
     Pages page,
   ) async {
     switch (page) {
+       case Pages.navigationReplacement:
+        await Navigator.pushReplacementNamed(
+            context, navigation);
+        break;
       case Pages.welcome:
         await Navigator.pushNamedAndRemoveUntil(
             context, welcome, ((_) => false));
@@ -58,14 +72,21 @@ class NavigationService {
         await Navigator.pushNamed(context, signIn);
         break;
       case Pages.signInReplacement:
-        await Navigator.pushReplacementNamed(context, signUp);
+        await Navigator.pushReplacementNamed(context, signIn);
         break;
-      case Pages.taskList:
-        await Navigator.pushNamed(context, workList);
+      case Pages.tasks:
+        await Navigator.pushNamed(context, tasks);
         break;
-      case Pages.home:
-        await Navigator.pushNamedAndRemoveUntil(context, home, ((_) => false));
+      case Pages.menu:
+        await Navigator.pushNamed(context, menu);
         break;
+      case Pages.quick:
+        await Navigator.pushNamed(context, quick);
+        break;
+      case Pages.profile:
+        await Navigator.pushNamed(context, profile);
+        break;
+
       case Pages.noConnection:
         await Navigator.pushNamed(context, noConnection);
         break;

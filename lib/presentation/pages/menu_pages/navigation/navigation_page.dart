@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/menu_page.dart';
-import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/inherited_navigation_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/status_bar_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/navigation/widgets/keep_alive_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/navigation/widgets/keep_page_alive.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/profile_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_page.dart';
-
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/floating_button_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/nav_bar_widget.dart';
+import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 class NavigationPage extends StatefulWidget {
   const NavigationPage({Key? key}) : super(key: key);
@@ -20,23 +19,27 @@ class NavigationPage extends StatefulWidget {
 }
 
 class _NavigationPageState extends State<NavigationPage> {
-  final _statusBarController = StatusBarController();
-  late NavigationController inheritedNavigatorConroller;
+  late StatusBarController _statusBarController;
+  late NavigationController _navigationController;
 
   @override
-  void didChangeDependencies() {
-    inheritedNavigatorConroller =
-        InheritedNavigator.of(context)!.navigationController;
-    super.didChangeDependencies();
+  void initState() {
+    _statusBarController = StatusBarController();
+    _navigationController = NavigationController();
+    _navigationController.pageController = PageController(initialPage: 0);
+    super.initState();
   }
 
-  // @override
-  // void dispose() {
-  //   _statusBarController.dispose();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    _navigationController.dispose();
+    _statusBarController.dispose();
+    _navigationController.pageController.dispose();
+    super.dispose();
+  }
 
-  final Color _greyColor = const Color(0xff8E8E93);
+  final _greyColor = const Color(0xff8E8E93);
+
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
@@ -50,83 +53,58 @@ class _NavigationPageState extends State<NavigationPage> {
           body: SafeArea(
             maintainBottomViewPadding: true,
             bottom: false,
-            child: PageView(
-              physics: const NeverScrollableScrollPhysics(),
-              onPageChanged: (index) {
-                index == 0
-                    ? _statusBarController.setRedStatusMode(true)
-                    : _statusBarController.setRedStatusMode(false);
-              },
-              controller: pageController,
-              children: [
-                const KeepAlivePageWidget(child: TasksPage()),
-                const KeepAlivePageWidget(child: MenuPage()),
-                KeepAlivePageWidget(child: QuickPage()),
-                const KeepAlivePageWidget(child: ProfilePage()),
-              ],
-            ),
+            child: PageView.builder(
+                controller: _navigationController.pageController,
+                onPageChanged: (index) => _navigationController.pages[index],
+                itemBuilder: (_, i) => _navigationController.pages[i]),
           ),
-          bottomNavigationBar: ColoredBox(
-            color: const Color(0xFF292E4E),
-            child: SizedBox(
+          bottomNavigationBar: ValueListenableBuilder<int>(
+            valueListenable: _navigationController.pageIndex,
+            builder: (context, pageIndex, _) => Container(
               height: 60,
               width: double.infinity,
-              child: ValueListenableBuilder<int>(
-                valueListenable: inheritedNavigatorConroller.pageIndex,
-                builder: (context, pageIndex, _) => Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    GestureDetector(
-                      onTap: () async {
-                        await inheritedNavigatorConroller
-                            .animateToPage(NavigationPages.tasks);
-                        _statusBarController.setRedStatusMode(true);
-                      },
-                      child: NavBarItem(
-                        label: 'My Tasks',
-                        icon: 'tasks',
-                        iconColor: pageIndex == 0 ? Colors.white : _greyColor,
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () async {
-                        await inheritedNavigatorConroller
-                            .animateToPage(NavigationPages.menu);
-                        _statusBarController.setRedStatusMode(false);
-                      },
-                      child: NavBarItem(
-                        label: 'Menu',
-                        icon: 'menu',
-                        iconColor: pageIndex == 1 ? Colors.white : _greyColor,
-                      ),
-                    ),
-                    const SizedBox(width: 50),
-                    GestureDetector(
-                      onTap: () async {
-                        await inheritedNavigatorConroller
-                            .animateToPage(NavigationPages.quick);
-                        _statusBarController.setRedStatusMode(false);
-                      },
-                      child: NavBarItem(
-                        label: 'Quick',
-                        icon: 'quick',
-                        iconColor: pageIndex == 2 ? Colors.white : _greyColor,
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () async {
-                        await inheritedNavigatorConroller
-                            .animateToPage(NavigationPages.profile);
-                        _statusBarController.setRedStatusMode(false);
-                      },
-                      child: NavBarItem(
-                        label: 'Profile',
-                        icon: 'profile',
-                        iconColor: pageIndex == 3 ? Colors.white : _greyColor,
-                      ),
-                    ),
-                  ],
-                ),
+              color: const Color(0xFF292E4E),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  NavBarItem(
+                    onTap: () async {
+                      _statusBarController.setRedStatusMode(true);
+                      await _navigationController.pushToPage(Pages.tasks);
+                    },
+                    label: 'My Tasks',
+                    icon: 'tasks',
+                    iconColor: pageIndex == 0 ? Colors.white : _greyColor,
+                  ),
+                  NavBarItem(
+                    onTap: () async {
+                      _statusBarController.setRedStatusMode(false);
+                      await _navigationController.pushToPage(Pages.menu);
+                    },
+                    label: 'Menu',
+                    icon: 'menu',
+                    iconColor: pageIndex == 1 ? Colors.white : _greyColor,
+                  ),
+                  const SizedBox(width: 50),
+                  NavBarItem(
+                    onTap: () async {
+                      _statusBarController.setRedStatusMode(false);
+                      await _navigationController.pushToPage(Pages.quick);
+                    },
+                    label: 'Quick',
+                    icon: 'quick',
+                    iconColor: pageIndex == 2 ? Colors.white : _greyColor,
+                  ),
+                  NavBarItem(
+                    onTap: () async {
+                      _statusBarController.setRedStatusMode(false);
+                      await _navigationController.pushToPage(Pages.profile);
+                    },
+                    label: 'Profile',
+                    icon: 'profile',
+                    iconColor: pageIndex == 3 ? Colors.white : _greyColor,
+                  ),
+                ],
               ),
             ),
           ),

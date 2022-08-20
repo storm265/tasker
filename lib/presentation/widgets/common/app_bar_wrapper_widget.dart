@@ -1,8 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/inherited_navigation_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
@@ -27,7 +24,6 @@ class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
   final Widget actionWidget;
   final Widget child;
   final String? title;
-  final bool shouldUsePopMethod;
   final bool showLeadingButton;
   final bool showAppBar;
   final bool isRedAppBar;
@@ -41,7 +37,6 @@ class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
     this.bottom,
     this.title,
     this.actionWidget = const SizedBox(),
-    this.shouldUsePopMethod = false,
     this.showLeadingButton = false,
     this.showAppBar = true,
     this.isRedAppBar = true,
@@ -53,9 +48,6 @@ class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final inheritedNavigatorConroller =
-        InheritedNavigator.of(context)!.navigationController;
-
     return Scaffold(
       backgroundColor: isWhite == null ? Colors.white : const Color(0xffFDFDFD),
       appBar: showAppBar
@@ -67,10 +59,7 @@ class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
                   ? Padding(
                       padding: const EdgeInsets.only(left: 10),
                       child: GestureDetector(
-                        onTap: () => shouldUsePopMethod
-                            ? Navigator.pop(context)
-                            : inheritedNavigatorConroller
-                                .animateToPage(NavigationPages.tasks),
+                        onTap: () => Navigator.pop(context),
                         child: Icon(
                           Icons.west_rounded,
                           size: 30,

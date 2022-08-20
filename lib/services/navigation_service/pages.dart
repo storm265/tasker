@@ -1,14 +1,17 @@
 const String welcome = '/welcome';
+const String navigation = '/navigation';
 const String signIn = '/signIn';
 const String signUp = '/signUp';
-const String noConnection = '/noConnection';
+
+
 const String tasks = '/tasks';
-const String navigation = '/navigation';
-const String newTask = '/newTask';
-const String newNote = '/newNote';
-const String addCheckList = '/addCheckList';
-const String home = '/home';
-const String taskList = '/taskList';
+const String menu = '/menu';
+const String quick = '/quick';
+const String profile = '/profile';
+
 const String addTask = '/addTask';
 const String addNote = '/addNote';
-const String workList = '/workList';
+const String addCheckList = '/addCheckList';
+
+const String noConnection = '/noConnection';
+

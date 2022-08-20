@@ -63,7 +63,6 @@ class _SignInPageState extends State<SignInPage> {
     final size = MediaQuery.of(context).size;
     return WillPopWrapper(
       child: AppbarWrapperWidget(
-        shouldUsePopMethod: true,
         showLeadingButton: true,
         isRedAppBar: false,
         child: DisabledGlowWidget(
@@ -136,7 +135,9 @@ class _SignInPageState extends State<SignInPage> {
                                                 )
                                                 .then((_) => NavigationService
                                                     .navigateTo(
-                                                        context, Pages.home));
+                                                        context,
+                                                        Pages
+                                                            .navigationReplacement));
                                           }
                                         : null,
                                   )

@@ -15,7 +15,6 @@ import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/storage/secure_storage_service.dart';
 import 'package:todo2/services/system_service/system_chrome.dart';
 import 'presentation/pages/menu_pages/floating_button/new_task/controller/add_task_controller.dart';
-import 'presentation/pages/menu_pages/navigation/controllers/inherited_navigation_controller.dart';
 import 'presentation/pages/menu_pages/profile/controller/inherited_profile.dart';
 import 'services/theme_service/theme_data_controller.dart';
 
@@ -38,7 +37,6 @@ class _MyAppState extends State<MyApp> {
     _newTaskConroller.disposeAll();
     _newTaskConroller.dispose();
     _profileController.dispose();
-    _navigationController.dispose();
     super.dispose();
   }
 
@@ -67,29 +65,23 @@ class _MyAppState extends State<MyApp> {
     ),
   );
 
-  final _navigationController = NavigationController();
+  
 
   @override
   Widget build(BuildContext context) {
-    return InheritedNavigator(
-      navigationController: _navigationController,
-      child: ProfileInherited(
+    return ProfileInherited(
         profileController: _profileController,
         child: InheritedNewTaskController(
           addTaskController: _newTaskConroller,
           child: MaterialApp(
-            // navigatorObservers: [NavigatorObserver(
-
-            // )],
             debugShowCheckedModeBanner: false,
             title: 'Todo2',
             theme: _themeDataController.themeData,
-             initialRoute: '/',
+            initialRoute: '/',
             routes: routes,
-           // home: MenuPage(),
+            // home: MenuPage(),
           ),
         ),
-      ),
-    );
+      );
   }
 }

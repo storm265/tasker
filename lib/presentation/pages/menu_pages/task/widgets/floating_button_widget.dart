@@ -6,11 +6,13 @@ class FloatingButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => showAddDialog(context),
-      child: Container(
-          width: 56,
-          height: 56,
+    return Padding(
+      padding: const EdgeInsets.only(top: 23),
+      child: GestureDetector(
+        // onTap: () => showAddDialog(context),
+        child: Container(
+          width: 55,
+          height: 55,
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.centerLeft,
@@ -29,7 +31,9 @@ class FloatingButtonWidget extends StatelessWidget {
                 fontWeight: FontWeight.w200,
               ),
             ),
-          )),
+          ),
+        ),
+      ),
     );
   }
 }

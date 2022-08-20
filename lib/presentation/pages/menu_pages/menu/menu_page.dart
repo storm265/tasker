@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/project_models/project_stats_model.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
@@ -21,11 +23,20 @@ class MenuPage extends StatefulWidget {
 }
 
 class _MenuPageState extends State<MenuPage> {
-  final titleController = TextEditingController();
-  final _projectController = ProjectController(
-    ProjectRepositoryImpl(),
-    ColorPalleteController(),
-  );
+  late TextEditingController titleController;
+  late ProjectController _projectController;
+
+  @override
+  void initState() {
+    titleController = TextEditingController();
+    _projectController = ProjectController(
+      ProjectRepositoryImpl(),
+      ColorPalleteController(),
+    );
+    log('init MenuPage page');
+    super.initState();
+  }
+
   @override
   void dispose() {
     _projectController.disposeValues();

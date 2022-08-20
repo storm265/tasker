@@ -31,7 +31,7 @@ class AddCheckListController extends ChangeNotifier {
               .toString(),
           title: title);
       await putChecklistItem()
-          .then((_) => NavigationService.navigateTo(context, Pages.home));
+          .then((_) => NavigationService.navigateTo(context, Pages.tasks));
 
       isClickedButton.value = true;
       isClickedButton.notifyListeners();

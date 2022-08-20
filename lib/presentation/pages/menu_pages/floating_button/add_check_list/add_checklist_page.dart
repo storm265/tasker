@@ -36,7 +36,6 @@ class _AddCheckListPageState extends State<AddCheckListPage> {
       isRedAppBar: true,
       title: 'Add Check List',
       showLeadingButton: true,
-      shouldUsePopMethod: true,
       child: Stack(
         children: [
           const FakeAppBar(),

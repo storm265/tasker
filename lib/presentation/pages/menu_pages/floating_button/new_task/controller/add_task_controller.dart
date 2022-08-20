@@ -163,7 +163,7 @@ class AddTaskController extends ChangeNotifier {
           title: title,
         ).then((value) => NavigationService.navigateTo(
               context,
-              Pages.home,
+              Pages.tasks,
             ));
 
         isClickedAddTask.value = true;

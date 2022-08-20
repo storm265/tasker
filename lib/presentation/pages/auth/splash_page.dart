@@ -11,22 +11,24 @@ class SplashPage extends StatefulWidget {
 }
 
 class SplashPageState extends State<SplashPage> {
+  late SecureStorageService _secureStorageService;
   bool isAuth = false;
   @override
   void initState() {
     //NetworkService().checkConnection(context, () => Navigator.pop(context));
-    Future.delayed(Duration.zero, () async => isAuthenticated());
 
+    Future.delayed(Duration.zero, () async => isAuthenticated());
+    _secureStorageService = SecureStorageService();
     super.initState();
   }
 
   Future<void> isAuthenticated() async {
-    final accessToken = await SecureStorageService()
-        .getUserData(type: StorageDataType.accessToken);
+    final accessToken = await _secureStorageService.getUserData(
+        type: StorageDataType.accessToken);
     await Future.delayed(
       const Duration(seconds: 1),
-      () async => NavigationService.navigateTo(
-          context, accessToken == null ? Pages.welcome : Pages.home),
+      () async => NavigationService.navigateTo(context,
+          accessToken == null ? Pages.welcome : Pages.navigationReplacement),
     );
   }
 

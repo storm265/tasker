@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/storage/avatar_storage_data_source.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
@@ -63,7 +61,6 @@ class _SignUpPageState extends State<SignUpPage> {
     final size = MediaQuery.of(context).size;
     return WillPopWrapper(
       child: AppbarWrapperWidget(
-        shouldUsePopMethod: true,
         showLeadingButton: true,
         isRedAppBar: false,
         child: DisabledGlowWidget(
@@ -159,9 +156,10 @@ class _SignUpPageState extends State<SignUpPage> {
                                                       message:
                                                           'Sign up success!',
                                                       context: context);
-                                                  log('next page');
+
                                                   NavigationService.navigateTo(
-                                                      context, Pages.home);
+                                                      context,
+                                                      Pages.navigationReplacement);
                                                 })
                                             : null,
                                       )

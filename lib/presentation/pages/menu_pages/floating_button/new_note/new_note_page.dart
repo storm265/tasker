@@ -39,7 +39,6 @@ class _AddQuickNoteState extends State<AddQuickNote> {
       isRedAppBar: true,
       title: 'Add Note',
       showLeadingButton: true,
-      shouldUsePopMethod: true,
       child: Stack(
         children: [
           const FakeAppBar(),

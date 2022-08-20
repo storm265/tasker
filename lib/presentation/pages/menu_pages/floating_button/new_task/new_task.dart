@@ -41,7 +41,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
       child: AppbarWrapperWidget(
         title: 'New Task',
         showLeadingButton: true,
-        shouldUsePopMethod: true,
         child: Stack(
           children: [
             const FakeAppBar(),
