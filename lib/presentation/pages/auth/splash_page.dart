@@ -15,10 +15,8 @@ class SplashPageState extends State<SplashPage> {
   bool isAuth = false;
   @override
   void initState() {
-    //NetworkService().checkConnection(context, () => Navigator.pop(context));
-
-    Future.delayed(Duration.zero, () async => isAuthenticated());
     _secureStorageService = SecureStorageService();
+    Future.delayed(Duration.zero, () async => isAuthenticated());
     super.initState();
   }
 

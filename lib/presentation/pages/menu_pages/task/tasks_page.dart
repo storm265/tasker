@@ -19,7 +19,8 @@ class TasksPage extends StatefulWidget {
 class _TasksPageState extends State<TasksPage>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
-  late final taskController = TaskRepositoryImpl();
+  // TODO create controller for this
+  final taskController = TaskRepositoryImpl();
 
   final _tuneIconPath = 'assets/work_list/tune.svg';
   @override

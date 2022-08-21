@@ -29,14 +29,14 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
   @override
   void initState() {
     _signInController.scrollController = ScrollController();
     super.initState();
   }
-
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
 
   final _signInController = SignInController(
     userController: UserController(
@@ -50,11 +50,13 @@ class _SignInPageState extends State<SignInPage> {
     authRepository: AuthRepositoryImpl(),
     formValidatorController: FormValidatorController(),
   );
+
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
     _signInController.disposeObjects();
+    _signInController.dispose();
     super.dispose();
   }
 

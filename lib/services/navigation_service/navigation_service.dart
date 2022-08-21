@@ -20,7 +20,6 @@ enum Pages {
   signUpReplacement,
   signIn,
   signInReplacement,
-
   navigationReplacement,
   tasks,
   menu,
@@ -54,35 +53,43 @@ class NavigationService {
     Pages page,
   ) async {
     switch (page) {
-       case Pages.navigationReplacement:
-        await Navigator.pushReplacementNamed(
-            context, navigation);
-        break;
       case Pages.welcome:
         await Navigator.pushNamedAndRemoveUntil(
             context, welcome, ((_) => false));
         break;
+
+      case Pages.navigationReplacement:
+        await Navigator.pushReplacementNamed(context, navigation);
+        break;
+
       case Pages.signUp:
         await Navigator.pushNamed(context, signUp);
         break;
+
       case Pages.signUpReplacement:
         await Navigator.pushReplacementNamed(context, signUp);
         break;
+
       case Pages.signIn:
         await Navigator.pushNamed(context, signIn);
         break;
+
       case Pages.signInReplacement:
         await Navigator.pushReplacementNamed(context, signIn);
         break;
+
       case Pages.tasks:
         await Navigator.pushNamed(context, tasks);
         break;
+
       case Pages.menu:
         await Navigator.pushNamed(context, menu);
         break;
+
       case Pages.quick:
         await Navigator.pushNamed(context, quick);
         break;
+
       case Pages.profile:
         await Navigator.pushNamed(context, profile);
         break;
@@ -90,12 +97,15 @@ class NavigationService {
       case Pages.noConnection:
         await Navigator.pushNamed(context, noConnection);
         break;
+
       case Pages.addCheckList:
         await Navigator.pushNamed(context, addCheckList);
         break;
+
       case Pages.addNote:
         await Navigator.pushNamed(context, addNote);
         break;
+
       case Pages.addTask:
         await Navigator.pushNamed(context, addTask);
         break;
