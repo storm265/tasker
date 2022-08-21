@@ -65,23 +65,21 @@ class _MyAppState extends State<MyApp> {
     ),
   );
 
-  
-
   @override
   Widget build(BuildContext context) {
     return ProfileInherited(
-        profileController: _profileController,
-        child: InheritedNewTaskController(
-          addTaskController: _newTaskConroller,
-          child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Todo2',
-            theme: _themeDataController.themeData,
-          // initialRoute: '/',
-           // routes: routes,
-             home: MenuPage(),
-          ),
+      profileController: _profileController,
+      child: InheritedNewTaskController(
+        addTaskController: _newTaskConroller,
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Todo2',
+          theme: _themeDataController.themeData,
+          initialRoute: '/',
+          routes: routes,
+          // home: MenuPage(),
         ),
-      );
+      ),
+    );
   }
 }

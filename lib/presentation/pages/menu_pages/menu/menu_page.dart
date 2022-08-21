@@ -7,11 +7,13 @@ import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/dialogs/options_dialog.dart';
+import 'package:todo2/presentation/pages/menu_pages/menu/widgets/add_button_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/add_project_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/project_item_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/project_shimmer_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/controller/inherited_profile.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
+import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
 
@@ -50,6 +52,13 @@ class _MenuPageState extends State<MenuPage> {
     final profileController = ProfileInherited.of(context).profileController;
     return WillPopWrapper(
       child: AppbarWrapperWidget(
+        floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
+        floatingActionButton: AddButton(
+          titleController: titleController,
+          projectController: _projectController,
+          notifyParent: () => setState(() {}),
+        ),
+        isWhite: false,
         title: 'Projects',
         isRedAppBar: false,
         child: DisabledGlowWidget(
@@ -79,51 +88,35 @@ class _MenuPageState extends State<MenuPage> {
                                 return snapshot.connectionState ==
                                         ConnectionState.waiting
                                     ? ShimmerProjectItem(model: data)
-                                    : InkWell(
-                                        onLongPress: snapshot.data![i].title ==
-                                                'Personal'
-                                            ? null
-                                            : () {
-                                                _projectController.pickProject(
-                                                    pickedModel: data);
-                                                showOptionsDialog(
+                                    : FutureBuilder(
+                                        initialData: const <
+                                            ProjectStatsModel>[],
+                                        future: profileController
+                                            .fetchProjectStats(),
+                                        builder: (context,
+                                            AsyncSnapshot<
+                                                    List<ProjectStatsModel>>
+                                                snapshot) {
+                                          return snapshot.connectionState ==
+                                                  ConnectionState.waiting
+                                              ? const SizedBox()
+                                              : ProjectItemWidget(
                                                   titleController:
                                                       titleController,
-                                                  notifyParent: () =>
+                                                  callback: () =>
                                                       setState(() {}),
+                                                  data: data,
                                                   projectController:
                                                       _projectController,
-                                                  context: context,
-                                                  projectModel: data,
+                                                  model: data,
+                                                  taskLength: snapshot
+                                                      .data![i].tasksNumber,
                                                 );
-                                              },
-                                        child: FutureBuilder(
-                                            initialData: const <
-                                                ProjectStatsModel>[],
-                                            future: profileController
-                                                .fetchProjectStats(),
-                                            builder: (context,
-                                                AsyncSnapshot<
-                                                        List<ProjectStatsModel>>
-                                                    snapshot) {
-                                              return snapshot.connectionState ==
-                                                      ConnectionState.waiting
-                                                  ? const SizedBox()
-                                                  : ProjectItemWidget(
-                                                      model: data,
-                                                      taskLength: snapshot
-                                                          .data![i]
-                                                          .tasksNumber);
-                                            }),
+                                        },
                                       );
                               });
                     },
                   ),
-                  AddProjectButton(
-                    titleController: titleController,
-                    projectController: _projectController,
-                    notifyParent: () => setState(() {}),
-                  )
                 ],
               ),
             ),

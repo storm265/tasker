@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 const _whiteBar = SystemUiOverlayStyle(
@@ -21,6 +20,8 @@ const _redBar = SystemUiOverlayStyle(
 
 class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
   final PreferredSizeWidget? bottom;
+  final Widget? floatingActionButton;
+  final FloatingActionButtonLocation? floatingActionButtonLocation;
   final Widget actionWidget;
   final Widget child;
   final String? title;
@@ -32,6 +33,8 @@ class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
 
   const AppbarWrapperWidget({
     Key? key,
+    this.floatingActionButton,
+    this.floatingActionButtonLocation,
     required this.child,
     this.preferredHeight = 60,
     this.bottom,
@@ -49,6 +52,8 @@ class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: floatingActionButton,
+      floatingActionButtonLocation: floatingActionButtonLocation,
       backgroundColor: isWhite == null ? Colors.white : const Color(0xffFDFDFD),
       appBar: showAppBar
           ? AppBar(

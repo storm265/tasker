@@ -28,6 +28,7 @@ Future<void> showOptionsDialog({
                     case 0:
                       Navigator.pop(context);
                       await showAddProjectDialog(
+                        callback: (){},
                         titleController: titleController,
                         context: context,
                         projectController: projectController,

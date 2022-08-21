@@ -24,7 +24,7 @@ class UserDataWidget extends StatelessWidget {
         username,
         style: const TextStyle(
           fontSize: 18,
-          fontWeight: FontWeight.w300,
+          fontWeight: FontWeight.w200,
           fontStyle: FontStyle.italic,
         ),
       ),

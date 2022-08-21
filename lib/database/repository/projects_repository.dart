@@ -18,7 +18,7 @@ abstract class ProjectRepository {
     required String title,
   });
 
-  Future fetchProjectsWhere({required String title});
+  // Future fetchProjectsWhere({required String title});
 
   Future deleteProject({required ProjectModel projectModel});
 
@@ -27,7 +27,7 @@ abstract class ProjectRepository {
     required String title,
   });
 
-  Future isDublicatedProject({required String title});
+  // Future isDublicatedProject({required String title});
 
   Future<List<ProjectStatsModel>> fetchProjectStats();
 }
@@ -80,13 +80,13 @@ class ProjectRepositoryImpl implements ProjectRepository {
     }
   }
 
-  @override
-  Future<List<ProjectModel>> fetchProjectsWhere({required String title}) async {
-    final response = await _projectDataSource.fetchProjectsWhere(title: title);
-    return (response.data as List<dynamic>)
-        .map((json) => ProjectModel.fromJson(json))
-        .toList();
-  }
+  // @override
+  // Future<List<ProjectModel>> fetchProjectsWhere({required String title}) async {
+  //   final response = await _projectDataSource.fetchProjectsWhere(title: title);
+  //   return (response.data as List<dynamic>)
+  //       .map((json) => ProjectModel.fromJson(json))
+  //       .toList();
+  // }
 
   @override
   Future<List<ProjectStatsModel>> fetchProjectStats() async {
@@ -126,16 +126,16 @@ class ProjectRepositoryImpl implements ProjectRepository {
     }
   }
 
-  @override
-  Future<bool> isDublicatedProject({required String title}) async {
-    final response = await _projectDataSource.findDublicates(title: title);
-    // for (int i = 0; i < response.model.length; i++) {
-    //   if (response.model[i].title == title) {
-    //     return true;
-    //   } else {
-    //     return false;
-    //   }
-    // }
-    return false;
-  }
+  // @override
+  // Future<bool> isDublicatedProject({required String title}) async {
+  //   final response = await _projectDataSource.findDublicates(title: title);
+  //   // for (int i = 0; i < response.model.length; i++) {
+  //   //   if (response.model[i].title == title) {
+  //   //     return true;
+  //   //   } else {
+  //   //     return false;
+  //   //   }
+  //   // }
+  //   return false;
+  // }
 }

@@ -10,9 +10,10 @@ class CategoryLengthWidget extends StatelessWidget {
     return Align(
       alignment: Alignment.bottomLeft,
       child: Text(
-        '$taskLength ${taskLength == 1 ? 'task' : 'tasks'}',
+        '$taskLength ${taskLength == 1 ? 'Task' : 'Tasks'}',
         style: const TextStyle(
           color: Colors.grey,
+          fontWeight: FontWeight.w500,
           fontSize: 16,
         ),
       ),

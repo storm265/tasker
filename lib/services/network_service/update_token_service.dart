@@ -27,7 +27,8 @@ class UpdateTokenService {
         await Future.delayed(const Duration(seconds: 5));
       }
     } catch (e, t) {
-      debugPrint('Update token error: $e,$t');
+      log('Update token error: $e,$t');
+      throw Exception('Update token error: $e');
     }
   }
 }

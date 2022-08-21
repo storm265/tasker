@@ -57,11 +57,11 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         child: Wrap(
           children: [
-            // ProfileWidget(
-            //   profileController: inheritedProfile.profileController,
-            //   completedTasks: stats.completedTasks,
-            //   createdTask: stats.createdTasks,
-            // ),
+            ProfileWidget(
+              profileController: inheritedProfile.profileController,
+              completedTasks: stats.completedTasks,
+              createdTask: stats.createdTasks,
+            ),
             //  StatsWidget(statsModel: stats),
             // FutureBuilder<List<ProjectModel>>(
             //   initialData: const [],

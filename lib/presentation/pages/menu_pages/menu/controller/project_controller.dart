@@ -51,23 +51,32 @@ class ProjectController extends ChangeNotifier {
     try {
       if (formKey.currentState!.validate()) {
         setClickedValue(false);
-        final bool isDublicateProject = await findDublicates(
-          title: title,
-          context: context,
-        );
-        if (!isDublicateProject) {
-          isEdit
-              ? await _projectsRepository.updateProject(
-                  color: selectedModel.value.color,
-                  title: title,
-                )
-              : await createProject(
-                  context: context,
-                  color: colors[colorPalleteController.selectedIndex.value],
-                  title: title,
-                );
-        }
-
+        // final bool isDublicateProject = await findDublicates(
+        //   title: title,
+        //   context: context,
+        // );
+        // if (!isDublicateProject) {
+        //   isEdit
+        //       ? await _projectsRepository.updateProject(
+        //           color: selectedModel.value.color,
+        //           title: title,
+        //         )
+        //       : await createProject(
+        //           context: context,
+        //           color: colors[colorPalleteController.selectedIndex.value],
+        //           title: title,
+        //         );
+        // }
+        isEdit
+            ? await _projectsRepository.updateProject(
+                color: selectedModel.value.color,
+                title: title,
+              )
+            : await createProject(
+                context: context,
+                color: colors[colorPalleteController.selectedIndex.value],
+                title: title,
+              );
         setClickedValue(true);
         onSuccessCallback();
       }
@@ -87,22 +96,22 @@ class ProjectController extends ChangeNotifier {
     }
   }
 
-  Future<bool> findDublicates({
-    required String title,
-    required BuildContext context,
-  }) async {
-    bool isDublicated =
-        await _projectsRepository.isDublicatedProject(title: title);
-    if (isDublicated) {
-      MessageService.displaySnackbar(
-        message: 'This project is already exist',
-        context: context,
-      );
-      return true;
-    } else {
-      return false;
-    }
-  }
+  // Future<bool> findDublicates({
+  //   required String title,
+  //   required BuildContext context,
+  // }) async {
+  //   bool isDublicated =
+  //       await _projectsRepository.isDublicatedProject(title: title);
+  //   if (isDublicated) {
+  //     MessageService.displaySnackbar(
+  //       message: 'This project is already exist',
+  //       context: context,
+  //     );
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
   Future<void> createProject({
     required Color color,

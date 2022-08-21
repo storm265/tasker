@@ -11,13 +11,14 @@ class TasksTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Wrap(
+      direction: Axis.vertical,
       children: [
         Text(
           title,
           style: const TextStyle(
             fontSize: 18,
-            fontWeight: FontWeight.w300,
+            fontWeight: FontWeight.w200,
             fontStyle: FontStyle.italic,
           ),
         ),
