@@ -1,6 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:todo2/database/model/project_models/project_stats_model.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
@@ -44,7 +43,7 @@ class ProjectController extends ChangeNotifier {
     isClickedSubmitButton.notifyListeners();
   }
 
-  Future<void> validate({
+  Future<void> tryValidateProject({
     required bool isEdit,
     required String title,
     required VoidCallback onSuccessCallback,
@@ -53,32 +52,26 @@ class ProjectController extends ChangeNotifier {
     try {
       if (formKey.currentState!.validate()) {
         setClickedValue(false);
-        // final bool isDublicateProject = await findDublicates(
-        //   title: title,
-        //   context: context,
-        // );
-        // if (!isDublicateProject) {
-        //   isEdit
-        //       ? await _projectsRepository.updateProject(
-        //           color: selectedModel.value.color,
-        //           title: title,
-        //         )
-        //       : await createProject(
-        //           context: context,
-        //           color: colors[colorPalleteController.selectedIndex.value],
-        //           title: title,
-        //         );
-        // }
-        isEdit
-            ? await _projectsRepository.updateProject(
-                color: selectedModel.value.color,
-                title: title,
-              )
-            : await createProject(
-                context: context,
-                color: colors[colorPalleteController.selectedIndex.value],
-                title: title,
-              );
+
+        final isSameProject = await isSameProjectCreated(title: title);
+        if (isSameProject) {
+          throw MessageService.displaySnackbar(
+            message: 'This project is already exist',
+            context: context,
+          );
+        } else {
+          isEdit
+              ? await _projectsRepository.updateProject(
+                  projectModel: selectedModel.value,
+                  title: title,
+                )
+              : await createProject(
+                  context: context,
+                  color: colors[colorPalleteController.selectedIndex.value],
+                  title: title,
+                );
+        }
+
         setClickedValue(true);
         onSuccessCallback();
       }
@@ -98,22 +91,34 @@ class ProjectController extends ChangeNotifier {
     }
   }
 
-  // Future<bool> findDublicates({
-  //   required String title,
-  //   required BuildContext context,
-  // }) async {
-  //   bool isDublicated =
-  //       await _projectsRepository.isDublicatedProject(title: title);
-  //   if (isDublicated) {
-  //     MessageService.displaySnackbar(
-  //       message: 'This project is already exist',
-  //       context: context,
-  //     );
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
+  Future<List<ProjectStatsModel>> fetchProjectStats() async {
+    try {
+      final response = await _projectsRepository.fetchProjectStats();
+
+      return response;
+    } catch (e) {
+      throw Failure(e.toString());
+    }
+  }
+
+  Future<bool> isSameProjectCreated({
+    required String title,
+  }) async {
+    try {
+      List<ProjectModel> projects =
+          await _projectsRepository.fetchAllProjects();
+      for (int i = 0; i < projects.length; i++) {
+        if (title == projects[i].title) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+      return false;
+    } catch (e) {
+      throw Failure(e.toString());
+    }
+  }
 
   Future<void> createProject({
     required Color color,
@@ -123,19 +128,18 @@ class ProjectController extends ChangeNotifier {
     try {
       await _projectsRepository.createProject(color: color, title: title);
     } catch (e) {
-      MessageService.displaySnackbar(message: e.toString(), context: context);
       throw Failure(e.toString());
     }
   }
 
   Future<void> updateProject({
-    required Color color,
+    required ProjectModel projectModel,
     required String title,
     required BuildContext context,
   }) async {
     try {
       await _projectsRepository.updateProject(
-        color: color,
+        projectModel: projectModel,
         title: title,
       );
     } catch (e) {

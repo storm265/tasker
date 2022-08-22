@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/menu/dialogs/add_project_dialog.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/dialogs/options_dialog.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/category_length_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/category_widget.dart';
@@ -10,7 +11,7 @@ class ProjectItemWidget extends StatelessWidget {
   final ProjectModel model;
   final int taskLength;
   final VoidCallback callback;
-  final TextEditingController titleController;
+
   final ProjectController projectController;
   final ProjectModel data;
   const ProjectItemWidget({
@@ -18,7 +19,7 @@ class ProjectItemWidget extends StatelessWidget {
     required this.model,
     required this.taskLength,
     required this.callback,
-    required this.titleController,
+ 
     required this.projectController,
     required this.data,
   }) : super(key: key);
@@ -26,17 +27,25 @@ class ProjectItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+    
       onLongPress: data.title == 'Personal'
           ? null
-          : () {
+          : () async{
               projectController.pickProject(pickedModel: data);
-              showOptionsDialog(
-                titleController: titleController,
-                notifyParent: () => callback(),
-                projectController: projectController,
-                context: context,
-                projectModel: data,
-              );
+              // showOptionsDialog(
+              //   titleController: titleController,
+              //   notifyParent: () => callback(),
+              //   projectController: projectController,
+              //   context: context,
+              //   projectModel: data,
+              // );
+                await showAddProjectDialog(
+                        callback: () => callback(),
+                      
+                        context: context,
+                        projectController: projectController,
+                        status: ProjectDialogStatus.edit,
+                      );
             },
       child: Padding(
         padding: const EdgeInsets.all(8.0),

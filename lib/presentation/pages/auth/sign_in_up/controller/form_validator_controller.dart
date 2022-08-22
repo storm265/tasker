@@ -19,7 +19,9 @@ class FormValidatorController {
     if (password.isEmpty || password.trim().isEmpty) {
       return 'This field is required 😐';
     } else if (!regex.hasMatch(password)) {
-    return  isSignIn ?   'Incorrect password' : 'Minimum 8 characters, at least 1 letter and 1 number';
+      return isSignIn
+          ? 'Incorrect password'
+          : 'Minimum 8 characters, at least 1 letter and 1 number';
     } else {
       return null;
     }

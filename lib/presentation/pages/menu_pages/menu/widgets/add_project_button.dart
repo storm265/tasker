@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/database/data_source/projects_data_source.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_controller.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/dialogs/add_project_dialog.dart';
-import 'package:todo2/services/network_service/network_config.dart';
-import 'package:todo2/storage/secure_storage_service.dart';
 
 class AddProjectButton extends StatelessWidget {
   final Function notifyParent;
@@ -20,16 +17,12 @@ class AddProjectButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      // onTap: () async => await showAddProjectDialog(
-      //   titleController: titleController,
-      //   context: context,
-      //   projectController: projectController,
-      //   callback: () => notifyParent(),
-      // ),
-      onTap: () => ProjectUserDataImpl(
-              secureStorageService: SecureStorageService(),
-              network: NetworkSource())
-          .fetchProjectsWhere(title: 'Personal'),
+      onTap: () async => await showAddProjectDialog(
+
+        context: context,
+        projectController: projectController,
+        callback: () => notifyParent(),
+      ),
       child: Container(
         width: 80,
         height: 80,

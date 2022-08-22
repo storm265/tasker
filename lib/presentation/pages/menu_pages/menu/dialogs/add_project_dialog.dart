@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/color_pallete_widget.dart';
+import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 Future<void> showAddProjectDialog({
   required BuildContext context,
   ProjectDialogStatus status = ProjectDialogStatus.add,
   required ProjectController projectController,
-  required TextEditingController titleController,
   required VoidCallback callback,
 }) async {
   await showDialog(
     context: context,
-    barrierDismissible: false,
     builder: (_) => AlertDialog(
       insetPadding: const EdgeInsets.all(0),
       title: const Text(
@@ -28,6 +27,7 @@ Future<void> showAddProjectDialog({
               child: Form(
                 key: projectController.formKey,
                 child: TextFormField(
+                  initialValue: projectController.selectedModel.value.title,
                   buildCounter: (context,
                           {required currentLength,
                           required isFocused,
@@ -46,7 +46,6 @@ Future<void> showAddProjectDialog({
                       return null;
                     }
                   },
-                  controller: titleController,
                 ),
               ),
             ),
@@ -61,6 +60,24 @@ Future<void> showAddProjectDialog({
           onPressed: () => Navigator.pop(context),
           child: const Text('Cancel'),
         ),
+        TextButton(
+          onPressed: () async {
+            projectController.setClickedValue(false);
+
+            await projectController
+                .deleteProject(
+              projectModel: projectController.selectedModel.value,
+              context: context,
+            )
+                .then((_) {
+              callback();
+              Navigator.pop(context);
+            });
+
+            projectController.setClickedValue(true);
+          },
+          child: const Text('Delete Project'),
+        ),
         ValueListenableBuilder<bool>(
             valueListenable: projectController.isClickedSubmitButton,
             builder: (__, isClicked, _) {
@@ -68,9 +85,9 @@ Future<void> showAddProjectDialog({
                 onPressed: isClicked
                     ? () async {
                         projectController.setClickedValue(false);
-                        await projectController.validate(
+                        await projectController.tryValidateProject(
                             context: context,
-                            title: titleController.text,
+                            title: projectController.selectedModel.value.title,
                             isEdit: status == ProjectDialogStatus.add
                                 ? false
                                 : true,

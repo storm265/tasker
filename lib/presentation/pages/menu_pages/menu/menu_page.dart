@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:todo2/database/data_source/projects_data_source.dart';
 import 'package:todo2/database/model/project_models/project_stats_model.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
@@ -16,6 +17,8 @@ import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
+import 'package:todo2/services/network_service/network_config.dart';
+import 'package:todo2/storage/secure_storage_service.dart';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({Key? key}) : super(key: key);
@@ -32,7 +35,11 @@ class _MenuPageState extends State<MenuPage> {
   void initState() {
     titleController = TextEditingController();
     _projectController = ProjectController(
-      ProjectRepositoryImpl(),
+      ProjectRepositoryImpl(
+          projectDataSource: ProjectUserDataImpl(
+        secureStorageService: SecureStorageService(),
+        network: NetworkSource(),
+      )),
       ColorPalleteController(),
     );
     log('init MenuPage page');
@@ -73,7 +80,7 @@ class _MenuPageState extends State<MenuPage> {
                     future: _projectController.fetchAllProjects(),
                     builder: (_, AsyncSnapshot<List<ProjectModel>> snapshot) {
                       return (!snapshot.hasData)
-                          ? const Text('No projects')
+                          ? const Center(child:  Text('No projects'))
                           : GridView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
@@ -90,7 +97,7 @@ class _MenuPageState extends State<MenuPage> {
                                         ConnectionState.waiting
                                     ? ShimmerProjectItem(model: data)
                                     : ProjectItemWidget(
-                                        titleController: titleController,
+                                  
                                         callback: () => setState(() {}),
                                         data: data,
                                         projectController: _projectController,

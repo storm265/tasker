@@ -13,16 +13,15 @@ import 'package:todo2/storage/secure_storage_service.dart';
 // TODO generic
 abstract class ProjectUserData {
   Future updateProject({
-    required Color color,
+    required ProjectModel projectModel,
     required String title,
   });
-  Future deleteProject({required ProjectModel projectModel});
-  Future createProject({required Color color, required String title});
-  Future fetchProjectsWhere({required String title});
+  Future<void> deleteProject({required ProjectModel projectModel});
+  Future<void> createProject({required Color color, required String title});
+  Future searchProject({required String title});
 
-  // Future findDublicates({required String title});
-  Future fetchOneProject();
-  Future fetchAllProjects();
+  // Future<Map<String, dynamic>> fetchOneProject();
+  Future<List<dynamic>> fetchAllProjects();
 
   Future<List<dynamic>> fetchProjectStats();
 }
@@ -63,24 +62,24 @@ class ProjectUserDataImpl implements ProjectUserData {
     }
   }
 
-  @override
-  Future<Map<String, dynamic>> fetchOneProject() async {
-    try {
-      final id =
-          await _secureStorageService.getUserData(type: StorageDataType.id);
-      final response = await _network.networkApiClient.dio.get(
-        '$_projects/$id',
-        options: await _network.networkApiClient.getLocalRequestOptions(),
-      );
-      return NetworkErrorService.isSuccessful(response)
-          ? (response.data[AuthScheme.data] as Map<String, dynamic>)
-          : throw Failure(
-              'Error: ${response.data[AuthScheme.data][AuthScheme.message]}');
-    } catch (e) {
-      debugPrint('fetchOneProject datasource  $e');
-      throw Failure(e.toString());
-    }
-  }
+  // @override
+  // Future<Map<String, dynamic>> fetchOneProject() async {
+  //   try {
+  //     final id =
+  //         await _secureStorageService.getUserData(type: StorageDataType.id);
+  //     final response = await _network.networkApiClient.dio.get(
+  //       '$_projects/$id',
+  //       options: await _network.networkApiClient.getLocalRequestOptions(),
+  //     );
+  //     return NetworkErrorService.isSuccessful(response)
+  //         ? (response.data[AuthScheme.data] as Map<String, dynamic>)
+  //         : throw Failure(
+  //             'Error: ${response.data[AuthScheme.data][AuthScheme.message]}');
+  //   } catch (e) {
+  //     debugPrint('fetchOneProject datasource  $e');
+  //     throw Failure(e.toString());
+  //   }
+  // }
 
 // works
   @override
@@ -141,34 +140,6 @@ class ProjectUserDataImpl implements ProjectUserData {
                 "owner_id": "76d2fab4-fd06-4909-bf8e-875c6b55c1f7",
                 "created_at": "2022-07-13T08:43:43.903710"
               },
-              {
-                "id": "85732d06-0d93-4be9-b1ec-30defc76fad0",
-                "title": "Project 2sdgfhsuhiisuhfreisfhusifhshiufhus",
-                "color": "#6074F9",
-                "owner_id": "76d2fab4-fd06-4909-bf8e-875c6b55c1f7",
-                "created_at": "2022-07-13T08:43:43.903710"
-              },
-              {
-                "id": "85732d06-0d93-4be9-b1ec-30defc76fad0",
-                "title": "Project 2sdgfhsuhiisuhfreisfhusifhshiufhus",
-                "color": "#6074F9",
-                "owner_id": "76d2fab4-fd06-4909-bf8e-875c6b55c1f7",
-                "created_at": "2022-07-13T08:43:43.903710"
-              },
-              {
-                "id": "85732d06-0d93-4be9-b1ec-30defc76fad0",
-                "title": "Project 2sdgfhsuhiisuhfreisfhusifhshiufhus",
-                "color": "#6074F9",
-                "owner_id": "76d2fab4-fd06-4909-bf8e-875c6b55c1f7",
-                "created_at": "2022-07-13T08:43:43.903710"
-              },
-              {
-                "id": "85732d06-0d93-4be9-b1ec-30defc76fad0",
-                "title": "Project 2sdgfhsuhiisuhfreisfhusifhshiufhus",
-                "color": "#6074F9",
-                "owner_id": "76d2fab4-fd06-4909-bf8e-875c6b55c1f7",
-                "created_at": "2022-07-13T08:43:43.903710"
-              },
             ]
           });
       return NetworkErrorService.isSuccessful(response)
@@ -179,50 +150,14 @@ class ProjectUserDataImpl implements ProjectUserData {
     }
   }
 
-  // @override
-  // Future<void> findDublicates({required String title}) async {
-  //   try {
-  //     final response = await _network.networkApiClient.dio.get(
-  //       _projectsSearch,
-  //       queryParameters: {ProjectDataScheme.query: title},
-  //       options: await _network.networkApiClient
-  //           .getLocalRequestOptions(useContentType: true),
-  //     );
-  //     log('find dublicates ${response.data}');
-
-  //     // BaseListResponse<ProjectModel> empty =
-  //     //     BaseListResponse<ProjectModel>(model: []);
-
-  //     // if ((response.data[AuthScheme.data] as List<dynamic>).isEmpty) {
-  //     //   return empty;
-  //     // } else {
-  //     //   final baseResponse = BaseListResponse<ProjectModel>.fromJson(
-  //     //     json: response.data[AuthScheme.data],
-  //     //     build: (List<Map<String, dynamic>> json) =>
-  //     //         (response.data[AuthScheme.data] as List<Map<String, String>>)
-  //     //             .map((e) => ProjectModel.fromJson(e))
-  //     //             .toList(),
-  //     //     response: response,
-  //     //   );
-  //     //   return baseResponse;
-  //     // }
-  //   } catch (e) {
-  //     throw Failure(e.toString());
-  //   }
-  // }
-
   @override
-  Future<List<dynamic>> fetchProjectsWhere({required String title}) async {
+  Future<List<dynamic>> searchProject({required String title}) async {
     try {
-      final id =
-          await _secureStorageService.getUserData(type: StorageDataType.id);
       final response = await _network.networkApiClient.dio.get(
-        '$_projectsSearch/$id',
-        queryParameters: {ProjectDataScheme.query: title},
+        '$_projectsSearch?query=$title',
         options: await _network.networkApiClient
             .getLocalRequestOptions(useContentType: true),
       );
-      log(' response ${response.data[AuthScheme.data]}');
       return NetworkErrorService.isSuccessful(response)
           ? (response.data![AuthScheme.data] as List<dynamic>)
           : throw Failure('Error: get project error');
@@ -254,22 +189,24 @@ class ProjectUserDataImpl implements ProjectUserData {
 
   @override
   Future<void> updateProject({
-    required Color color,
+    required ProjectModel projectModel,
     required String title,
   }) async {
     try {
       final id =
           await _secureStorageService.getUserData(type: StorageDataType.id);
       final response = await _network.networkApiClient.dio.put(
-        '$_projects/$id',
+        '$_projects/${projectModel.id}',
         data: {
-          ProjectDataScheme.color: color.toString().toStringColor(),
+          ProjectDataScheme.color:
+              projectModel.color.toString().toStringColor(),
           ProjectDataScheme.title: title,
-          ProjectDataScheme.id: id
+          ProjectDataScheme.ownerId: id,
         },
         options: await _network.networkApiClient
             .getLocalRequestOptions(useContentType: true),
       );
+      log('updating project: ${response.data[AuthScheme.data]}');
       if (!NetworkErrorService.isSuccessful(response)) {
         throw Failure(
             'Error: ${response.data[AuthScheme.data][AuthScheme.message]}');

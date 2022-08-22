@@ -1,10 +1,8 @@
 import 'dart:developer';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
-import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/task_attachment_repository.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/tasks_member_repository.dart';
@@ -20,7 +18,6 @@ enum InputFieldStatus {
 }
 
 class AddTaskController extends ChangeNotifier {
-  ProjectRepositoryImpl projectRepository;
   UserProfileRepositoryImpl userProfileRepository;
   TaskRepositoryImpl taskRepository;
   TaskAttachmentRepositoryImpl taskAttachment;
@@ -29,7 +26,6 @@ class AddTaskController extends ChangeNotifier {
   final formKey = GlobalKey<FormState>();
 
   AddTaskController({
-    required this.projectRepository,
     required this.userProfileRepository,
     required this.taskRepository,
     required this.taskAttachment,

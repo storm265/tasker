@@ -44,7 +44,7 @@ class _MyAppState extends State<MyApp> {
   final _newTaskConroller = AddTaskController(
     tasksMembers: TasksMembersRepositoryImpl(),
     taskRepository: TaskRepositoryImpl(),
-    projectRepository: ProjectRepositoryImpl(),
+ 
     userProfileRepository: UserProfileRepositoryImpl(
       userProfileDataSource: UserProfileDataSourceImpl(
         secureStorageService: SecureStorageService(),
@@ -58,7 +58,7 @@ class _MyAppState extends State<MyApp> {
     secureStorageService: SecureStorageService(),
     tokenStorageService: SecureStorageService(),
     authRepository: AuthRepositoryImpl(),
-    projectsRepository: ProjectRepositoryImpl(),
+    
     userProfileRepository: UserProfileRepositoryImpl(
       userProfileDataSource: UserProfileDataSourceImpl(
         secureStorageService: SecureStorageService(),
