@@ -34,7 +34,6 @@ class _DayLineWidgetState extends State<DayLineWidget> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 200,
       child: ValueListenableBuilder(
           valueListenable: _taskListController.selectedDate,
           builder: (_, selectedDate, __) {
@@ -62,7 +61,7 @@ class _DayLineWidgetState extends State<DayLineWidget> {
                   ),
                 ),
                 SizedBox(
-                  height: 100,
+                  height: 70,
                   child: PageView.builder(
                     controller: _taskListController.pageController,
                     itemCount: _taskListController.calendar.length,

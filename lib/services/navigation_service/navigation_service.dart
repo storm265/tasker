@@ -7,13 +7,14 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/add_check_li
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/new_note_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/new_task.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/menu_page.dart';
-import 'package:todo2/presentation/pages/menu_pages/navigation/navigation_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/profile_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_page.dart';
+import 'package:todo2/presentation/pages/navigation/navigation_page.dart';
 import 'package:todo2/presentation/pages/no_connection_page.dart';
 import 'package:todo2/services/navigation_service/pages.dart';
 
+// TODO: please, use new syntax of enum to make them possible to hold String values. You will be able to delete pages.dart file
 enum Pages {
   welcome,
   signUp,

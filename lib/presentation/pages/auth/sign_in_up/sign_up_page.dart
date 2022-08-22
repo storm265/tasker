@@ -21,7 +21,7 @@ import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
-import 'package:todo2/services/storage/secure_storage_service.dart';
+import 'package:todo2/storage/secure_storage_service.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -143,7 +143,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                         buttonText: 'Sign Up',
                                         onPressed: isClicked
                                             ? () async => _signUpController
-                                                    .signUpValidate(
+                                                    .trySignUp(
                                                   context: context,
                                                   userName:
                                                       _usernameController.text,
@@ -159,7 +159,8 @@ class _SignUpPageState extends State<SignUpPage> {
 
                                                   NavigationService.navigateTo(
                                                       context,
-                                                      Pages.navigationReplacement);
+                                                      Pages
+                                                          .navigationReplacement);
                                                 })
                                             : null,
                                       )

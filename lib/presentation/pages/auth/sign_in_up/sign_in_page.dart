@@ -19,7 +19,7 @@ import 'package:todo2/presentation/widgets/common/dynamic_single_scroller.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
-import 'package:todo2/services/storage/secure_storage_service.dart';
+import 'package:todo2/storage/secure_storage_service.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -34,6 +34,7 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   void initState() {
+    // TODO: put it in Constructor of SignInController
     _signInController.scrollController = ScrollController();
     super.initState();
   }
@@ -127,19 +128,13 @@ class _SignInPageState extends State<SignInPage> {
                                     buttonText: 'Sign In',
                                     onPressed: isClicked
                                         ? () async {
-                                            _signInController
-                                                .signInValidate(
-                                                  context: context,
-                                                  emailController:
-                                                      _emailController.text,
-                                                  passwordController:
-                                                      _passwordController.text,
-                                                )
-                                                .then((_) => NavigationService
-                                                    .navigateTo(
-                                                        context,
-                                                        Pages
-                                                            .navigationReplacement));
+                                            _signInController.tryToSignIn(
+                                              context: context,
+                                              emailController:
+                                                  _emailController.text,
+                                              passwordController:
+                                                  _passwordController.text,
+                                            );
                                           }
                                         : null,
                                   )

@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 
+// TODO: the WHOLE file has to located in root package like @storage@
 enum StorageDataType {
   email,
   password,
@@ -21,6 +22,9 @@ class SecureStorageSource {
   }
   SecureStorageSource._internal();
 
+  // TODO: you don't need to create an extra object like SecureStorageService.
+  // TODO: you have two options: 1 - move all of the methods from SecureStorageService to SecureStorageSource
+  // TODO: or                    2 - wrap all of the methods from SecureStorageService to SecureStorageSource and hide _storage instance
   final SecureStorageService _storage = SecureStorageService();
   SecureStorageService get storageApi => _storage;
 }
@@ -28,11 +32,13 @@ class SecureStorageSource {
 class SecureStorageService {
   final _storage = const FlutterSecureStorage();
 
+  // TODO: I suggest to split this huge method into a lot of smalls with perfect names
   Future<String?> getUserData({required StorageDataType type}) async {
     try {
       String? data;
       switch (type) {
         case StorageDataType.id:
+          // TODO: it makes sense to use StorageDataType.dart instead of AuthScheme.dart by technical and sense reasons.
           data = await _storage.read(key: AuthScheme.userId);
           break;
         case StorageDataType.email:
@@ -62,31 +68,53 @@ class SecureStorageService {
     }
   }
 
+  // TODO: trailing comma
   Future<void> saveUserData(
       {required StorageDataType type, required String value}) async {
     try {
       switch (type) {
         case StorageDataType.id:
-          await _storage.write(key: AuthScheme.userId, value: value);
+          await _storage.write(
+            key: AuthScheme.userId,
+            value: value,
+          );
           break;
         case StorageDataType.email:
-          await _storage.write(key: AuthScheme.email, value: value);
+          await _storage.write(
+            key: AuthScheme.email,
+            value: value,
+          );
           break;
         case StorageDataType.password:
-          await _storage.write(key: AuthScheme.password, value: value);
+          await _storage.write(
+            key: AuthScheme.password,
+            value: value,
+          );
           break;
         case StorageDataType.accessToken:
-          await _storage.write(key: AuthScheme.accessToken, value: value);
+          await _storage.write(
+            key: AuthScheme.accessToken,
+            value: value,
+          );
           break;
 
         case StorageDataType.username:
-          await _storage.write(key: AuthScheme.username, value: value);
+          await _storage.write(
+            key: AuthScheme.username,
+            value: value,
+          );
           break;
         case StorageDataType.refreshToken:
-          await _storage.write(key: AuthScheme.refreshToken, value: value);
+          await _storage.write(
+            key: AuthScheme.refreshToken,
+            value: value,
+          );
           break;
         case StorageDataType.avatarUrl:
-          await _storage.write(key: AuthScheme.avatarUrl, value: value);
+          await _storage.write(
+            key: AuthScheme.avatarUrl,
+            value: value,
+          );
           break;
         default:
       }

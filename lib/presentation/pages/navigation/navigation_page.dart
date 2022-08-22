@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/menu_page.dart';
-import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/navigation_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/navigation/controllers/status_bar_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/navigation/widgets/keep_page_alive.dart';
+
 import 'package:todo2/presentation/pages/menu_pages/profile/profile_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/floating_button_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/nav_bar_widget.dart';
+import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
+import 'package:todo2/presentation/pages/navigation/controllers/status_bar_controller.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 class NavigationPage extends StatefulWidget {
@@ -54,6 +54,8 @@ class _NavigationPageState extends State<NavigationPage> {
             maintainBottomViewPadding: true,
             bottom: false,
             child: PageView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: _navigationController.pages.length,
                 controller: _navigationController.pageController,
                 onPageChanged: (index) => _navigationController.pages[index],
                 itemBuilder: (_, i) => _navigationController.pages[i]),

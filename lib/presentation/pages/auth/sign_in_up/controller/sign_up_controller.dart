@@ -1,16 +1,12 @@
-import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/presentation/controller/image_picker_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
-import 'package:todo2/presentation/pages/auth/sign_in_up/controller/interfaces/scrollable.dart';
-import 'package:todo2/presentation/pages/auth/sign_in_up/controller/interfaces/submitable.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
-import 'package:todo2/services/storage/secure_storage_service.dart';
+import 'package:todo2/storage/secure_storage_service.dart';
 
-class SignUpController extends ChangeNotifier
-    implements IsScrollable, Submitable {
+class SignUpController extends ChangeNotifier {
   SignUpController({
     required AuthRepositoryImpl authRepository,
     required this.formValidatorController,
@@ -28,13 +24,11 @@ class SignUpController extends ChangeNotifier
   final isActiveScrolling = ValueNotifier<bool>(false);
   final scrollController = ScrollController();
 
-  @override
   void changeSubmitButtonValue({required bool isActive}) {
     isActiveSubmitButton.value = isActive;
     isActiveSubmitButton.notifyListeners();
   }
 
-  @override
   void changeScrollStatus({required bool isActive}) {
     isActiveScrolling.value = isActive;
     isActiveScrolling.notifyListeners();
@@ -47,7 +41,7 @@ class SignUpController extends ChangeNotifier
     }
   }
 
-  Future<void> signUpValidate({
+  Future<void> trySignUp({
     required BuildContext context,
     required String userName,
     required String email,
@@ -58,12 +52,8 @@ class SignUpController extends ChangeNotifier
 
       if (imgPickerController.shouldUploadAvatar()) {
         if (imgPickerController.isValidAvatar(context: context)) {
-          log('Valid avatar!');
           if (formKey.currentState!.validate()) {
-            log('form is valid');
-
-            log('sign up with avatar avatr');
-            await signUp(
+            await _signUp(
               context: context,
               username: userName,
               email: email,
@@ -72,26 +62,19 @@ class SignUpController extends ChangeNotifier
             final imageResponse = await imgPickerController.uploadAvatar();
             await _storageSource.storageApi.saveUserData(
                 type: StorageDataType.avatarUrl, value: imageResponse);
-            //  throw Failure('sign up ok');
           } else {
             throw Failure('Form is not valid');
           }
         }
       } else {
-        log('withoud avatr');
         if (formKey.currentState!.validate()) {
-          log('form is valid');
-          log('sign up success');
-
-          await signUp(
+          await _signUp(
             context: context,
             username: userName,
             email: email,
             password: password,
           );
-          //  throw Failure('sign up ok');
         } else {
-          log('form is not valid');
           throw Failure('Form is not valid');
         }
       }
@@ -103,43 +86,39 @@ class SignUpController extends ChangeNotifier
     }
   }
 
-  Future<void> signUp({
+  Future<void> _signUp({
     required String email,
     required String password,
     required String username,
     required BuildContext context,
   }) async {
     try {
-      final signUpResponse = await _authRepository.signUp(
+      final authModel = await _authRepository.signUp(
         nickname: username,
         email: email,
         password: password,
       );
 
-      if (signUpResponse.id != 'null') {
-        await Future.wait([
-          _storageSource.storageApi
-              .saveUserData(type: StorageDataType.id, value: signUpResponse.id),
-          _storageSource.storageApi
-              .saveUserData(type: StorageDataType.email, value: email),
-          _storageSource.storageApi
-              .saveUserData(type: StorageDataType.password, value: password),
-          _storageSource.storageApi
-              .saveUserData(type: StorageDataType.username, value: username),
-          _storageSource.storageApi.saveUserData(
-            type: StorageDataType.refreshToken,
-            value: signUpResponse.refreshToken,
-          ),
-          _storageSource.storageApi.saveUserData(
-            type: StorageDataType.accessToken,
-            value: signUpResponse.accessToken,
-          ),
-        ]);
-      }
+      await _storageSource.storageApi
+          .saveUserData(type: StorageDataType.id, value: authModel.id);
+      await _storageSource.storageApi
+          .saveUserData(type: StorageDataType.email, value: email);
+      await _storageSource.storageApi
+          .saveUserData(type: StorageDataType.password, value: password);
+      await _storageSource.storageApi
+          .saveUserData(type: StorageDataType.username, value: username);
+      await _storageSource.storageApi.saveUserData(
+        type: StorageDataType.refreshToken,
+        value: authModel.refreshToken,
+      );
+      await _storageSource.storageApi.saveUserData(
+        type: StorageDataType.accessToken,
+        value: authModel.accessToken,
+      );
       MessageService.displaySnackbar(
         context: context,
         message:
-            'Token will expire: ${DateTime.fromMillisecondsSinceEpoch(signUpResponse.expiresIn)}',
+            'Token will expire: ${DateTime.fromMillisecondsSinceEpoch(authModel.expiresIn)}',
       );
     } catch (e, t) {
       debugPrint(' error: $e, trace: $t');

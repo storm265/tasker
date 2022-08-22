@@ -8,7 +8,7 @@ import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
-import 'package:todo2/services/storage/secure_storage_service.dart';
+import 'package:todo2/storage/secure_storage_service.dart';
 
 class ProfileController extends ChangeNotifier {
   final SecureStorageService _secureStorageService;
@@ -40,7 +40,6 @@ class ProfileController extends ChangeNotifier {
     final response = await projectsRepository.fetchOneProject();
     return response;
   }
-
 
   Future<List<ProjectStatsModel>> fetchProjectStats() async {
     try {

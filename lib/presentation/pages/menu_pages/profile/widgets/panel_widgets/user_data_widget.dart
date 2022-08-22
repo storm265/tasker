@@ -25,7 +25,6 @@ class UserDataWidget extends StatelessWidget {
         style: const TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.w200,
-          fontStyle: FontStyle.italic,
         ),
       ),
       subtitle: Text(
@@ -34,7 +33,6 @@ class UserDataWidget extends StatelessWidget {
           fontSize: 18,
           color: Colors.grey,
           fontWeight: FontWeight.w500,
-          fontStyle: FontStyle.italic,
         ),
       ),
     );

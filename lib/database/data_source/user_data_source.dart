@@ -2,9 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/services/error_service/error_service.dart';
-import 'package:todo2/services/error_service/network_error_service.dart';
+import 'package:todo2/services/navigation_service/network_error_service.dart';
 import 'package:todo2/services/network_service/network_config.dart';
-import 'package:todo2/services/storage/secure_storage_service.dart';
+import 'package:todo2/storage/secure_storage_service.dart';
 
 // TODO add generic
 abstract class UserProfileDataSource {

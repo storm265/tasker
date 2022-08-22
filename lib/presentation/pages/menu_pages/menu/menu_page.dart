@@ -52,8 +52,9 @@ class _MenuPageState extends State<MenuPage> {
     final profileController = ProfileInherited.of(context).profileController;
     return WillPopWrapper(
       child: AppbarWrapperWidget(
-        floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
-        floatingActionButton: AddButton(
+        floatingActionButtonLocation:
+            FloatingActionButtonLocation.miniStartFloat,
+        floatingActionButton: AddProjectButton(
           titleController: titleController,
           projectController: _projectController,
           notifyParent: () => setState(() {}),
@@ -88,32 +89,43 @@ class _MenuPageState extends State<MenuPage> {
                                 return snapshot.connectionState ==
                                         ConnectionState.waiting
                                     ? ShimmerProjectItem(model: data)
-                                    : FutureBuilder(
-                                        initialData: const <
-                                            ProjectStatsModel>[],
-                                        future: profileController
-                                            .fetchProjectStats(),
-                                        builder: (context,
-                                            AsyncSnapshot<
-                                                    List<ProjectStatsModel>>
-                                                snapshot) {
-                                          return snapshot.connectionState ==
-                                                  ConnectionState.waiting
-                                              ? const SizedBox()
-                                              : ProjectItemWidget(
-                                                  titleController:
-                                                      titleController,
-                                                  callback: () =>
-                                                      setState(() {}),
-                                                  data: data,
-                                                  projectController:
-                                                      _projectController,
-                                                  model: data,
-                                                  taskLength: snapshot
-                                                      .data![i].tasksNumber,
-                                                );
-                                        },
+                                    : ProjectItemWidget(
+                                        titleController: titleController,
+                                        callback: () => setState(() {}),
+                                        data: data,
+                                        projectController: _projectController,
+                                        model: data,
+                                        // taskLength: snapshot
+                                        //     .data![i].tasksNumber,
+                                        taskLength: 0,
                                       );
+                                // FutureBuilder(
+                                //     initialData: const <
+                                //         ProjectStatsModel>[],
+                                //     future: profileController
+                                //         .fetchProjectStats(),
+                                //     builder: (context,
+                                //         AsyncSnapshot<
+                                //                 List<ProjectStatsModel>>
+                                //             snapshot) {
+                                //       return snapshot.connectionState ==
+                                //               ConnectionState.waiting
+                                //           ? const SizedBox()
+                                //           : ProjectItemWidget(
+                                //               titleController:
+                                //                   titleController,
+                                //               callback: () =>
+                                //                   setState(() {}),
+                                //               data: data,
+                                //               projectController:
+                                //                   _projectController,
+                                //               model: data,
+                                //               // taskLength: snapshot
+                                //               //     .data![i].tasksNumber,
+                                //               taskLength: 0,
+                                //             );
+                                //     },
+                                //   );
                               });
                     },
                   ),

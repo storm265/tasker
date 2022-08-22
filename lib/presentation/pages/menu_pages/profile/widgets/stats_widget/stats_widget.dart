@@ -9,7 +9,6 @@ import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 import 'package:todo2/services/extensions/remove_last_element.dart';
-import 'package:todo2/services/storage/secure_storage_service.dart';
 
 class StatsWidget extends StatelessWidget {
   StatsWidget({

@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/network_service/network_config.dart';
-import 'package:todo2/services/storage/secure_storage_service.dart';
+import 'package:todo2/storage/secure_storage_service.dart';
 
 abstract class AvatarStorageDataSource {
   Future<Map<String, dynamic>> uploadAvatar({
@@ -14,6 +14,7 @@ abstract class AvatarStorageDataSource {
 }
 
 class AvatarStorageDataSourceImpl implements AvatarStorageDataSource {
+  // TODO contructor
   final _storagePath = '/users-avatar';
   final _network = NetworkSource().networkApiClient;
   final _storageSource = SecureStorageSource().storageApi;

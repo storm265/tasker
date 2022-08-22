@@ -12,9 +12,7 @@ class ProjectItemWidget extends StatelessWidget {
   final VoidCallback callback;
   final TextEditingController titleController;
   final ProjectController projectController;
-
   final ProjectModel data;
-
   const ProjectItemWidget({
     Key? key,
     required this.model,
@@ -34,7 +32,7 @@ class ProjectItemWidget extends StatelessWidget {
               projectController.pickProject(pickedModel: data);
               showOptionsDialog(
                 titleController: titleController,
-                notifyParent: () => callback,
+                notifyParent: () => callback(),
                 projectController: projectController,
                 context: context,
                 projectModel: data,
@@ -43,8 +41,6 @@ class ProjectItemWidget extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
-          width: 140,
-          height: 180,
           decoration: BoxDecoration(
             color: Colors.white,
             boxShadow: [

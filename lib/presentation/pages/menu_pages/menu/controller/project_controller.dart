@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
@@ -149,7 +151,6 @@ class ProjectController extends ChangeNotifier {
     try {
       await _projectsRepository.deleteProject(projectModel: projectModel);
     } catch (e) {
-      MessageService.displaySnackbar(message: e.toString(), context: context);
       throw Failure(e.toString());
     }
   }

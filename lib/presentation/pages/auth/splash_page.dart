@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
-import 'package:todo2/services/storage/secure_storage_service.dart';
+
+import 'package:todo2/storage/secure_storage_service.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
@@ -16,6 +17,7 @@ class SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     _secureStorageService = SecureStorageService();
+    // TODO: why you need Delay here?
     Future.delayed(Duration.zero, () async => isAuthenticated());
     super.initState();
   }

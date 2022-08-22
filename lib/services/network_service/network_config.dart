@@ -1,7 +1,8 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:todo2/services/network_service/update_token_service.dart';
-import 'package:todo2/services/storage/secure_storage_service.dart';
+
+import 'package:todo2/storage/secure_storage_service.dart';
 
 class NetworkSource {
   static final NetworkSource _instance = NetworkSource._internal();
@@ -12,23 +13,28 @@ class NetworkSource {
 
   NetworkSource._internal();
 
-  final NetworkConfiguration _supabaseClient = NetworkConfiguration();
+  final NetworkConfiguration _dioClient = NetworkConfiguration();
 
-  NetworkConfiguration get networkApiClient => _supabaseClient;
+  NetworkConfiguration get networkApiClient => _dioClient;
 }
 
 const _contentType = 'Content-Type';
 const _authorization = 'Authorization';
 const _jsonApp = 'application/json';
 
+// TODO: you need to merge NetworkSource.dart and NetworkConfiguration.dart into one class
+// TODO: add only GET, POST, etc public method with overloaded method signature to invoke them from Presentation layer.
+// TODO: You should not show you internal implementation
 class NetworkConfiguration {
   final Dio dio = Dio(BaseOptions(
+    // TODO: move this String to a ENV/resource variable for secure reason
     baseUrl: 'https://todolist.dev2.cogniteq.com/api/v1',
     connectTimeout: 5 * 1000, // 5 sec
     receiveTimeout: 5 * 1000,
   ))
     ..interceptors.add(InterceptorsWrapper(onResponse: (response, handler) {
       if (response.statusCode == 401) {
+        // TODO: i guess, it should be async call???
         UpdateTokenService().updateToken();
       }
 
