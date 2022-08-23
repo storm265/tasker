@@ -154,15 +154,15 @@ class DescriptionFieldWidget extends StatelessWidget {
 
                       return Column(
                         children: [
-                          ListTile(
-                            leading: CachedAvatarWidget(
-                              radius: 40,
-                              image: snapshot.data![index],
-                            ),
-                            title: Text(snapshot.data![1]),
-                            subtitle: Text(
-                                '${dateNow.day}/${dateNow.month}/${dateNow.year}'),
-                          ),
+                          // ListTile(
+                          //   leading: CachedAvatarWidget(
+                          //     radius: 40,
+                          //     image: snapshot.data![index],
+                          //   ),
+                          //   title: Text(snapshot.data![1]),
+                          //   subtitle: Text(
+                          //       '${dateNow.day}/${dateNow.month}/${dateNow.year}'),
+                          // ),
                           imgList[index].path!.contains('.jpg') ||
                                   imgList[index].path!.contains('.jpg')
                               ? Container(

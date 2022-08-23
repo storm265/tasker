@@ -65,7 +65,8 @@ class _ProfileWidgetState extends State<ProfileWidget>
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 UserDataWidget(
-                  avatarImage: widget.profileController.image,
+                  imageHeader: widget.profileController.imageHeader,
+                  imageUrl: widget.profileController.imageUrl,
                   email: widget.profileController.email,
                   username: widget.profileController.username,
                 ),

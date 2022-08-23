@@ -24,15 +24,6 @@ class UserController {
     }
   }
 
-  Future<String> downloadAvatar() async {
-    try {
-      final response = await _userProfileRepository.downloadAvatar();
-      return response;
-    } catch (e) {
-      throw Failure(e.toString());
-    }
-  }
-
   Future<StatsModel> fetchUserStatistics() async {
     try {
       final response = await _userProfileRepository.fetchUserStatistics();

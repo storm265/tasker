@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/model/profile_models/stats_model.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
@@ -8,7 +9,7 @@ abstract class UserProfileRepository {
     required String id,
     required String accessToken,
   });
-  Future<String> downloadAvatar();
+
   Future<StatsModel> fetchUserStatistics();
 }
 
@@ -36,15 +37,7 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
     }
   }
 
-  @override
-  Future<String> downloadAvatar() async {
-    try {
-      final response = await _userProfileDataSource.downloadAvatar();
-      return response.data;
-    } catch (e) {
-      throw Failure(e.toString());
-    }
-  }
+
 
   @override
   Future<StatsModel> fetchUserStatistics() async {

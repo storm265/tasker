@@ -32,10 +32,10 @@ class NetworkConfiguration {
     connectTimeout: 5 * 1000, // 5 sec
     receiveTimeout: 5 * 1000,
   ))
-    ..interceptors.add(InterceptorsWrapper(onResponse: (response, handler) {
+    ..interceptors.add(InterceptorsWrapper(onResponse: (response, handler)async {
       if (response.statusCode == 401) {
-        // TODO: i guess, it should be async call???
-        UpdateTokenService().updateToken();
+      
+       await UpdateTokenService().updateToken();
       }
 
       return handler.next(response); // continue

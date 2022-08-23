@@ -40,7 +40,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   void initState() {
-    getData();
+    // getData();
     super.initState();
   }
 
@@ -59,8 +59,10 @@ class _ProfilePageState extends State<ProfilePage> {
           children: [
             ProfileWidget(
               profileController: inheritedProfile.profileController,
-              completedTasks: stats.completedTasks,
-              createdTask: stats.createdTasks,
+              //   completedTasks: stats.completedTasks,
+              //   createdTask: stats.createdTasks,
+              completedTasks: 999,
+              createdTask: 999,
             ),
             //  StatsWidget(statsModel: stats),
             // FutureBuilder<List<ProjectModel>>(

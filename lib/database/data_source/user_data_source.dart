@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
@@ -8,7 +10,6 @@ import 'package:todo2/storage/secure_storage_service.dart';
 
 // TODO add generic
 abstract class UserProfileDataSource {
-  Future<Response<dynamic>> downloadAvatar();
   Future<Map<String, dynamic>> fetchCurrentUser({
     required String id,
     required String accessToken,
@@ -46,23 +47,7 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
     }
   }
 
-  @override
-  Future<Response<dynamic>> downloadAvatar() async {
-    try {
-      final userId = await _secureStorageService.getUserData(
-        type: StorageDataType.id,
-      );
-
-      final response = await _network.dio.get(
-        '$_userAvatarPath$userId',
-        options: await _network.getLocalRequestOptions(),
-      );
-      debugPrint('response ${response.data}');
-      return response;
-    } catch (e) {
-      throw Failure(e.toString());
-    }
-  }
+  
 
   @override
   Future<Map<String, dynamic>> fetchUserStatistics() async {

@@ -5,17 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 
 class CachedAvatarWidget extends StatelessWidget {
-  final String image;
+  final String imageUrl;
+  final Map<String, String> imageHeader;
   final double radius;
 
   const CachedAvatarWidget({
     Key? key,
-    required this.image,
+    required this.imageUrl,
+    required this.imageHeader,
     this.radius = 70,
   }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    log('CachedAvatarWidget image $image');
+    log('CachedAvatarWidget :$imageUrl');
+    log('CachedAvatarWidget :$imageHeader');
     return SizedBox(
       width: radius,
       height: radius,
@@ -31,7 +35,8 @@ class CachedAvatarWidget extends StatelessWidget {
           backgroundImage: imageProvider,
         ),
         errorWidget: (_, url, error) => const Icon(Icons.error),
-        imageUrl: image,
+        imageUrl: imageUrl,
+        httpHeaders: imageHeader,
       ),
     );
   }
