@@ -20,11 +20,14 @@ class ImageController extends ChangeNotifier {
       pickedFile.value.extension != 'jpeg' &&
       pickedFile.value.extension != 'png';
 
+  final _maxImageSize = 8000 * 1000;
+  final _maxFileSize = 26214 * 1000;
+
   Future<PlatformFile> pickAvatar({
     required BuildContext context,
     bool isImagePicker = true,
   }) async {
-    final int maxSize = isImagePicker ? 8000000 : 26214400;
+    final int maxSize = isImagePicker ? _maxImageSize : _maxFileSize;
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
             allowCompression: true,
@@ -80,6 +83,20 @@ class ImageController extends ChangeNotifier {
         return true;
       }
     } catch (e) {
+      throw Failure(e.toString());
+    }
+  }
+
+  Future<void> updateAvatar({required BuildContext context}) async {
+    try {
+      await pickAvatar(context: context);
+      if (isValidAvatar(context: context)) {
+        imageCache.clear();
+        log('image is valid!');
+        await uploadAvatar();
+      }
+    } catch (e) {
+      log('update img error : $e');
       throw Failure(e.toString());
     }
   }

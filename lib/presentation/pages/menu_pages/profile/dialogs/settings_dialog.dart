@@ -1,22 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/database/data_source/storage/avatar_storage_data_source.dart';
-import 'package:todo2/database/repository/storage/avatar_storage_repository.dart';
 import 'package:todo2/presentation/controller/image_picker_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/profile/constants/profile_dialog_items.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 Future<void> showSettingsDialog({
   required BuildContext context,
+  required ImageController imageController,
   required ProfileController profileController,
 }) async {
-  final imageController = ImageController(
-    avatarRepository: AvatarStorageReposiroryImpl(
-      avatarDataSource: AvatarStorageDataSourceImpl(),
-    ),
-  );
-  final List<String> items = ['Update avatar', 'Sign out'];
-  final List<IconData> iconDataItems = [Icons.image, Icons.logout];
-
   await showDialog(
     context: context,
     builder: (_) {
@@ -36,16 +28,15 @@ Future<void> showSettingsDialog({
               );
             },
             scrollDirection: Axis.vertical,
-            itemCount: items.length,
+            itemCount: settingsTextItems.length,
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemBuilder: ((_, index) {
+            itemBuilder: ((_, i) {
               return GestureDetector(
                 onTap: () async {
-                  switch (index) {
+                  switch (i) {
                     case 0:
-                      // TODO with validation
-                      //  await imageController.uploadAvatar();
+                      await imageController.updateAvatar(context: context);
                       break;
                     case 1:
                       await profileController.signOut(context: context);
@@ -57,11 +48,11 @@ Future<void> showSettingsDialog({
                   child: Center(
                     child: ListTile(
                       trailing: Icon(
-                        iconDataItems[index],
+                        settingsIconsItems[i],
                         color: Palette.red,
                       ),
                       title: Text(
-                        items[index],
+                        settingsTextItems[i],
                         style: const TextStyle(
                           fontWeight: FontWeight.w300,
                           fontStyle: FontStyle.italic,

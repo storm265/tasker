@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:todo2/database/model/project_models/project_stats_model.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
@@ -39,14 +40,13 @@ class ProfileController extends ChangeNotifier {
   Future<void> fetchProfileInfo(
       {required VoidCallback updateStateCallback}) async {
     try {
-       log('header: $imageHeader');
+      log('header: $imageHeader');
       log('header: $imageUrl');
       String? ava = await getAvatarLink();
-      imageUrl = 'https://todolist.dev2.cogniteq.com/api/v1/users-avatar/${ava!}';
+      imageUrl = '${dotenv.env['API_URL']}/users-avatar/${ava!}';
       final map = await getAvatarHeader();
       imageHeader = map;
-     
-     
+
       email = await _secureStorageService.getUserData(
               type: StorageDataType.email) ??
           '';

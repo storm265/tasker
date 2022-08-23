@@ -1,5 +1,6 @@
-import 'dart:developer';
+
 import 'package:dio/dio.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:todo2/services/network_service/update_token_service.dart';
 
 import 'package:todo2/storage/secure_storage_service.dart';
@@ -27,15 +28,14 @@ const _jsonApp = 'application/json';
 // TODO: You should not show you internal implementation
 class NetworkConfiguration {
   final Dio dio = Dio(BaseOptions(
-    // TODO: move this String to a ENV/resource variable for secure reason
-    baseUrl: 'https://todolist.dev2.cogniteq.com/api/v1',
+    baseUrl: dotenv.env['API_URL'] ?? 'null',
     connectTimeout: 5 * 1000, // 5 sec
     receiveTimeout: 5 * 1000,
   ))
-    ..interceptors.add(InterceptorsWrapper(onResponse: (response, handler)async {
+    ..interceptors
+        .add(InterceptorsWrapper(onResponse: (response, handler) async {
       if (response.statusCode == 401) {
-      
-       await UpdateTokenService().updateToken();
+        await UpdateTokenService().updateToken();
       }
 
       return handler.next(response); // continue
@@ -63,7 +63,6 @@ class NetworkConfiguration {
       },
     );
   }
-   
 
   Options getRequestOptions({
     required String accessToken,

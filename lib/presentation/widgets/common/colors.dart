@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum CategoryColor { blue, red, green, black, yellow }
+enum CategoryColor { blue, red, green, black, yellow, purple }
 
 Color getAppColor({required CategoryColor color}) {
   switch (color) {
@@ -14,6 +14,8 @@ Color getAppColor({required CategoryColor color}) {
       return colors[3];
     case CategoryColor.yellow:
       return colors[4];
+       case CategoryColor.purple:
+      return colors[5];
     default:
       return colors[5];
   }

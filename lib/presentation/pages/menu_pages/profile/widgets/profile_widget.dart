@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo2/presentation/controller/image_picker_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/widgets/panel_widgets/panel_decoration.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/widgets/panel_widgets/tasks_text_widget.dart';
@@ -9,11 +10,13 @@ class ProfileWidget extends StatefulWidget {
   final int completedTasks;
   final int createdTask;
   final ProfileController profileController;
+  final ImageController imageController;
   const ProfileWidget({
     Key? key,
     required this.profileController,
     required this.completedTasks,
     required this.createdTask,
+    required this.imageController,
   }) : super(key: key);
 
   @override
@@ -22,17 +25,15 @@ class ProfileWidget extends StatefulWidget {
 
 class _ProfileWidgetState extends State<ProfileWidget>
     with SingleTickerProviderStateMixin {
-
-      Future<void> fetchData()async{
-         await widget.profileController
+  Future<void> fetchData() async {
+    await widget.profileController
         .fetchProfileInfo(updateStateCallback: () => setState(() {}));
+  }
 
-  
-      }
   @override
   void initState() {
-      widget.profileController.rotateSettingsIcon(ticker: this);
-   fetchData();
+    widget.profileController.rotateSettingsIcon(ticker: this);
+    fetchData();
     super.initState();
   }
 
@@ -56,9 +57,12 @@ class _ProfileWidgetState extends State<ProfileWidget>
             Align(
               alignment: Alignment.topRight,
               child: IconButton(
+                splashRadius: 20,
+                tooltip: 'Settings',
                 onPressed: () => showSettingsDialog(
                   context: context,
                   profileController: widget.profileController,
+                  imageController: widget.imageController,
                 ),
                 icon: RotationTransition(
                   turns: Tween(begin: 0.0, end: 1.0).animate(
@@ -70,12 +74,12 @@ class _ProfileWidgetState extends State<ProfileWidget>
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-               UserDataWidget(
-                    imageHeader: widget.profileController.imageHeader,
-                    imageUrl: widget.profileController.imageUrl,
-                    email: widget.profileController.email,
-                    username: widget.profileController.username,
-                  ),
+                UserDataWidget(
+                  imageHeader: widget.profileController.imageHeader,
+                  imageUrl: widget.profileController.imageUrl,
+                  email: widget.profileController.email,
+                  username: widget.profileController.username,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
