@@ -19,7 +19,7 @@ class UserDataWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 35),
-      leading: CachedAvatarWidget(
+      leading: imageUrl.isEmpty ? const SizedBox() : CachedAvatarWidget(
         imageHeader: imageHeader,
         imageUrl: imageUrl,
       ),

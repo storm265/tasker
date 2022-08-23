@@ -11,7 +11,6 @@ class ProjectItemWidget extends StatelessWidget {
   final ProjectModel model;
   final int taskLength;
   final VoidCallback callback;
-
   final ProjectController projectController;
   final ProjectModel data;
   const ProjectItemWidget({
@@ -19,18 +18,17 @@ class ProjectItemWidget extends StatelessWidget {
     required this.model,
     required this.taskLength,
     required this.callback,
- 
     required this.projectController,
     required this.data,
+
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-    
       onLongPress: data.title == 'Personal'
           ? null
-          : () async{
+          : () async {
               projectController.pickProject(pickedModel: data);
               // showOptionsDialog(
               //   titleController: titleController,
@@ -39,13 +37,13 @@ class ProjectItemWidget extends StatelessWidget {
               //   context: context,
               //   projectModel: data,
               // );
-                await showAddProjectDialog(
-                        callback: () => callback(),
-                      
-                        context: context,
-                        projectController: projectController,
-                        status: ProjectDialogStatus.edit,
-                      );
+              await showAddProjectDialog(
+                callback: () => callback(),
+                titleController: projectController.titleController,
+                context: context,
+                projectController: projectController,
+                status: ProjectDialogStatus.edit,
+              );
             },
       child: Padding(
         padding: const EdgeInsets.all(8.0),

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/project_models/project_stats_model.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
@@ -35,6 +37,7 @@ class ProjectController extends ChangeNotifier {
 
   void pickProject({required ProjectModel pickedModel}) {
     selectedModel.value = pickedModel;
+    titleController.text = pickedModel.title;
     selectedModel.notifyListeners();
   }
 
@@ -53,29 +56,34 @@ class ProjectController extends ChangeNotifier {
       if (formKey.currentState!.validate()) {
         setClickedValue(false);
 
-        final isSameProject = await isSameProjectCreated(title: title);
-        if (isSameProject) {
-          throw MessageService.displaySnackbar(
-            message: 'This project is already exist',
-            context: context,
+        if (isEdit) {
+          await updateProject(
+            projectModel: selectedModel.value,
+            title: title,
           );
+
+          onSuccessCallback();
         } else {
-          isEdit
-              ? await _projectsRepository.updateProject(
-                  projectModel: selectedModel.value,
-                  title: title,
-                )
-              : await createProject(
-                  context: context,
-                  color: colors[colorPalleteController.selectedIndex.value],
-                  title: title,
-                );
+          final isSameProject = await isSameProjectCreated(title: title);
+          log('is dublicated : ${isSameProject}');
+          if (isSameProject) {
+            MessageService.displaySnackbar(
+              message: 'This project is already exist',
+              context: context,
+            );
+          } else {
+            await createProject(title: title);
+            onSuccessCallback();
+          }
         }
 
         setClickedValue(true);
-        onSuccessCallback();
       }
     } catch (e) {
+      MessageService.displaySnackbar(
+        message: e.toString(),
+        context: context,
+      );
       throw Failure(e.toString());
     }
   }
@@ -107,13 +115,14 @@ class ProjectController extends ChangeNotifier {
     try {
       List<ProjectModel> projects =
           await _projectsRepository.fetchAllProjects();
+      log('projects list: ${projects.length}');
+
       for (int i = 0; i < projects.length; i++) {
         if (title == projects[i].title) {
           return true;
-        } else {
-          return false;
         }
       }
+
       return false;
     } catch (e) {
       throw Failure(e.toString());
@@ -121,12 +130,13 @@ class ProjectController extends ChangeNotifier {
   }
 
   Future<void> createProject({
-    required Color color,
     required String title,
-    required BuildContext context,
   }) async {
     try {
-      await _projectsRepository.createProject(color: color, title: title);
+      await _projectsRepository.createProject(
+        color: colors[colorPalleteController.selectedIndex.value],
+        title: title,
+      );
     } catch (e) {
       throw Failure(e.toString());
     }
@@ -135,23 +145,19 @@ class ProjectController extends ChangeNotifier {
   Future<void> updateProject({
     required ProjectModel projectModel,
     required String title,
-    required BuildContext context,
   }) async {
     try {
       await _projectsRepository.updateProject(
+        color: colors[colorPalleteController.selectedIndex.value],
         projectModel: projectModel,
         title: title,
       );
     } catch (e) {
-      MessageService.displaySnackbar(message: e.toString(), context: context);
       throw Failure(e.toString());
     }
   }
 
-  Future<void> deleteProject({
-    required ProjectModel projectModel,
-    required BuildContext context,
-  }) async {
+  Future<void> deleteProject({required ProjectModel projectModel}) async {
     try {
       await _projectsRepository.deleteProject(projectModel: projectModel);
     } catch (e) {

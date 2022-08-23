@@ -22,11 +22,17 @@ class ProfileWidget extends StatefulWidget {
 
 class _ProfileWidgetState extends State<ProfileWidget>
     with SingleTickerProviderStateMixin {
+
+      Future<void> fetchData()async{
+         await widget.profileController
+        .fetchProfileInfo(updateStateCallback: () => setState(() {}));
+
+  
+      }
   @override
   void initState() {
-    widget.profileController.rotateSettingsIcon(ticker: this);
-    widget.profileController
-        .fetchProfileInfo(updateStateCallback: () => setState(() {}));
+      widget.profileController.rotateSettingsIcon(ticker: this);
+   fetchData();
     super.initState();
   }
 
@@ -64,12 +70,12 @@ class _ProfileWidgetState extends State<ProfileWidget>
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                UserDataWidget(
-                  imageHeader: widget.profileController.imageHeader,
-                  imageUrl: widget.profileController.imageUrl,
-                  email: widget.profileController.email,
-                  username: widget.profileController.username,
-                ),
+               UserDataWidget(
+                    imageHeader: widget.profileController.imageHeader,
+                    imageUrl: widget.profileController.imageUrl,
+                    email: widget.profileController.email,
+                    username: widget.profileController.username,
+                  ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [

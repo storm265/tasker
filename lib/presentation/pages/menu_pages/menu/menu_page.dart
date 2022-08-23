@@ -80,7 +80,7 @@ class _MenuPageState extends State<MenuPage> {
                     future: _projectController.fetchAllProjects(),
                     builder: (_, AsyncSnapshot<List<ProjectModel>> snapshot) {
                       return (!snapshot.hasData)
-                          ? const Center(child:  Text('No projects'))
+                          ? const Center(child: Text('No projects'))
                           : GridView.builder(
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
@@ -97,7 +97,6 @@ class _MenuPageState extends State<MenuPage> {
                                         ConnectionState.waiting
                                     ? ShimmerProjectItem(model: data)
                                     : ProjectItemWidget(
-                                  
                                         callback: () => setState(() {}),
                                         data: data,
                                         projectController: _projectController,

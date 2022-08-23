@@ -20,7 +20,8 @@ class AddButton extends StatelessWidget {
     return FloatingActionButton(
       backgroundColor: getAppColor(color: CategoryColor.blue),
       onPressed: () async => await showAddProjectDialog(
-
+        
+        titleController: titleController,
         context: context,
         projectController: projectController,
         callback: () => notifyParent(),

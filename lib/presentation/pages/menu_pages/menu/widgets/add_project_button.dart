@@ -18,7 +18,7 @@ class AddProjectButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async => await showAddProjectDialog(
-
+        titleController: titleController,
         context: context,
         projectController: projectController,
         callback: () => notifyParent(),

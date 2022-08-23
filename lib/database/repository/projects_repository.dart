@@ -18,8 +18,9 @@ abstract class ProjectRepository {
   Future<void> deleteProject({required ProjectModel projectModel});
 
   Future<void> updateProject({
-    required ProjectModel projectModel,
+ required ProjectModel projectModel,
     required String title,
+    required Color color,
   });
 
   Future<List<ProjectStatsModel>> fetchProjectStats();
@@ -102,9 +103,11 @@ class ProjectRepositoryImpl implements ProjectRepository {
   Future<void> updateProject({
 required ProjectModel projectModel,
     required String title,
+    required Color color,
   }) async {
     try {
       await _projectDataSource.updateProject(
+        color: color,
         projectModel: projectModel,
         title: title,
       );
