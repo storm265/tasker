@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/controller/image_picker_controller.dart';
+import 'package:todo2/presentation/widgets/common/add_photo_widget.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 class AvatarWidget extends StatelessWidget {
@@ -33,6 +34,7 @@ class AvatarWidget extends StatelessWidget {
                 shape: BoxShape.circle,
                 color: const Color(0xffC4C4C4),
               ),
+              child: imageFile.path!.isEmpty ? addPhotoWidget : null,
             );
           }),
     );

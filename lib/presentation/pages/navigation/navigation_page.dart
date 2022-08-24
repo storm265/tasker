@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:todo2/presentation/pages/menu_pages/menu/menu_page.dart';
-
-import 'package:todo2/presentation/pages/menu_pages/profile/profile_page.dart';
-import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/tasks_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/floating_button_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/nav_bar_widget.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
@@ -32,9 +27,9 @@ class _NavigationPageState extends State<NavigationPage> {
 
   @override
   void dispose() {
+    _navigationController.pageController.dispose();
     _navigationController.dispose();
     _statusBarController.dispose();
-    _navigationController.pageController.dispose();
     super.dispose();
   }
 

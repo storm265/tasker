@@ -6,7 +6,7 @@ class NoConnectionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopWrapper(
+    return WillPopWrap(
       child: Scaffold(
         body: Center(
           child: Column(

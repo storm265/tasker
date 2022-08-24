@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:todo2/presentation/widgets/common/add_photo_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 
 class CachedAvatarWidget extends StatelessWidget {
@@ -34,7 +35,11 @@ class CachedAvatarWidget extends StatelessWidget {
           radius: 10,
           backgroundImage: imageProvider,
         ),
-        errorWidget: (_, url, error) => const Icon(Icons.error),
+        errorWidget: (_, url, error) => const CircleAvatar(
+          radius: 10,
+          backgroundColor: Color(0xffC4C4C4),
+          child: addPhotoWidget,
+        ),
         imageUrl: imageUrl,
         httpHeaders: imageHeader,
       ),

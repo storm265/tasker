@@ -60,7 +60,8 @@ class NavigationService {
         break;
 
       case Pages.navigationReplacement:
-        await Navigator.pushReplacementNamed(context, navigation);
+        await Navigator.pushNamedAndRemoveUntil(
+            context, navigation, ((_) => false));
         break;
 
       case Pages.signUp:

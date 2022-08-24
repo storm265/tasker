@@ -4,6 +4,7 @@ import 'package:todo2/presentation/controller/image_picker_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
+import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
 class SignUpController extends ChangeNotifier {
@@ -60,8 +61,16 @@ class SignUpController extends ChangeNotifier {
               password: password,
             );
             final imageResponse = await imgPickerController.uploadAvatar();
-            await _storageSource.storageApi.saveUserData(
-                type: StorageDataType.avatarUrl, value: imageResponse);
+            await _storageSource.storageApi
+                .saveUserData(
+                    type: StorageDataType.avatarUrl, value: imageResponse)
+                .then((_) {
+              MessageService.displaySnackbar(
+                  message: 'Sign up success!', context: context);
+
+              NavigationService.navigateTo(
+                  context, Pages.navigationReplacement);
+            });
           } else {
             throw Failure('Form is not valid');
           }
@@ -73,7 +82,12 @@ class SignUpController extends ChangeNotifier {
             username: userName,
             email: email,
             password: password,
-          );
+          ).then((_) {
+            MessageService.displaySnackbar(
+                message: 'Sign up success!', context: context);
+
+            NavigationService.navigateTo(context, Pages.navigationReplacement);
+          });
         } else {
           throw Failure('Form is not valid');
         }
@@ -85,6 +99,11 @@ class SignUpController extends ChangeNotifier {
       changeSubmitButtonValue(isActive: true);
     }
   }
+
+
+
+
+
 
   Future<void> _signUp({
     required String email,

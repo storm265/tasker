@@ -32,7 +32,8 @@ class _DetailedTaskPageState extends State<DetailedTaskPage> {
       insetPadding: const EdgeInsets.all(25),
       contentPadding: const EdgeInsets.all(0),
       content: SafeArea(
-        child: WillPopWrapper(
+        // TODO maybe remove
+        child: WillPopWrap(
           child: GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: SizedBox(
@@ -78,7 +79,7 @@ class _DetailedTaskPageState extends State<DetailedTaskPage> {
                                       );
 
                                     case 1:
-                                      return  const DetailedItemWidget(
+                                      return const DetailedItemWidget(
                                         imageIcon: 'calendar',
                                         title: 'Due Date',
                                         subtitle: 'Aug 5,2018',
@@ -167,7 +168,9 @@ class _DetailedTaskPageState extends State<DetailedTaskPage> {
                                               child: Text(
                                                 'Personal',
                                                 style: TextStyle(
-                                                  color: getAppColor(color: CategoryColor.blue),
+                                                  color: getAppColor(
+                                                      color:
+                                                          CategoryColor.blue),
                                                   fontStyle: FontStyle.italic,
                                                 ),
                                               ),
@@ -194,7 +197,8 @@ class _DetailedTaskPageState extends State<DetailedTaskPage> {
                               ? () async {
                                   detailedController
                                       .isSubmitButtonClicked.value = false;
-                                  await Future.delayed(const Duration(seconds: 2));
+                                  await Future.delayed(
+                                      const Duration(seconds: 2));
                                   detailedController
                                       .isSubmitButtonClicked.value = true;
                                   // without then

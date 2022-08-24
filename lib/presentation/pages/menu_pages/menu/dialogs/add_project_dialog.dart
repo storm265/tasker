@@ -47,7 +47,7 @@ Future<void> showAddProjectDialog({
                           : null,
                   maxLength: 32,
                   validator: (value) {
-                    if (value!.isEmpty) {
+                    if (value!.trim().isEmpty) {
                       return 'Please enter title';
                     } else {
                       return null;

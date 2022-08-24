@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/menu_pages/profile/widgets/panel_widgets/image_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/profile/widgets/panel_widgets/cached_avatar_widget.dart';
 
 class UserDataWidget extends StatelessWidget {
   final String imageUrl;
@@ -19,7 +19,7 @@ class UserDataWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 35),
-      leading: imageUrl.isEmpty ? const SizedBox() : CachedAvatarWidget(
+      leading: CachedAvatarWidget(
         imageHeader: imageHeader,
         imageUrl: imageUrl,
       ),

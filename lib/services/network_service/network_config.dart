@@ -1,6 +1,7 @@
-
+import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:todo2/database/database_scheme/env_scheme.dart';
 import 'package:todo2/services/network_service/update_token_service.dart';
 
 import 'package:todo2/storage/secure_storage_service.dart';
@@ -28,7 +29,7 @@ const _jsonApp = 'application/json';
 // TODO: You should not show you internal implementation
 class NetworkConfiguration {
   final Dio dio = Dio(BaseOptions(
-    baseUrl: dotenv.env['API_URL'] ?? 'null',
+    baseUrl: dotenv.env[EnvScheme.apiUrl] ?? 'null',
     connectTimeout: 5 * 1000, // 5 sec
     receiveTimeout: 5 * 1000,
   ))

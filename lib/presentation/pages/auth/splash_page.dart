@@ -34,7 +34,7 @@ class SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    return AppbarWrapperWidget(
+    return AppbarWrapWidget(
       isRedAppBar: false,
       child: Center(
         child: Image.asset('assets/splash_screen/splash.png'),

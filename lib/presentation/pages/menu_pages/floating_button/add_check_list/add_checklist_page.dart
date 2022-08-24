@@ -32,7 +32,7 @@ class _AddCheckListPageState extends State<AddCheckListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return AppbarWrapperWidget(
+    return AppbarWrapWidget(
       isRedAppBar: true,
       title: 'Add Check List',
       showLeadingButton: true,

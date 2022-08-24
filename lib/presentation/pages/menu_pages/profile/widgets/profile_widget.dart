@@ -77,8 +77,10 @@ class _ProfileWidgetState extends State<ProfileWidget>
                 UserDataWidget(
                   imageHeader: widget.profileController.imageHeader,
                   imageUrl: widget.profileController.imageUrl,
-                  email: widget.profileController.email,
-                  username: widget.profileController.username,
+                  // email: widget.profileController.email,
+                  // username: widget.profileController.username,
+                  email: 'dasdadadasda',
+                  username: 'dasdadadasda',
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,

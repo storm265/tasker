@@ -1,5 +1,9 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http_proxy/http_proxy.dart';
 import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
@@ -22,6 +26,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
   await SystemChromeProvider.setSystemChrome();
+  if (kReleaseMode) {
+    HttpProxy httpProxy = await HttpProxy.createHttpProxy();
+    httpProxy.host = "10.101.4.108"; // replace with your server ip
+    httpProxy.port = "8888"; // replace with your server port
+    HttpOverrides.global = httpProxy;
+  }
   runApp(const MyApp());
 }
 
@@ -74,9 +84,9 @@ class _MyAppState extends State<MyApp> {
           debugShowCheckedModeBanner: false,
           title: 'Todo2',
           theme: _themeDataController.themeData,
-          initialRoute: '/',
-          routes: routes,
-          //  home: ProfilePage(),
+         //  initialRoute: '/',
+        //   routes: routes,
+           home: ProfilePage(),
         ),
       ),
     );

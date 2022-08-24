@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
-class WillPopWrapper extends StatelessWidget {
+class WillPopWrap extends StatelessWidget {
   final Widget child;
-  const WillPopWrapper({
+  const WillPopWrap({
     Key? key,
     required this.child,
   }) : super(key: key);

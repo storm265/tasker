@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/projects_data_source.dart';
 import 'package:todo2/database/model/project_models/project_stats_model.dart';
@@ -7,7 +6,6 @@ import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/menu/dialogs/options_dialog.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/add_button_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/add_project_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/project_item_widget.dart';
@@ -57,86 +55,84 @@ class _MenuPageState extends State<MenuPage> {
   @override
   Widget build(BuildContext context) {
     final profileController = ProfileInherited.of(context).profileController;
-    return WillPopWrapper(
-      child: AppbarWrapperWidget(
-        floatingActionButtonLocation:
-            FloatingActionButtonLocation.miniStartFloat,
-        floatingActionButton: AddProjectButton(
-          titleController: titleController,
-          projectController: _projectController,
-          notifyParent: () => setState(() {}),
-        ),
-        isWhite: false,
-        title: 'Projects',
-        isRedAppBar: false,
-        child: DisabledGlowWidget(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                children: [
-                  FutureBuilder<List<ProjectModel>>(
-                    future: _projectController.fetchAllProjects(),
-                    builder: (_, AsyncSnapshot<List<ProjectModel>> snapshot) {
-                      return (!snapshot.hasData)
-                          ? const Center(child: Text('No projects'))
-                          : GridView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemCount: snapshot.data!.length,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 5.0,
-                                mainAxisSpacing: 5.0,
-                              ),
-                              itemBuilder: (_, i) {
-                                final data = snapshot.data![i];
-                                return snapshot.connectionState ==
-                                        ConnectionState.waiting
-                                    ? ShimmerProjectItem(model: data)
-                                    : ProjectItemWidget(
-                                        callback: () => setState(() {}),
-                                        data: data,
-                                        projectController: _projectController,
-                                        model: data,
-                                        // taskLength: snapshot
-                                        //     .data![i].tasksNumber,
-                                        taskLength: 0,
-                                      );
-                                // FutureBuilder(
-                                //     initialData: const <
-                                //         ProjectStatsModel>[],
-                                //     future: profileController
-                                //         .fetchProjectStats(),
-                                //     builder: (context,
-                                //         AsyncSnapshot<
-                                //                 List<ProjectStatsModel>>
-                                //             snapshot) {
-                                //       return snapshot.connectionState ==
-                                //               ConnectionState.waiting
-                                //           ? const SizedBox()
-                                //           : ProjectItemWidget(
-                                //               titleController:
-                                //                   titleController,
-                                //               callback: () =>
-                                //                   setState(() {}),
-                                //               data: data,
-                                //               projectController:
-                                //                   _projectController,
-                                //               model: data,
-                                //               // taskLength: snapshot
-                                //               //     .data![i].tasksNumber,
-                                //               taskLength: 0,
-                                //             );
-                                //     },
-                                //   );
-                              });
-                    },
-                  ),
-                ],
-              ),
+    return AppbarWrapWidget(
+      floatingActionButtonLocation:
+          FloatingActionButtonLocation.miniStartFloat,
+      floatingActionButton: AddProjectButton(
+        titleController: titleController,
+        projectController: _projectController,
+        notifyParent: () => setState(() {}),
+      ),
+      isWhite: false,
+      title: 'Projects',
+      isRedAppBar: false,
+      child: DisabledGlowWidget(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              children: [
+                FutureBuilder<List<ProjectModel>>(
+                  future: _projectController.fetchAllProjects(),
+                  builder: (_, AsyncSnapshot<List<ProjectModel>> snapshot) {
+                    return (!snapshot.hasData)
+                        ? const Center(child: Text('No projects'))
+                        : GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: snapshot.data!.length,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 5.0,
+                              mainAxisSpacing: 5.0,
+                            ),
+                            itemBuilder: (_, i) {
+                              final data = snapshot.data![i];
+                              return snapshot.connectionState ==
+                                      ConnectionState.waiting
+                                  ? ShimmerProjectItem(model: data)
+                                  : ProjectItemWidget(
+                                      callback: () => setState(() {}),
+                                      data: data,
+                                      projectController: _projectController,
+                                      model: data,
+                                      // taskLength: snapshot
+                                      //     .data![i].tasksNumber,
+                                      taskLength: 0,
+                                    );
+                              // FutureBuilder(
+                              //     initialData: const <
+                              //         ProjectStatsModel>[],
+                              //     future: profileController
+                              //         .fetchProjectStats(),
+                              //     builder: (context,
+                              //         AsyncSnapshot<
+                              //                 List<ProjectStatsModel>>
+                              //             snapshot) {
+                              //       return snapshot.connectionState ==
+                              //               ConnectionState.waiting
+                              //           ? const SizedBox()
+                              //           : ProjectItemWidget(
+                              //               titleController:
+                              //                   titleController,
+                              //               callback: () =>
+                              //                   setState(() {}),
+                              //               data: data,
+                              //               projectController:
+                              //                   _projectController,
+                              //               model: data,
+                              //               // taskLength: snapshot
+                              //               //     .data![i].tasksNumber,
+                              //               taskLength: 0,
+                              //             );
+                              //     },
+                              //   );
+                            });
+                  },
+                ),
+              ],
             ),
           ),
         ),

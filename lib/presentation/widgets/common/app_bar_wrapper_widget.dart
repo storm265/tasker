@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 const _whiteBar = SystemUiOverlayStyle(
@@ -18,7 +19,7 @@ const _redBar = SystemUiOverlayStyle(
   statusBarBrightness: Brightness.light,
 );
 
-class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
+class AppbarWrapWidget extends StatelessWidget with PreferredSizeWidget {
   final PreferredSizeWidget? bottom;
   final Widget? floatingActionButton;
   final FloatingActionButtonLocation? floatingActionButtonLocation;
@@ -31,7 +32,7 @@ class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
   final double preferredHeight;
   final bool? isWhite;
 
-  const AppbarWrapperWidget({
+  const AppbarWrapWidget({
     Key? key,
     this.floatingActionButton,
     this.floatingActionButtonLocation,
@@ -51,46 +52,49 @@ class AppbarWrapperWidget extends StatelessWidget with PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: floatingActionButton,
-      floatingActionButtonLocation: floatingActionButtonLocation,
-      backgroundColor: isWhite == null ? Colors.white : const Color(0xffFDFDFD),
-      appBar: showAppBar
-          ? AppBar(
-              systemOverlayStyle: isRedAppBar ? _redBar : _whiteBar,
-              elevation: 0,
-              backgroundColor: isRedAppBar ? Palette.red : Colors.white,
-              leading: showLeadingButton
-                  ? Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: GestureDetector(
-                        onTap: () => Navigator.pop(context),
-                        child: Icon(
-                          Icons.west_rounded,
-                          size: 30,
-                          color: isRedAppBar ? Colors.white : Colors.black,
+    return WillPopWrap(
+      child: Scaffold(
+        floatingActionButton: floatingActionButton,
+        floatingActionButtonLocation: floatingActionButtonLocation,
+        backgroundColor:
+            isWhite == null ? Colors.white : const Color(0xffFDFDFD),
+        appBar: showAppBar
+            ? AppBar(
+                systemOverlayStyle: isRedAppBar ? _redBar : _whiteBar,
+                elevation: 0,
+                backgroundColor: isRedAppBar ? Palette.red : Colors.white,
+                leading: showLeadingButton
+                    ? Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: GestureDetector(
+                          onTap: () => Navigator.pop(context),
+                          child: Icon(
+                            Icons.west_rounded,
+                            size: 30,
+                            color: isRedAppBar ? Colors.white : Colors.black,
+                          ),
                         ),
-                      ),
-                    )
-                  : const SizedBox(),
-              centerTitle: true,
-              title: Text(
-                title ?? '',
-                style: TextStyle(
-                  fontStyle: FontStyle.italic,
-                  color: isRedAppBar ? Colors.white : Colors.black,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w200,
+                      )
+                    : const SizedBox(),
+                centerTitle: true,
+                title: Text(
+                  title ?? '',
+                  style: TextStyle(
+                    fontStyle: FontStyle.italic,
+                    color: isRedAppBar ? Colors.white : Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w200,
+                  ),
                 ),
-              ),
-              actions: [actionWidget],
-              bottom: bottom,
-            )
-          : null,
-      body: SafeArea(
-        maintainBottomViewPadding: true,
-        bottom: false,
-        child: child,
+                actions: [actionWidget],
+                bottom: bottom,
+              )
+            : null,
+        body: SafeArea(
+          maintainBottomViewPadding: true,
+          bottom: false,
+          child: child,
+        ),
       ),
     );
   }

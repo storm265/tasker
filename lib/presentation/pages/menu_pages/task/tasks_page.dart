@@ -39,7 +39,7 @@ class _TasksPageState extends State<TasksPage>
 
   @override
   Widget build(BuildContext context) {
-    return AppbarWrapperWidget(
+    return AppbarWrapWidget(
       preferredHeight: 90,
       showLeadingButton: false,
       actionWidget: Padding(
@@ -68,7 +68,6 @@ class _TasksPageState extends State<TasksPage>
             child: TabBarView(
               controller: _tabController,
               children: [
-             
                 DisabledGlowWidget(
                   child: FutureBuilder<List<TaskModel>>(
                       future: taskController.fetchTask(),
@@ -94,7 +93,7 @@ class _TasksPageState extends State<TasksPage>
                           );
                         } else {
                           return const Center(
-                            child:  ProgressIndicatorWidget(),
+                            child: ProgressIndicatorWidget(),
                           );
                         }
                       }),

@@ -37,8 +37,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
   Widget build(BuildContext context) {
     final newTaskController =
         InheritedNewTaskController.of(context).addTaskController;
-    return WillPopWrapper(
-      child: AppbarWrapperWidget(
+    return WillPopWrap(
+      child: AppbarWrapWidget(
         title: 'New Task',
         showLeadingButton: true,
         child: Stack(

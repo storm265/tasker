@@ -58,26 +58,24 @@ class QuickPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopWrapper(
-      child: AppbarWrapperWidget(
-          title: 'Quick Notes', isRedAppBar: false, child: SizedBox()
-          // FutureBuilder<List<CheckListLinkedModel>>(
-          //   initialData: const [],
-          //   future: controller.fetchNotes(),
-          //   builder: ((_, AsyncSnapshot<List<CheckListLinkedModel>> snapshots) =>
-          //       snapshots.hasData
-          //           ? DisabledGlowWidget(
-          //               child: ListView.builder(
-          //                 itemCount: snapshots.data!.length,
-          //                 itemBuilder: (context, index) => NoteCard(
-          //                   model: snapshots.data!,
-          //                   index: index,
-          //                 ),
-          //               ),
-          //             )
-          //           : const Center(child: ProgressIndicatorWidget())),
-          // ),
-          ),
-    );
+    return AppbarWrapWidget(
+        title: 'Quick Notes', isRedAppBar: false, child: SizedBox()
+        // FutureBuilder<List<CheckListLinkedModel>>(
+        //   initialData: const [],
+        //   future: controller.fetchNotes(),
+        //   builder: ((_, AsyncSnapshot<List<CheckListLinkedModel>> snapshots) =>
+        //       snapshots.hasData
+        //           ? DisabledGlowWidget(
+        //               child: ListView.builder(
+        //                 itemCount: snapshots.data!.length,
+        //                 itemBuilder: (context, index) => NoteCard(
+        //                   model: snapshots.data!,
+        //                   index: index,
+        //                 ),
+        //               ),
+        //             )
+        //           : const Center(child: ProgressIndicatorWidget())),
+        // ),
+        );
   }
 }

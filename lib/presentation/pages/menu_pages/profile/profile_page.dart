@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/database/data_source/storage/avatar_storage_data_source.dart';
 import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/model/profile_models/stats_model.dart';
-import 'package:todo2/database/model/project_models/projects_model.dart';
-import 'package:todo2/database/repository/storage/avatar_storage_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/controller/image_picker_controller.dart';
 import 'package:todo2/presentation/controller/user_controller.dart';
@@ -24,8 +21,10 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final imageController = ImageController(
-    avatarRepository: AvatarStorageReposiroryImpl(
-      avatarDataSource: AvatarStorageDataSourceImpl(),
+    userRepository: UserProfileRepositoryImpl(
+      userProfileDataSource: UserProfileDataSourceImpl(
+        secureStorageService: SecureStorageService(),
+      ),
     ),
   );
   final userController = UserController(
@@ -52,6 +51,7 @@ class _ProfilePageState extends State<ProfilePage> {
     // getData();
     super.initState();
   }
+
   @override
   void dispose() {
     // TODO DANGER DISPOSE
@@ -63,7 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     final inheritedProfile = ProfileInherited.of(context);
-    return AppbarWrapperWidget(
+    return AppbarWrapWidget(
       title: 'Profile',
       isRedAppBar: false,
       child: Wrap(

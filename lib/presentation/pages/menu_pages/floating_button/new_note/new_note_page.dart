@@ -35,7 +35,7 @@ class _AddQuickNoteState extends State<AddQuickNote> {
 
   @override
   Widget build(BuildContext context) {
-    return AppbarWrapperWidget(
+    return AppbarWrapWidget(
       isRedAppBar: true,
       title: 'Add Note',
       showLeadingButton: true,

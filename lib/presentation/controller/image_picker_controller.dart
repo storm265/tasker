@@ -2,15 +2,15 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:todo2/database/repository/storage/avatar_storage_repository.dart';
+import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 
 class ImageController extends ChangeNotifier {
-  final AvatarStorageReposiroryImpl _avatarStorageRepository;
+  final UserProfileRepositoryImpl _userRepository;
 
-  ImageController({required AvatarStorageReposiroryImpl avatarRepository})
-      : _avatarStorageRepository = avatarRepository;
+  ImageController({required UserProfileRepositoryImpl userRepository})
+      : _userRepository = userRepository;
 
   final _emptyImage = const PlatformFile(name: '', size: 0, path: '');
   var pickedFile =
@@ -18,7 +18,8 @@ class ImageController extends ChangeNotifier {
 
   bool get wrongFormat =>
       pickedFile.value.extension != 'jpeg' &&
-      pickedFile.value.extension != 'png';
+      pickedFile.value.extension != 'png' &&
+      pickedFile.value.extension != 'jpg';
 
   final _maxImageSize = 8000 * 1000;
   final _maxFileSize = 26214 * 1000;
@@ -43,8 +44,7 @@ class ImageController extends ChangeNotifier {
       log('picker image path : ${pickedFile.value.path}');
       log('picker extension : ${pickedFile.value.extension}');
       log('wrongFormat: $wrongFormat');
-      log('contains jpeg : ${pickedFile.value.extension == 'jpeg'}');
-      log('contains png : ${pickedFile.value.extension == 'png'}');
+
       if (result.files.last.size >= maxSize) {
         pickedFile.value = _emptyImage;
         result.files.clear();
@@ -103,7 +103,7 @@ class ImageController extends ChangeNotifier {
 
   Future<String> uploadAvatar() async {
     try {
-      final image = await _avatarStorageRepository.uploadAvatar(
+      final image = await _userRepository.uploadAvatar(
         name: pickedFile.value.name,
         file: File(pickedFile.value.path!),
       );

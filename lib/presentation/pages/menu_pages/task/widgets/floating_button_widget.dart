@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/add_dialog.dart';
 
 class FloatingButtonWidget extends StatelessWidget {
   const FloatingButtonWidget({Key? key}) : super(key: key);
@@ -9,7 +8,6 @@ class FloatingButtonWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 23),
       child: GestureDetector(
-        // onTap: () => showAddDialog(context),
         child: Container(
           width: 55,
           height: 55,
