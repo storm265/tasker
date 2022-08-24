@@ -53,9 +53,8 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
   @override
   Future<Map<String, dynamic>> fetchUserStatistics() async {
     try {
-      final id = await _secureStorageService.getUserData(
-        type: StorageDataType.id,
-      );
+      final id =
+          await _secureStorageService.getUserData(type: StorageDataType.id);
 
       final response = await _network.dio.get('$_userStats/$id',
           options: await _network.getLocalRequestOptions());

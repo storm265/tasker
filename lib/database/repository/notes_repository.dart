@@ -3,26 +3,25 @@ import 'package:todo2/database/model/notes_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 
 abstract class NoteRepository<T> {
-  Future fetchNote();
-  Future postNote({
+  Future<void> createNote({
     required String color,
     required String description,
   });
+
+  Future<void> deleteNote({required String projectId});
+
+  Future<NotesModel> fetchOneNote({required String projectId});
+
+  Future<List<NotesModel>> fetchUserNotes();
+
+  Future<void> updateNote({required NotesModel noteModel});
 }
 
 class NoteRepositoryImpl implements NoteRepository<NotesModel> {
-  final _noteDataSource = NotesDataSourceImpl();
-  @override
-  Future<List<NotesModel>> fetchNote() async {
-    try {
-      final response = await _noteDataSource.fetchNote();
-      return (response.data as List<dynamic>)
-          .map((json) => NotesModel.fromJson(json))
-          .toList();
-    } catch (e) {
-      throw Failure(e.toString());
-    }
-  }
+  final NotesDataSourceImpl _noteDataSource;
+
+  NoteRepositoryImpl({required NotesDataSourceImpl noteDataSource})
+      : _noteDataSource = noteDataSource;
 
   @override
   Future<void> postNote({
@@ -30,10 +29,65 @@ class NoteRepositoryImpl implements NoteRepository<NotesModel> {
     required String description,
   }) async {
     try {
-      await _noteDataSource.postNote(
+      await _noteDataSource.createNote(
         color: color,
         description: description,
       );
+    } catch (e) {
+      throw Failure(e.toString());
+    }
+  }
+
+  @override
+  Future<void> createNote({
+    required String color,
+    required String description,
+  }) async {
+    try {
+      await _noteDataSource.createNote(
+        color: color,
+        description: description,
+      );
+    } catch (e) {
+      throw Failure(e.toString());
+    }
+  }
+
+  @override
+  Future<void> deleteNote({required String projectId}) async {
+    try {
+      await _noteDataSource.deleteNote(projectId: projectId);
+    } catch (e) {
+      throw Failure(e.toString());
+    }
+  }
+
+  @override
+  Future<NotesModel> fetchOneNote({
+    required String projectId,
+  }) {
+    // TODO: implement fetchOneNote
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<NotesModel>> fetchUserNotes() async {
+    try {
+      final response = await _noteDataSource.fetchUserNotes();
+      List<NotesModel> notes = [];
+      for (int i = 0; i < response.length; i++) {
+        notes.add(NotesModel.fromJson(response[i]));
+      }
+      return notes;
+    } catch (e) {
+      throw Failure(e.toString());
+    }
+  }
+
+  @override
+  Future<void> updateNote({required NotesModel noteModel}) async {
+    try {
+      await _noteDataSource.updateNote(noteModel: noteModel);
     } catch (e) {
       throw Failure(e.toString());
     }

@@ -6,9 +6,9 @@ import 'package:todo2/database/database_scheme/project_schemes/project_user_sche
 import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/navigation_service/network_error_service.dart';
-import 'package:todo2/services/extensions/color_extension/color_string_extension.dart';
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
+import 'package:todo2/utils/extensions/color_extension/color_string_extension.dart';
 
 abstract class ProjectUserData {
   Future<void> updateProject({
@@ -16,8 +16,13 @@ abstract class ProjectUserData {
     required Color color,
     required String title,
   });
-  Future<void> deleteProject({required ProjectModel projectModel});
-  Future<void> createProject({required Color color, required String title});
+  Future<void> deleteProject({
+    required ProjectModel projectModel,
+  });
+  Future<void> createProject({
+    required Color color,
+    required String title,
+  });
   Future<List<dynamic>> searchProject({required String title});
 
   // Future<Map<String, dynamic>> fetchOneProject();
@@ -47,7 +52,7 @@ class ProjectUserDataImpl implements ProjectUserData {
     required String title,
   }) async {
     try {
-       await _network.networkApiClient.dio.post(
+      await _network.networkApiClient.dio.post(
         _projects,
         data: {
           ProjectDataScheme.title: title,

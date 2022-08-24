@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo2/database/data_source/notes_data_source.dart';
 import 'package:todo2/database/repository/notes_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/controller/new_note_controller.dart';
@@ -9,6 +10,8 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/whit
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/color_pallete_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
+import 'package:todo2/services/network_service/network_config.dart';
+import 'package:todo2/storage/secure_storage_service.dart';
 
 class AddQuickNote extends StatefulWidget {
   const AddQuickNote({Key? key}) : super(key: key);
@@ -20,7 +23,11 @@ class AddQuickNote extends StatefulWidget {
 class _AddQuickNoteState extends State<AddQuickNote> {
   final descriptionTextController = TextEditingController();
   final _addNoteController = NewNoteController(
-    addNoteRepository: NoteRepositoryImpl(),
+    addNoteRepository: NoteRepositoryImpl(
+        noteDataSource: NotesDataSourceImpl(
+      network: NetworkSource(),
+      secureStorage: SecureStorageService(),
+    ),),
     colorPalleteController: ColorPalleteController(),
   );
 
