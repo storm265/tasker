@@ -53,8 +53,7 @@ class ImageController extends ChangeNotifier {
           message: 'You cant put huge file',
           context: context,
         );
-      } else if (pickedFile.value.extension != 'jpeg' &&
-          pickedFile.value.extension != 'png') {
+      } else if (wrongFormat) {
         pickedFile.value = _emptyImage;
         result.files.clear();
         pickedFile.notifyListeners();
@@ -87,16 +86,20 @@ class ImageController extends ChangeNotifier {
     }
   }
 
-  Future<void> updateAvatar({required BuildContext context}) async {
+  Future<void> updateAvatar(
+      {required BuildContext context, required VoidCallback callback}) async {
     try {
       await pickAvatar(context: context);
       if (isValidAvatar(context: context)) {
         imageCache.clear();
         log('image is valid!');
-        await uploadAvatar();
+        await uploadAvatar().then((_) {
+          callback();
+          Navigator.pop(context);
+        });
       }
-    } catch (e) {
-      log('update img error : $e');
+    } catch (e, t) {
+      log('update img error : $e,$t');
       throw Failure(e.toString());
     }
   }

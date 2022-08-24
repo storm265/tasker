@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todo2/presentation/pages/auth/welcome/widgets/assets_content.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
+import 'package:todo2/utils/assets_path.dart';
 
 class AsseterWidget extends StatelessWidget {
   final Function(int index) onChange;
@@ -23,7 +24,7 @@ class AsseterWidget extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: SvgPicture.asset(
-                      '${assets.assetsPath}${assets.avatarsTitle}.svg'),
+                      '${AssetsPath.avatarsPath}${assets.avatarsTitle}.svg'),
                 ),
               ),
               const SizedBox(height: 10),

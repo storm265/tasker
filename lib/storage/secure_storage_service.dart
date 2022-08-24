@@ -68,7 +68,6 @@ class SecureStorageService {
     }
   }
 
-  // TODO: trailing comma
   Future<void> saveUserData(
       {required StorageDataType type, required String value}) async {
     try {

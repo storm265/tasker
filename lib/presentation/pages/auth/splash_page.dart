@@ -3,6 +3,7 @@ import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 import 'package:todo2/storage/secure_storage_service.dart';
+import 'package:todo2/utils/assets_path.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
@@ -17,8 +18,7 @@ class SplashPageState extends State<SplashPage> {
   @override
   void initState() {
     _secureStorageService = SecureStorageService();
-    // TODO: why you need Delay here?
-    Future.delayed(Duration.zero, () async => isAuthenticated());
+    isAuthenticated();
     super.initState();
   }
 
@@ -37,7 +37,7 @@ class SplashPageState extends State<SplashPage> {
     return AppbarWrapWidget(
       isRedAppBar: false,
       child: Center(
-        child: Image.asset('assets/splash_screen/splash.png'),
+        child: Image.asset(AssetsPath.splashPath),
       ),
     );
   }

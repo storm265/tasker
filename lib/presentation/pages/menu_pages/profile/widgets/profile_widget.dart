@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todo2/presentation/controller/image_picker_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/widgets/panel_widgets/panel_decoration.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/widgets/panel_widgets/tasks_text_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/dialogs/settings_dialog.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/widgets/panel_widgets/user_data_widget.dart';
+import 'package:todo2/utils/assets_path.dart';
 
 class ProfileWidget extends StatefulWidget {
   final int completedTasks;
@@ -26,8 +28,7 @@ class ProfileWidget extends StatefulWidget {
 class _ProfileWidgetState extends State<ProfileWidget>
     with SingleTickerProviderStateMixin {
   Future<void> fetchData() async {
-    await widget.profileController
-        .fetchProfileInfo(updateStateCallback: () => setState(() {}));
+    await widget.profileController.fetchProfileInfo();
   }
 
   @override
@@ -60,14 +61,16 @@ class _ProfileWidgetState extends State<ProfileWidget>
                 splashRadius: 20,
                 tooltip: 'Settings',
                 onPressed: () => showSettingsDialog(
-                  context: context,
-                  profileController: widget.profileController,
-                  imageController: widget.imageController,
-                ),
+                    context: context,
+                    profileController: widget.profileController,
+                    imageController: widget.imageController,
+                    updateState: () => setState(() {})),
                 icon: RotationTransition(
                   turns: Tween(begin: 0.0, end: 1.0).animate(
                       widget.profileController.iconAnimationController),
-                  child: const Icon(Icons.settings),
+                  child: SvgPicture.asset(
+                    AssetsPath.settingsIconPath,
+                  ),
                 ),
               ),
             ),
@@ -77,17 +80,17 @@ class _ProfileWidgetState extends State<ProfileWidget>
                 UserDataWidget(
                   imageHeader: widget.profileController.imageHeader,
                   imageUrl: widget.profileController.imageUrl,
-                  // email: widget.profileController.email,
-                  // username: widget.profileController.username,
-                  email: 'dasdadadasda',
-                  username: 'dasdadadasda',
+                  email: widget.profileController.email,
+                  username: widget.profileController.username,
+                  // email: 'dasdadadasda',
+                  // username: 'dasdadadasda',
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     TasksTextWidget(
                       title: '${widget.createdTask}',
-                      subtitle: 'Created Task',
+                      subtitle: 'Created Tasks',
                     ),
                     TasksTextWidget(
                       title: '${widget.completedTasks}',

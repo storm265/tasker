@@ -52,11 +52,12 @@ flutter:
 
 
   assets:
-    - assets/splash_screen/splash.png
+    - assets/splash_screen/
     - assets/start_page/avatars/
     - assets/nav_bar_icons/
-    - assets/work_list/tune.svg
+    - assets/tasks_list/
     - assets/detailed_task/
+    - assets/profile/
     - .env
 
 

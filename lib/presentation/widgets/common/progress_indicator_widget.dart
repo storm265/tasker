@@ -4,7 +4,10 @@ import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 class ProgressIndicatorWidget extends StatelessWidget {
   final String? text;
-  const ProgressIndicatorWidget({Key? key, this.text}) : super(key: key);
+  const ProgressIndicatorWidget({
+    Key? key,
+    this.text,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

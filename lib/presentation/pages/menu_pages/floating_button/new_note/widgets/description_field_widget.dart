@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/widgets/atachment_message_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/controller_inherited.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/widgets/panel_widgets/cached_avatar_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
+import 'package:todo2/utils/assets_path.dart';
 
 class DescriptionFieldWidget extends StatelessWidget {
   final TextEditingController descriptionController;
@@ -18,7 +20,7 @@ class DescriptionFieldWidget extends StatelessWidget {
     this.maxLength = 512,
     this.showImageIcon = false,
   }) : super(key: key);
-  final iconPath = 'assets/detailed_task/image.png';
+
   @override
   Widget build(BuildContext context) {
     final newTaskController =
@@ -116,7 +118,7 @@ class DescriptionFieldWidget extends StatelessWidget {
                             ? Padding(
                                 padding: const EdgeInsets.only(left: 10),
                                 child: GestureDetector(
-                                  child: Image.asset(iconPath),
+                                  child: SvgPicture.asset(AssetsPath.imageIconIconPath),
                                 ),
                               )
                             : const SizedBox(),

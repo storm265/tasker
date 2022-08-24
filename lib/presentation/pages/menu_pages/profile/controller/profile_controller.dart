@@ -39,12 +39,13 @@ class ProfileController extends ChangeNotifier {
   // }
 
   Future<void> fetchProfileInfo(
-      {required VoidCallback updateStateCallback}) async {
+   ) async {
     try {
       log('header: $imageHeader');
       log('header: $imageUrl');
       String? ava = await getAvatarLink();
       imageUrl = '${dotenv.env[EnvScheme.apiUrl]}/users-avatar/${ava!}';
+      log('avatar url $imageUrl');
       final map = await getAvatarHeader();
       imageHeader = map;
 
@@ -55,7 +56,7 @@ class ProfileController extends ChangeNotifier {
               type: StorageDataType.username) ??
           '';
 
-      updateStateCallback();
+ 
     } catch (e) {
       throw Failure(e.toString());
     }

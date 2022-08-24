@@ -11,6 +11,7 @@ import 'package:todo2/presentation/pages/menu_pages/task/widgets/tabs/bottom_tab
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
+import 'package:todo2/utils/assets_path.dart';
 
 class TasksPage extends StatefulWidget {
   const TasksPage({Key? key}) : super(key: key);
@@ -24,7 +25,7 @@ class _TasksPageState extends State<TasksPage>
   // TODO create controller for this
   final taskController = TaskRepositoryImpl();
 
-  final _tuneIconPath = 'assets/work_list/tune.svg';
+ 
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
@@ -45,7 +46,7 @@ class _TasksPageState extends State<TasksPage>
       actionWidget: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GestureDetector(
-          child: SvgPicture.asset(_tuneIconPath),
+          child: SvgPicture.asset(AssetsPath.tuneIconPath),
           onTap: () => showTasksDialog(context),
         ),
       ),

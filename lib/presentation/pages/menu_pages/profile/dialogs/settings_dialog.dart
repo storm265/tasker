@@ -8,6 +8,7 @@ Future<void> showSettingsDialog({
   required BuildContext context,
   required ImageController imageController,
   required ProfileController profileController,
+  required VoidCallback updateState,
 }) async {
   await showDialog(
     context: context,
@@ -36,7 +37,10 @@ Future<void> showSettingsDialog({
                 onTap: () async {
                   switch (i) {
                     case 0:
-                      await imageController.updateAvatar(context: context);
+                      await imageController.updateAvatar(
+                        context: context,
+                        callback: () => updateState(),
+                      );
                       break;
                     case 1:
                       await profileController.signOut(context: context);
