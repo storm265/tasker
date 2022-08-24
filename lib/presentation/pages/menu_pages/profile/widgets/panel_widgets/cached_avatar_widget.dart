@@ -19,8 +19,6 @@ class CachedAvatarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log('CachedAvatarWidget :$imageUrl');
-    log('CachedAvatarWidget :$imageHeader');
     return SizedBox(
       width: radius,
       height: radius,
@@ -30,7 +28,7 @@ class CachedAvatarWidget extends StatelessWidget {
         maxWidthDiskCache: 300,
         maxHeightDiskCache: 300,
         progressIndicatorBuilder: (context, url, progress) =>
-            const ProgressIndicatorWidget(),
+            ProgressIndicatorWidget(text: '${progress.progress}%'),
         imageBuilder: (_, imageProvider) => CircleAvatar(
           radius: 10,
           backgroundImage: imageProvider,

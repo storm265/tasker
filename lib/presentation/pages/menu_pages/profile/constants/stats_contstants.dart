@@ -4,7 +4,7 @@ import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 const List<String> labels = [
   'Events',
-  'Todo',
+  'To do Task',
   'Quick Notes',
 ];
 final List<Color> statsColors = [

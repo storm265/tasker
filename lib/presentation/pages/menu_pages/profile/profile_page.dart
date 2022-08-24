@@ -34,21 +34,10 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     ),
   );
-  StatsModel stats = StatsModel(
-    createdTasks: 0,
-    completedTasks: 0,
-    events: 'events',
-    quickNotes: 'quickNotes',
-    todo: 'todo',
-  );
-
-  Future<void> getData() async {
-    stats = await userController.fetchUserStatistics();
-  }
 
   @override
   void initState() {
-    // getData();
+    userController.fetchStats();
     super.initState();
   }
 
@@ -67,6 +56,7 @@ class _ProfilePageState extends State<ProfilePage> {
       title: 'Profile',
       isRedAppBar: false,
       child: Wrap(
+        spacing: 10,
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(
@@ -82,28 +72,12 @@ class _ProfilePageState extends State<ProfilePage> {
               createdTask: 999,
             ),
           ),
-
           Column(
             children: [
-              TaskListWidget(model: stats),
-              StatsWidget(statsModel: stats),
+              TaskListWidget(model: userController.stats),
+              StatsWidget(statsModel: userController.stats),
             ],
           )
-          // FutureBuilder<List<ProjectModel>>(
-          //   initialData: const [],
-          //   // future: inheritedProfile.profileController.
-
-          //   builder: (_, AsyncSnapshot<List<ProjectModel>> snapshot) {
-          //     return snapshot.hasData
-          //         ? Column(
-          //             children: [
-          //                TaskListWidget(snapshot: snapshot),
-          //               // StatsWidget(projectList: snapshot),
-          //             ],
-          //           )
-          //         : const SizedBox();
-          //   },
-          // ),
         ],
       ),
     );

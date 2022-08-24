@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 const addPhotoWidget = Center(
   child: Icon(
-    Icons.add_a_photo,
+    Icons.person,
     color: Colors.white,
     size: 30,
   ),

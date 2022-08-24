@@ -59,7 +59,7 @@ class ImageController extends ChangeNotifier {
         result.files.clear();
         pickedFile.notifyListeners();
         throw MessageService.displaySnackbar(
-          message: 'Wrong image, supported formats: .jpeg, .png.',
+          message: 'Wrong image, supported formats: .jpeg, .jpg, .png.',
           context: context,
         );
       } else {

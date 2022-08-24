@@ -8,6 +8,18 @@ class UserController {
   UserController({required UserProfileRepositoryImpl userProfileRepository})
       : _userProfileRepository = userProfileRepository;
 
+  StatsModel stats = StatsModel(
+    createdTasks: 0,
+    completedTasks: 0,
+    events: 'events',
+    quickNotes: 'quickNotes',
+    todo: 'todo',
+  );
+
+  Future<void> fetchStats() async {
+    stats = await fetchUserStatistics();
+  }
+
   Future<UserProfileModel> fetchCurrentUser({
     required String id,
     required String accessToken,
