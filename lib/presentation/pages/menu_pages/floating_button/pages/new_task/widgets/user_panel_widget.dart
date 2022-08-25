@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task/controller/add_task_controller.dart';
 
-import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/add_task_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/controller_inherited.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task/controller/controller_inherited.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 
 class UserPanelPickerWidget extends StatelessWidget {

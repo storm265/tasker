@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/add_check_list/add_checklist_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_note/new_note_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task/new_task.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/menu_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/profile_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
@@ -17,6 +20,9 @@ class NavigationController extends ChangeNotifier {
     const KeepAlivePageWidget(child: MenuPage()),
     KeepAlivePageWidget(child: QuickPage()),
     const KeepAlivePageWidget(child: ProfilePage()),
+    const KeepAlivePageWidget(child: AddTaskPage()),
+    const KeepAlivePageWidget(child: AddQuickNote()),
+    const KeepAlivePageWidget(child: AddCheckListPage()),
   ];
 
   Future<void> pushToPage(Pages page) async {
@@ -32,6 +38,15 @@ class NavigationController extends ChangeNotifier {
         break;
       case Pages.profile:
         pageIndex.value = 3;
+        break;
+      case Pages.addTask:
+        pageIndex.value = 4;
+        break;
+      case Pages.addNote:
+        pageIndex.value = 5;
+        break;
+      case Pages.addCheckList:
+        pageIndex.value = 6;
         break;
       default:
         pageIndex.value = 0;

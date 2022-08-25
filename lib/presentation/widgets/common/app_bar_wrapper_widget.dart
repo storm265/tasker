@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
+import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapp.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 const _whiteBar = SystemUiOverlayStyle(
@@ -31,6 +31,7 @@ class AppbarWrapWidget extends StatelessWidget with PreferredSizeWidget {
   final bool isRedAppBar;
   final double preferredHeight;
   final bool? isWhite;
+  final bool? isPopFromNavBar;
 
   const AppbarWrapWidget({
     Key? key,
@@ -45,6 +46,7 @@ class AppbarWrapWidget extends StatelessWidget with PreferredSizeWidget {
     this.showAppBar = true,
     this.isRedAppBar = true,
     this.isWhite,
+    this.isPopFromNavBar,
   }) : super(key: key);
 
   @override
@@ -67,7 +69,7 @@ class AppbarWrapWidget extends StatelessWidget with PreferredSizeWidget {
                     ? Padding(
                         padding: const EdgeInsets.only(left: 10),
                         child: GestureDetector(
-                          onTap: () => Navigator.pop(context),
+                          onTap: () =>isPopFromNavBar!=null ? '' : Navigator.pop(context),
                           child: Icon(
                             Icons.west_rounded,
                             size: 30,

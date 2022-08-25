@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/widgets/add_member_widget/add_member_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/widgets/description_field_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/widgets/for_in_field_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/widgets/title_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/add_task_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/controller_inherited.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/widgets/fake_nav_bar.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/widgets/pick_time_field_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/widgets/selected_panel_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_note/widgets/add_member_widget/add_member_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_note/widgets/description_field_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_note/widgets/for_in_field_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_note/widgets/title_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task/controller/add_task_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task/controller/controller_inherited.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task/widgets/fake_nav_bar.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task/widgets/pick_time_field_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task/widgets/selected_panel_widget.dart';
+
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/confirm_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/red_app_bar.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/white_box_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
-import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
+import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapp.dart';
 
 class AddTaskPage extends StatefulWidget {
   const AddTaskPage({Key? key}) : super(key: key);
@@ -37,10 +38,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
   Widget build(BuildContext context) {
     final newTaskController =
         InheritedNewTaskController.of(context).addTaskController;
-    return WillPopWrap(
-      child: AppbarWrapWidget(
+    return AppbarWrapWidget(
         title: 'New Task',
-        showLeadingButton: true,
+       // showLeadingButton: true,
         child: Stack(
           children: [
             const FakeAppBar(),
@@ -135,7 +135,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
             ),
           ],
         ),
-      ),
-    );
+      );
   }
 }

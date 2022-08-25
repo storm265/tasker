@@ -22,13 +22,13 @@ class NewNoteController extends ChangeNotifier {
       isButtonClicked.value = false;
       isButtonClicked.notifyListeners();
 
-      await addNoteRepository
-          .postNote(
-            color:
-                '${colors[colorPalleteController.selectedIndex.value].value}',
-            description: description,
-          )
-          .then((value) => Navigator.pop(context));
+      // await addNoteRepository
+      //     .postNote(
+      //       color:
+      //           '${colors[colorPalleteController.selectedIndex.value].value}',
+      //       description: description,
+      //     )
+      //     .then((value) => Navigator.pop(context));
 
       isButtonClicked.value = true;
       isButtonClicked.notifyListeners();

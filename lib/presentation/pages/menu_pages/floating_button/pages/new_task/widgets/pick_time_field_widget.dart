@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/controller/controller_inherited.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/widgets/grey_container.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/widgets/pick_date_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task/controller/controller_inherited.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task/widgets/grey_container.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task/widgets/pick_date_widget.dart';
+
 import 'package:todo2/presentation/widgets/common/colors.dart';
 
 class PickTimeFieldWidget extends StatelessWidget {

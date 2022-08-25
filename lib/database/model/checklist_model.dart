@@ -1,9 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:todo2/database/database_scheme/checklists_scheme.dart';
+import 'package:todo2/utils/extensions/color_extension/color_string_extension.dart';
 
 class CheckListModel {
   int id;
   String title;
-  String color;
+  Color color;
   String createdAt;
   String ownerId;
 
@@ -18,8 +20,11 @@ class CheckListModel {
   factory CheckListModel.fromJson(Map<String, dynamic> json) => CheckListModel(
         id: json[CheckListsScheme.id],
         title: json[CheckListsScheme.title],
-        color: json[CheckListsScheme.color],
-        createdAt: json[CheckListsScheme.createdAt],
+        color: Color(
+          int.parse(
+              json[CheckListsScheme.color].toString().replaceColorSymbol()),
+        ),
         ownerId: json[CheckListsScheme.ownerId],
+        createdAt: json[CheckListsScheme.createdAt],
       );
 }

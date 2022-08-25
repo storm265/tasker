@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/services/navigation_service/navigation_service.dart';
+import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
 
-Future<void> showAddDialog(BuildContext context) async {
+Future<void> showAddDialog({
+  required BuildContext context,
+  required NavigationController navigationController,
+}) async {
   final List<String> items = ['Add Task', 'Add Quick Note', 'Add Check List'];
   await showDialog(
     context: context,
@@ -30,18 +33,15 @@ Future<void> showAddDialog(BuildContext context) async {
                   switch (index) {
                     case 0:
                       Navigator.pop(context);
-                      await NavigationService.navigateTo(
-                          context, Pages.addTask);
+                      navigationController.pageController.jumpToPage(4);
                       break;
                     case 1:
                       Navigator.pop(context);
-                      await NavigationService.navigateTo(
-                          context, Pages.addNote);
+                      navigationController.pageController.jumpToPage(5);
                       break;
                     case 2:
                       Navigator.pop(context);
-                      await NavigationService.navigateTo(
-                          context, Pages.addCheckList);
+                      navigationController.pageController.jumpToPage(6);
                       break;
                   }
                 },

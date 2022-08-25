@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/widgets/atachment_message_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_note/widgets/atachment_message_widget.dart';
+
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/confirm_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/detailed_page/widgets/comment_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/detailed_page/widgets/detailed_item_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/detailed_page/widgets/icon_panel.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
-import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapper.dart';
+import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapp.dart';
 
 class DetailedTaskPage extends StatefulWidget {
   const DetailedTaskPage({Key? key}) : super(key: key);

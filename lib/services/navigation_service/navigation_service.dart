@@ -3,9 +3,10 @@ import 'package:todo2/presentation/pages/auth/sign_in_up/sign_in_page.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/sign_up_page.dart';
 import 'package:todo2/presentation/pages/auth/splash_page.dart';
 import 'package:todo2/presentation/pages/auth/welcome/welcome_page.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/add_check_list/add_checklist_page.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/new_note_page.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/new_task/new_task.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/add_check_list/add_checklist_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_note/new_note_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task/new_task.dart';
+
 import 'package:todo2/presentation/pages/menu_pages/menu/menu_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/profile_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';

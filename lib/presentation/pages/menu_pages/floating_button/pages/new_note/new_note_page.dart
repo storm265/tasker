@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/notes_data_source.dart';
 import 'package:todo2/database/repository/notes_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/new_note/controller/new_note_controller.dart';
+
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_note/controller/new_note_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/confirm_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/red_app_bar.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/title_widget.dart';
@@ -24,10 +25,11 @@ class _AddQuickNoteState extends State<AddQuickNote> {
   final descriptionTextController = TextEditingController();
   final _addNoteController = NewNoteController(
     addNoteRepository: NoteRepositoryImpl(
-        noteDataSource: NotesDataSourceImpl(
-      network: NetworkSource(),
-      secureStorage: SecureStorageService(),
-    ),),
+      noteDataSource: NotesDataSourceImpl(
+        network: NetworkSource(),
+        secureStorage: SecureStorageService(),
+      ),
+    ),
     colorPalleteController: ColorPalleteController(),
   );
 
@@ -45,7 +47,7 @@ class _AddQuickNoteState extends State<AddQuickNote> {
     return AppbarWrapWidget(
       isRedAppBar: true,
       title: 'Add Note',
-      showLeadingButton: true,
+     // showLeadingButton: true,
       child: Stack(
         children: [
           const FakeAppBar(),
@@ -84,8 +86,7 @@ class _AddQuickNoteState extends State<AddQuickNote> {
                                     : null,
                               )
                             : const ProgressIndicatorWidget(
-                                text: 'Adding note...',
-                              ),
+                                text: 'Adding note...'),
                       ),
                     ],
                   )

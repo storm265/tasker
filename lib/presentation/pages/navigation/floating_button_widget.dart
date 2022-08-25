@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/add_dialog.dart';
+import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
 
 class FloatingButtonWidget extends StatelessWidget {
-  const FloatingButtonWidget({Key? key}) : super(key: key);
+  final NavigationController navigationController;
+  const FloatingButtonWidget({
+    Key? key,
+    required this.navigationController,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(top: 23),
       child: GestureDetector(
+        onTap: () => showAddDialog(
+          context: context,
+          navigationController: navigationController,
+        ),
         child: Container(
           width: 55,
           height: 55,

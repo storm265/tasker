@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/widgets/floating_button_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/widgets/nav_bar_widget.dart';
+import 'package:todo2/presentation/pages/navigation/floating_button_widget.dart';
+import 'package:todo2/presentation/pages/navigation/nav_bar_widget.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/status_bar_controller.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
@@ -15,20 +15,20 @@ class NavigationPage extends StatefulWidget {
 
 class _NavigationPageState extends State<NavigationPage> {
   late StatusBarController _statusBarController;
-  late NavigationController _navigationController;
+  late NavigationController navigationController;
 
   @override
   void initState() {
     _statusBarController = StatusBarController();
-    _navigationController = NavigationController();
-    _navigationController.pageController = PageController(initialPage: 0);
+    navigationController = NavigationController();
+    navigationController.pageController = PageController(initialPage: 0);
     super.initState();
   }
 
   @override
   void dispose() {
-    _navigationController.pageController.dispose();
-    _navigationController.dispose();
+    navigationController.pageController.dispose();
+    navigationController.dispose();
     _statusBarController.dispose();
     super.dispose();
   }
@@ -42,7 +42,8 @@ class _NavigationPageState extends State<NavigationPage> {
       builder: (context, isRed, _) => AnnotatedRegion<SystemUiOverlayStyle>(
         value: (isRed == true) ? redStatusBar : lightStatusBar,
         child: Scaffold(
-          floatingActionButton: const FloatingButtonWidget(),
+          floatingActionButton:
+              FloatingButtonWidget(navigationController: navigationController),
           floatingActionButtonLocation:
               FloatingActionButtonLocation.centerDocked,
           body: SafeArea(
@@ -50,13 +51,13 @@ class _NavigationPageState extends State<NavigationPage> {
             bottom: false,
             child: PageView.builder(
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: _navigationController.pages.length,
-                controller: _navigationController.pageController,
-                onPageChanged: (index) => _navigationController.pages[index],
-                itemBuilder: (_, i) => _navigationController.pages[i]),
+                itemCount: navigationController.pages.length,
+                controller: navigationController.pageController,
+                onPageChanged: (index) => navigationController.pages[index],
+                itemBuilder: (_, i) => navigationController.pages[i]),
           ),
           bottomNavigationBar: ValueListenableBuilder<int>(
-            valueListenable: _navigationController.pageIndex,
+            valueListenable: navigationController.pageIndex,
             builder: (context, pageIndex, _) => Container(
               height: 60,
               width: double.infinity,
@@ -67,7 +68,7 @@ class _NavigationPageState extends State<NavigationPage> {
                   NavBarItem(
                     onTap: () async {
                       _statusBarController.setRedStatusMode(true);
-                      await _navigationController.pushToPage(Pages.tasks);
+                      await navigationController.pushToPage(Pages.tasks);
                     },
                     label: 'My Tasks',
                     icon: 'tasks',
@@ -76,7 +77,7 @@ class _NavigationPageState extends State<NavigationPage> {
                   NavBarItem(
                     onTap: () async {
                       _statusBarController.setRedStatusMode(false);
-                      await _navigationController.pushToPage(Pages.menu);
+                      await navigationController.pushToPage(Pages.menu);
                     },
                     label: 'Menu',
                     icon: 'menu',
@@ -86,7 +87,7 @@ class _NavigationPageState extends State<NavigationPage> {
                   NavBarItem(
                     onTap: () async {
                       _statusBarController.setRedStatusMode(false);
-                      await _navigationController.pushToPage(Pages.quick);
+                      await navigationController.pushToPage(Pages.quick);
                     },
                     label: 'Quick',
                     icon: 'quick',
@@ -95,7 +96,7 @@ class _NavigationPageState extends State<NavigationPage> {
                   NavBarItem(
                     onTap: () async {
                       _statusBarController.setRedStatusMode(false);
-                      await _navigationController.pushToPage(Pages.profile);
+                      await navigationController.pushToPage(Pages.profile);
                     },
                     label: 'Profile',
                     icon: 'profile',
