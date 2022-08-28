@@ -10,6 +10,7 @@ import 'package:todo2/database/repository/checklist_repository.dart';
 import 'package:todo2/database/repository/notes_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/controller/notes_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/note_card.dart';
+import 'package:todo2/presentation/pages/menu_pages/quick/widgets/note_card_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
@@ -73,39 +74,40 @@ class QuickPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AppbarWrapWidget(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            // '70432b22-a3ca-44c6-ab7b-e1d583766ab0'
-            _notesController.updateNote(
-                noteModel: NotesModel(
-
-                  id: '1477fcbd-958a-4aa0-a51f-a6fcacc45a25',
-                    isCompleted: false,
-                    color: Color(0xFF6074F9),
-                    description: 'update test',
-                    ownerId: 'fbd1792c-dfa4-4507-b3ff-5ea561c416e1',
-                    createdAt: '2022-08-25T18:42:39.859966'));
-          },
-        ),
-        title: 'Quick Notes',
-        isRedAppBar: false,
-        child: SizedBox()
-        // FutureBuilder<List<CheckListLinkedModel>>(
-        //   initialData: const [],
-        //   future: controller.fetchNotes(),
-        //   builder: ((_, AsyncSnapshot<List<CheckListLinkedModel>> snapshots) =>
-        //       snapshots.hasData
-        //           ? DisabledGlowWidget(
-        //               child: ListView.builder(
-        //                 itemCount: snapshots.data!.length,
-        //                 itemBuilder: (context, index) => NoteCard(
-        //                   model: snapshots.data!,
-        //                   index: index,
-        //                 ),
-        //               ),
-        //             )
-        //           : const Center(child: ProgressIndicatorWidget())),
-        // ),
-        );
+      title: 'Quick Notes',
+      isRedAppBar: false,
+      child:
+          // FutureBuilder<List<CheckListLinkedModel>>(
+          //   initialData: const [],
+          //   future: controller.fetchNotes(),
+          //   builder: ((_, AsyncSnapshot<List<CheckListLinkedModel>> snapshots) =>
+          //       snapshots.hasData
+          //           ? DisabledGlowWidget(
+          //               child: ListView.builder(
+          //                 itemCount: snapshots.data!.length,
+          //                 itemBuilder: (context, index) => NoteCard(
+          //                   model: snapshots.data!,
+          //                   index: index,
+          //                 ),
+          //               ),
+          //             )
+          //           : const Center(child: ProgressIndicatorWidget())),
+          // ),
+          FutureBuilder<List<NotesModel>>(
+        initialData: const [],
+        future: _notesController.fetchUserNotes(),
+        builder: ((_, AsyncSnapshot<List<NotesModel>> snapshots) =>
+            snapshots.hasData
+                ? DisabledGlowWidget(
+                    child: ListView.builder(
+                      itemCount: snapshots.data!.length,
+                      itemBuilder: (context, index) => NoteCardWidget(
+                        motesModel: snapshots.data![index],
+                      ),
+                    ),
+                  )
+                : const Center(child: ProgressIndicatorWidget())),
+      ),
+    );
   }
 }

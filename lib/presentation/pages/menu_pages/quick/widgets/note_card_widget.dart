@@ -11,22 +11,19 @@ class NoteCardWidget extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Card(
         elevation: 3,
-        child: SizedBox(
-          width: 300,
-          height: 100,
-          child: Stack(
+        child: Stack(
             children: [
-              // Positioned(
-              //   top: 1,
-              //   left: 17,
-              //   child: SizedBox(
-              //     width: 121,
-              //     height: 3,
-              //     child: ColoredBox(
-              //       color: Color(int.parse(motesModel.color)),
-              //     ),
-              //   ),
-              // ),
+              Positioned(
+                top: 1,
+                left: 17,
+                child: SizedBox(
+                  width: 121,
+                  height: 3,
+                  child: ColoredBox(
+                    color: motesModel.color,
+                  ),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Text(
@@ -40,7 +37,6 @@ class NoteCardWidget extends StatelessWidget {
               ),
             ],
           ),
-        ),
       ),
     );
   }

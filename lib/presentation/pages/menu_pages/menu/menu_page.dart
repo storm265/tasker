@@ -26,12 +26,12 @@ class MenuPage extends StatefulWidget {
 }
 
 class _MenuPageState extends State<MenuPage> {
-  late TextEditingController titleController;
+  late TextEditingController _titleController;
   late ProjectController _projectController;
 
   @override
   void initState() {
-    titleController = TextEditingController();
+    _titleController = TextEditingController();
     _projectController = ProjectController(
       ProjectRepositoryImpl(
           projectDataSource: ProjectUserDataImpl(
@@ -48,18 +48,17 @@ class _MenuPageState extends State<MenuPage> {
   void dispose() {
     _projectController.disposeValues();
     _projectController.dispose();
-    titleController.dispose();
+    _titleController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final profileController = ProfileInherited.of(context).profileController;
     return AppbarWrapWidget(
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniStartFloat,
       floatingActionButton: AddProjectButton(
-        titleController: titleController,
+        titleController: _titleController,
         projectController: _projectController,
         notifyParent: () => setState(() {}),
       ),

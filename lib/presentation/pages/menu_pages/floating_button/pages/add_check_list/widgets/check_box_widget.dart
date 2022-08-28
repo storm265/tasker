@@ -65,8 +65,13 @@ class _CheckBoxWidgetState extends State<CheckBoxWidget> {
                   ),
                 )
               : GestureDetector(
-                  child: Text(widget
-                      .checkBoxController.checkBoxItems.value[widget.index]),
+                  child: Text(
+                    widget.checkBoxController.checkBoxItems.value[widget.index],
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                   onTap: () =>
                       setState(() => widget.isClicked = !widget.isClicked),
                 ),

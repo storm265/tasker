@@ -25,10 +25,9 @@ class TitleWidget extends StatelessWidget {
           child: Text(
             title,
             style: const TextStyle(
-              fontWeight: FontWeight.w300,
+              fontWeight: FontWeight.w200,
               fontSize: 18,
               fontStyle: FontStyle.italic,
-              color: Colors.black,
             ),
           ),
         ),
@@ -38,7 +37,6 @@ class TitleWidget extends StatelessWidget {
           maxLines: maxLines,
           hintText: 'Enter $title:',
           titleController: textController,
-          
         ),
       ],
     );

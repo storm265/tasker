@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/services/error_service/error_service.dart';
@@ -101,6 +102,7 @@ class AuthDataSourceImpl implements AuthDataSource {
         },
         options: _networkSource.networkApiClient.authOptions,
       );
+      log('dataSource response ${response.data}');
       return NetworkErrorService.isSuccessful(response)
           ? response.data[AuthScheme.data] as Map<String, dynamic>
           : throw Failure(

@@ -5,6 +5,7 @@ import 'package:todo2/presentation/pages/menu_pages/menu/dialogs/add_project_dia
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/category_length_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/category_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/circle_widget.dart';
+import 'package:todo2/presentation/widgets/common/colors.dart';
 
 class ProjectItemWidget extends StatelessWidget {
   final ProjectModel model;
@@ -19,7 +20,6 @@ class ProjectItemWidget extends StatelessWidget {
     required this.callback,
     required this.projectController,
     required this.data,
-
   }) : super(key: key);
 
   @override
@@ -29,6 +29,14 @@ class ProjectItemWidget extends StatelessWidget {
           ? null
           : () async {
               projectController.pickProject(pickedModel: data);
+              for (int i = 0; i < colors.length; i++) {
+                if (colors[i] == data.color) {
+                  projectController.colorPalleteController
+                      .changeSelectedIndex(i);
+                  break;
+                }
+              }
+
               // showOptionsDialog(
               //   titleController: titleController,
               //   notifyParent: () => callback(),
@@ -36,7 +44,7 @@ class ProjectItemWidget extends StatelessWidget {
               //   context: context,
               //   projectModel: data,
               // );
-              await showAddProjectDialog(
+              await showAddEditProjectDialog(
                 callback: () => callback(),
                 titleController: projectController.titleController,
                 context: context,

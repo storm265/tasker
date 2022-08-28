@@ -9,11 +9,9 @@ import 'package:todo2/presentation/pages/menu_pages/task/tasks_page.dart';
 import 'package:todo2/presentation/pages/navigation/widgets/keep_page_alive.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 
-// TODO add  more  pages,
 class NavigationController extends ChangeNotifier {
   final pageIndex = ValueNotifier<int>(0);
-
-  late PageController pageController;
+  final pageController = PageController(initialPage: 0);
 
   final List<Widget> pages = [
     const KeepAlivePageWidget(child: TasksPage()),
@@ -25,7 +23,7 @@ class NavigationController extends ChangeNotifier {
     const KeepAlivePageWidget(child: AddCheckListPage()),
   ];
 
-  Future<void> pushToPage(Pages page) async {
+  Future<void> moveToPage(Pages page) async {
     switch (page) {
       case Pages.tasks:
         pageIndex.value = 0;
@@ -54,5 +52,10 @@ class NavigationController extends ChangeNotifier {
     }
     pageIndex.notifyListeners();
     pageController.jumpToPage(pageIndex.value);
+  }
+
+  void disposeValues() {
+    pageIndex.dispose();
+    pageController.dispose();
   }
 }

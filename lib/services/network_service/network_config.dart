@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -35,13 +37,18 @@ class NetworkConfiguration {
   ))
     ..interceptors
         .add(InterceptorsWrapper(onResponse: (response, handler) async {
-      if (response.statusCode == 401) {
-        await UpdateTokenService().updateToken();
-      }
+      log('onResponse: ${response.statusMessage} ');
 
-      return handler.next(response); // continue
-    }, onError: (DioError e, handler) {
-      return handler.next(e); //continue
+      if (response.statusCode == 401) {
+        await UpdateTokenService.updateToken();
+       
+      }
+      return handler.next(response);
+    }, onError: (DioError error, handler) async {
+      log('error : ${error.error}');
+
+      log('error $error, handler $handler');
+      // return handler.next(error); //continue
     }));
 
   final String tokenType = 'Bearer';

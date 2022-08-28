@@ -21,7 +21,7 @@ class AddCheckListPage extends StatefulWidget {
 class _AddCheckListPageState extends State<AddCheckListPage> {
   final _checkListController = AddCheckListController();
   final _titleController = TextEditingController();
-
+  final _scrollController = ScrollController();
   @override
   void dispose() {
     _checkListController.dispose();
@@ -33,6 +33,8 @@ class _AddCheckListPageState extends State<AddCheckListPage> {
 
   @override
   Widget build(BuildContext context) {
+    int index = 0;
+    List<String> list = [];
     return AppbarWrapWidget(
       isRedAppBar: true,
       title: 'Add Check List',
@@ -41,6 +43,7 @@ class _AddCheckListPageState extends State<AddCheckListPage> {
         children: [
           const FakeAppBar(),
           WhiteBoxWidget(
+            scrollController: _scrollController,
             height: 600,
             child: Padding(
               padding: const EdgeInsets.all(30.0),
@@ -59,38 +62,38 @@ class _AddCheckListPageState extends State<AddCheckListPage> {
                         title: 'Title',
                       ),
                     ),
-                    subtitle: SizedBox(
-                      width: 200,
-                      height: 200,
-                      child: SingleChildScrollView(
-                        child: ValueListenableBuilder<List<String>>(
-                          valueListenable: _checkListController.checkBoxItems,
-                          builder: (_, value, __) => ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: value.length,
-                            itemBuilder: (context, index) {
-                              return Column(
-                                children: [
-                                  CheckBoxWidget(
-                                    checkBoxController: _checkListController,
-                                    isClicked: _checkListController.isChecked,
-                                    index: index,
-                                  ),
-                                  (index == value.length - 1)
-                                      ? AddItemButton(
-                                          onPressed: () => _checkListController
-                                              .addItem(index),
-                                        )
-                                      : const SizedBox()
-                                ],
-                              );
-                            },
-                          ),
+                    subtitle: SingleChildScrollView(
+                      child: ValueListenableBuilder<List<String>>(
+                        valueListenable: _checkListController.checkBoxItems,
+                        builder: (_, value, __) => ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: value.length,
+                          itemBuilder: (_, i) {
+                            index = i;
+                            list = value;
+                            return Column(
+                              children: [
+                                CheckBoxWidget(
+                                  checkBoxController: _checkListController,
+                                  isClicked: _checkListController.isChecked,
+                                  index: i,
+                                ),
+                              ],
+                            );
+                          },
                         ),
                       ),
                     ),
                   ),
+                  AddItemButton(onPressed: () {
+                    _checkListController.addItem(index);
+                    _scrollController.animateTo(
+                      _scrollController.position.maxScrollExtent + 20,
+                      duration: Duration(milliseconds: 500),
+                      curve: Curves.easeInCirc,
+                    );
+                  }),
                   Column(
                     children: [
                       ColorPalleteWidget(
@@ -99,22 +102,21 @@ class _AddCheckListPageState extends State<AddCheckListPage> {
                       ),
                       const SizedBox(height: 40),
                       ValueListenableBuilder<bool>(
-                          valueListenable: _checkListController.isClickedButton,
-                          builder: (context, isClicked, _) => isClicked
-                              ? ConfirmButtonWidget(
-                                  title: 'Done',
-                                  onPressed: isClicked
-                                      ? () async {
-                                          _checkListController.addCheckList(
-                                            context: context,
-                                            title: _titleController.text,
-                                          );
-                                        }
-                                      : null,
-                                )
-                              : const ProgressIndicatorWidget(
-                                  text: 'Saving...',
-                                )),
+                        valueListenable: _checkListController.isClickedButton,
+                        builder: (context, isClicked, _) => isClicked
+                            ? ConfirmButtonWidget(
+                                title: 'Done',
+                                onPressed: isClicked
+                                    ? () async {
+                                        _checkListController.addCheckList(
+                                          context: context,
+                                          title: _titleController.text,
+                                        );
+                                      }
+                                    : null,
+                              )
+                            : const ProgressIndicatorWidget(text: 'Saving...'),
+                      ),
                     ],
                   ),
                 ],

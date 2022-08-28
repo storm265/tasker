@@ -15,7 +15,7 @@ class AddItemButton extends StatelessWidget {
           child: const Text(
             '+ Add new item ',
             style: TextStyle(
-              fontWeight: FontWeight.w400,
+              fontWeight: FontWeight.w200,
               fontSize: 16,
               fontStyle: FontStyle.italic,
             ),

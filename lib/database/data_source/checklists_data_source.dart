@@ -13,32 +13,32 @@ import 'package:todo2/storage/secure_storage_service.dart';
 import 'package:todo2/utils/extensions/color_extension/color_string_extension.dart';
 
 abstract class CheckListsDataSource {
-  Future<void> createCheckList({
-    required String title,
-    required Color color,
-    List<Map<String, dynamic>>? items,
-  });
-
-  Future<void> updateCheckList({
-    required String title,
-    required Color color,
-  });
-  Future<void> deleteCheckListItem({
-    required String title,
-    required Color color,
-  });
-  Future<void> deleteCheckListItems({
-    required String title,
-    required Color color,
-  });
-  Future<void> deleteCheckList({
-    required String title,
-    required Color color,
-  });
-  //   Future<void> fetchOneCheckList({
-
+  // Future<void> createCheckList({
+  //   required String title,
+  //   required Color color,
+  //   List<Map<String, dynamic>>? items,
   // });
-  Future fetchAllCheckLists();
+
+  // Future<void> updateCheckList({
+  //   required String title,
+  //   required Color color,
+  // });
+  // Future<void> deleteCheckListItem({
+  //   required String title,
+  //   required Color color,
+  // });
+  // Future<void> deleteCheckListItems({
+  //   required String title,
+  //   required Color color,
+  // });
+  // Future<void> deleteCheckList({
+  //   required String title,
+  //   required Color color,
+  // });
+  // //   Future<void> fetchOneCheckList({
+
+  // // });
+  // Future fetchAllCheckLists();
 }
 
 class CheckListsDataSourceImpl extends CheckListsDataSource {
@@ -154,24 +154,24 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
     List<Map<String, dynamic>>? items,
   }) async {
     try {
-      final ownerId =
-          await _secureStorage.getUserData(type: StorageDataType.id);
-      final response = await _network.networkApiClient.dio.put(
-        '$_checklists/${checkListModel.id}',
-        data: {
-          CheckListsScheme.title: checkListModel.title,
-          CheckListsScheme.color:
-              checkListModel.color.toString().toStringColor(),
-          CheckListsScheme.ownerId: ownerId,
-          CheckListsScheme.items: items ?? [],
-        },
-        options: await _network.networkApiClient
-            .getLocalRequestOptions(useContentType: true),
-      );
-      log('updateCheckList ${response.data}');
-      log('updateCheckList ${response.statusMessage}');
+      // final ownerId =
+      //     await _secureStorage.getUserData(type: StorageDataType.id);
+      // final response = await _network.networkApiClient.dio.put(
+      //   '$_checklists/${checkListModel.id}',
+      //   data: {
+      //     CheckListsScheme.title: checkListModel.title,
+      //     CheckListsScheme.color:
+      //         checkListModel.color.toString().toStringColor(),
+      //     CheckListsScheme.ownerId: ownerId,
+      //     CheckListsScheme.items: items ?? [],
+      //   },
+      //   options: await _network.networkApiClient
+      //       .getLocalRequestOptions(useContentType: true),
+      // );
+      // log('updateCheckList ${response.data}');
+      // log('updateCheckList ${response.statusMessage}');
     } catch (e) {
       throw Failure(e.toString());
     }
   }
-}
+

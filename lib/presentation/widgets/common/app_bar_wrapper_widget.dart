@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:todo2/presentation/pages/navigation/controllers/inherited_navigator.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapp.dart';
+import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 const _whiteBar = SystemUiOverlayStyle(
@@ -54,6 +56,8 @@ class AppbarWrapWidget extends StatelessWidget with PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final navigationController =
+        NavigationInherited.of(context).navigationController;
     return WillPopWrap(
       child: Scaffold(
         floatingActionButton: floatingActionButton,
@@ -69,7 +73,9 @@ class AppbarWrapWidget extends StatelessWidget with PreferredSizeWidget {
                     ? Padding(
                         padding: const EdgeInsets.only(left: 10),
                         child: GestureDetector(
-                          onTap: () =>isPopFromNavBar!=null ? '' : Navigator.pop(context),
+                          onTap: () => isPopFromNavBar != null
+                              ? navigationController.moveToPage(Pages.tasks)
+                              : Navigator.pop(context),
                           child: Icon(
                             Icons.west_rounded,
                             size: 30,

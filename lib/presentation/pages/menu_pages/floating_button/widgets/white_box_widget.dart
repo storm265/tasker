@@ -25,11 +25,11 @@ class WhiteBoxWidget extends StatelessWidget {
           height: height,
           decoration: BoxDecoration(
             color: Colors.white,
-            boxShadow: const [
+            boxShadow: [
               BoxShadow(
-                color: Color(0xFFDDDDDD),
+                color: const Color(0xFFDDDDDD).withOpacity(0.5),
                 blurRadius: 9,
-                offset: Offset(3, 3),
+                offset: const Offset(3, 3),
               )
             ],
             borderRadius: BorderRadius.circular(5),

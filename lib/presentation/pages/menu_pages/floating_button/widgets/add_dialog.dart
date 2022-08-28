@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
+import 'package:todo2/presentation/pages/navigation/controllers/inherited_navigator.dart';
 
-Future<void> showAddDialog({
-  required BuildContext context,
-  required NavigationController navigationController,
-}) async {
+Future<void> showAddDialog({required BuildContext context}) async {
   final List<String> items = ['Add Task', 'Add Quick Note', 'Add Check List'];
   await showDialog(
     context: context,
     builder: (_) {
+      final navigationController =
+          NavigationInherited.of(context).navigationController;
       return AlertDialog(
         contentPadding: const EdgeInsets.all(0),
         content: SizedBox(

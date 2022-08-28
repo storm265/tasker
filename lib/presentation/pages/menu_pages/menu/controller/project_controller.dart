@@ -53,7 +53,8 @@ class ProjectController extends ChangeNotifier {
     required BuildContext context,
   }) async {
     try {
-      if (formKey.currentState!.validate()) {
+      if (formKey.currentState!.validate() &&
+          !colorPalleteController.isNotPickerColor) {
         setClickedValue(false);
 
         if (isEdit) {
@@ -65,7 +66,6 @@ class ProjectController extends ChangeNotifier {
           onSuccessCallback();
         } else {
           final isSameProject = await isSameProjectCreated(title: title);
-          log('is dublicated : ${isSameProject}');
           if (isSameProject) {
             MessageService.displaySnackbar(
               message: 'This project is already exist',
@@ -76,7 +76,7 @@ class ProjectController extends ChangeNotifier {
             onSuccessCallback();
           }
         }
-
+        
         setClickedValue(true);
       }
     } catch (e) {

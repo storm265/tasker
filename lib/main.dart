@@ -11,11 +11,17 @@ import 'package:todo2/database/repository/task_attachment_repository.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/tasks_member_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/add_check_list/add_checklist_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_note/new_note_page.dart';
 
 import 'package:todo2/presentation/pages/menu_pages/menu/menu_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/profile_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
+import 'package:todo2/presentation/pages/navigation/controllers/inherited_navigator.dart';
+import 'package:todo2/presentation/pages/navigation/controllers/inherited_status.dart';
+import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
+import 'package:todo2/presentation/pages/navigation/controllers/status_bar_controller.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/system_service/system_chrome.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
@@ -46,11 +52,15 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late AddTaskController _newTaskConroller;
-  late ThemeDataService _themeDataController;
-  late ProfileController _profileController;
+  late final AddTaskController _newTaskConroller;
+  late final ThemeDataService _themeDataController;
+  late final ProfileController _profileController;
+  late final NavigationController _navigationController;
+  late final StatusBarController _statusBarController;
   @override
   void initState() {
+    _navigationController = NavigationController();
+    _statusBarController = StatusBarController();
     _newTaskConroller = AddTaskController(
       tasksMembers: TasksMembersRepositoryImpl(),
       taskRepository: TaskRepositoryImpl(),
@@ -82,22 +92,31 @@ class _MyAppState extends State<MyApp> {
     _newTaskConroller.disposeAll();
     _newTaskConroller.dispose();
     _profileController.dispose();
+    _navigationController.disposeValues();
+    _navigationController.dispose();
+    _statusBarController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return ProfileInherited(
-      profileController: _profileController,
-      child: InheritedNewTaskController(
-        addTaskController: _newTaskConroller,
-        child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Todo2',
-          theme: _themeDataController.themeData,
-          //  initialRoute: '/',
-          //  routes: routes,
-          home: QuickPage(),
+    return InheritedStatusBar(
+      statusBarController: _statusBarController,
+      child: NavigationInherited(
+        navigationController: _navigationController,
+        child: ProfileInherited(
+          profileController: _profileController,
+          child: InheritedNewTaskController(
+            addTaskController: _newTaskConroller,
+            child: MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'Todo2',
+              theme: _themeDataController.themeData,
+              initialRoute: '/',
+              routes: routes,
+              //  home: AddQuickNote(),
+            ),
+          ),
         ),
       ),
     );

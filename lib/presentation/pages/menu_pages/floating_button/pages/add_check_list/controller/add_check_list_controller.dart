@@ -58,7 +58,9 @@ class AddCheckListController extends ChangeNotifier {
   Future<void> putChecklistItem() async {
     try {
       await _checkListItemsRepository.putChecklistItem(
-          id: id, checkboxItems: checkBoxItems.value);
+        id: id,
+        checkboxItems: checkBoxItems.value,
+      );
     } catch (e) {
       throw Failure(e.toString());
     }
