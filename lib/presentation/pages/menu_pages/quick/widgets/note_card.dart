@@ -16,7 +16,7 @@ class NoteCard extends StatelessWidget {
     required this.model,
     required this.index,
   }) : super(key: key);
-
+  
   @override
   Widget build(BuildContext context) {
     return Padding(

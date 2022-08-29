@@ -7,38 +7,30 @@ import 'package:todo2/database/model/checklist_item_model.dart';
 import 'package:todo2/database/model/checklist_model.dart';
 
 import 'package:todo2/services/error_service/error_service.dart';
+import 'package:todo2/services/navigation_service/network_error_service.dart';
 
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 import 'package:todo2/utils/extensions/color_extension/color_string_extension.dart';
 
 abstract class CheckListsDataSource {
-  // Future<void> createCheckList({
-  //   required String title,
-  //   required Color color,
-  //   List<Map<String, dynamic>>? items,
-  // });
+  Future<void> createCheckList({
+    required String title,
+    required Color color,
+    List<Map<String, dynamic>>? items,
+  });
 
-  // Future<void> updateCheckList({
-  //   required String title,
-  //   required Color color,
-  // });
-  // Future<void> deleteCheckListItem({
-  //   required String title,
-  //   required Color color,
-  // });
-  // Future<void> deleteCheckListItems({
-  //   required String title,
-  //   required Color color,
-  // });
-  // Future<void> deleteCheckList({
-  //   required String title,
-  //   required Color color,
-  // });
-  // //   Future<void> fetchOneCheckList({
+  Future<void> updateCheckList({
+    required CheckListModel checkListModel,
+    List<Map<String, dynamic>>? items,
+  });
+  Future<void> deleteCheckList();
 
-  // // });
-  // Future fetchAllCheckLists();
+  Future<void> deleteCheckListItem({required String checkListId});
+
+  Future<void> deleteCheckListItems({required List<String>? items});
+
+  Future<List<dynamic>> fetchAllCheckLists();
 }
 
 class CheckListsDataSourceImpl extends CheckListsDataSource {
@@ -80,7 +72,33 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
     }
   }
 
-// maybe
+  @override
+  Future<void> updateCheckList({
+    required CheckListModel checkListModel,
+    List<Map<String, dynamic>>? items,
+  }) async {
+    try {
+      final ownerId =
+          await _secureStorage.getUserData(type: StorageDataType.id);
+      final response = await _network.networkApiClient.dio.put(
+        '$_checklists/${checkListModel.id}',
+        data: {
+          CheckListsScheme.title: checkListModel.title,
+          CheckListsScheme.color:
+              checkListModel.color.toString().toStringColor(),
+          CheckListsScheme.ownerId: ownerId,
+          CheckListsScheme.items: items ?? [],
+        },
+        options: await _network.networkApiClient
+            .getLocalRequestOptions(useContentType: true),
+      );
+      log('updateCheckList ${response.data}');
+      log('updateCheckList ${response.statusMessage}');
+    } catch (e) {
+      throw Failure(e.toString());
+    }
+  }
+
   @override
   Future<void> deleteCheckListItem({required String checkListId}) async {
     try {
@@ -96,12 +114,12 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
   }
 
   @override
-  Future<void> deleteCheckListItems({required List<String> items}) async {
+  Future<void> deleteCheckListItems({required List<String>? items}) async {
     try {
       final response = await _network.networkApiClient.dio.delete(
         _checklistsItems,
         data: {
-          CheckListsScheme.items: items,
+          CheckListsScheme.items: items ?? [],
         },
         options: await _network.networkApiClient
             .getLocalRequestOptions(useContentType: true),
@@ -130,48 +148,21 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
   }
 
   @override
-  Future fetchAllCheckLists()async {
+  Future<List<dynamic>> fetchAllCheckLists() async {
     try {
       final ownerId =
           await _secureStorage.getUserData(type: StorageDataType.id);
       final response = await _network.networkApiClient.dio.get(
         '$_checklists/$ownerId',
-      
-        options: await _network.networkApiClient
-            .getLocalRequestOptions(),
+        options: await _network.networkApiClient.getLocalRequestOptions(),
       );
       log('fetchAllCheckLists ${response.data}');
       log('fetchAllCheckLists ${response.statusMessage}');
+      return NetworkErrorService.isSuccessful(response)
+          ? (response.data![CheckListsScheme.data] as List<dynamic>)
+          : throw Failure('Error: fetchAllCheckLists error');
     } catch (e) {
       throw Failure(e.toString());
     }
   }
-  }
-
-  @override
-  Future<void> updateCheckList({
-    required CheckListModel checkListModel,
-    List<Map<String, dynamic>>? items,
-  }) async {
-    try {
-      // final ownerId =
-      //     await _secureStorage.getUserData(type: StorageDataType.id);
-      // final response = await _network.networkApiClient.dio.put(
-      //   '$_checklists/${checkListModel.id}',
-      //   data: {
-      //     CheckListsScheme.title: checkListModel.title,
-      //     CheckListsScheme.color:
-      //         checkListModel.color.toString().toStringColor(),
-      //     CheckListsScheme.ownerId: ownerId,
-      //     CheckListsScheme.items: items ?? [],
-      //   },
-      //   options: await _network.networkApiClient
-      //       .getLocalRequestOptions(useContentType: true),
-      // );
-      // log('updateCheckList ${response.data}');
-      // log('updateCheckList ${response.statusMessage}');
-    } catch (e) {
-      throw Failure(e.toString());
-    }
-  }
-
+}

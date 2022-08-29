@@ -53,18 +53,46 @@ class NewNoteController extends ChangeNotifier {
       MessageService.displaySnackbar(message: e.toString(), context: context);
     }
   }
- Future<List<NotesModel>> fetchUserNotes() async {
+
+  Future<List<NotesModel>> fetchUserNotes() async {
     try {
-     return  await  _addNoteRepository.fetchUserNotes();
+      return await _addNoteRepository.fetchUserNotes();
     } catch (e) {
       throw Failure(e.toString());
     }
   }
+
   Future<void> deleteNote({
-    required ProjectModel projectModel,
+    required NotesModel projectModel,
   }) async {
     try {
       _addNoteRepository.deleteNote(projectId: projectModel.id);
+    } catch (e) {
+      throw Failure(e.toString());
+    }
+  }
+
+  Future<void> updateNote({
+    required NotesModel projectModel,
+  }) async {
+    try {
+      _addNoteRepository.updateNote(noteModel: projectModel);
+    } catch (e) {
+      throw Failure(e.toString());
+    }
+  }
+
+  Future<bool> isDublicated({
+    required String projectId,
+  }) async {
+    try {
+      final notesList = await _addNoteRepository.fetchUserNotes();
+      for (int i = 0; i < notesList.length; i++) {
+        if (notesList[i].id == projectId) {
+          return true;
+        }
+      }
+      return false;
     } catch (e) {
       throw Failure(e.toString());
     }

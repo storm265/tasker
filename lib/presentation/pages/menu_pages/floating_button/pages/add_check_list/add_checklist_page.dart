@@ -9,6 +9,7 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/titl
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/white_box_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/color_pallete_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
+import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 
 class AddCheckListPage extends StatefulWidget {
@@ -108,8 +109,13 @@ class _AddCheckListPageState extends State<AddCheckListPage> {
                                 title: 'Done',
                                 onPressed: isClicked
                                     ? () async {
-                                        _checkListController.addCheckList(
+                                        _checkListController
+                                            .tryValidateCheckList(
                                           context: context,
+                                          color: colors[_checkListController
+                                              .colorPalleteController
+                                              .selectedIndex
+                                              .value],
                                           title: _titleController.text,
                                         );
                                       }

@@ -5,8 +5,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:todo2/database/database_scheme/env_scheme.dart';
 import 'package:todo2/services/network_service/update_token_service.dart';
-
 import 'package:todo2/storage/secure_storage_service.dart';
+
+const _contentType = 'Content-Type';
+const _authorization = 'Authorization';
+const _jsonApp = 'application/json';
 
 class NetworkSource {
   static final NetworkSource _instance = NetworkSource._internal();
@@ -22,33 +25,28 @@ class NetworkSource {
   NetworkConfiguration get networkApiClient => _dioClient;
 }
 
-const _contentType = 'Content-Type';
-const _authorization = 'Authorization';
-const _jsonApp = 'application/json';
-
 // TODO: you need to merge NetworkSource.dart and NetworkConfiguration.dart into one class
 // TODO: add only GET, POST, etc public method with overloaded method signature to invoke them from Presentation layer.
 // TODO: You should not show you internal implementation
 class NetworkConfiguration {
-  final Dio dio = Dio(BaseOptions(
+  static final Dio dio = Dio(BaseOptions(
     baseUrl: dotenv.env[EnvScheme.apiUrl] ?? 'null',
     connectTimeout: 5 * 1000, // 5 sec
     receiveTimeout: 5 * 1000,
   ))
     ..interceptors
         .add(InterceptorsWrapper(onResponse: (response, handler) async {
-      log('onResponse: ${response.statusMessage} ');
-
-      if (response.statusCode == 401) {
-        await UpdateTokenService.updateToken();
-       
-      }
       return handler.next(response);
     }, onError: (DioError error, handler) async {
       log('error : ${error.error}');
+      if (error.response!.statusCode == 401) {
+        await UpdateTokenService.updateToken();
+        // retry last operation
+        return handler.resolve(await _retry(error.requestOptions));
+      }
 
       log('error $error, handler $handler');
-      // return handler.next(error); //continue
+       return handler.next(error); //continue
     }));
 
   final String tokenType = 'Bearer';
@@ -84,7 +82,19 @@ class NetworkConfiguration {
       },
     );
   }
+
+  static Future<Response<dynamic>> _retry(RequestOptions requestOptions) async {
+    final options = Options(
+      method: requestOptions.method,
+      headers: requestOptions.headers,
+    );
+    return dio.request<dynamic>(requestOptions.path,
+        data: requestOptions.data,
+        queryParameters: requestOptions.queryParameters,
+        options: options);
+  }
 }
+
 //import 'package:dio/adapter.dart';
 // import 'package:dio/dio.dart';
 // import 'package:flutter_dotenv/flutter_dotenv.dart';

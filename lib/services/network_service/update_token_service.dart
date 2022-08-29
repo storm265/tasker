@@ -15,18 +15,17 @@ class UpdateTokenService {
     try {
       final String? token = await _secureStorageService.getUserData(
           type: StorageDataType.accessToken);
-      log('old token $token');
-      if (token != null) {
-        log('*** Token is expired *** ');
 
-        // final authResponse = await refreshTokenController.updateToken();
-        // log('update status ${authResponse}');
-        // await _secureStorageService.saveUserData(
-        //     type: StorageDataType.refreshToken,
-        //     value: authResponse.refreshToken);
-        // await _secureStorageService.saveUserData(
-        //     type: StorageDataType.accessToken, value: authResponse.accessToken);
-      }
+      log('*** Token is expired *** ');
+
+      // final authResponse = await refreshTokenController.updateToken();
+      // log('update status ${authResponse}');
+      // await _secureStorageService.saveUserData(
+      //     type: StorageDataType.refreshToken,
+      //     value: authResponse.refreshToken);
+      // await _secureStorageService.saveUserData(
+      //     type: StorageDataType.accessToken, value: authResponse.accessToken);
+
     } catch (e, t) {
       log('Update token error: $e,$t');
       throw Exception('Update token error: $e');

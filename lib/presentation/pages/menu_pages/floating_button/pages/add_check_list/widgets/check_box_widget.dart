@@ -51,6 +51,7 @@ class _CheckBoxWidgetState extends State<CheckBoxWidget> {
                   width: 170,
                   height: 30,
                   child: AddTextFieldWidget(
+                    
                     textInputType: TextInputType.multiline,
                     titleController: textController,
                     maxLength: 512,
