@@ -77,14 +77,14 @@ class _ProfileWidgetState extends State<ProfileWidget>
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                UserDataWidget(
-                  imageHeader: widget.profileController.imageHeader,
-                  imageUrl: widget.profileController.imageUrl,
-                  email: widget.profileController.email,
-                  username: widget.profileController.username,
-                  // email: 'dasdadadasda',
-                  // username: 'dasdadadasda',
-                ),
+                // UserDataWidget(
+                //   imageHeader: widget.profileController.imageHeader,
+                //   imageUrl: widget.profileController.imageUrl,
+                //   email: widget.profileController.email,
+                //   username: widget.profileController.username,
+                //   // email: 'dasdadadasda',
+                //   // username: 'dasdadadasda',
+                // ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [

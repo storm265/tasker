@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
-
+import 'package:http_parser/http_parser.dart';
 import 'package:dio/dio.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/services/error_service/error_service.dart';
@@ -91,7 +91,7 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
           data: formData,
           isFormData: true,
           options: Options(
-            contentType: 'Content-Type: multipart/form-data;',
+            contentType: 'Content-Type: multipart/*',
             validateStatus: (_) => true,
             headers: {
               'Authorization':
@@ -106,7 +106,11 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
           );
       //   "Content-Type": undefined
       log('uploadAvatar repo ${response.data}');
-      return response.data[AuthScheme.data] as Map<String, dynamic>;
+
+      return NetworkErrorService.isSuccessful(response)
+          ? response.data[AuthScheme.data] as Map<String, dynamic>
+          : throw Failure(
+              'Error: ${response.data[AuthScheme.data][AuthScheme.message]}');
     } catch (e, t) {
       log('Trace ${t.toString()}');
       throw Failure(e.toString());

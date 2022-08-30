@@ -65,11 +65,10 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
         name: name,
         file: file,
       );
-  
+
       debugPrint('avatar url ${response[AuthScheme.avatarUrl]}');
       return response[AuthScheme.avatarUrl];
     } catch (e, t) {
-      log('uploadAvatar repo ${t.toString()}');
       throw Failure(e.toString());
     }
   }

@@ -25,22 +25,31 @@ class NetworkSource {
     connectTimeout: 5 * 1000, // 5 sec
     receiveTimeout: 5 * 1000,
   ))
-    ..interceptors
-        .add(InterceptorsWrapper(onResponse: (response, handler) async {
-      return handler.next(response);
-    }, onError: (DioError error, handler) async {
-      log('error : ${error.error}');
-      if (error.response!.statusCode == 401 &&
-          error.response!.statusMessage ==
-              "Token is not valid or has expired") {
-        await UpdateTokenService.updateToken();
-        // retry last operation
-        return handler.resolve(await _retry(error.requestOptions));
-      }
+    ..interceptors.add(
+      InterceptorsWrapper(
+        onResponse: (response, handler) async {
+          if (response.statusCode == 404) {
+            await UpdateTokenService.updateToken();
+            // retry last operation
+            return handler.resolve(await _retry(response.requestOptions));
+          }
+          return handler.next(response);
+        },
+        onError: (DioError error, handler) async {
+          // log('error : ${error.error}');
+          // if (error.response!.statusCode == 401 &&
+          //     error.response!.statusMessage ==
+          //         "Token is not valid or has expired") {
+          //   await UpdateTokenService.updateToken();
+          //   // retry last operation
+          //   return handler.resolve(await _retry(error.requestOptions));
+          // }
 
-      log('error $error, handler $handler');
-      return handler.next(error); //continue
-    }));
+          // log('error $error, handler $handler');
+          // return handler.next(error); //continue
+        },
+      ),
+    );
 
   final String _tokenType = 'Bearer';
 

@@ -79,9 +79,12 @@ class ProjectUserDataImpl implements ProjectUserData {
       );
       return NetworkErrorService.isSuccessful(response)
           ? (response.data![AuthScheme.data] as List<dynamic>)
-          : throw Failure('Error: Get project error');
+          : throw Failure('Error: ${response.data![AuthScheme.data]}');
+    } on DioError catch (e) {
+      log('DIO expersion $e');
+      throw Failure('DIO expersion $e');
     } catch (e) {
-      throw Failure(e.toString());
+      throw Failure('Failure expersion $e');
     }
   }
 
