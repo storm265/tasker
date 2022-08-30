@@ -80,39 +80,39 @@ class QuickPage extends StatelessWidget {
       //         network: NetworkSource(), secureStorage: SecureStorageService()).),
       title: 'Quick Notes',
       isRedAppBar: false,
-      child: SizedBox(),
-      // FutureBuilder<List<CheckListLinkedModel>>(
-      //   initialData: const [],
-      //   future: controller.fetchNotes(),
-      //   builder: ((_, AsyncSnapshot<List<CheckListLinkedModel>> snapshots) =>
-      //       snapshots.hasData
-      //           ? DisabledGlowWidget(
-      //               child: ListView.builder(
-      //                 itemCount: snapshots.data!.length,
-      //                 itemBuilder: (context, index) => NoteCard(
-      //                   model: snapshots.data!,
-      //                   index: index,
-      //                 ),
-      //               ),
-      //             )
-      //           : const Center(child: ProgressIndicatorWidget())),
-      // ),
-      // Notes only
-      //     FutureBuilder<List<NotesModel>>(
-      //   initialData: const [],
-      //   future: _notesController.fetchUserNotes(),
-      //   builder: ((_, AsyncSnapshot<List<NotesModel>> snapshots) =>
-      //       snapshots.hasData
-      //           ? DisabledGlowWidget(
-      //               child: ListView.builder(
-      //                 itemCount: snapshots.data!.length,
-      //                 itemBuilder: (context, index) => NoteCardWidget(
-      //                   motesModel: snapshots.data![index],
-      //                 ),
-      //               ),
-      //             )
-      //           : const Center(child: ProgressIndicatorWidget())),
-      // ),
+      child:
+          // FutureBuilder<List<CheckListLinkedModel>>(
+          //   initialData: const [],
+          //   future: controller.fetchNotes(),
+          //   builder: ((_, AsyncSnapshot<List<CheckListLinkedModel>> snapshots) =>
+          //       snapshots.hasData
+          //           ? DisabledGlowWidget(
+          //               child: ListView.builder(
+          //                 itemCount: snapshots.data!.length,
+          //                 itemBuilder: (context, index) => NoteCard(
+          //                   model: snapshots.data!,
+          //                   index: index,
+          //                 ),
+          //               ),
+          //             )
+          //           : const Center(child: ProgressIndicatorWidget())),
+          // ),
+          // Notes only
+          FutureBuilder<List<NotesModel>>(
+        initialData: const [],
+        future: _notesController.fetchUserNotes(),
+        builder: ((_, AsyncSnapshot<List<NotesModel>> snapshots) =>
+            snapshots.hasData
+                ? DisabledGlowWidget(
+                    child: ListView.builder(
+                      itemCount: snapshots.data!.length,
+                      itemBuilder: (context, index) => NoteCardWidget(
+                        motesModel: snapshots.data![index],
+                      ),
+                    ),
+                  )
+                : const Center(child: ProgressIndicatorWidget())),
+      ),
       //     FutureBuilder<List<NotesModel>>(
       //   initialData: const [],
       //   future: _notesController.fetchUserNotes(),

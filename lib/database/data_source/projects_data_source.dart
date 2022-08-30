@@ -52,8 +52,8 @@ class ProjectUserDataImpl implements ProjectUserData {
     required String title,
   }) async {
     try {
-      await _network.networkApiClient.dio.post(
-        _projects,
+      await _network.networkApiClient.post(
+        path: _projects,
         data: {
           ProjectDataScheme.title: title,
           ProjectDataScheme.color: '$color'.toStringColor(),
@@ -73,8 +73,8 @@ class ProjectUserDataImpl implements ProjectUserData {
     try {
       final id =
           await _secureStorageService.getUserData(type: StorageDataType.id);
-      final response = await _network.networkApiClient.dio.get(
-        '$_userProjects/$id',
+      final response = await _network.networkApiClient.get(
+        path: '$_userProjects/$id',
         options: await _network.networkApiClient.getLocalRequestOptions(),
       );
       return NetworkErrorService.isSuccessful(response)
@@ -88,8 +88,8 @@ class ProjectUserDataImpl implements ProjectUserData {
   @override
   Future<List<dynamic>> searchProject({required String title}) async {
     try {
-      final response = await _network.networkApiClient.dio.get(
-        '$_projectsSearch?query=$title',
+      final response = await _network.networkApiClient.get(
+        path: '$_projectsSearch?query=$title',
         options: await _network.networkApiClient
             .getLocalRequestOptions(useContentType: true),
       );
@@ -107,8 +107,8 @@ class ProjectUserDataImpl implements ProjectUserData {
       final id =
           await _secureStorageService.getUserData(type: StorageDataType.id);
 
-      final Response response = await _network.networkApiClient.dio.delete(
-        '$_projects/$id',
+      final Response response = await _network.networkApiClient.delete(
+        path: '$_projects/$id',
         queryParameters: {ProjectDataScheme.id: projectModel.id},
         options: await _network.networkApiClient.getLocalRequestOptions(),
       );
@@ -132,8 +132,8 @@ class ProjectUserDataImpl implements ProjectUserData {
       log('update project data: $title');
       final id =
           await _secureStorageService.getUserData(type: StorageDataType.id);
-      final response = await _network.networkApiClient.dio.put(
-        '$_projects/${projectModel.id}',
+      final response = await _network.networkApiClient.put(
+        path: '$_projects/${projectModel.id}',
         data: {
           ProjectDataScheme.color: color.toString().toStringColor(),
           ProjectDataScheme.title: title,
@@ -158,8 +158,8 @@ class ProjectUserDataImpl implements ProjectUserData {
       final userId =
           await _secureStorageService.getUserData(type: StorageDataType.id);
 
-      final response = await _network.networkApiClient.dio.get(
-        '$_projectsStats/$userId',
+      final response = await _network.networkApiClient.get(
+        path: '$_projectsStats/$userId',
         options: await _network.networkApiClient.getLocalRequestOptions(),
       );
       return NetworkErrorService.isSuccessful(response)

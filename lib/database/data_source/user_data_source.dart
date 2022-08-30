@@ -37,8 +37,8 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
     required String accessToken,
   }) async {
     try {
-      final response = await _network.dio.get(
-        '$_userPath/$id',
+      final response = await _network.get(
+        path: '$_userPath/$id',
         options: _network.getRequestOptions(accessToken: accessToken),
       );
       return NetworkErrorService.isSuccessful(response)
@@ -56,7 +56,8 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
       final id =
           await _secureStorageService.getUserData(type: StorageDataType.id);
 
-      final response = await _network.dio.get('$_userStats/$id',
+      final response = await _network.get(
+          path: '$_userStats/$id',
           options: await _network.getLocalRequestOptions());
       return NetworkErrorService.isSuccessful(response)
           ? response.data[AuthScheme.data] as Map<String, dynamic>
@@ -74,6 +75,7 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
   }) async {
     try {
       String fileName = file.path.split('/').last;
+
       var formData = FormData.fromMap(
         {
           "file=@": await MultipartFile.fromFile(
@@ -84,17 +86,26 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
               await _secureStorageService.getUserData(type: StorageDataType.id),
         },
       );
-
-      final response = await _network.dio.post(
-        _storagePath,
-        data: formData,
-        options: _network.getRequestOptions(
-          accessToken: await _secureStorageService.getUserData(
-                  type: StorageDataType.accessToken) ??
-              'null',
-        ),
-      );
-
+      final response = await _network.post(
+          path: _storagePath,
+          data: formData,
+          isFormData: true,
+          options: Options(
+            contentType: 'Content-Type: multipart/form-data;',
+            validateStatus: (_) => true,
+            headers: {
+              'Authorization':
+                  'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJodHRwOi8vMC4wLjAuMDo4MDgwLyIsImlzcyI6Imh0dHA6Ly8wLjAuMC4wOjgwODAvIiwiZXhwIjoxNjYyMDM0MzU5LCJlbWFpbCI6ImphamFAbWFpbC5ydSJ9.L1ofgo5GCi3NGqg1tD3EvLBAprHmEfxti_c10ekNuEU',
+            },
+          )
+          // options: _network.getRequestOptions(
+          //   accessToken: await _secureStorageService.getUserData(
+          //           type: StorageDataType.accessToken) ??
+          //       'null',
+          // ),
+          );
+      //   "Content-Type": undefined
+      log('uploadAvatar repo ${response.data}');
       return response.data[AuthScheme.data] as Map<String, dynamic>;
     } catch (e, t) {
       log('Trace ${t.toString()}');

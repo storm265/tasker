@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/add_check_list/controller/add_check_list_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/add_check_list/controller/check_list_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/add_check_list/widgets/add_item_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/add_check_list/widgets/check_box_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/confirm_button.dart';
@@ -8,6 +8,7 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/red_
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/title_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/white_box_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/color_pallete_widget.dart';
+import 'package:todo2/presentation/pages/navigation/controllers/inherited_navigator.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
@@ -35,11 +36,13 @@ class _AddCheckListPageState extends State<AddCheckListPage> {
   @override
   Widget build(BuildContext context) {
     int index = 0;
-    List<String> list = [];
+    final navigationController =
+        NavigationInherited.of(context).navigationController;
     return AppbarWrapWidget(
       isRedAppBar: true,
       title: 'Add Check List',
-      //  showLeadingButton: true,
+      showLeadingButton: true,
+      isPopFromNavBar: true,
       child: Stack(
         children: [
           const FakeAppBar(),
@@ -56,15 +59,15 @@ class _AddCheckListPageState extends State<AddCheckListPage> {
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       key: _checkListController.formKey,
                       child: TitleWidget(
-                        textInputType: TextInputType.multiline,
-                        maxLength: 512,
-                        maxLines: 2,
+                        maxLength: 256,
                         textController: _titleController,
                         title: 'Title',
+                        onEdiditionCompleteCallback: () =>
+                            Focus.of(context).unfocus(),
                       ),
                     ),
                     subtitle: SingleChildScrollView(
-                      child: ValueListenableBuilder<List<String>>(
+                      child: ValueListenableBuilder<List<Map<String, dynamic>>>(
                         valueListenable: _checkListController.checkBoxItems,
                         builder: (_, value, __) => ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
@@ -72,15 +75,11 @@ class _AddCheckListPageState extends State<AddCheckListPage> {
                           itemCount: value.length,
                           itemBuilder: (_, i) {
                             index = i;
-                            list = value;
-                            return Column(
-                              children: [
-                                CheckBoxWidget(
-                                  checkBoxController: _checkListController,
-                                  isClicked: _checkListController.isChecked,
-                                  index: i,
-                                ),
-                              ],
+
+                            return CheckBoxWidget(
+                              checkBoxController: _checkListController,
+                              isClicked: _checkListController.isChecked,
+                              index: i,
                             );
                           },
                         ),
@@ -91,7 +90,7 @@ class _AddCheckListPageState extends State<AddCheckListPage> {
                     _checkListController.addItem(index);
                     _scrollController.animateTo(
                       _scrollController.position.maxScrollExtent + 20,
-                      duration: Duration(milliseconds: 500),
+                      duration: const Duration(milliseconds: 500),
                       curve: Curves.easeInCirc,
                     );
                   }),
@@ -111,6 +110,8 @@ class _AddCheckListPageState extends State<AddCheckListPage> {
                                     ? () async {
                                         _checkListController
                                             .tryValidateCheckList(
+                                          navigationController:
+                                              navigationController,
                                           context: context,
                                           color: colors[_checkListController
                                               .colorPalleteController

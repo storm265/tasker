@@ -8,7 +8,7 @@ class AddTextFieldWidget extends StatelessWidget {
   final int maxLength;
   final int maxLines;
   final TextInputType? textInputType;
-
+final bool? enabled;
   const AddTextFieldWidget({
     Key? key,
     required this.titleController,
@@ -18,11 +18,13 @@ class AddTextFieldWidget extends StatelessWidget {
     this.textInputType,
     this.onEdiditionCompleteCallback,
     this.hintText,
+    this.enabled,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      enabled: enabled,
       buildCounter: (
         context, {
         required currentLength,

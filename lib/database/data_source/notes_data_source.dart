@@ -41,8 +41,8 @@ class NotesDataSourceImpl implements NotesDataSource {
   }) async {
     try {
       final id = await _secureStorage.getUserData(type: StorageDataType.id);
-      final response = await _network.networkApiClient.dio.post(
-        _notes,
+      final response = await _network.networkApiClient.post(
+        path: _notes,
         data: {
           NotesScheme.description: description,
           NotesScheme.color: color.toString().toStringColor(),
@@ -60,8 +60,8 @@ class NotesDataSourceImpl implements NotesDataSource {
   @override
   Future<void> deleteNote({required String projectId}) async {
     try {
-      final response = await _network.networkApiClient.dio.delete(
-        '$_notes/$projectId',
+      final response = await _network.networkApiClient.delete(
+        path: '$_notes/$projectId',
         options: await _network.networkApiClient.getLocalRequestOptions(),
       );
       log('deleteNote ${response.data}');
@@ -92,8 +92,8 @@ class NotesDataSourceImpl implements NotesDataSource {
     try {
       final ownerId =
           await _secureStorage.getUserData(type: StorageDataType.id);
-      final response = await _network.networkApiClient.dio.get(
-        '$_notes/$ownerId',
+      final response = await _network.networkApiClient.get(
+        path: '$_notes/$ownerId',
         queryParameters: {
           NotesScheme.ownerId: ownerId,
         },
@@ -115,8 +115,8 @@ class NotesDataSourceImpl implements NotesDataSource {
     try {
       final ownerId =
           await _secureStorage.getUserData(type: StorageDataType.id);
-      final response = await _network.networkApiClient.dio.put(
-        '$_notes/${noteModel.id}',
+      final response = await _network.networkApiClient.put(
+        path: '$_notes/${noteModel.id}',
         data: {
           NotesScheme.description: noteModel.description,
           NotesScheme.color: noteModel.color.toString().toStringColor(),

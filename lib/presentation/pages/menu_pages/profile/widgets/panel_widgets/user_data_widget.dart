@@ -27,6 +27,7 @@ class UserDataWidget extends StatelessWidget {
         ),
         const SizedBox(width: 15),
         Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               username,

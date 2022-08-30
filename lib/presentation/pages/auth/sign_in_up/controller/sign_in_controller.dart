@@ -118,7 +118,7 @@ class SignInController extends ChangeNotifier {
       MessageService.displaySnackbar(
         context: context,
         message:
-            'Token will expire: ${DateTime.fromMillisecondsSinceEpoch(authModel.expiresIn)}',
+            'Token will expire: ${DateTime.fromMillisecondsSinceEpoch(authModel.expiresIn)..day..month}',
       );
     } catch (e, t) {
       log(' trace : $t');

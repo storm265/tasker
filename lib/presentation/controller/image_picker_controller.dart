@@ -21,7 +21,7 @@ class ImageController extends ChangeNotifier {
       pickedFile.value.extension != 'png' &&
       pickedFile.value.extension != 'jpg';
 
-  final _maxImageSize = 8000 * 1000;
+  final _maxImageSize = 4000 * 1000;
   final _maxFileSize = 26214 * 1000;
 
   Future<PlatformFile> pickAvatar({
@@ -36,6 +36,7 @@ class ImageController extends ChangeNotifier {
             allowedExtensions: [
               'jpeg',
               'png',
+              'jpg',
             ],
           ) ??
           const FilePickerResult([]);
@@ -111,7 +112,8 @@ class ImageController extends ChangeNotifier {
         file: File(pickedFile.value.path!),
       );
       return image;
-    } catch (e) {
+    } catch (e, t) {
+      log('uploadAvatar  $e, $t');
       throw Failure(e.toString());
     }
   }

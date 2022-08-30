@@ -7,14 +7,9 @@ import 'package:todo2/presentation/pages/navigation/nav_bar_widget.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/status_bar_controller.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 
-class NavigationPage extends StatefulWidget {
+class NavigationPage extends StatelessWidget {
   const NavigationPage({Key? key}) : super(key: key);
 
-  @override
-  State<NavigationPage> createState() => _NavigationPageState();
-}
-
-class _NavigationPageState extends State<NavigationPage> {
   final _greyColor = const Color(0xff8E8E93);
 
   @override

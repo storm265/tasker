@@ -70,8 +70,7 @@ class _SignInPageState extends State<SignInPage> {
       child: DisabledGlowWidget(
         child: ValueListenableBuilder<bool>(
           valueListenable: _signInController.isActiveScrolling,
-          builder: (__, isScrolling, _) =>
-              DynamicPhycicsSingleChildScrollView(
+          builder: (__, isScrolling, _) => DynamicPhycicsSingleChildScrollView(
             scrollController: _signInController.scrollController,
             isActivesScrolling: isScrolling,
             child: UnfocusWidget(
@@ -82,7 +81,7 @@ class _SignInPageState extends State<SignInPage> {
                 height: size.height - minFactor,
                 child: Form(
                   key: _signInController.formKey,
-                  autovalidateMode: AutovalidateMode.always,
+                
                   child: Padding(
                     padding: const EdgeInsets.all(paddingAll),
                     child: Wrap(

@@ -38,7 +38,11 @@ class CheckListsRepositoryImpl extends CheckListsRepository<CheckListModel> {
     List<Map<String, dynamic>>? items,
   }) async {
     try {
-      await _checkListsDataSource.createCheckList(title: title, color: color);
+      await _checkListsDataSource.createCheckList(
+        title: title,
+        color: color,
+        items: items,
+      );
     } catch (e) {
       throw Failure(e.toString());
     }

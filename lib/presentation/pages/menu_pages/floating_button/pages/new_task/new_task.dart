@@ -39,102 +39,100 @@ class _AddTaskPageState extends State<AddTaskPage> {
     final newTaskController =
         InheritedNewTaskController.of(context).addTaskController;
     return AppbarWrapWidget(
-        title: 'New Task',
-       // showLeadingButton: true,
-        child: Stack(
-          children: [
-            const FakeAppBar(),
-            const FakeNavBarWidget(),
-            Form(
-              key: newTaskController.formKey,
-              child: WhiteBoxWidget(
-                onClick: () {
-                  FocusScope.of(context).unfocus();
-                  newTaskController.changePanelStatus(
-                      newStatus: InputFieldStatus.hide);
-                },
-                height: 660,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 30),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          EnterUserWidget(
-                            isForFieldActive: true,
-                            onChanged: (value) async {
-                              await Future.delayed(
-                                  const Duration(milliseconds: 500),
-                                  () => setState(() {}));
-                            },
-                            titleController:
-                                newTaskController.userTextController,
-                            text: 'For',
-                          ),
-                          EnterUserWidget(
-                            isForFieldActive: false,
-                            onChanged: (value) async => await Future.delayed(
+      title: 'New Task',
+      showLeadingButton: true,
+      isPopFromNavBar: true,
+      child: Stack(
+        children: [
+          const FakeAppBar(),
+          const FakeNavBarWidget(),
+          Form(
+            key: newTaskController.formKey,
+            child: WhiteBoxWidget(
+              onClick: () {
+                FocusScope.of(context).unfocus();
+                newTaskController.changePanelStatus(
+                    newStatus: InputFieldStatus.hide);
+              },
+              height: 660,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 30),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        EnterUserWidget(
+                          isForFieldActive: true,
+                          onChanged: (value) async {
+                            await Future.delayed(
                                 const Duration(milliseconds: 500),
-                                () => setState(() {})),
-                            titleController:
-                                newTaskController.projectTextController,
-                            text: 'In',
-                          )
-                        ],
-                      ),
+                                () => setState(() {}));
+                          },
+                          titleController: newTaskController.userTextController,
+                          text: 'For',
+                        ),
+                        EnterUserWidget(
+                          isForFieldActive: false,
+                          onChanged: (value) async => await Future.delayed(
+                              const Duration(milliseconds: 500),
+                              () => setState(() {})),
+                          titleController:
+                              newTaskController.projectTextController,
+                          text: 'In',
+                        )
+                      ],
                     ),
-                    ValueListenableBuilder<InputFieldStatus>(
-                      valueListenable: newTaskController.panelStatus,
-                      builder: (_, value, __) {
-                        return (value != InputFieldStatus.hide)
-                            // not updating if const
-                            ? SelectPanelWidget()
-                            : Column(
-                                children: [
-                                  TitleWidget(
-                                    titleController: titleController,
-                                  ),
-                                  DescriptionFieldWidget(
-                                    descriptionController:
-                                        descriptionController,
-                                  ),
-                                  const PickTimeFieldWidget(),
-                                  const AddUserWidget(),
-                                  ValueListenableBuilder<bool>(
-                                    valueListenable:
-                                        newTaskController.isClickedAddTask,
-                                    builder: (_, isClicked, __) => isClicked
-                                        ? ConfirmButtonWidget(
-                                            title: 'Add Task',
-                                            onPressed: isClicked
-                                                ? () async {
-                                                    await newTaskController
-                                                        .validate(
-                                                      context: context,
-                                                      title:
-                                                          titleController.text,
-                                                      description:
-                                                          descriptionController
-                                                              .text,
-                                                    );
-                                                  }
-                                                : null,
-                                          )
-                                        : const ProgressIndicatorWidget(
-                                            text: 'Adding task ...'),
-                                  ),
-                                ],
-                              );
-                      },
-                    ),
-                  ],
-                ),
+                  ),
+                  ValueListenableBuilder<InputFieldStatus>(
+                    valueListenable: newTaskController.panelStatus,
+                    builder: (_, value, __) {
+                      return (value != InputFieldStatus.hide)
+                          // not updating if const
+                          ? SelectPanelWidget()
+                          : Column(
+                              children: [
+                                TitleWidget(
+                                  titleController: titleController,
+                                ),
+                                DescriptionFieldWidget(
+                                  descriptionController: descriptionController,
+                                ),
+                                const PickTimeFieldWidget(),
+                                const AddUserWidget(),
+                                ValueListenableBuilder<bool>(
+                                  valueListenable:
+                                      newTaskController.isClickedAddTask,
+                                  builder: (_, isClicked, __) => isClicked
+                                      ? ConfirmButtonWidget(
+                                          title: 'Add Task',
+                                          onPressed: isClicked
+                                              ? () async {
+                                                  await newTaskController
+                                                      .validate(
+                                                    context: context,
+                                                    title: titleController.text,
+                                                    description:
+                                                        descriptionController
+                                                            .text,
+                                                  );
+                                                }
+                                              : null,
+                                        )
+                                      : const ProgressIndicatorWidget(
+                                          text: 'Adding task ...'),
+                                ),
+                              ],
+                            );
+                    },
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
   }
 }

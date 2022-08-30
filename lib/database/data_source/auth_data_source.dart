@@ -48,8 +48,8 @@ class AuthDataSourceImpl implements AuthDataSource {
     required String password,
   }) async {
     try {
-      Response response = await _networkSource.networkApiClient.dio.post(
-        _signInUrl,
+      Response response = await _networkSource.networkApiClient.post(
+        path: _signInUrl,
         data: {
           AuthScheme.email: email.toLowerCase(),
           AuthScheme.password: _encodePassword(password),
@@ -73,8 +73,8 @@ class AuthDataSourceImpl implements AuthDataSource {
     required String nickname,
   }) async {
     try {
-      Response response = await _networkSource.networkApiClient.dio.post(
-        _signUpUrl,
+      Response response = await _networkSource.networkApiClient.post(
+        path: _signUpUrl,
         data: {
           AuthScheme.email: email.toLowerCase(),
           AuthScheme.password: _encodePassword(password),
@@ -94,8 +94,8 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<Map<String, dynamic>> refreshToken() async {
     try {
-      Response response = await _networkSource.networkApiClient.dio.post(
-        _refreshUrl,
+      Response response = await _networkSource.networkApiClient.post(
+        path: _refreshUrl,
         data: {
           AuthScheme.refreshToken: await _secureStorageService.getUserData(
               type: StorageDataType.refreshToken),
@@ -115,8 +115,8 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<void> signOut() async {
     try {
-      await _networkSource.networkApiClient.dio.post(
-        _signOutUrl,
+      await _networkSource.networkApiClient.post(
+        path: _signOutUrl,
         data: {
           AuthScheme.email: await _secureStorageService.getUserData(
             type: StorageDataType.email,

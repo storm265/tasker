@@ -4,7 +4,7 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/add_
 class TitleWidget extends StatelessWidget {
   final String title;
   final int maxLength;
-  final int maxLines;
+  final int maxLines;  final VoidCallback? onEdiditionCompleteCallback;
   final TextEditingController textController;
   final TextInputType? textInputType;
   const TitleWidget({
@@ -14,6 +14,7 @@ class TitleWidget extends StatelessWidget {
     this.maxLines = 5,
     this.maxLength = 32,
     this.textInputType,
+    this.onEdiditionCompleteCallback,
   }) : super(key: key);
 
   @override
@@ -37,6 +38,7 @@ class TitleWidget extends StatelessWidget {
           maxLines: maxLines,
           hintText: 'Enter $title:',
           titleController: textController,
+          onEdiditionCompleteCallback: onEdiditionCompleteCallback,
         ),
       ],
     );

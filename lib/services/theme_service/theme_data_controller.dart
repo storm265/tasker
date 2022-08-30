@@ -7,8 +7,11 @@ class ThemeDataService {
     textTheme: const TextTheme(
       bodyText1: TextStyle(color: darkGrey),
       bodyText2: TextStyle(color: darkGrey),
+      headline4: TextStyle(color: darkGrey),
       headline5: TextStyle(color: darkGrey),
       headline6: TextStyle(color: darkGrey),
+      
+
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(

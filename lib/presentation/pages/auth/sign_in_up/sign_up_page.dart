@@ -76,7 +76,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     height: size.height - minFactor,
                     child: Form(
                       key: _signUpController.formKey,
-                      autovalidateMode: AutovalidateMode.always,
+                  
                       child: Padding(
                         padding: const EdgeInsets.all(paddingAll),
                         child: Wrap(

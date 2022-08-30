@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/user_data_source.dart';
@@ -64,9 +65,11 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
         name: name,
         file: file,
       );
+  
       debugPrint('avatar url ${response[AuthScheme.avatarUrl]}');
       return response[AuthScheme.avatarUrl];
-    } catch (e) {
+    } catch (e, t) {
+      log('uploadAvatar repo ${t.toString()}');
       throw Failure(e.toString());
     }
   }

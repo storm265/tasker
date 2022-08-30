@@ -2,14 +2,21 @@ import 'package:flutter/material.dart';
 
 class AddItemButton extends StatelessWidget {
   final VoidCallback onPressed;
-  const AddItemButton({Key? key, required this.onPressed}) : super(key: key);
+  const AddItemButton({
+    Key? key,
+    required this.onPressed,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.centerLeft,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12),
+        padding: const EdgeInsets.only(
+          left: 15,
+          top: 10,
+          bottom: 10,
+        ),
         child: GestureDetector(
           onTap: onPressed,
           child: const Text(
