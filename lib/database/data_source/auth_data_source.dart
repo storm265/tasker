@@ -103,6 +103,7 @@ class AuthDataSourceImpl implements AuthDataSource {
         options: _networkSource.networkApiClient.authOptions,
       );
       log('dataSource response ${response.data}');
+
       return NetworkErrorService.isSuccessful(response)
           ? response.data[AuthScheme.data] as Map<String, dynamic>
           : throw Failure(

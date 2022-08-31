@@ -10,8 +10,9 @@ class CheckBoxWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return data.isNotEmpty
-        ? ListView.builder(
+    return data.isEmpty
+        ? const SizedBox()
+        : ListView.builder(
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
             itemCount: data.length,
@@ -52,7 +53,6 @@ class CheckBoxWidget extends StatelessWidget {
                   ],
                 ),
               );
-            })
-        : const SizedBox();
+            });
   }
 }

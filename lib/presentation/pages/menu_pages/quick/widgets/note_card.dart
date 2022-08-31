@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:todo2/database/model/checklist_model.dart';
 import 'package:todo2/database/model/notes_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/checkbox_item_widget.dart';
@@ -10,13 +11,13 @@ import 'package:todo2/presentation/pages/menu_pages/task/widgets/slidable_widget
 
 class NoteCard extends StatelessWidget {
   final int index;
-  final NotesModel model;
+  final List<CheckListModel> model;
   const NoteCard({
     Key? key,
     required this.model,
     required this.index,
   }) : super(key: key);
-  
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -41,14 +42,14 @@ class NoteCard extends StatelessWidget {
           elevation: 3,
           child: Stack(
             children: [
-              // ColorLineWidget(color: model[index].checkListModel.color),
+              ColorLineWidget(color: model[index].color),
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    TitleWidget(title: model.description),
-                   // CheckBoxWidget(data: model[index].checkListItems),
+                    TitleWidget(title: model[index].title),
+                    CheckBoxWidget(data: model[index].items),
                   ],
                 ),
               ),

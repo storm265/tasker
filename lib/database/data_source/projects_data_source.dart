@@ -78,8 +78,8 @@ class ProjectUserDataImpl implements ProjectUserData {
         options: await _network.networkApiClient.getLocalRequestOptions(),
       );
       return NetworkErrorService.isSuccessful(response)
-          ? (response.data![AuthScheme.data] as List<dynamic>)
-          : throw Failure('Error: ${response.data![AuthScheme.data]}');
+          ? (response.data![ProjectDataScheme.data] as List<dynamic>)
+          : throw Failure('Error: ${response.data![ProjectDataScheme.data]}');
     } on DioError catch (e) {
       log('DIO expersion $e');
       throw Failure('DIO expersion $e');
@@ -97,7 +97,7 @@ class ProjectUserDataImpl implements ProjectUserData {
             .getLocalRequestOptions(useContentType: true),
       );
       return NetworkErrorService.isSuccessful(response)
-          ? (response.data![AuthScheme.data] as List<dynamic>)
+          ? (response.data![ProjectDataScheme.data] as List<dynamic>)
           : throw Failure('Error: get project error');
     } catch (e) {
       throw Failure(e.toString());
@@ -117,7 +117,7 @@ class ProjectUserDataImpl implements ProjectUserData {
       );
       if (!NetworkErrorService.isSuccessful(response)) {
         throw Failure(
-            'Error: ${response.data[AuthScheme.data][AuthScheme.message]}');
+            'Error: ${response.data[ProjectDataScheme.data][AuthScheme.message]}');
       }
     } catch (e) {
       log('delete project error :$e');
@@ -145,10 +145,10 @@ class ProjectUserDataImpl implements ProjectUserData {
         options: await _network.networkApiClient
             .getLocalRequestOptions(useContentType: true),
       );
-      log('updating project: ${response.data[AuthScheme.data]}');
+      log('updating project: ${response.data[ProjectDataScheme.data]}');
       if (!NetworkErrorService.isSuccessful(response)) {
         throw Failure(
-            'Error: ${response.data[AuthScheme.data][AuthScheme.message]}');
+            'Error: ${response.data[ProjectDataScheme.data][ProjectDataScheme.message]}');
       }
     } catch (e) {
       throw Failure(e.toString());
@@ -166,7 +166,7 @@ class ProjectUserDataImpl implements ProjectUserData {
         options: await _network.networkApiClient.getLocalRequestOptions(),
       );
       return NetworkErrorService.isSuccessful(response)
-          ? (response.data![AuthScheme.data] as List<dynamic>)
+          ? (response.data![ProjectDataScheme.data] as List<dynamic>)
           : throw Failure('Error: Get Statistics');
     } catch (e) {
       throw Failure(e.toString());
@@ -183,9 +183,9 @@ class ProjectUserDataImpl implements ProjectUserData {
   //       options: await _network.networkApiClient.getLocalRequestOptions(),
   //     );
   //     return NetworkErrorService.isSuccessful(response)
-  //         ? (response.data[AuthScheme.data] as Map<String, dynamic>)
+  //         ? (response.data[ProjectDataScheme.data] as Map<String, dynamic>)
   //         : throw Failure(
-  //             'Error: ${response.data[AuthScheme.data][AuthScheme.message]}');
+  //             'Error: ${response.data[ProjectDataScheme.data][ProjectDataScheme.message]}');
   //   } catch (e) {
   //     debugPrint('fetchOneProject datasource  $e');
   //     throw Failure(e.toString());

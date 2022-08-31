@@ -6,13 +6,13 @@ class DoubleCircleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  CircleAvatar(
-        radius: 20,
-        backgroundColor: color.withOpacity(0.4),
-        child: CircleAvatar(
-          radius: 10,
-          backgroundColor: color,
-        ),
-      );
+    return CircleAvatar(
+      radius: 16,
+      backgroundColor: color.withOpacity(0.4),
+      child: CircleAvatar(
+        radius: 8,
+        backgroundColor: color,
+      ),
+    );
   }
 }

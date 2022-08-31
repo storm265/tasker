@@ -1,5 +1,5 @@
 class CommentScheme {
-  static const String content = 'content';
-  static const String ownerId = 'owner_id';
-  static const String createdAt = 'created_at';
+  static const content = 'content';
+  static const ownerId = 'owner_id';
+  static const createdAt = 'created_at';
 }

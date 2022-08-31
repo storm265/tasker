@@ -8,7 +8,6 @@ class AddTextFieldWidget extends StatelessWidget {
   final int maxLength;
   final int maxLines;
   final TextInputType? textInputType;
-final bool? enabled;
   const AddTextFieldWidget({
     Key? key,
     required this.titleController,
@@ -18,13 +17,11 @@ final bool? enabled;
     this.textInputType,
     this.onEdiditionCompleteCallback,
     this.hintText,
-    this.enabled,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      enabled: enabled,
       buildCounter: (
         context, {
         required currentLength,
@@ -41,14 +38,13 @@ final bool? enabled;
       maxLines: maxLines,
       maxLength: maxLength,
       validator: (text) {
-        if (text!.isEmpty) {
+        if (text!.trim().isEmpty) {
           return 'Please enter text';
         } else {
           return null;
         }
       },
       autovalidateMode: AutovalidateMode.onUserInteraction,
-      onEditingComplete: onEdiditionCompleteCallback,
       style: const TextStyle(
         fontWeight: FontWeight.w400,
         fontSize: 16,

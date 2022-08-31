@@ -10,7 +10,7 @@ import 'package:todo2/presentation/pages/navigation/widgets/keep_page_alive.dart
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 class NavigationController extends ChangeNotifier {
-  final pageIndex = ValueNotifier<int>(0);
+   final  pageIndex = ValueNotifier<int>(0);
   final pageController = PageController(initialPage: 0);
 
   final List<Widget> pages = [

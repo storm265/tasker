@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:todo2/database/data_source/checklists_data_source.dart';
+import 'package:todo2/database/repository/checklist_repository.dart';
 
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/add_check_list/controller/check_list_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/add_check_list/widgets/add_item_button.dart';
@@ -12,6 +14,8 @@ import 'package:todo2/presentation/pages/navigation/controllers/inherited_naviga
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
+import 'package:todo2/services/network_service/network_config.dart';
+import 'package:todo2/storage/secure_storage_service.dart';
 
 class AddCheckListPage extends StatefulWidget {
   const AddCheckListPage({Key? key}) : super(key: key);
@@ -21,9 +25,24 @@ class AddCheckListPage extends StatefulWidget {
 }
 
 class _AddCheckListPageState extends State<AddCheckListPage> {
-  final _checkListController = AddCheckListController();
-  final _titleController = TextEditingController();
-  final _scrollController = ScrollController();
+  final _checkListController = AddCheckListController(
+    checkListRepository: CheckListRepositoryImpl(
+      checkListsDataSource: CheckListsDataSourceImpl(
+        network: NetworkSource(),
+        secureStorage: SecureStorageService(),
+      ),
+    ),
+  );
+  late final TextEditingController _titleController;
+  late final ScrollController _scrollController;
+  @override
+  void initState() {
+    _titleController = TextEditingController();
+    _scrollController = ScrollController();
+    _checkListController.dispose();
+    super.initState();
+  }
+
   @override
   void dispose() {
     _checkListController.dispose();

@@ -68,7 +68,7 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
 
       debugPrint('avatar url ${response[AuthScheme.avatarUrl]}');
       return response[AuthScheme.avatarUrl];
-    } catch (e, t) {
+    } catch (e) {
       throw Failure(e.toString());
     }
   }

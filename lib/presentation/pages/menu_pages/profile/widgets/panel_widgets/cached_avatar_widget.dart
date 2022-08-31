@@ -26,13 +26,10 @@ class CachedAvatarWidget extends StatelessWidget {
       width: 64,
       progressIndicatorBuilder: (context, url, progress) {
         log('progress : ${progress.progress}');
-        return ProgressIndicatorWidget(
-            text:
-                '${progress.progress == null ? 0 : progress.progress!.ceilToDouble() * 100}%');
+        return const ProgressIndicatorWidget();
       },
-      imageBuilder: (_, imageProvider) => CircleAvatar(
-        backgroundImage: imageProvider,
-      ),
+      imageBuilder: (_, imageProvider) =>
+          CircleAvatar(backgroundImage: imageProvider),
       errorWidget: (_, url, error) => const CircleAvatar(
         backgroundColor: Color(0xffC4C4C4),
         child: addPhotoWidget,

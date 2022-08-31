@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ColorLineWidget extends StatelessWidget {
-  final String color;
+  final Color color;
   const ColorLineWidget({
     Key? key,
     required this.color,
@@ -15,11 +15,7 @@ class ColorLineWidget extends StatelessWidget {
       child: SizedBox(
         width: 121,
         height: 3,
-        child: ColoredBox(
-          color: Color(
-            int.parse(color),
-          ),
-        ),
+        child: ColoredBox(color: color),
       ),
     );
   }

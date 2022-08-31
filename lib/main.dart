@@ -23,6 +23,7 @@ import 'package:todo2/presentation/pages/navigation/controllers/inherited_status
 import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/status_bar_controller.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
+import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/services/system_service/system_chrome.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
@@ -66,6 +67,7 @@ class _MyAppState extends State<MyApp> {
       taskRepository: TaskRepositoryImpl(),
       userProfileRepository: UserProfileRepositoryImpl(
         userProfileDataSource: UserProfileDataSourceImpl(
+          network: NetworkSource(),
           secureStorageService: SecureStorageService(),
         ),
       ),
@@ -80,6 +82,7 @@ class _MyAppState extends State<MyApp> {
       authRepository: AuthRepositoryImpl(),
       userProfileRepository: UserProfileRepositoryImpl(
         userProfileDataSource: UserProfileDataSourceImpl(
+          network: NetworkSource(),
           secureStorageService: SecureStorageService(),
         ),
       ),

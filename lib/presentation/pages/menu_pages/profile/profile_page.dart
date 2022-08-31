@@ -10,6 +10,7 @@ import 'package:todo2/presentation/pages/menu_pages/profile/widgets/stats_widget
 import 'package:todo2/presentation/pages/menu_pages/profile/widgets/task_list_widgets/task_list_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/widgets/profile_widget.dart';
+import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -23,6 +24,7 @@ class _ProfilePageState extends State<ProfilePage> {
   final imageController = ImageController(
     userRepository: UserProfileRepositoryImpl(
       userProfileDataSource: UserProfileDataSourceImpl(
+        network: NetworkSource(),
         secureStorageService: SecureStorageService(),
       ),
     ),
@@ -30,6 +32,7 @@ class _ProfilePageState extends State<ProfilePage> {
   final userController = UserController(
     userProfileRepository: UserProfileRepositoryImpl(
       userProfileDataSource: UserProfileDataSourceImpl(
+        network: NetworkSource(),
         secureStorageService: SecureStorageService(),
       ),
     ),
@@ -55,8 +58,9 @@ class _ProfilePageState extends State<ProfilePage> {
     return AppbarWrapWidget(
       title: 'Profile',
       isRedAppBar: false,
-      child: Wrap(
-        spacing: 10,
+      child: Flex(
+        // spacing: 10,
+        direction: Axis.vertical,
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(

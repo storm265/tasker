@@ -74,11 +74,9 @@ class ColorPalleteWidget extends StatelessWidget {
                     ),
                     child: Text(
                       colorController.isNotPicked,
-                      style:  TextStyle(
-                        fontWeight: FontWeight.w500,
+                      style: TextStyle(
                         fontStyle: FontStyle.italic,
-                        fontSize: 18,
-                        color: Theme.of(context).errorColor
+                        color: Theme.of(context).errorColor,
                       ),
                     ),
                   ),

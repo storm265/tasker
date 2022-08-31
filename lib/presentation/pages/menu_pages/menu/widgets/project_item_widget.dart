@@ -28,22 +28,7 @@ class ProjectItemWidget extends StatelessWidget {
       onLongPress: data.title == 'Personal'
           ? null
           : () async {
-              projectController.pickProject(pickedModel: data);
-              for (int i = 0; i < colors.length; i++) {
-                if (colors[i] == data.color) {
-                  projectController.colorPalleteController
-                      .changeSelectedIndex(i);
-                  break;
-                }
-              }
-
-              // showOptionsDialog(
-              //   titleController: titleController,
-              //   notifyParent: () => callback(),
-              //   projectController: projectController,
-              //   context: context,
-              //   projectModel: data,
-              // );
+              projectController.findEditColor(model: data);
               await showAddEditProjectDialog(
                 callback: () => callback(),
                 titleController: projectController.titleController,

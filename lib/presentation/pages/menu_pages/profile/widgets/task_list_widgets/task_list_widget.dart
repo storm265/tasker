@@ -12,57 +12,54 @@ class TaskListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 16),
-      child: SizedBox(
-        width: double.infinity,
-        height: 120,
-        child: DisabledGlowWidget(
-          child: ListView.builder(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              itemCount: labels.length,
-              itemBuilder: (BuildContext context, i) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 5,
-                    vertical: 10,
+    return SizedBox(
+      width: double.infinity,
+      height: 120,
+      child: DisabledGlowWidget(
+        child: ListView.builder(
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            itemCount: labels.length,
+            itemBuilder: (BuildContext context, i) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 5,
+                  vertical: 10,
+                ),
+                child: Container(
+                  width: 160,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    color: statsColors[i],
+                    borderRadius: BorderRadius.circular(5),
                   ),
-                  child: Container(
-                    width: 160,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      color: statsColors[i],
-                      borderRadius: BorderRadius.circular(5),
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.only(
+                      left: 15,
+                      top: 10,
                     ),
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.only(
-                        left: 15,
-                        top: 10,
+                    title: Text(
+                      labels[i],
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.w200,
+                        color: Colors.white,
                       ),
-                      title: Text(
-                        labels[i],
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontStyle: FontStyle.italic,
-                          fontWeight: FontWeight.w200,
-                          color: Colors.white,
-                        ),
-                      ),
-                      subtitle: const Text(
-                        '12 tasks',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontStyle: FontStyle.normal,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                        ),
+                    ),
+                    subtitle: const Text(
+                      '12 Tasks',
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontStyle: FontStyle.normal,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
-                );
-              }),
-        ),
+                ),
+              );
+            }),
       ),
     );
   }

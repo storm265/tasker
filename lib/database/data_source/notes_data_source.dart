@@ -24,6 +24,9 @@ abstract class NotesDataSource {
 }
 
 class NotesDataSourceImpl implements NotesDataSource {
+  final NetworkSource _network;
+  final SecureStorageService _secureStorage;
+
   NotesDataSourceImpl({
     required NetworkSource network,
     required SecureStorageService secureStorage,
@@ -31,8 +34,6 @@ class NotesDataSourceImpl implements NotesDataSource {
         _secureStorage = secureStorage;
 
   final _notes = '/notes';
-  final NetworkSource _network;
-  final SecureStorageService _secureStorage;
 
   @override
   Future<void> createNote({
@@ -69,23 +70,6 @@ class NotesDataSourceImpl implements NotesDataSource {
       throw Failure(e.toString());
     }
   }
-
-  // @override
-  // Future<Map<String, dynamic>> fetchOneNote({required String projectId}) async {
-  //   try {
-  //     final response = await _network.networkApiClient.dio.get(
-  //       '$_notes/$projectId',
-  //       options: await _network.networkApiClient.getLocalRequestOptions(),
-  //     );
-  //     log('deleteNote ${response.data}');
-  //     return NetworkErrorService.isSuccessful(response)
-  //         ? (response.data[NotesScheme.data] as Map<String, dynamic>)
-  //         : throw Failure(
-  //             'Error: ${response.data[NotesScheme.data][NotesScheme.message]}');
-  //   } catch (e) {
-  //     throw Failure(e.toString());
-  //   }
-  // }
 
   @override
   Future<List<dynamic>> fetchUserNotes() async {
@@ -131,4 +115,21 @@ class NotesDataSourceImpl implements NotesDataSource {
       throw Failure(e.toString());
     }
   }
+
+  // @override
+  // Future<Map<String, dynamic>> fetchOneNote({required String projectId}) async {
+  //   try {
+  //     final response = await _network.networkApiClient.dio.get(
+  //       '$_notes/$projectId',
+  //       options: await _network.networkApiClient.getLocalRequestOptions(),
+  //     );
+  //     log('deleteNote ${response.data}');
+  //     return NetworkErrorService.isSuccessful(response)
+  //         ? (response.data[NotesScheme.data] as Map<String, dynamic>)
+  //         : throw Failure(
+  //             'Error: ${response.data[NotesScheme.data][NotesScheme.message]}');
+  //   } catch (e) {
+  //     throw Failure(e.toString());
+  //   }
+  // }
 }

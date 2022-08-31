@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_navigator.dart';
@@ -36,6 +38,7 @@ class NavigationPage extends StatelessWidget {
                     itemCount: navigationController.pages.length,
                     controller: navigationController.pageController,
                     onPageChanged: (index) {
+                      log('index $index');
                       navigationController.pages[index];
                       switch (index) {
                         case 0:
@@ -47,7 +50,7 @@ class NavigationPage extends StatelessWidget {
                         case 2:
                           statusBarController.setRedStatusMode(false);
                           break;
-                        case 31:
+                        case 3:
                           statusBarController.setRedStatusMode(false);
                           break;
                         case 4:
@@ -65,47 +68,53 @@ class NavigationPage extends StatelessWidget {
                     itemBuilder: (_, i) => navigationController.pages[i]),
               ),
               bottomNavigationBar: ValueListenableBuilder<int>(
-                valueListenable: navigationController.pageIndex,
-                builder: (context, pageIndex, _) => Container(
-                  height: 60,
-                  width: double.infinity,
-                  color: const Color(0xFF292E4E),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      NavBarItem(
-                        onTap: () async =>
-                            await navigationController.moveToPage(Pages.tasks),
-                        label: 'My Tasks',
-                        icon: 'tasks',
-                        iconColor: pageIndex == 0 ? Colors.white : _greyColor,
+                  valueListenable: navigationController.pageIndex,
+                  builder: (__, pageIndex, _) {
+                    log('page index $pageIndex');
+                    return Container(
+                      height: 60,
+                      width: double.infinity,
+                      color: const Color(0xFF292E4E),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          NavBarItem(
+                            onTap: () async => await navigationController
+                                .moveToPage(Pages.tasks),
+                            label: 'My Tasks',
+                            icon: 'tasks',
+                            iconColor:
+                                pageIndex == 0 ? Colors.white : _greyColor,
+                          ),
+                          NavBarItem(
+                            onTap: () async => await navigationController
+                                .moveToPage(Pages.menu),
+                            label: 'Menu',
+                            icon: 'menu',
+                            iconColor:
+                                pageIndex == 1 ? Colors.white : _greyColor,
+                          ),
+                          const SizedBox(width: 50),
+                          NavBarItem(
+                            onTap: () async => await navigationController
+                                .moveToPage(Pages.quick),
+                            label: 'Quick',
+                            icon: 'quick',
+                            iconColor:
+                                pageIndex == 2 ? Colors.white : _greyColor,
+                          ),
+                          NavBarItem(
+                            onTap: () async => await navigationController
+                                .moveToPage(Pages.profile),
+                            label: 'Profile',
+                            icon: 'profile',
+                            iconColor:
+                                pageIndex == 3 ? Colors.white : _greyColor,
+                          ),
+                        ],
                       ),
-                      NavBarItem(
-                        onTap: () async =>
-                            await navigationController.moveToPage(Pages.menu),
-                        label: 'Menu',
-                        icon: 'menu',
-                        iconColor: pageIndex == 1 ? Colors.white : _greyColor,
-                      ),
-                      const SizedBox(width: 50),
-                      NavBarItem(
-                        onTap: () async =>
-                            await navigationController.moveToPage(Pages.quick),
-                        label: 'Quick',
-                        icon: 'quick',
-                        iconColor: pageIndex == 2 ? Colors.white : _greyColor,
-                      ),
-                      NavBarItem(
-                        onTap: () async => await navigationController
-                            .moveToPage(Pages.profile),
-                        label: 'Profile',
-                        icon: 'profile',
-                        iconColor: pageIndex == 3 ? Colors.white : _greyColor,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+                    );
+                  }),
             ),
           );
         });

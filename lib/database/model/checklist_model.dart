@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/database/database_scheme/checklists_scheme.dart';
+import 'package:todo2/database/model/checklist_item_model.dart';
 import 'package:todo2/utils/extensions/color_extension/color_string_extension.dart';
 
 class CheckListModel {
-  int id;
+  String id;
   String title;
   Color color;
   String createdAt;
   String ownerId;
+  List<CheckListItemModel> items;
 
   CheckListModel({
     required this.id,
     required this.title,
     required this.color,
-    required this.createdAt,
     required this.ownerId,
+    required this.createdAt,
+    required this.items,
   });
 
   factory CheckListModel.fromJson(Map<String, dynamic> json) => CheckListModel(
@@ -26,5 +29,8 @@ class CheckListModel {
         ),
         ownerId: json[CheckListsScheme.ownerId],
         createdAt: json[CheckListsScheme.createdAt],
+        items: (json[CheckListsScheme.items] as List<dynamic>)
+            .map((e) => CheckListItemModel.fromJson(e))
+            .toList(),
       );
 }

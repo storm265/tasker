@@ -38,8 +38,7 @@ class ProfileController extends ChangeNotifier {
   //   return response;
   // }
 
-  Future<void> fetchProfileInfo(
-   ) async {
+  Future<void> fetchProfileInfo() async {
     try {
       log('header: $imageHeader');
       log('header: $imageUrl');
@@ -55,8 +54,6 @@ class ProfileController extends ChangeNotifier {
       username = await _secureStorageService.getUserData(
               type: StorageDataType.username) ??
           '';
-
- 
     } catch (e) {
       throw Failure(e.toString());
     }
@@ -84,6 +81,7 @@ class ProfileController extends ChangeNotifier {
 
   Future<void> signOut({required BuildContext context}) async {
     try {
+      await _secureStorageService.removeAllUserData();
       await authRepository
           .signOut()
           .then((_) => NavigationService.navigateTo(context, Pages.welcome));

@@ -1,3 +1,3 @@
 class EnvScheme {
-  static String apiUrl = 'API_URL';
+  static const apiUrl = 'API_URL';
 }

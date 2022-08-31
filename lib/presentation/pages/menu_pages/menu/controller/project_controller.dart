@@ -57,26 +57,27 @@ class ProjectController extends ChangeNotifier {
           !colorPalleteController.isNotPickerColor) {
         setClickedValue(false);
 
-        if (isEdit) {
-          await updateProject(
-            projectModel: selectedModel.value,
-            title: title,
+        final isSameProject = await isSameProjectCreated(title: title);
+        if (isSameProject) {
+          MessageService.displaySnackbar(
+            message: 'This project is already exist',
+            context: context,
           );
-
-          onSuccessCallback();
+          titleController.clear();
         } else {
-          final isSameProject = await isSameProjectCreated(title: title);
-          if (isSameProject) {
-            MessageService.displaySnackbar(
-              message: 'This project is already exist',
-              context: context,
+          if (isEdit) {
+            await updateProject(
+              projectModel: selectedModel.value,
+              title: title,
             );
+
+            onSuccessCallback();
           } else {
             await createProject(title: title);
             onSuccessCallback();
           }
         }
-        
+
         setClickedValue(true);
       }
     } catch (e) {
@@ -118,7 +119,7 @@ class ProjectController extends ChangeNotifier {
       log('projects list: ${projects.length}');
 
       for (int i = 0; i < projects.length; i++) {
-        if (title == projects[i].title) {
+        if (title.toLowerCase() == projects[i].title.toLowerCase()) {
           return true;
         }
       }
@@ -154,6 +155,16 @@ class ProjectController extends ChangeNotifier {
       );
     } catch (e) {
       throw Failure(e.toString());
+    }
+  }
+
+  void findEditColor({required ProjectModel model}) {
+    pickProject(pickedModel: model);
+    for (int i = 0; i < colors.length; i++) {
+      if (colors[i] == model.color) {
+        colorPalleteController.changeSelectedIndex(i);
+        break;
+      }
     }
   }
 

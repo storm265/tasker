@@ -20,31 +20,35 @@ class UserDataWidget extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        const SizedBox(width: 40),
+        const SizedBox(width: 30),
         CachedAvatarWidget(
           imageHeader: imageHeader,
           imageUrl: imageUrl,
         ),
         const SizedBox(width: 15),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              username,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w200,
+        Flexible(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                username,
+                style: const TextStyle(
+                  fontSize: 18,
+                  overflow: TextOverflow.ellipsis,
+                  fontWeight: FontWeight.w200,
+                  fontStyle: FontStyle.italic,
+                ),
               ),
-            ),
-            Text(
-              email,
-              style: const TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
-                fontWeight: FontWeight.w500,
+              Text(
+                email,
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ],
     );

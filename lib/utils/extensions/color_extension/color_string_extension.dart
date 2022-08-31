@@ -1,4 +1,4 @@
-// TODO: add of the files from Extensions package should not be placed in Services package. It could be located in Util or something like this
+// TODO: add of the files from Extensions package should not be placed in Services package.
 extension ColorString on String {
   String toStringColor() =>
       replaceAll('Color(0xff', '#').replaceAll(')', '').toUpperCase();

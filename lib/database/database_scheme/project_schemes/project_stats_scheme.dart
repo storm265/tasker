@@ -1,4 +1,4 @@
 class ProjectStatsScheme {
-  static const String projectId = 'project_id';
-  static const String tasksNumber = 'tasks_number';
+  static const projectId = 'project_id';
+  static const tasksNumber = 'tasks_number';
 }

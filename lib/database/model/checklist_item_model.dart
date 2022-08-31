@@ -5,7 +5,7 @@ class CheckListItemModel {
   final String content;
   final bool isCompleted;
 
-  final int checklistId;
+  final String checklistId;
   final String createdAt;
   CheckListItemModel({
     required this.checklistId,

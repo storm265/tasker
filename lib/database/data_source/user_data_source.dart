@@ -1,8 +1,8 @@
 import 'dart:developer';
 import 'dart:io';
-import 'package:http_parser/http_parser.dart';
 import 'package:dio/dio.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
+import 'package:todo2/database/database_scheme/user_data_scheme..dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/navigation_service/network_error_service.dart';
 import 'package:todo2/services/network_service/network_config.dart';
@@ -23,14 +23,18 @@ abstract class UserProfileDataSource {
 
 class UserProfileDataSourceImpl implements UserProfileDataSource {
   final SecureStorageService _secureStorageService;
+  final NetworkSource _network;
+
   UserProfileDataSourceImpl({
     required SecureStorageService secureStorageService,
-  }) : _secureStorageService = secureStorageService;
-  final _network = NetworkSource().networkApiClient;
+    required NetworkSource network,
+  })  : _secureStorageService = secureStorageService,
+        _network = network;
 
   final _userPath = '/users';
   final _userStats = '/users-statistics';
   final _storagePath = '/users-avatar';
+
   @override
   Future<Map<String, dynamic>> fetchCurrentUser({
     required String id,
@@ -42,9 +46,9 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
         options: _network.getRequestOptions(accessToken: accessToken),
       );
       return NetworkErrorService.isSuccessful(response)
-          ? response.data[AuthScheme.data] as Map<String, dynamic>
+          ? response.data[UserDataScheme.data] as Map<String, dynamic>
           : throw Failure(
-              'Error: ${response.data[AuthScheme.data][AuthScheme.message]}');
+              'Error: ${response.data[UserDataScheme.data][UserDataScheme.message]}');
     } catch (e) {
       throw Failure(e.toString());
     }
@@ -60,9 +64,9 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
           path: '$_userStats/$id',
           options: await _network.getLocalRequestOptions());
       return NetworkErrorService.isSuccessful(response)
-          ? response.data[AuthScheme.data] as Map<String, dynamic>
+          ? response.data[UserDataScheme.data] as Map<String, dynamic>
           : throw Failure(
-              'Error: ${response.data[AuthScheme.data][AuthScheme.message]}');
+              'Error: ${response.data[UserDataScheme.data][UserDataScheme.message]}');
     } catch (e) {
       throw Failure(e.toString());
     }
@@ -78,7 +82,7 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
 
       var formData = FormData.fromMap(
         {
-          "file=@": await MultipartFile.fromFile(
+          "file": await MultipartFile.fromFile(
             file.path,
             filename: fileName,
           ),
@@ -87,32 +91,24 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
         },
       );
       final response = await _network.post(
-          path: _storagePath,
-          data: formData,
-          isFormData: true,
-          options: Options(
-            contentType: 'Content-Type: multipart/*',
-            validateStatus: (_) => true,
-            headers: {
-              'Authorization':
-                  'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJodHRwOi8vMC4wLjAuMDo4MDgwLyIsImlzcyI6Imh0dHA6Ly8wLjAuMC4wOjgwODAvIiwiZXhwIjoxNjYyMDM0MzU5LCJlbWFpbCI6ImphamFAbWFpbC5ydSJ9.L1ofgo5GCi3NGqg1tD3EvLBAprHmEfxti_c10ekNuEU',
-            },
-          )
-          // options: _network.getRequestOptions(
-          //   accessToken: await _secureStorageService.getUserData(
-          //           type: StorageDataType.accessToken) ??
-          //       'null',
-          // ),
-          );
-      //   "Content-Type": undefined
-      log('uploadAvatar repo ${response.data}');
+        path: _storagePath,
+        formData: formData,
+        data: formData,
+        isFormData: true,
+        options: _network.getRequestOptions(
+          useMultiPart: true,
+          accessToken: await _secureStorageService.getUserData(
+                  type: StorageDataType.accessToken) ??
+              'null',
+        ),
+      );
+      log('uploadAvatar  ${response.data}');
 
       return NetworkErrorService.isSuccessful(response)
-          ? response.data[AuthScheme.data] as Map<String, dynamic>
+          ? response.data[UserDataScheme.data] as Map<String, dynamic>
           : throw Failure(
-              'Error: ${response.data[AuthScheme.data][AuthScheme.message]}');
-    } catch (e, t) {
-      log('Trace ${t.toString()}');
+              'Error: ${response.data[UserDataScheme.data][UserDataScheme.message]}');
+    } catch (e) {
       throw Failure(e.toString());
     }
   }

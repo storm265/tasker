@@ -68,8 +68,10 @@ class SecureStorageService {
     }
   }
 
-  Future<void> saveUserData(
-      {required StorageDataType type, required String value}) async {
+  Future<void> saveUserData({
+    required StorageDataType type,
+    required String value,
+  }) async {
     try {
       switch (type) {
         case StorageDataType.id:

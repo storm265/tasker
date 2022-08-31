@@ -18,6 +18,7 @@ import 'package:todo2/presentation/pages/auth/widgets/title_widget.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/dynamic_single_scroll.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
+import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -37,6 +38,7 @@ class _SignUpPageState extends State<SignUpPage> {
     imgPickerController: ImageController(
       userRepository: UserProfileRepositoryImpl(
         userProfileDataSource: UserProfileDataSourceImpl(
+          network: NetworkSource(),
           secureStorageService: SecureStorageService(),
         ),
       ),
@@ -76,7 +78,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     height: size.height - minFactor,
                     child: Form(
                       key: _signUpController.formKey,
-                  
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       child: Padding(
                         padding: const EdgeInsets.all(paddingAll),
                         child: Wrap(

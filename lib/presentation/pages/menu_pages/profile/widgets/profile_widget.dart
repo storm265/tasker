@@ -34,7 +34,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
   @override
   void initState() {
     widget.profileController.rotateSettingsIcon(ticker: this);
-    fetchData();
+    // fetchData();
     super.initState();
   }
 
@@ -77,16 +77,14 @@ class _ProfileWidgetState extends State<ProfileWidget>
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                // UserDataWidget(
-                //   imageHeader: widget.profileController.imageHeader,
-                //   imageUrl: widget.profileController.imageUrl,
-                //   email: widget.profileController.email,
-                //   username: widget.profileController.username,
-                //   // email: 'dasdadadasda',
-                //   // username: 'dasdadadasda',
-                // ),
+                UserDataWidget(
+                  imageHeader: widget.profileController.imageHeader,
+                  imageUrl: widget.profileController.imageUrl,
+                  email: widget.profileController.email,
+                  username: widget.profileController.username,
+                ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     TasksTextWidget(
                       title: '${widget.createdTask}',

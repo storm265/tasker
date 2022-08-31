@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/checklists_data_source.dart';
 import 'package:todo2/database/model/checklist_model.dart';
@@ -25,8 +27,8 @@ abstract class CheckListsRepository<T> {
   Future<List<CheckListModel>> fetchAllCheckLists();
 }
 
-class CheckListsRepositoryImpl extends CheckListsRepository<CheckListModel> {
-  CheckListsRepositoryImpl(
+class CheckListRepositoryImpl extends CheckListsRepository<CheckListModel> {
+  CheckListRepositoryImpl(
       {required CheckListsDataSourceImpl checkListsDataSource})
       : _checkListsDataSource = checkListsDataSource;
   final CheckListsDataSourceImpl _checkListsDataSource;
@@ -78,9 +80,15 @@ class CheckListsRepositoryImpl extends CheckListsRepository<CheckListModel> {
   @override
   Future<List<CheckListModel>> fetchAllCheckLists() async {
     try {
-      throw Failure('.toString(e)');
-      // final response = await _checkListsDataSource.fetchAllCheckLists();
-    } catch (e) {
+      final response = await _checkListsDataSource.fetchAllCheckLists();
+      List<CheckListModel> statsModels = [];
+      for (int i = 0; i < response.length; i++) {
+        statsModels.add(CheckListModel.fromJson(response[i]));
+      }
+      log('model: $statsModels');
+      return statsModels;
+    } catch (e, t) {
+      print('trace $t');
       throw Failure(e.toString());
     }
   }

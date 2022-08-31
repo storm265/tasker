@@ -1,9 +1,9 @@
 class QuickNoteScheme {
-  static const String checklistId = 'checklistId';
-  static const String title = 'title';
-  static const String color = 'color';
-  static const String content = 'content';
-  static const String isCompleted = 'is_completed';
-  static const String ownerId = 'owner_id';
-  static const String createdAt = 'created_at';
+  static const checklistId = 'checklistId';
+  static const title = 'title';
+  static const color = 'color';
+  static const content = 'content';
+  static const isCompleted = 'is_completed';
+  static const ownerId = 'owner_id';
+  static const createdAt = 'created_at';
 }

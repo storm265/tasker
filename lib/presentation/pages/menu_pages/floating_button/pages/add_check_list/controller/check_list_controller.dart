@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/checklists_data_source.dart';
-import 'package:todo2/database/repository/checklist_items_repository.dart';
+import 'package:todo2/database/model/checklist_model.dart';
 import 'package:todo2/database/repository/checklist_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
@@ -16,12 +16,10 @@ const isCompleted = 'is_completed';
 const content = 'content';
 
 class AddCheckListController extends ChangeNotifier {
-  final _checkListItemsRepository = ChecklistItemsRepositoryImpl();
-  final _checkListRepository = CheckListsRepositoryImpl(
-      checkListsDataSource: CheckListsDataSourceImpl(
-    network: NetworkSource(),
-    secureStorage: SecureStorageService(),
-  ));
+  final CheckListRepositoryImpl _checkListRepository;
+  AddCheckListController({required CheckListRepositoryImpl checkListRepository})
+      : _checkListRepository = checkListRepository;
+
   final checkBoxItems = ValueNotifier<List<Map<String, dynamic>>>([]);
 
   final colorPalleteController = ColorPalleteController();
@@ -39,7 +37,6 @@ class AddCheckListController extends ChangeNotifier {
     required BuildContext context,
     required String title,
     required Color color,
-    
     List<Map<String, dynamic>>? items,
     required NavigationController navigationController,
   }) async {
@@ -52,8 +49,7 @@ class AddCheckListController extends ChangeNotifier {
           color: color,
           items: checkBoxItems.value,
         );
-       // .then((value) =>navigationController.moveToPage(Pages.quick) );
-     
+        // .then((value) =>navigationController.moveToPage(Pages.quick) );
 
         changeButtonStatus(true);
       }
@@ -73,6 +69,14 @@ class AddCheckListController extends ChangeNotifier {
         color: color,
         items: items,
       );
+    } catch (e) {
+      throw Failure(e.toString());
+    }
+  }
+
+  Future<List<CheckListModel>> fetchAllCheckLists() async {
+    try {
+      return _checkListRepository.fetchAllCheckLists();
     } catch (e) {
       throw Failure(e.toString());
     }

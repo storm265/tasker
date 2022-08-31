@@ -112,8 +112,7 @@ class ImageController extends ChangeNotifier {
         file: File(pickedFile.value.path!),
       );
       return image;
-    } catch (e, t) {
-      log('uploadAvatar  $e, $t');
+    } catch (e) {
       throw Failure(e.toString());
     }
   }

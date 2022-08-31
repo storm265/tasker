@@ -1,20 +1,15 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/projects_data_source.dart';
-import 'package:todo2/database/model/project_models/project_stats_model.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/menu/widgets/add_button_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/add_project_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/project_item_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/project_shimmer_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/profile/controller/inherited_profile.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
-import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
-import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapp.dart';
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
@@ -101,33 +96,7 @@ class _MenuPageState extends State<MenuPage> {
                                       //     .data![i].tasksNumber,
                                       taskLength: 0,
                                     );
-                              // FutureBuilder(
-                              //     initialData: const <
-                              //         ProjectStatsModel>[],
-                              //     future: profileController
-                              //         .fetchProjectStats(),
-                              //     builder: (context,
-                              //         AsyncSnapshot<
-                              //                 List<ProjectStatsModel>>
-                              //             snapshot) {
-                              //       return snapshot.connectionState ==
-                              //               ConnectionState.waiting
-                              //           ? const SizedBox()
-                              //           : ProjectItemWidget(
-                              //               titleController:
-                              //                   titleController,
-                              //               callback: () =>
-                              //                   setState(() {}),
-                              //               data: data,
-                              //               projectController:
-                              //                   _projectController,
-                              //               model: data,
-                              //               // taskLength: snapshot
-                              //               //     .data![i].tasksNumber,
-                              //               taskLength: 0,
-                              //             );
-                              //     },
-                              //   );
+                           
                             });
                   },
                 ),
