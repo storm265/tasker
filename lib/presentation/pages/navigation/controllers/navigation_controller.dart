@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/add_check_list/add_checklist_page.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_note/new_note_page.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task/new_task.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/checklist_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/note_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/new_task.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/menu_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/profile_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
@@ -10,7 +10,7 @@ import 'package:todo2/presentation/pages/navigation/widgets/keep_page_alive.dart
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 class NavigationController extends ChangeNotifier {
-   final  pageIndex = ValueNotifier<int>(0);
+  final pageIndex = ValueNotifier<int>(0);
   final pageController = PageController(initialPage: 0);
 
   final List<Widget> pages = [
@@ -18,9 +18,9 @@ class NavigationController extends ChangeNotifier {
     const KeepAlivePageWidget(child: MenuPage()),
     KeepAlivePageWidget(child: QuickPage()),
     const KeepAlivePageWidget(child: ProfilePage()),
-    const KeepAlivePageWidget(child: AddTaskPage()),
-    const KeepAlivePageWidget(child: AddQuickNote()),
-    const KeepAlivePageWidget(child: AddCheckListPage()),
+    const AddTaskPage(),
+    const AddQuickNote(),
+    const CheckListPage(),
   ];
 
   Future<void> moveToPage(Pages page) async {

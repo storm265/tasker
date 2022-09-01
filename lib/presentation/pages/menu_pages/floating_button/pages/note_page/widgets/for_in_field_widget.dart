@@ -1,8 +1,8 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task/controller/add_task_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task/controller/controller_inherited.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/add_task_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/controller_inherited.dart';
 
 class EnterUserWidget extends StatelessWidget {
   TextEditingController titleController;

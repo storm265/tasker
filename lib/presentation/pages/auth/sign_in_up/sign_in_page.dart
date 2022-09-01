@@ -17,8 +17,7 @@ import 'package:todo2/presentation/pages/auth/widgets/title_widget.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/dynamic_single_scroll.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
-import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapp.dart';
-import 'package:todo2/services/navigation_service/navigation_service.dart';
+
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 

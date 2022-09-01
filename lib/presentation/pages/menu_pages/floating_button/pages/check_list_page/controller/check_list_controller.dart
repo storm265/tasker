@@ -1,6 +1,4 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:todo2/database/data_source/checklists_data_source.dart';
 import 'package:todo2/database/model/checklist_model.dart';
 import 'package:todo2/database/repository/checklist_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
@@ -8,18 +6,17 @@ import 'package:todo2/presentation/pages/navigation/controllers/navigation_contr
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
-import 'package:todo2/services/navigation_service/navigation_service.dart';
-import 'package:todo2/services/network_service/network_config.dart';
-import 'package:todo2/storage/secure_storage_service.dart';
 
 const isCompleted = 'is_completed';
 const content = 'content';
+const id = 'id';
 
 class AddCheckListController extends ChangeNotifier {
   final CheckListRepositoryImpl _checkListRepository;
   AddCheckListController({required CheckListRepositoryImpl checkListRepository})
       : _checkListRepository = checkListRepository;
 
+  final TextEditingController titleController = TextEditingController();
   final checkBoxItems = ValueNotifier<List<Map<String, dynamic>>>([]);
 
   final colorPalleteController = ColorPalleteController();
@@ -31,6 +28,34 @@ class AddCheckListController extends ChangeNotifier {
   void changeButtonStatus(bool status) {
     isClickedButton.value = status;
     isClickedButton.notifyListeners();
+  }
+
+  void pickEditData({required CheckListModel checklistModel}) {
+    for (int i = 0; i < colors.length; i++) {
+      if (colors[i] == checklistModel.color) {
+        colorPalleteController.changeSelectedIndex(i);
+        break;
+      }
+    }
+    titleController.text = checklistModel.title;
+    for (int i = 0; i < checklistModel.items.length; i++) {
+      checkBoxItems.value.add({
+        id: checklistModel.items[i].id,
+        isCompleted: checklistModel.items[i].isCompleted,
+        content: checklistModel.items[i].content,
+      });
+    }
+    checkBoxItems.notifyListeners();
+  }
+
+  void addItem(int index) {
+    checkBoxItems.value.add({
+      content: checkBoxItems.value.isEmpty
+          ? 'List item 1'
+          : 'List item ${index + 1 + 1}',
+      isCompleted: false,
+    });
+    checkBoxItems.notifyListeners();
   }
 
   Future<void> tryValidateCheckList({
@@ -87,16 +112,6 @@ class AddCheckListController extends ChangeNotifier {
     checkBoxItems.notifyListeners();
   }
 
-  void addItem(int index) {
-    checkBoxItems.value.add({
-      content: checkBoxItems.value.isEmpty
-          ? 'List item 1'
-          : 'List item ${index + 1 + 1}',
-      isCompleted: false,
-    });
-    checkBoxItems.notifyListeners();
-  }
-
   void changeCheckBoxText({
     required int index,
     required String title,
@@ -113,5 +128,13 @@ class AddCheckListController extends ChangeNotifier {
   void removeItem(int index) {
     checkBoxItems.value.removeAt(index);
     checkBoxItems.notifyListeners();
+  }
+
+  void disposeValues() {
+    checkBoxItems.dispose();
+    titleController.dispose();
+    colorPalleteController.disposeValues();
+    colorPalleteController.dispose();
+    isClickedButton.dispose();
   }
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
 
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task/controller/add_task_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task/controller/controller_inherited.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/add_task_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/controller_inherited.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/circle_widget.dart';
 
 class ProjectPanelPickerWidget extends StatelessWidget {

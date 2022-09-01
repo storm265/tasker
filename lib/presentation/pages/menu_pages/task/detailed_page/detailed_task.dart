@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_note/widgets/atachment_message_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/atachment_message_widget.dart';
 
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/confirm_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/detailed_page/widgets/comment_button.dart';

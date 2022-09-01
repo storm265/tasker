@@ -1,18 +1,23 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http_proxy/http_proxy.dart';
+import 'package:todo2/database/data_source/checklists_data_source.dart';
 import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
+import 'package:todo2/database/repository/checklist_repository.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/task_attachment_repository.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/tasks_member_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/add_check_list/add_checklist_page.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_note/new_note_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/checklist_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/controller/check_list_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/controller/inherited_checklist_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/note_page.dart';
 
 import 'package:todo2/presentation/pages/menu_pages/menu/menu_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
@@ -27,8 +32,8 @@ import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/services/system_service/system_chrome.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
-import 'presentation/pages/menu_pages/floating_button/pages/new_task/controller/add_task_controller.dart';
-import 'presentation/pages/menu_pages/floating_button/pages/new_task/controller/controller_inherited.dart';
+import 'presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/add_task_controller.dart';
+import 'presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/controller_inherited.dart';
 import 'presentation/pages/menu_pages/profile/controller/inherited_profile.dart';
 import 'services/theme_service/theme_data_controller.dart';
 
@@ -90,8 +95,18 @@ class _MyAppState extends State<MyApp> {
     super.initState();
   }
 
+  final _checkListController = AddCheckListController(
+    checkListRepository: CheckListRepositoryImpl(
+      checkListsDataSource: CheckListsDataSourceImpl(
+        network: NetworkSource(),
+        secureStorage: SecureStorageService(),
+      ),
+    ),
+  );
   @override
   void dispose() {
+    _checkListController.disposeValues();
+    _checkListController.dispose();
     _newTaskConroller.disposeAll();
     _newTaskConroller.dispose();
     _profileController.dispose();
@@ -105,19 +120,22 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return InheritedStatusBar(
       statusBarController: _statusBarController,
-      child: NavigationInherited(
-        navigationController: _navigationController,
-        child: ProfileInherited(
-          profileController: _profileController,
-          child: InheritedNewTaskController(
-            addTaskController: _newTaskConroller,
-            child: MaterialApp(
-              debugShowCheckedModeBanner: false,
-              title: 'Todo2',
-              theme: _themeDataController.themeData,
-             //  initialRoute: '/',
-              // routes: routes,
-              home: QuickPage(),
+      child: InheridtedChecklist(
+        checkListController: _checkListController,
+        child: NavigationInherited(
+          navigationController: _navigationController,
+          child: ProfileInherited(
+            profileController: _profileController,
+            child: InheritedNewTaskController(
+              addTaskController: _newTaskConroller,
+              child: MaterialApp(
+                debugShowCheckedModeBanner: false,
+                title: 'Todo2',
+                theme: _themeDataController.themeData,
+                initialRoute: '/',
+                routes: routes,
+                // home: QuickPage(),
+              ),
             ),
           ),
         ),

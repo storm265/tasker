@@ -62,7 +62,7 @@ class NavigationPage extends StatelessWidget {
                         case 6:
                           statusBarController.setRedStatusMode(true);
                           break;
-                        default:
+                  
                       }
                     },
                     itemBuilder: (_, i) => navigationController.pages[i]),

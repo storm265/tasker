@@ -2,8 +2,8 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_note/widgets/atachment_message_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task/controller/controller_inherited.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/atachment_message_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/controller_inherited.dart';
 
 import 'package:todo2/presentation/pages/menu_pages/profile/widgets/panel_widgets/cached_avatar_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';

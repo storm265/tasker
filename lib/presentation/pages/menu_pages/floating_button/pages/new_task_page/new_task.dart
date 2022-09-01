@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_note/widgets/add_member_widget/add_member_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_note/widgets/description_field_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_note/widgets/for_in_field_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_note/widgets/title_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task/controller/add_task_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task/controller/controller_inherited.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task/widgets/fake_nav_bar.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task/widgets/pick_time_field_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task/widgets/selected_panel_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/add_member_widget/add_member_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/description_field_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/for_in_field_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/title_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/add_task_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/controller_inherited.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/fake_nav_bar.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/pick_time_field_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/selected_panel_widget.dart';
 
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/confirm_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/red_app_bar.dart';

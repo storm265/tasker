@@ -3,7 +3,7 @@ import 'package:todo2/database/data_source/notes_data_source.dart';
 import 'package:todo2/database/repository/notes_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
 
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_note/controller/new_note_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/controller/new_note_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/confirm_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/red_app_bar.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/title_widget.dart';

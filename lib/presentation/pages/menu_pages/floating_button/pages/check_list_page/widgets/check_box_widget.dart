@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/add_check_list/controller/check_list_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/controller/check_list_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/add_text_field.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 

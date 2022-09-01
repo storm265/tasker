@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task/controller/controller_inherited.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/controller_inherited.dart';
 
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
