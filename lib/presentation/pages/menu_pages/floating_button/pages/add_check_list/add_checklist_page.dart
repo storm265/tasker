@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/checklists_data_source.dart';
+import 'package:todo2/database/data_source/notes_data_source.dart';
 import 'package:todo2/database/repository/checklist_repository.dart';
+import 'package:todo2/database/repository/notes_repository.dart';
 
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/add_check_list/controller/check_list_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/add_check_list/widgets/add_item_button.dart';
@@ -10,6 +12,7 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/red_
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/title_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/white_box_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/color_pallete_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/quick/controller/notes_controller.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_navigator.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
@@ -33,6 +36,8 @@ class _AddCheckListPageState extends State<AddCheckListPage> {
       ),
     ),
   );
+
+
   late final TextEditingController _titleController;
   late final ScrollController _scrollController;
   @override

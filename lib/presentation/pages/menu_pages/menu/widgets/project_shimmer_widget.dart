@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:todo2/database/model/project_models/projects_model.dart';
 
 class ShimmerProjectItem extends StatelessWidget {
-  final ProjectModel model;
-  ShimmerProjectItem({Key? key, required this.model}) : super(key: key);
+
+  ShimmerProjectItem({Key? key}) : super(key: key);
   final hightlightColor = Colors.grey.shade300;
   final baseColor = Colors.white;
   @override

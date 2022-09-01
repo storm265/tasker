@@ -10,11 +10,11 @@ class ColorLineWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: 1,
-      left: 17,
+      top: 0,
+      left: 20,
       child: SizedBox(
-        width: 121,
-        height: 3,
+        width: 120,
+        height: 4,
         child: ColoredBox(color: color),
       ),
     );

@@ -162,7 +162,7 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
               {
                 "id": "b4e49d06-8223-4b1f-a6d1-6cdf4f115231",
                 "title": "checklist 2",
-                "color": "#FFFFD4",
+                "color": "#5ABB56",
                 "owner_id": "76d2fab4-fd06-4909-bf8e-875c6b55c1f7",
                 "items": [],
                 "created_at": "2022-07-13T08:57:49.485633"
@@ -170,7 +170,7 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
               {
                 "id": "1f42ad13-06a9-4b48-adc9-787d9e8b929c",
                 "title": "checklist 1.1",
-                "color": "#FFFF34",
+                "color": "#6074F9",
                 "owner_id": "76d2fab4-fd06-4909-bf8e-875c6b55c1f7",
                 "items": [
                   {
@@ -184,7 +184,30 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
                     "id": "3ec81aae-df2b-4cc1-8411-d5261bafd841",
                     "content": "qweqweqwe11111",
                     "checklist_id": "1f42ad13-06a9-4b48-adc9-787d9e8b929c",
+                    "is_completed": false,
+                    "created_at": "2022-07-13T08:57:12.670581"
+                  }
+                ],
+                "created_at": "2022-07-13T08:57:12.648075"
+              },
+              {
+                "id": "1f42ad13-06a9-4b48-adc9-787d9e8b929c",
+                "title": "checklist 1.1",
+                "color": "#6074F9",
+                "owner_id": "76d2fab4-fd06-4909-bf8e-875c6b55c1f7",
+                "items": [
+                  {
+                    "id": "cbf03617-8ccf-480e-9be4-ae65fdff8594",
+                    "content": "asdsad asd111111",
+                    "checklist_id": "1f42ad13-06a9-4b48-adc9-787d9e8b929c",
                     "is_completed": true,
+                    "created_at": "2022-07-13T08:57:12.669766"
+                  },
+                  {
+                    "id": "3ec81aae-df2b-4cc1-8411-d5261bafd841",
+                    "content": "qweqweqwe11111",
+                    "checklist_id": "1f42ad13-06a9-4b48-adc9-787d9e8b929c",
+                    "is_completed": false,
                     "created_at": "2022-07-13T08:57:12.670581"
                   }
                 ],

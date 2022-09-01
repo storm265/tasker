@@ -86,7 +86,7 @@ class _MenuPageState extends State<MenuPage> {
                               final data = snapshot.data![i];
                               return snapshot.connectionState ==
                                       ConnectionState.waiting
-                                  ? ShimmerProjectItem(model: data)
+                                  ? ShimmerProjectItem()
                                   : ProjectItemWidget(
                                       callback: () => setState(() {}),
                                       data: data,
