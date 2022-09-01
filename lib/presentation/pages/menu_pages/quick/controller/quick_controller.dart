@@ -10,28 +10,20 @@ import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
 class QuickController {
-  final _checkListController = AddCheckListController(
-    checkListRepository: CheckListRepositoryImpl(
-      checkListsDataSource: CheckListsDataSourceImpl(
-        network: NetworkSource(),
-        secureStorage: SecureStorageService(),
-      ),
-    ),
-  );
-  final _noteController = NotesController(
-    notesRepository: NoteRepositoryImpl(
-      noteDataSource: NotesDataSourceImpl(
-        network: NetworkSource(),
-        secureStorage: SecureStorageService(),
-      ),
-    ),
-  );
+  final NotesController _noteController;
+  final CheckListSingleton _checkListController;
+  QuickController(
+      {required NotesController noteController,
+      required CheckListSingleton checkListController})
+      : _noteController = noteController,
+        _checkListController = checkListController;
+
 
   Future<List<dynamic>> fetchList() async {
     await Future.delayed(const Duration(seconds: 2));
     final resposnse = await Future.wait([
       _noteController.fetchUserNotes(),
-      _checkListController.fetchAllCheckLists(),
+      _checkListController.controller.fetchAllCheckLists(),
     ]);
     final List<NotesModel> notes = resposnse[0] as List<NotesModel>;
     final List<CheckListModel> checkList = resposnse[1] as List<CheckListModel>;

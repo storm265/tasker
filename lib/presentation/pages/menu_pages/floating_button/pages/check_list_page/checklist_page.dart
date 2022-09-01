@@ -33,12 +33,7 @@ class _CheckListPageState extends State<CheckListPage> {
   void didChangeDependencies() {
     _navigationController =
         NavigationInherited.of(context).navigationController;
-    checklistController = InheridtedChecklist.of(context).checkListController;
-    if (checklistController.checkBoxItems.value.isNotEmpty) {
-      log('is edit mode');
-    } else {
-      log('is NOT edit mode');
-    }
+   
     super.didChangeDependencies();
   }
 

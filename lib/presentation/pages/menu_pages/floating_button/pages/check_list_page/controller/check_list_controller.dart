@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo2/database/data_source/checklists_data_source.dart';
 import 'package:todo2/database/model/checklist_model.dart';
 import 'package:todo2/database/repository/checklist_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
@@ -6,12 +7,36 @@ import 'package:todo2/presentation/pages/navigation/controllers/navigation_contr
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
+import 'package:todo2/services/network_service/network_config.dart';
+import 'package:todo2/storage/secure_storage_service.dart';
+
+class CheckListSingleton {
+  static final CheckListSingleton _instance = CheckListSingleton._internal();
+
+  factory CheckListSingleton() {
+    return _instance;
+  }
+
+  CheckListSingleton._internal();
+
+  final AddCheckListController _checkListController = AddCheckListController(
+      checkListRepository: CheckListRepositoryImpl(
+      checkListsDataSource: CheckListsDataSourceImpl(
+        network: NetworkSource(),
+        secureStorage: SecureStorageService(),
+      ),
+    ),
+  );
+
+  AddCheckListController get controller => _checkListController;
+}
 
 const isCompleted = 'is_completed';
 const content = 'content';
 const id = 'id';
 
 class AddCheckListController extends ChangeNotifier {
+  
   final CheckListRepositoryImpl _checkListRepository;
   AddCheckListController({required CheckListRepositoryImpl checkListRepository})
       : _checkListRepository = checkListRepository;

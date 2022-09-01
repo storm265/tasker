@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:todo2/database/model/checklist_model.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/controller/check_list_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/controller/inherited_checklist_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/checkbox/checkbox_item_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/color_line_widget.dart';
@@ -13,17 +14,16 @@ import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 class CheckBoxCard extends StatelessWidget {
   final CheckListModel checklistModel;
+
   final NavigationController navigationController;
-  const CheckBoxCard({
+  CheckBoxCard({
     Key? key,
     required this.checklistModel,
     required this.navigationController,
   }) : super(key: key);
-
+  final checkListController = CheckListSingleton().controller;
   @override
   Widget build(BuildContext context) {
-    final checklistController =
-        InheridtedChecklist.of(context).checkListController;
     return Slidable(
       key: const ValueKey(0),
       endActionPane: ActionPane(
@@ -32,7 +32,7 @@ class CheckBoxCard extends StatelessWidget {
           EndPageWidget(
             icon: Icons.edit,
             onClick: () {
-              checklistController.pickEditData(checklistModel: checklistModel);
+              checkListController.pickEditData(checklistModel: checklistModel);
               navigationController.moveToPage(Pages.addCheckList);
             },
           ),

@@ -18,7 +18,6 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/controller/check_list_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/controller/inherited_checklist_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/note_page.dart';
-
 import 'package:todo2/presentation/pages/menu_pages/menu/menu_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/profile_page.dart';
@@ -31,7 +30,6 @@ import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/services/system_service/system_chrome.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
-
 import 'presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/add_task_controller.dart';
 import 'presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/controller_inherited.dart';
 import 'presentation/pages/menu_pages/profile/controller/inherited_profile.dart';
@@ -120,22 +118,19 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return InheritedStatusBar(
       statusBarController: _statusBarController,
-      child: InheridtedChecklist(
-        checkListController: _checkListController,
-        child: NavigationInherited(
-          navigationController: _navigationController,
-          child: ProfileInherited(
-            profileController: _profileController,
-            child: InheritedNewTaskController(
-              addTaskController: _newTaskConroller,
-              child: MaterialApp(
-                debugShowCheckedModeBanner: false,
-                title: 'Todo2',
-                theme: _themeDataController.themeData,
-                initialRoute: '/',
-                routes: routes,
-                // home: QuickPage(),
-              ),
+      child: NavigationInherited(
+        navigationController: _navigationController,
+        child: ProfileInherited(
+          profileController: _profileController,
+          child: InheritedNewTaskController(
+            addTaskController: _newTaskConroller,
+            child: MaterialApp(
+              debugShowCheckedModeBanner: false,
+              title: 'Todo2',
+              theme: _themeDataController.themeData,
+              initialRoute: '/',
+              routes: routes,
+              // home: QuickPage(),
             ),
           ),
         ),
