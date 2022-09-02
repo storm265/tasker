@@ -20,7 +20,7 @@ class CheckListSingleton {
   CheckListSingleton._internal();
 
   final AddCheckListController _checkListController = AddCheckListController(
-      checkListRepository: CheckListRepositoryImpl(
+    checkListRepository: CheckListRepositoryImpl(
       checkListsDataSource: CheckListsDataSourceImpl(
         network: NetworkSource(),
         secureStorage: SecureStorageSource(),
@@ -36,7 +36,6 @@ const content = 'content';
 const id = 'id';
 
 class AddCheckListController extends ChangeNotifier {
-  
   final CheckListRepositoryImpl _checkListRepository;
   AddCheckListController({required CheckListRepositoryImpl checkListRepository})
       : _checkListRepository = checkListRepository;
@@ -53,6 +52,12 @@ class AddCheckListController extends ChangeNotifier {
   void changeButtonStatus(bool status) {
     isClickedButton.value = status;
     isClickedButton.notifyListeners();
+  }
+
+  void clearData() {
+    colorPalleteController.changeSelectedIndex(99);
+    checkBoxItems.value.clear();
+    titleController.clear();
   }
 
   void pickEditData({required CheckListModel checklistModel}) {
@@ -93,14 +98,14 @@ class AddCheckListController extends ChangeNotifier {
     try {
       if (formKey.currentState!.validate() &&
           !colorPalleteController.isNotPickerColor) {
-        changeButtonStatus(false);
-        await createCheckList(
-          title: title,
-          color: color,
-          items: checkBoxItems.value,
-        );
-        // .then((value) =>navigationController.moveToPage(Pages.quick) );
-
+        // changeButtonStatus(false);
+        // await createCheckList(
+        //   title: title,
+        //   color: color,
+        //   items: checkBoxItems.value,
+        // );
+        // // .then((value) =>navigationController.moveToPage(Pages.quick) );
+        clearData();
         changeButtonStatus(true);
       }
     } catch (e) {

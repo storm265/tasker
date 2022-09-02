@@ -112,6 +112,10 @@ class ImageController extends ChangeNotifier {
         log('image is valid!');
         await uploadAvatar().then((_) {
           callback();
+          MessageService.displaySnackbar(
+            context: context,
+            message: 'For apply new avatar restard app',
+          );
           Navigator.pop(context);
         });
       }

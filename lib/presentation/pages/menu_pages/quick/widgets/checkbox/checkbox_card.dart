@@ -32,8 +32,8 @@ class CheckBoxCard extends StatelessWidget {
           EndPageWidget(
             icon: Icons.edit,
             onClick: () {
-              checkListController.pickEditData(checklistModel: checklistModel);
-              navigationController.moveToPage(Pages.addCheckList);
+              // checkListController.pickEditData(checklistModel: checklistModel);
+              // navigationController.moveToPage(Pages.addCheckList);
             },
           ),
           const GreySlidableWidget(),

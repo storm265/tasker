@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
-
 
 class EndPageWidget extends StatelessWidget {
   final VoidCallback onClick;
@@ -10,11 +10,9 @@ class EndPageWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onClick,
-      child: Container(
-        width: 75,
-        height: 75,
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxHeight: 75, maxWidth: 75),
+      child: DecoratedBox(
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(3),
@@ -22,7 +20,12 @@ class EndPageWidget extends StatelessWidget {
             BoxShadow(color: Colors.black12, blurRadius: 3),
           ],
         ),
-        child: Icon(icon, color: Palette.red),
+        child: SlidableAction(
+            borderRadius: BorderRadius.circular(3),
+            onPressed: (cc) {},
+            backgroundColor: Colors.white,
+            foregroundColor: Palette.red,
+            icon: icon),
       ),
     );
   }

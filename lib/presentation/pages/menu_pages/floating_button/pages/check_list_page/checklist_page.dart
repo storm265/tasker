@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/controller/check_list_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/controller/inherited_checklist_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/widgets/add_item_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/widgets/check_box_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/confirm_button.dart';
@@ -25,18 +24,33 @@ class CheckListPage extends StatefulWidget {
 }
 
 class _CheckListPageState extends State<CheckListPage> {
-   final _scrollController = ScrollController();
+  final _scrollController = ScrollController();
   late final NavigationController _navigationController;
-  late final AddCheckListController checklistController;
+
+  late final _checkListController = CheckListSingleton();
+  @override
+  void initState() {
+    if (_checkListController.controller.checkBoxItems.value.isEmpty) {
+      log('is not edit');
+    } else {
+      log('is  edit');
+    }
+    super.initState();
+  }
 
   @override
   void didChangeDependencies() {
     _navigationController =
         NavigationInherited.of(context).navigationController;
-   
+
     super.didChangeDependencies();
   }
 
+  @override
+  void dispose() {
+    _checkListController.controller.clearData();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,10 +75,11 @@ class _CheckListPageState extends State<CheckListPage> {
                     contentPadding: const EdgeInsets.all(0),
                     title: Form(
                       autovalidateMode: AutovalidateMode.onUserInteraction,
-                      key: checklistController.formKey,
+                      key: _checkListController.controller.formKey,
                       child: TitleWidget(
                         maxLength: 256,
-                        textController: checklistController.titleController,
+                        textController:
+                            _checkListController.controller.titleController,
                         title: 'Title',
                         onEdiditionCompleteCallback: () =>
                             Focus.of(context).unfocus(),
@@ -72,7 +87,8 @@ class _CheckListPageState extends State<CheckListPage> {
                     ),
                     subtitle: SingleChildScrollView(
                       child: ValueListenableBuilder<List<Map<String, dynamic>>>(
-                        valueListenable: checklistController.checkBoxItems,
+                        valueListenable:
+                            _checkListController.controller.checkBoxItems,
                         builder: (_, value, __) => ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
@@ -81,8 +97,10 @@ class _CheckListPageState extends State<CheckListPage> {
                             index = i;
 
                             return CheckBoxWidget(
-                              checkBoxController: checklistController,
-                              isClicked: checklistController.isChecked,
+                              checkBoxController:
+                                  _checkListController.controller,
+                              isClicked:
+                                  _checkListController.controller.isChecked,
                               index: i,
                             );
                           },
@@ -91,7 +109,7 @@ class _CheckListPageState extends State<CheckListPage> {
                     ),
                   ),
                   AddItemButton(onPressed: () {
-                    checklistController.addItem(index);
+                    _checkListController.controller.addItem(index);
                     _scrollController.animateTo(
                       _scrollController.position.maxScrollExtent + 20,
                       duration: const Duration(milliseconds: 500),
@@ -101,28 +119,30 @@ class _CheckListPageState extends State<CheckListPage> {
                   Column(
                     children: [
                       ColorPalleteWidget(
-                        colorController:
-                            checklistController.colorPalleteController,
+                        colorController: _checkListController
+                            .controller.colorPalleteController,
                       ),
                       const SizedBox(height: 40),
                       ValueListenableBuilder<bool>(
-                        valueListenable: checklistController.isClickedButton,
+                        valueListenable:
+                            _checkListController.controller.isClickedButton,
                         builder: (context, isClicked, _) => isClicked
                             ? ConfirmButtonWidget(
                                 title: 'Done',
                                 onPressed: isClicked
                                     ? () async {
-                                        checklistController
+                                        _checkListController.controller
                                             .tryValidateCheckList(
                                           navigationController:
                                               _navigationController,
                                           context: context,
-                                          color: colors[checklistController
+                                          color: colors[_checkListController
+                                              .controller
                                               .colorPalleteController
                                               .selectedIndex
                                               .value],
-                                          title: checklistController
-                                              .titleController.text,
+                                          title: _checkListController
+                                              .controller.titleController.text,
                                         );
                                       }
                                     : null,
