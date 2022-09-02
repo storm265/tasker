@@ -37,7 +37,7 @@ class UserPanelPickerWidget extends StatelessWidget {
                 itemBuilder: (context, index) {
                   final data = snapshot.data![index];
                   // final avatar = NetworkSource()
-                  //         .networkApiClient
+                  //
                   //         .storage
                   //         .from('avatar')
                   //         .getPublicUrl(snapshot.data![index].avatarUrl)

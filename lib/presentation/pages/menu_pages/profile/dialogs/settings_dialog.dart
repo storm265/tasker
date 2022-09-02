@@ -16,7 +16,7 @@ Future<void> showSettingsDialog({
       return AlertDialog(
         contentPadding: const EdgeInsets.all(0),
         content: SizedBox(
-          height: 140,
+          height: 210,
           width: 250,
           child: ListView.separated(
             separatorBuilder: (_, __) {
@@ -43,6 +43,8 @@ Future<void> showSettingsDialog({
                       );
                       break;
                     case 1:
+                      break;
+                    case 2:
                       await profileController.signOut(context: context);
                       break;
                   }

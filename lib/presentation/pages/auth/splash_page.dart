@@ -13,11 +13,11 @@ class SplashPage extends StatefulWidget {
 }
 
 class SplashPageState extends State<SplashPage> {
-  late SecureStorageService _secureStorageService;
+  late SecureStorageSource _secureStorageService;
   bool isAuth = false;
   @override
   void initState() {
-    _secureStorageService = SecureStorageService();
+    _secureStorageService = SecureStorageSource();
     isAuthenticated();
     super.initState();
   }

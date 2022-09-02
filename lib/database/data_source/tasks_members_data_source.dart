@@ -9,7 +9,7 @@ abstract class TasksMembersDataSource {
 
 class TasksMembersDataSourceImpl implements TasksMembersDataSource {
   final String _table = 'task_member';
-  final _supabase = NetworkSource().networkApiClient;
+  final _supabase = NetworkSource();
 
   @override
   Future<Response<dynamic>> putMember() async {

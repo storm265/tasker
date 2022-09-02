@@ -26,7 +26,7 @@ abstract class AuthRepository {
 class AuthRepositoryImpl implements AuthRepository {
   final _authDataSource = AuthDataSourceImpl(
     network: NetworkSource(),
-    secureStorageService: SecureStorageService(),
+    secureStorageService: SecureStorageSource(),
   );
 
   @override

@@ -4,8 +4,8 @@ import 'package:todo2/presentation/pages/auth/sign_in_up/controller/refresh_toke
 import 'package:todo2/storage/secure_storage_service.dart';
 
 class UpdateTokenService {
-  static final SecureStorageService _secureStorageService =
-      SecureStorageService();
+  static final SecureStorageSource _secureStorageService =
+      SecureStorageSource();
   static final RefreshTokenController refreshTokenController =
       RefreshTokenController(
     authRepository: AuthRepositoryImpl(),

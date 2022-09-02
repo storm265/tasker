@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/presentation/controller/image_picker_controller.dart';
@@ -63,7 +62,7 @@ class SignUpController extends ChangeNotifier {
               password: password,
             );
             final imageResponse = await imgPickerController.uploadAvatar();
-            log('avatar respose ${imageResponse}');
+            log('avatar respose $imageResponse');
             await _storageSource.storageApi
                 .saveUserData(
                     type: StorageDataType.avatarUrl, value: imageResponse)

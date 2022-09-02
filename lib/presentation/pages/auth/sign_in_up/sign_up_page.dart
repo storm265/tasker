@@ -36,10 +36,11 @@ class _SignUpPageState extends State<SignUpPage> {
   final _signUpController = SignUpController(
     authRepository: AuthRepositoryImpl(),
     imgPickerController: ImageController(
+      secureStorageSource: SecureStorageSource(),
       userRepository: UserProfileRepositoryImpl(
         userProfileDataSource: UserProfileDataSourceImpl(
           network: NetworkSource(),
-          secureStorageService: SecureStorageService(),
+          secureStorageService: SecureStorageSource(),
         ),
       ),
     ),

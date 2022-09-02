@@ -18,7 +18,7 @@ abstract class TaskAttachmentsDataSource {
 
 class TaskAttachmentsDataSourceImpl implements TaskAttachmentsDataSource {
   final String _table = 'task_attachment';
-  final _supabase = NetworkSource().networkApiClient;
+  final _supabase = NetworkSource();
 
   @override
   Future<Response<dynamic>> postAttachment(

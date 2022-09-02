@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/user_data_source.dart';
-import 'package:todo2/database/model/profile_models/stats_model.dart';
+import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/controller/image_picker_controller.dart';
 import 'package:todo2/presentation/controller/user_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/profile/controller/inherited_profile.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/constants/stats_padding_constants.dart';
+import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/widgets/stats_widget/stats_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/widgets/task_list_widgets/task_list_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
@@ -22,10 +22,11 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final imageController = ImageController(
+    secureStorageSource: SecureStorageSource(),
     userRepository: UserProfileRepositoryImpl(
       userProfileDataSource: UserProfileDataSourceImpl(
         network: NetworkSource(),
-        secureStorageService: SecureStorageService(),
+        secureStorageService: SecureStorageSource(),
       ),
     ),
   );
@@ -33,14 +34,23 @@ class _ProfilePageState extends State<ProfilePage> {
     userProfileRepository: UserProfileRepositoryImpl(
       userProfileDataSource: UserProfileDataSourceImpl(
         network: NetworkSource(),
-        secureStorageService: SecureStorageService(),
+        secureStorageService: SecureStorageSource(),
       ),
     ),
   );
-
+  final profileController = ProfileController(
+    secureStorageService: SecureStorageSource(),
+    userProfileRepository: UserProfileRepositoryImpl(
+      userProfileDataSource: UserProfileDataSourceImpl(
+        network: NetworkSource(),
+        secureStorageService: SecureStorageSource(),
+      ),
+    ),
+    authRepository: AuthRepositoryImpl(),
+  );
   @override
   void initState() {
-    userController.fetchStats();
+    // userController.fetchStats();
     super.initState();
   }
 
@@ -54,35 +64,35 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    final inheritedProfile = ProfileInherited.of(context);
     return AppbarWrapWidget(
       title: 'Profile',
       isRedAppBar: false,
-      child: Flex(
-        // spacing: 10,
-        direction: Axis.vertical,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: horizontal,
-              vertical: vertical,
+      child: SingleChildScrollView(
+        child: Flex(
+          direction: Axis.vertical,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: horizontal,
+                vertical: vertical,
+              ),
+              child: ProfileWidget(
+                profileController: profileController,
+                imageController: imageController,
+                //   completedTasks: userController.stats.completedTasks,
+                //   createdTask: userController.stats.createdTasks,
+                completedTasks: 999,
+                createdTask: 999,
+              ),
             ),
-            child: ProfileWidget(
-              profileController: inheritedProfile.profileController,
-              imageController: imageController,
-              //   completedTasks: stats.completedTasks,
-              //   createdTask: stats.createdTasks,
-              completedTasks: 999,
-              createdTask: 999,
-            ),
-          ),
-          Column(
-            children: [
-              TaskListWidget(model: userController.stats),
-              StatsWidget(statsModel: userController.stats),
-            ],
-          )
-        ],
+            Column(
+              children: [
+                TaskListWidget(model: userController.stats),
+                StatsWidget(statsModel: userController.stats),
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

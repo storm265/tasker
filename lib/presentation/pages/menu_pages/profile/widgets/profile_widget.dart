@@ -34,7 +34,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
   @override
   void initState() {
     widget.profileController.rotateSettingsIcon(ticker: this);
-    // fetchData();
+    fetchData().then((_) => setState(() {}));
     super.initState();
   }
 
@@ -61,10 +61,11 @@ class _ProfileWidgetState extends State<ProfileWidget>
                 splashRadius: 20,
                 tooltip: 'Settings',
                 onPressed: () => showSettingsDialog(
-                    context: context,
-                    profileController: widget.profileController,
-                    imageController: widget.imageController,
-                    updateState: () => setState(() {})),
+                  context: context,
+                  profileController: widget.profileController,
+                  imageController: widget.imageController,
+                  updateState: () => fetchData().then((_) => setState(() {})),
+                ),
                 icon: RotationTransition(
                   turns: Tween(begin: 0.0, end: 1.0).animate(
                       widget.profileController.iconAnimationController),

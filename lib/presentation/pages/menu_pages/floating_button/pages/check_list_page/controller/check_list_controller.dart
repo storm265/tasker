@@ -23,7 +23,7 @@ class CheckListSingleton {
       checkListRepository: CheckListRepositoryImpl(
       checkListsDataSource: CheckListsDataSourceImpl(
         network: NetworkSource(),
-        secureStorage: SecureStorageService(),
+        secureStorage: SecureStorageSource(),
       ),
     ),
   );

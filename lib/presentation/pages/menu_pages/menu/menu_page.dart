@@ -30,7 +30,7 @@ class _MenuPageState extends State<MenuPage> {
     _projectController = ProjectController(
       ProjectRepositoryImpl(
           projectDataSource: ProjectUserDataImpl(
-        secureStorageService: SecureStorageService(),
+        secureStorageService: SecureStorageSource(),
         network: NetworkSource(),
       )),
       ColorPalleteController(),

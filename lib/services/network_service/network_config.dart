@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:todo2/database/database_scheme/env_scheme.dart';
@@ -10,16 +9,17 @@ const _authorization = 'Authorization';
 const _jsonApp = 'application/json';
 const _multipartForm = 'multipart/form-data';
 
+
+
 class NetworkSource {
-  static final NetworkSource _dioClient = NetworkSource._internal();
+  static final NetworkSource _instance = NetworkSource._internal();
 
   factory NetworkSource() {
-    return _dioClient;
+    return _instance;
   }
 
   NetworkSource._internal();
 
-  NetworkSource get networkApiClient => _dioClient;
 
   static final Dio _dio = Dio(BaseOptions(
     baseUrl: dotenv.env[EnvScheme.apiUrl] ?? 'null',
@@ -35,19 +35,6 @@ class NetworkSource {
             return handler.resolve(await _retry(response.requestOptions));
           }
           return handler.next(response);
-        },
-        onError: (DioError error, handler) async {
-          // log('error : ${error.error}');
-          // if (error.response!.statusCode == 401 &&
-          //     error.response!.statusMessage ==
-          //         "Token is not valid or has expired") {
-          //   await UpdateTokenService.updateToken();
-          //   // retry last operation
-          //   return handler.resolve(await _retry(error.requestOptions));
-          // }
-
-          // log('error $error, handler $handler');
-          // return handler.next(error); //continue
         },
       ),
     );
@@ -100,8 +87,6 @@ class NetworkSource {
     );
   }
 
-
-
   Future<Response<dynamic>> delete({
     required String path,
     Map<String, dynamic>? queryParameters,
@@ -115,11 +100,13 @@ class NetworkSource {
   }
 
   Future<Options> getLocalRequestOptions({bool useContentType = false}) async {
+    final accessToken =
+        await _storageSource.getUserData(type: StorageDataType.accessToken) ??
+            '';
     return Options(
       validateStatus: (_) => true,
       headers: {
-        _authorization:
-            '$_tokenType ${await _storageSource.getUserData(type: StorageDataType.accessToken)}',
+        _authorization: '$_tokenType $accessToken',
         useContentType ? _contentType : _jsonApp: null,
       },
     );

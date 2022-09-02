@@ -26,11 +26,11 @@ abstract class NotesDataSource {
 
 class NotesDataSourceImpl implements NotesDataSource {
   final NetworkSource _network;
-  final SecureStorageService _secureStorage;
+  final SecureStorageSource _secureStorage;
 
   NotesDataSourceImpl({
     required NetworkSource network,
-    required SecureStorageService secureStorage,
+    required SecureStorageSource secureStorage,
   })  : _network = network,
         _secureStorage = secureStorage;
 
@@ -43,15 +43,14 @@ class NotesDataSourceImpl implements NotesDataSource {
   }) async {
     try {
       final id = await _secureStorage.getUserData(type: StorageDataType.id);
-      final response = await _network.networkApiClient.post(
+      final response = await _network.post(
         path: _notes,
         data: {
           NotesScheme.description: description,
           NotesScheme.color: color.toString().toStringColor(),
           NotesScheme.ownerId: id,
         },
-        options: await _network.networkApiClient
-            .getLocalRequestOptions(useContentType: true),
+        options: await _network.getLocalRequestOptions(useContentType: true),
       );
       log('createNote ${response.data}');
     } catch (e) {
@@ -62,9 +61,9 @@ class NotesDataSourceImpl implements NotesDataSource {
   @override
   Future<void> deleteNote({required String projectId}) async {
     try {
-      final response = await _network.networkApiClient.delete(
+      final response = await _network.delete(
         path: '$_notes/$projectId',
-        options: await _network.networkApiClient.getLocalRequestOptions(),
+        options: await _network.getLocalRequestOptions(),
       );
       log('deleteNote ${response.data}');
     } catch (e) {
@@ -77,12 +76,12 @@ class NotesDataSourceImpl implements NotesDataSource {
     try {
       // final ownerId =
       //     await _secureStorage.getUserData(type: StorageDataType.id);
-      // final response = await _network.networkApiClient.get(
+      // final response = await _network.get(
       //   path: '$_notes/$ownerId',
       //   queryParameters: {
       //     NotesScheme.ownerId: ownerId,
       //   },
-      //   options: await _network.networkApiClient
+      //   options: await _network
       //       .getLocalRequestOptions(useContentType: true),
       // );
       // log('fetchUserNotes ${response.data}');
@@ -131,7 +130,7 @@ class NotesDataSourceImpl implements NotesDataSource {
     try {
       final ownerId =
           await _secureStorage.getUserData(type: StorageDataType.id);
-      final response = await _network.networkApiClient.put(
+      final response = await _network.put(
         path: '$_notes/${noteModel.id}',
         data: {
           NotesScheme.description: noteModel.description,
@@ -139,8 +138,7 @@ class NotesDataSourceImpl implements NotesDataSource {
           NotesScheme.ownerId: ownerId,
           NotesScheme.isCompleted: noteModel.isCompleted,
         },
-        options: await _network.networkApiClient
-            .getLocalRequestOptions(useContentType: true),
+        options: await _network.getLocalRequestOptions(useContentType: true),
       );
       log('createNote ${response.data}');
     } catch (e) {
@@ -151,9 +149,9 @@ class NotesDataSourceImpl implements NotesDataSource {
   // @override
   // Future<Map<String, dynamic>> fetchOneNote({required String projectId}) async {
   //   try {
-  //     final response = await _network.networkApiClient.dio.get(
+  //     final response = await _network.dio.get(
   //       '$_notes/$projectId',
-  //       options: await _network.networkApiClient.getLocalRequestOptions(),
+  //       options: await _network.getLocalRequestOptions(),
   //     );
   //     log('deleteNote ${response.data}');
   //     return NetworkErrorService.isSuccessful(response)

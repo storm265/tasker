@@ -13,7 +13,7 @@
 
 // class CommentAttachmentDataSourceImpl implements CommentAttachmentDataSource {
 //   final _table = 'comment_attachment';
-//   final _supabase = NetworkSource().networkApiClient;
+//   final _supabase = NetworkSource();
 
 //   @override
 //   Future<Response<dynamic>> putCommentAttachment({

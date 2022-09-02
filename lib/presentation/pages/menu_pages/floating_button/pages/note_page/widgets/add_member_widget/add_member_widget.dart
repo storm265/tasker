@@ -4,7 +4,6 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_p
 
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/controller_inherited.dart';
 
-
 class AddUserWidget extends StatefulWidget {
   const AddUserWidget({Key? key}) : super(key: key);
 
@@ -74,7 +73,7 @@ class _AddUserWidgetState extends State<AddUserWidget> {
                 itemCount: users.length,
                 itemBuilder: (context, index) {
                   // final avatar = NetworkSource()
-                  //         .networkApiClient
+                  //
                   //         .storage
                   //         .from(StorageScheme.avatar)
                   //         .getPublicUrl(users[index].avatarUrl)
@@ -87,7 +86,7 @@ class _AddUserWidgetState extends State<AddUserWidget> {
                         child: CircleAvatar(
                           radius: 17,
                           backgroundColor: Colors.red,
-                         // backgroundImage: NetworkImage(avatar),
+                          // backgroundImage: NetworkImage(avatar),
                           // child: Text(users[index].username),
                         ),
                       ),

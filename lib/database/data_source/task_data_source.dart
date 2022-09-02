@@ -19,7 +19,7 @@ abstract class TaskDataSource {
 
 class TaskDataSourceImpl implements TaskDataSource {
   final String _table = 'tasks';
-  final _supabase = NetworkSource().networkApiClient;
+  final _supabase = NetworkSource();
   @override
   Future<Response<dynamic>> fetchTask() async {
     try {

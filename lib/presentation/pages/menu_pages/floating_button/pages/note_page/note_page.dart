@@ -28,7 +28,7 @@ class _AddQuickNoteState extends State<AddQuickNote> {
     addNoteRepository: NoteRepositoryImpl(
       noteDataSource: NotesDataSourceImpl(
         network: NetworkSource(),
-        secureStorage: SecureStorageService(),
+        secureStorage: SecureStorageSource(),
       ),
     ),
     colorPalleteController: ColorPalleteController(),

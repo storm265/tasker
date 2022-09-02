@@ -10,7 +10,7 @@
 
 // class CommentDataSourceImpl implements CommentDataSource {
 //   final String _table = 'comment';
-//   final _supabase = NetworkSource().networkApiClient;
+//   final _supabase = NetworkSource();
 
 //   @override
 //   Future<Response<dynamic>> postComment(

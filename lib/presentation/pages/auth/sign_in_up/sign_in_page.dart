@@ -44,7 +44,7 @@ class _SignInPageState extends State<SignInPage> {
       userProfileRepository: UserProfileRepositoryImpl(
         userProfileDataSource: UserProfileDataSourceImpl(
           network: NetworkSource(),
-          secureStorageService: SecureStorageService(),
+          secureStorageService: SecureStorageSource(),
         ),
       ),
     ),

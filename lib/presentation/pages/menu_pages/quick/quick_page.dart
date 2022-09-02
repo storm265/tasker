@@ -23,7 +23,7 @@ class QuickPage extends StatelessWidget {
       notesRepository: NoteRepositoryImpl(
         noteDataSource: NotesDataSourceImpl(
           network: NetworkSource(),
-          secureStorage: SecureStorageService(),
+          secureStorage: SecureStorageSource(),
         ),
       ),
     ),

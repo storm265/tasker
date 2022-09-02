@@ -32,11 +32,11 @@ abstract class ProjectUserData {
 }
 
 class ProjectUserDataImpl implements ProjectUserData {
-  final SecureStorageService _secureStorageService;
+  final SecureStorageSource _secureStorageService;
   final NetworkSource _network;
 
   ProjectUserDataImpl({
-    required SecureStorageService secureStorageService,
+    required SecureStorageSource secureStorageService,
     required NetworkSource network,
   })  : _secureStorageService = secureStorageService,
         _network = network;
@@ -52,7 +52,7 @@ class ProjectUserDataImpl implements ProjectUserData {
     required String title,
   }) async {
     try {
-      await _network.networkApiClient.post(
+      await _network.post(
         path: _projects,
         data: {
           ProjectDataScheme.title: title,
@@ -60,8 +60,7 @@ class ProjectUserDataImpl implements ProjectUserData {
           ProjectDataScheme.ownerId:
               await _secureStorageService.getUserData(type: StorageDataType.id),
         },
-        options: await _network.networkApiClient
-            .getLocalRequestOptions(useContentType: true),
+        options: await _network.getLocalRequestOptions(useContentType: true),
       );
     } catch (e) {
       throw Failure('Error: Create project error');
@@ -73,9 +72,9 @@ class ProjectUserDataImpl implements ProjectUserData {
     try {
       final id =
           await _secureStorageService.getUserData(type: StorageDataType.id);
-      final response = await _network.networkApiClient.get(
+      final response = await _network.get(
         path: '$_userProjects/$id',
-        options: await _network.networkApiClient.getLocalRequestOptions(),
+        options: await _network.getLocalRequestOptions(),
       );
       return NetworkErrorService.isSuccessful(response)
           ? (response.data![ProjectDataScheme.data] as List<dynamic>)
@@ -91,10 +90,9 @@ class ProjectUserDataImpl implements ProjectUserData {
   @override
   Future<List<dynamic>> searchProject({required String title}) async {
     try {
-      final response = await _network.networkApiClient.get(
+      final response = await _network.get(
         path: '$_projectsSearch?query=$title',
-        options: await _network.networkApiClient
-            .getLocalRequestOptions(useContentType: true),
+        options: await _network.getLocalRequestOptions(useContentType: true),
       );
       return NetworkErrorService.isSuccessful(response)
           ? (response.data![ProjectDataScheme.data] as List<dynamic>)
@@ -110,10 +108,10 @@ class ProjectUserDataImpl implements ProjectUserData {
       final id =
           await _secureStorageService.getUserData(type: StorageDataType.id);
 
-      final Response response = await _network.networkApiClient.delete(
+      final Response response = await _network.delete(
         path: '$_projects/$id',
         queryParameters: {ProjectDataScheme.id: projectModel.id},
-        options: await _network.networkApiClient.getLocalRequestOptions(),
+        options: await _network.getLocalRequestOptions(),
       );
       if (!NetworkErrorService.isSuccessful(response)) {
         throw Failure(
@@ -135,15 +133,14 @@ class ProjectUserDataImpl implements ProjectUserData {
       log('update project data: $title');
       final id =
           await _secureStorageService.getUserData(type: StorageDataType.id);
-      final response = await _network.networkApiClient.put(
+      final response = await _network.put(
         path: '$_projects/${projectModel.id}',
         data: {
           ProjectDataScheme.color: color.toString().toStringColor(),
           ProjectDataScheme.title: title,
           ProjectDataScheme.ownerId: id,
         },
-        options: await _network.networkApiClient
-            .getLocalRequestOptions(useContentType: true),
+        options: await _network.getLocalRequestOptions(useContentType: true),
       );
       log('updating project: ${response.data[ProjectDataScheme.data]}');
       if (!NetworkErrorService.isSuccessful(response)) {
@@ -161,9 +158,9 @@ class ProjectUserDataImpl implements ProjectUserData {
       final userId =
           await _secureStorageService.getUserData(type: StorageDataType.id);
 
-      final response = await _network.networkApiClient.get(
+      final response = await _network.get(
         path: '$_projectsStats/$userId',
-        options: await _network.networkApiClient.getLocalRequestOptions(),
+        options: await _network.getLocalRequestOptions(),
       );
       return NetworkErrorService.isSuccessful(response)
           ? (response.data![ProjectDataScheme.data] as List<dynamic>)
@@ -178,9 +175,9 @@ class ProjectUserDataImpl implements ProjectUserData {
   //   try {
   //     final id =
   //         await _secureStorageService.getUserData(type: StorageDataType.id);
-  //     final response = await _network.networkApiClient.dio.get(
+  //     final response = await _network.dio.get(
   //       '$_projects/$id',
-  //       options: await _network.networkApiClient.getLocalRequestOptions(),
+  //       options: await _network.getLocalRequestOptions(),
   //     );
   //     return NetworkErrorService.isSuccessful(response)
   //         ? (response.data[ProjectDataScheme.data] as Map<String, dynamic>)

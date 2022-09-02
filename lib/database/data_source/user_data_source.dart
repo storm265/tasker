@@ -22,11 +22,11 @@ abstract class UserProfileDataSource {
 }
 
 class UserProfileDataSourceImpl implements UserProfileDataSource {
-  final SecureStorageService _secureStorageService;
+  final SecureStorageSource _secureStorageService;
   final NetworkSource _network;
 
   UserProfileDataSourceImpl({
-    required SecureStorageService secureStorageService,
+    required SecureStorageSource secureStorageService,
     required NetworkSource network,
   })  : _secureStorageService = secureStorageService,
         _network = network;
@@ -41,6 +41,7 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
     required String accessToken,
   }) async {
     try {
+     
       final response = await _network.get(
         path: '$_userPath/$id',
         options: _network.getRequestOptions(accessToken: accessToken),

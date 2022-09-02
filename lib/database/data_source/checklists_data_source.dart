@@ -31,10 +31,10 @@ abstract class CheckListsDataSource {
 
 class CheckListsDataSourceImpl extends CheckListsDataSource {
   final NetworkSource _network;
-  final SecureStorageService _secureStorage;
+  final SecureStorageSource _secureStorage;
   CheckListsDataSourceImpl({
     required NetworkSource network,
-    required SecureStorageService secureStorage,
+    required SecureStorageSource secureStorage,
   })  : _network = network,
         _secureStorage = secureStorage;
 
@@ -50,7 +50,7 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
     try {
       final id = await _secureStorage.getUserData(type: StorageDataType.id);
       log('data $title, ${color.toString().toStringColor()}, $id, ${items!.length}');
-      final response = await _network.networkApiClient.post(
+      final response = await _network.post(
         path: _checklists,
         data: {
           CheckListsScheme.title: title,
@@ -58,8 +58,7 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
           CheckListsScheme.ownerId: id,
           CheckListsScheme.items: items,
         },
-        options: await _network.networkApiClient
-            .getLocalRequestOptions(useContentType: true),
+        options: await _network.getLocalRequestOptions(useContentType: true),
       );
 
       log('createCheckList ${response.statusCode}');
@@ -76,7 +75,7 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
     try {
       final ownerId =
           await _secureStorage.getUserData(type: StorageDataType.id);
-      final response = await _network.networkApiClient.put(
+      final response = await _network.put(
         path: '$_checklists/${checkListModel.id}',
         data: {
           CheckListsScheme.title: checkListModel.title,
@@ -85,8 +84,7 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
           CheckListsScheme.ownerId: ownerId,
           CheckListsScheme.items: items ?? [],
         },
-        options: await _network.networkApiClient
-            .getLocalRequestOptions(useContentType: true),
+        options: await _network.getLocalRequestOptions(useContentType: true),
       );
       log('updateCheckList ${response.data}');
       log('updateCheckList ${response.statusMessage}');
@@ -98,9 +96,9 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
   @override
   Future<void> deleteCheckListItem({required String checkListId}) async {
     try {
-      final response = await _network.networkApiClient.delete(
+      final response = await _network.delete(
         path: '$_checklistsItems/$checkListId',
-        options: await _network.networkApiClient.getLocalRequestOptions(),
+        options: await _network.getLocalRequestOptions(),
       );
       log('deleteCheckList ${response.data}');
       log('deleteCheckList ${response.statusMessage}');
@@ -112,13 +110,12 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
   @override
   Future<void> deleteCheckListItems({required List<String>? items}) async {
     try {
-      final response = await _network.networkApiClient.delete(
+      final response = await _network.delete(
         path: _checklistsItems,
         queryParameters: {
           CheckListsScheme.items: items ?? [],
         },
-        options: await _network.networkApiClient
-            .getLocalRequestOptions(useContentType: true),
+        options: await _network.getLocalRequestOptions(useContentType: true),
       );
       log('deleteCheckListItems ${response.data}');
       log('deleteCheckListItems ${response.statusMessage}');
@@ -132,9 +129,9 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
     try {
       final id = await _secureStorage.getUserData(type: StorageDataType.id);
 
-      final response = await _network.networkApiClient.delete(
+      final response = await _network.delete(
         path: '$_checklists/$id',
-        options: await _network.networkApiClient.getLocalRequestOptions(),
+        options: await _network.getLocalRequestOptions(),
       );
       log('deleteCheckList ${response.data}');
       log('deleteCheckList ${response.statusMessage}');
@@ -148,9 +145,9 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
     try {
       final ownerId =
           await _secureStorage.getUserData(type: StorageDataType.id);
-      // final response = await _network.networkApiClient.get(
+      // final response = await _network.get(
       //   path: '$_checklists/$ownerId',
-      //   options: await _network.networkApiClient.getLocalRequestOptions(),
+      //   options: await _network.getLocalRequestOptions(),
       // );
       // log('fetchAllCheckLists ${response.data}');
       // log('fetchAllCheckLists ${response.statusMessage}');

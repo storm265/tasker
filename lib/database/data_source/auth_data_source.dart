@@ -22,11 +22,11 @@ abstract class AuthDataSource {
 }
 
 class AuthDataSourceImpl implements AuthDataSource {
-  final SecureStorageService _secureStorageService;
+  final SecureStorageSource _secureStorageService;
   final NetworkSource _networkSource;
 
   AuthDataSourceImpl({
-    required SecureStorageService secureStorageService,
+    required SecureStorageSource secureStorageService,
     required NetworkSource network,
   })  : _secureStorageService = secureStorageService,
         _networkSource = network;
@@ -48,13 +48,13 @@ class AuthDataSourceImpl implements AuthDataSource {
     required String password,
   }) async {
     try {
-      Response response = await _networkSource.networkApiClient.post(
+      Response response = await _networkSource.post(
         path: _signInUrl,
         data: {
           AuthScheme.email: email.toLowerCase(),
           AuthScheme.password: _encodePassword(password),
         },
-        options: _networkSource.networkApiClient.authOptions,
+        options: _networkSource.authOptions,
       );
 
       return NetworkErrorService.isSuccessful(response)
@@ -73,14 +73,14 @@ class AuthDataSourceImpl implements AuthDataSource {
     required String nickname,
   }) async {
     try {
-      Response response = await _networkSource.networkApiClient.post(
+      Response response = await _networkSource.post(
         path: _signUpUrl,
         data: {
           AuthScheme.email: email.toLowerCase(),
           AuthScheme.password: _encodePassword(password),
           AuthScheme.username: nickname,
         },
-        options: _networkSource.networkApiClient.authOptions,
+        options: _networkSource.authOptions,
       );
       return NetworkErrorService.isSuccessful(response)
           ? response.data[AuthScheme.data] as Map<String, dynamic>
@@ -94,13 +94,13 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<Map<String, dynamic>> refreshToken() async {
     try {
-      Response response = await _networkSource.networkApiClient.post(
+      Response response = await _networkSource.post(
         path: _refreshUrl,
         data: {
           AuthScheme.refreshToken: await _secureStorageService.getUserData(
               type: StorageDataType.refreshToken),
         },
-        options: _networkSource.networkApiClient.authOptions,
+        options: _networkSource.authOptions,
       );
       log('dataSource response ${response.data}');
 
@@ -116,14 +116,14 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<void> signOut() async {
     try {
-      await _networkSource.networkApiClient.post(
+      await _networkSource.post(
         path: _signOutUrl,
         data: {
           AuthScheme.email: await _secureStorageService.getUserData(
             type: StorageDataType.email,
           )
         },
-        options: _networkSource.networkApiClient.authOptions,
+        options: _networkSource.authOptions,
       );
       await _secureStorageService.removeAllUserData();
     } catch (e) {
