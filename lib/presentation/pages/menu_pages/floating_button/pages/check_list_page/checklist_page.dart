@@ -13,6 +13,7 @@ import 'package:todo2/presentation/pages/navigation/controllers/navigation_contr
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
+import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 class CheckListPage extends StatefulWidget {
   const CheckListPage({
@@ -57,6 +58,7 @@ class _CheckListPageState extends State<CheckListPage> {
     int index = 0;
 
     return AppbarWrapWidget(
+      navRoute: Pages.quick,
       isRedAppBar: true,
       title: 'Add Check List',
       showLeadingButton: true,

@@ -20,7 +20,7 @@ abstract class CheckListsDataSource {
     required CheckListModel checkListModel,
     List<Map<String, dynamic>>? items,
   });
-  Future<void> deleteCheckList();
+  Future<void> deleteCheckList({required CheckListModel checkListModel});
 
   Future<void> deleteCheckListItem({required String checkListId});
 
@@ -38,6 +38,7 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
   })  : _network = network,
         _secureStorage = secureStorage;
 
+  final _userChecklists = '/user-checklists';
   final _checklists = '/checklists';
   final _checklistsItems = '/checklists-items';
 
@@ -125,12 +126,11 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
   }
 
   @override
-  Future<void> deleteCheckList() async {
+  Future<void> deleteCheckList({required CheckListModel checkListModel}) async {
     try {
-      final id = await _secureStorage.getUserData(type: StorageDataType.id);
-
+      log('id ${checkListModel.id}');
       final response = await _network.delete(
-        path: '$_checklists/$id',
+        path: '$_checklists/${checkListModel.id}',
         options: await _network.getLocalRequestOptions(),
       );
       log('deleteCheckList ${response.data}');
@@ -145,76 +145,15 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
     try {
       final ownerId =
           await _secureStorage.getUserData(type: StorageDataType.id);
-      // final response = await _network.get(
-      //   path: '$_checklists/$ownerId',
-      //   options: await _network.getLocalRequestOptions(),
-      // );
-      // log('fetchAllCheckLists ${response.data}');
-      // log('fetchAllCheckLists ${response.statusMessage}');
-      final response = Response(
-          requestOptions: RequestOptions(path: ''),
-          statusCode: 200,
-          data: {
-            "data": [
-              {
-                "id": "b4e49d06-8223-4b1f-a6d1-6cdf4f115231",
-                "title": "checklist 2",
-                "color": "#5ABB56",
-                "owner_id": "76d2fab4-fd06-4909-bf8e-875c6b55c1f7",
-                "items": [],
-                "created_at": "2022-07-13T08:57:49.485633"
-              },
-              {
-                "id": "1f42ad13-06a9-4b48-adc9-787d9e8b929c",
-                "title": "checklist 1.1",
-                "color": "#6074F9",
-                "owner_id": "76d2fab4-fd06-4909-bf8e-875c6b55c1f7",
-                "items": [
-                  {
-                    "id": "cbf03617-8ccf-480e-9be4-ae65fdff8594",
-                    "content": "asdsad asd111111",
-                    "checklist_id": "1f42ad13-06a9-4b48-adc9-787d9e8b929c",
-                    "is_completed": true,
-                    "created_at": "2022-07-13T08:57:12.669766"
-                  },
-                  {
-                    "id": "3ec81aae-df2b-4cc1-8411-d5261bafd841",
-                    "content": "qweqweqwe11111",
-                    "checklist_id": "1f42ad13-06a9-4b48-adc9-787d9e8b929c",
-                    "is_completed": false,
-                    "created_at": "2022-07-13T08:57:12.670581"
-                  }
-                ],
-                "created_at": "2022-07-13T08:57:12.648075"
-              },
-              {
-                "id": "1f42ad13-06a9-4b48-adc9-787d9e8b929c",
-                "title": "checklist 1.1",
-                "color": "#6074F9",
-                "owner_id": "76d2fab4-fd06-4909-bf8e-875c6b55c1f7",
-                "items": [
-                  {
-                    "id": "cbf03617-8ccf-480e-9be4-ae65fdff8594",
-                    "content": "asdsad asd111111",
-                    "checklist_id": "1f42ad13-06a9-4b48-adc9-787d9e8b929c",
-                    "is_completed": true,
-                    "created_at": "2022-07-13T08:57:12.669766"
-                  },
-                  {
-                    "id": "3ec81aae-df2b-4cc1-8411-d5261bafd841",
-                    "content": "qweqweqwe11111",
-                    "checklist_id": "1f42ad13-06a9-4b48-adc9-787d9e8b929c",
-                    "is_completed": false,
-                    "created_at": "2022-07-13T08:57:12.670581"
-                  }
-                ],
-                "created_at": "2022-07-13T08:57:12.648075"
-              }
-            ]
-          });
+      final response = await _network.get(
+        path: '$_userChecklists/$ownerId',
+        options: await _network.getLocalRequestOptions(),
+      );
+      log('fetchAllCheckLists ${response.data}');
+      log('fetchAllCheckLists ${response.statusMessage}');
       return NetworkErrorService.isSuccessful(response)
           ? (response.data![CheckListsScheme.data] as List<dynamic>)
-          : throw Failure('Error: fetchAllCheckLists error');
+          : throw Failure('fetchAllCheckLists error');
     } catch (e) {
       throw Failure(e.toString());
     }

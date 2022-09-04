@@ -1,8 +1,6 @@
 import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:todo2/database/model/notes_model.dart';
-import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/database/repository/notes_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
@@ -16,7 +14,7 @@ class NewNoteController extends ChangeNotifier {
     required this.colorPalleteController,
     required NoteRepositoryImpl addNoteRepository,
   }) : _addNoteRepository = addNoteRepository;
-
+  final descriptionTextController = TextEditingController();
   final ColorPalleteController colorPalleteController;
   final NoteRepositoryImpl _addNoteRepository;
   final isButtonClicked = ValueNotifier(true);
@@ -27,25 +25,64 @@ class NewNoteController extends ChangeNotifier {
     isButtonClicked.notifyListeners();
   }
 
+  void clearData() {
+    descriptionTextController.clear();
+    colorPalleteController.changeSelectedIndex(99);
+  }
+
+  void pickEditData({required NotesModel notesModel}) {
+    for (int i = 0; i < colors.length; i++) {
+      if (colors[i] == notesModel.color) {
+        colorPalleteController.changeSelectedIndex(i);
+        break;
+      }
+    }
+    descriptionTextController.text = notesModel.description;
+  }
+
   Future<void> tryValidateNote({
     required BuildContext context,
-    required String description,
+
     required NavigationController navigationController,
   }) async {
     try {
       if (formKey.currentState!.validate() &&
           !colorPalleteController.isNotPickerColor) {
         changeClickedButtonStatus(newValue: false);
-// TODO is edit
+
         log('isValid');
-        _addNoteRepository
+          final isSameProject = await isSameNoteCreated(description: descriptionTextController.text);
+        if (isSameProject) {
+          MessageService.displaySnackbar(
+            message: 'This project is already exist',
+            context: context,
+          );
+          descriptionTextController.clear();
+        } else {
+// TODO is edit
+/*
+  if (isEdit) {
+            await updateProject(
+              projectModel: selectedModel.value,
+              title: title,
+            );
+
+            onSuccessCallback();
+          } else {
+            await createProject(title: title);
+            onSuccessCallback();
+          }
+*/
+ _addNoteRepository
             .createNote(
           color: colors[colorPalleteController.selectedIndex.value],
-          description: description,
+          description: descriptionTextController.text,
         )
             .then((_) {
           navigationController.moveToPage(Pages.quick);
         });
+        }
+       
 
         changeClickedButtonStatus(newValue: true);
       }
@@ -53,6 +90,27 @@ class NewNoteController extends ChangeNotifier {
       MessageService.displaySnackbar(message: e.toString(), context: context);
     }
   }
+
+  Future<bool> isSameNoteCreated({
+    required String description
+  }) async {
+    try {
+      List<NotesModel> projects =
+          await _addNoteRepository.fetchUserNotes();
+      log('projects list: ${projects.length}');
+
+      for (int i = 0; i < projects.length; i++) {
+        if (description.toLowerCase() == projects[i].description.toLowerCase()) {
+          return true;
+        }
+      }
+
+      return false;
+    } catch (e) {
+      throw Failure(e.toString());
+    }
+  }
+
 
   Future<List<NotesModel>> fetchUserNotes() async {
     try {
@@ -98,7 +156,7 @@ class NewNoteController extends ChangeNotifier {
     }
   }
 
-  void disableValues() {
+  void disposeValues() {
     colorPalleteController.dispose();
     isButtonClicked.dispose();
   }

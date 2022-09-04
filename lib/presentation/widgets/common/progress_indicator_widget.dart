@@ -14,7 +14,7 @@ class ProgressIndicatorWidget extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const SpinKitDualRing(
+        const SpinKitThreeInOut(
           size: 30,
           color: Palette.red,
         ),

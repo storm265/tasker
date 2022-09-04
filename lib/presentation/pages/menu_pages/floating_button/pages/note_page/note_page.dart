@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/database/data_source/notes_data_source.dart';
-import 'package:todo2/database/repository/notes_repository.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
-
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/controller/new_note_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/controller/note_singleton.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/confirm_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/red_app_bar.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/title_widget.dart';
@@ -12,8 +8,7 @@ import 'package:todo2/presentation/pages/menu_pages/menu/widgets/color_pallete_w
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_navigator.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
-import 'package:todo2/services/network_service/network_config.dart';
-import 'package:todo2/storage/secure_storage_service.dart';
+import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 class AddQuickNote extends StatefulWidget {
   const AddQuickNote({Key? key}) : super(key: key);
@@ -23,22 +18,20 @@ class AddQuickNote extends StatefulWidget {
 }
 
 class _AddQuickNoteState extends State<AddQuickNote> {
-  final _descriptionTextController = TextEditingController();
-  final _addNoteController = NewNoteController(
-    addNoteRepository: NoteRepositoryImpl(
-      noteDataSource: NotesDataSourceImpl(
-        network: NetworkSource(),
-        secureStorage: SecureStorageSource(),
-      ),
-    ),
-    colorPalleteController: ColorPalleteController(),
-  );
+  final _addNoteController = NoteSingleton().controller;
+  @override
+  void initState() {
+    if (_addNoteController.descriptionTextController.text.isEmpty) {
+      print('add');
+    } else {
+      print('edit');
+    }
+    super.initState();
+  }
 
   @override
   void dispose() {
-    _descriptionTextController.dispose();
-    _addNoteController.disableValues();
-    _addNoteController.dispose();
+    _addNoteController.clearData();
     super.dispose();
   }
 
@@ -51,6 +44,7 @@ class _AddQuickNoteState extends State<AddQuickNote> {
       title: 'Add Note',
       showLeadingButton: true,
       isPopFromNavBar: true,
+      navRoute: Pages.quick,
       child: Stack(
         children: [
           const FakeAppBar(),
@@ -65,7 +59,8 @@ class _AddQuickNoteState extends State<AddQuickNote> {
                     TitleWidget(
                       textInputType: TextInputType.multiline,
                       maxLength: 512,
-                      textController: _descriptionTextController,
+                      textController:
+                          _addNoteController.descriptionTextController,
                       title: 'Description',
                     ),
                     Column(
@@ -83,8 +78,6 @@ class _AddQuickNoteState extends State<AddQuickNote> {
                                       ? () async =>
                                           _addNoteController.tryValidateNote(
                                             context: context,
-                                            description:
-                                                _descriptionTextController.text,
                                             navigationController:
                                                 navigationController,
                                           )

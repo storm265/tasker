@@ -5,7 +5,6 @@ import 'package:todo2/presentation/pages/menu_pages/menu/dialogs/add_project_dia
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/category_length_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/category_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/circle_widget.dart';
-import 'package:todo2/presentation/widgets/common/colors.dart';
 
 class ProjectItemWidget extends StatelessWidget {
   final ProjectModel model;

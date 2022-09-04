@@ -92,7 +92,6 @@ class ProjectController extends ChangeNotifier {
   Future<List<ProjectModel>> fetchAllProjects() async {
     try {
       final projects = await _projectsRepository.fetchAllProjects();
-      print('projects $projects');
       return projects;
     } catch (e) {
       debugPrint('error $e');
@@ -110,13 +109,10 @@ class ProjectController extends ChangeNotifier {
     }
   }
 
-  Future<bool> isSameProjectCreated({
-    required String title,
-  }) async {
+  Future<bool> isSameProjectCreated({required String title}) async {
     try {
       List<ProjectModel> projects =
           await _projectsRepository.fetchAllProjects();
-      log('projects list: ${projects.length}');
 
       for (int i = 0; i < projects.length; i++) {
         if (title.toLowerCase() == projects[i].title.toLowerCase()) {
@@ -170,7 +166,9 @@ class ProjectController extends ChangeNotifier {
 
   Future<void> deleteProject({required ProjectModel projectModel}) async {
     try {
+      setClickedValue(false);
       await _projectsRepository.deleteProject(projectModel: projectModel);
+      setClickedValue(false);
     } catch (e) {
       throw Failure(e.toString());
     }

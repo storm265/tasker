@@ -81,8 +81,6 @@ Future<void> showAddEditProjectDialog({
                       : TextButton(
                           onPressed: isClicked
                               ? () async {
-                                  projectController.setClickedValue(false);
-
                                   await projectController
                                       .deleteProject(
                                           projectModel: projectController
@@ -94,8 +92,6 @@ Future<void> showAddEditProjectDialog({
                                     projectController.colorPalleteController
                                         .changeSelectedIndex(99);
                                   });
-
-                                  projectController.setClickedValue(true);
                                 }
                               : null,
                           child: const Text('Delete Project'),
@@ -103,7 +99,6 @@ Future<void> showAddEditProjectDialog({
                   TextButton(
                     onPressed: isClicked
                         ? () async {
-                            projectController.setClickedValue(false);
                             await projectController.tryValidateProject(
                                 context: context,
                                 title: projectController.titleController.text,
@@ -117,8 +112,6 @@ Future<void> showAddEditProjectDialog({
                                   projectController.colorPalleteController
                                       .changeSelectedIndex(99);
                                 });
-
-                            projectController.setClickedValue(true);
                           }
                         : null,
                     child: Text(

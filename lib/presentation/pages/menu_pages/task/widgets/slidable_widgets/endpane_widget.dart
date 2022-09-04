@@ -5,28 +5,20 @@ import 'package:todo2/services/theme_service/theme_data_controller.dart';
 class EndPageWidget extends StatelessWidget {
   final VoidCallback onClick;
   final IconData icon;
-  const EndPageWidget({Key? key, required this.icon, required this.onClick})
-      : super(key: key);
+  const EndPageWidget({
+    Key? key,
+    required this.icon,
+    required this.onClick,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(maxHeight: 75, maxWidth: 75),
-      child: DecoratedBox(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(3),
-          boxShadow: const [
-            BoxShadow(color: Colors.black12, blurRadius: 3),
-          ],
-        ),
-        child: SlidableAction(
-            borderRadius: BorderRadius.circular(3),
-            onPressed: (cc) {},
-            backgroundColor: Colors.white,
-            foregroundColor: Palette.red,
-            icon: icon),
-      ),
+    return SlidableAction(
+      borderRadius: BorderRadius.circular(3),
+      onPressed: (_) => onClick(),
+      backgroundColor: Colors.white,
+      foregroundColor: Palette.red,
+      icon: icon,
     );
   }
 }

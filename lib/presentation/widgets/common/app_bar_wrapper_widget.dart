@@ -34,6 +34,7 @@ class AppbarWrapWidget extends StatelessWidget with PreferredSizeWidget {
   final double preferredHeight;
   final bool? isWhite;
   final bool? isPopFromNavBar;
+  final Pages navRoute;
 
   const AppbarWrapWidget({
     Key? key,
@@ -49,6 +50,7 @@ class AppbarWrapWidget extends StatelessWidget with PreferredSizeWidget {
     this.isRedAppBar = true,
     this.isWhite,
     this.isPopFromNavBar,
+   this.navRoute  = Pages.tasks,
   }) : super(key: key);
 
   @override
@@ -74,7 +76,7 @@ class AppbarWrapWidget extends StatelessWidget with PreferredSizeWidget {
                         padding: const EdgeInsets.only(left: 10),
                         child: GestureDetector(
                           onTap: () => isPopFromNavBar != null
-                              ? navigationController.moveToPage(Pages.tasks)
+                              ? navigationController.moveToPage(navRoute)
                               : Navigator.pop(context),
                           child: Icon(
                             Icons.west_rounded,

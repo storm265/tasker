@@ -1,11 +1,8 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/checklists_data_source.dart';
 import 'package:todo2/database/model/checklist_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
-import 'package:todo2/services/network_service/network_config.dart';
-import 'package:todo2/storage/secure_storage_service.dart';
 
 abstract class CheckListsRepository<T> {
   Future<void> createCheckList({
@@ -18,7 +15,7 @@ abstract class CheckListsRepository<T> {
     required CheckListModel checkListModel,
     List<Map<String, dynamic>>? items,
   });
-  Future<void> deleteCheckList();
+  Future<void> deleteCheckList({required CheckListModel checkListModel});
 
   Future<void> deleteCheckListItem({required String checkListId});
 
@@ -51,9 +48,10 @@ class CheckListRepositoryImpl extends CheckListsRepository<CheckListModel> {
   }
 
   @override
-  Future<void> deleteCheckList() async {
+  Future<void> deleteCheckList({required CheckListModel checkListModel}) async {
     try {
-      await _checkListsDataSource.deleteCheckList();
+      await _checkListsDataSource.deleteCheckList(
+          checkListModel: checkListModel);
     } catch (e) {
       throw Failure(e.toString());
     }

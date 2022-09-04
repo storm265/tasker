@@ -7,6 +7,7 @@ import 'package:todo2/presentation/pages/navigation/controllers/navigation_contr
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
+import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
@@ -98,13 +99,14 @@ class AddCheckListController extends ChangeNotifier {
     try {
       if (formKey.currentState!.validate() &&
           !colorPalleteController.isNotPickerColor) {
-        // changeButtonStatus(false);
-        // await createCheckList(
-        //   title: title,
-        //   color: color,
-        //   items: checkBoxItems.value,
-        // );
-        // // .then((value) =>navigationController.moveToPage(Pages.quick) );
+        changeButtonStatus(false);
+        await createCheckList(
+          title: title,
+          color: color,
+          items: checkBoxItems.value,
+        ).then((value) {
+          navigationController.moveToPage(Pages.quick);
+        });
         clearData();
         changeButtonStatus(true);
       }
@@ -132,6 +134,15 @@ class AddCheckListController extends ChangeNotifier {
   Future<List<CheckListModel>> fetchAllCheckLists() async {
     try {
       return _checkListRepository.fetchAllCheckLists();
+    } catch (e) {
+      throw Failure(e.toString());
+    }
+  }
+
+  Future<void> deleteCheckList({required CheckListModel checkListModel}) async {
+    try {
+      return _checkListRepository.deleteCheckList(
+          checkListModel: checkListModel);
     } catch (e) {
       throw Failure(e.toString());
     }
