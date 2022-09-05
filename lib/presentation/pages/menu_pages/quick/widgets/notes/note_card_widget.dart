@@ -12,10 +12,12 @@ import 'package:todo2/services/navigation_service/navigation_service.dart';
 class NoteCardWidget extends StatelessWidget {
   final NavigationController navigationController;
   final NotesModel notesModel;
+  final VoidCallback callback;
   NoteCardWidget({
     Key? key,
     required this.notesModel,
     required this.navigationController,
+    required this.callback,
   }) : super(key: key);
   final _noteController = NoteSingleton().controller;
   @override
@@ -26,6 +28,15 @@ class NoteCardWidget extends StatelessWidget {
         motion: const ScrollMotion(),
         children: [
           EndPageWidget(
+            icon: Icons.done,
+            color: Colors.green,
+            onClick: () async {
+              await _noteController.updateAsDone(pickedModel: notesModel);
+              callback();
+            },
+          ),
+          const GreySlidableWidget(),
+          EndPageWidget(
             icon: Icons.edit,
             onClick: () async {
               _noteController.pickEditData(notesModel: notesModel);
@@ -35,29 +46,37 @@ class NoteCardWidget extends StatelessWidget {
           const GreySlidableWidget(),
           EndPageWidget(
             icon: Icons.delete,
-            onClick: () {},
+            onClick: () async {
+              await _noteController.deleteNote(notesModel: notesModel);
+              callback();
+            },
           ),
         ],
       ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
+          padding: const EdgeInsets.only(left: 12),
           width: double.infinity,
           decoration: shadowDecoration,
-          child: Stack(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               ColorLineWidget(color: notesModel.color),
-              Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Text(
-                  notesModel.description,
-                  style: TextStyle(
-                    decoration: notesModel.isCompleted
-                        ? TextDecoration.lineThrough
-                        : null,
-                    fontWeight: FontWeight.w200,
-                    fontSize: 16,
-                    fontStyle: FontStyle.italic,
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  child: Text(
+                    notesModel.description,
+                    style: TextStyle(
+                      decoration: notesModel.isCompleted
+                          ? TextDecoration.lineThrough
+                          : null,
+                      fontWeight: FontWeight.w200,
+                      fontSize: 16,
+                      fontStyle: FontStyle.italic,
+                    ),
                   ),
                 ),
               ),

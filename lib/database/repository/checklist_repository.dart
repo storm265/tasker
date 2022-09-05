@@ -19,7 +19,8 @@ abstract class CheckListsRepository<T> {
 
   Future<void> deleteCheckListItem({required String checkListId});
 
-  Future<void> deleteCheckListItems({required List<String>? items});
+ Future<void> deleteCheckListItems(
+      {required List<String> items});
 
   Future<List<CheckListModel>> fetchAllCheckLists();
 }
@@ -67,7 +68,8 @@ class CheckListRepositoryImpl extends CheckListsRepository<CheckListModel> {
   }
 
   @override
-  Future<void> deleteCheckListItems({required List<String>? items}) async {
+  Future<void> deleteCheckListItems(
+      {required List<String> items}) async {
     try {
       await _checkListsDataSource.deleteCheckListItems(items: items);
     } catch (e) {

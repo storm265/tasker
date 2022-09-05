@@ -33,4 +33,21 @@ class CheckListModel {
             .map((e) => CheckListItemModel.fromJson(e))
             .toList(),
       );
+
+  CheckListModel copyWith({
+    String? id,
+    String? title,
+    Color? color,
+    String? createdAt,
+    String? ownerId,
+    List<CheckListItemModel>? items,
+  }) =>
+      CheckListModel(
+        id: id ?? this.id,
+        title: title ?? this.title,
+        color: color ?? this.color,
+        items: items ?? this.items,
+        ownerId: ownerId ?? this.ownerId,
+        createdAt: createdAt ?? this.createdAt,
+      );
 }

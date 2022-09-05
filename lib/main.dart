@@ -51,6 +51,9 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     _navigationController = NavigationController();
+    _navigationController.pageController = PageController(initialPage: 0);
+    _navigationController.pageIndex = ValueNotifier<int>(0);
+
     _statusBarController = StatusBarController();
     _newTaskConroller = AddTaskController(
       tasksMembers: TasksMembersRepositoryImpl(),
@@ -97,16 +100,16 @@ class _MyAppState extends State<MyApp> {
       child: NavigationInherited(
         navigationController: _navigationController,
         child: InheritedNewTaskController(
-            addTaskController: _newTaskConroller,
-            child: MaterialApp(
-              debugShowCheckedModeBanner: false,
-              title: 'Todo2',
-              theme: _themeDataController.themeData,
-              initialRoute: '/',
-              routes: routes,
-              // home: QuickPage(),
-            ),
+          addTaskController: _newTaskConroller,
+          child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Todo2',
+            theme: _themeDataController.themeData,
+            initialRoute: '/',
+            routes: routes,
+            // home: QuickPage(),
           ),
+        ),
       ),
     );
   }

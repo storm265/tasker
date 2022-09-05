@@ -21,11 +21,7 @@ class _AddQuickNoteState extends State<AddQuickNote> {
   final _addNoteController = NoteSingleton().controller;
   @override
   void initState() {
-    if (_addNoteController.descriptionTextController.text.isEmpty) {
-      print('add');
-    } else {
-      print('edit');
-    }
+    _addNoteController.isEditMode();
     super.initState();
   }
 
@@ -70,21 +66,25 @@ class _AddQuickNoteState extends State<AddQuickNote> {
                                 _addNoteController.colorPalleteController),
                         const SizedBox(height: 50),
                         ValueListenableBuilder<bool>(
-                          valueListenable: _addNoteController.isButtonClicked,
-                          builder: (context, isClicked, _) => isClicked
-                              ? ConfirmButtonWidget(
-                                  title: 'Done',
-                                  onPressed: isClicked
-                                      ? () async =>
-                                          _addNoteController.tryValidateNote(
-                                            context: context,
-                                            navigationController:
-                                                navigationController,
-                                          )
-                                      : null,
-                                )
-                              : const ProgressIndicatorWidget(
-                                  text: 'Adding note...'),
+                          valueListenable: _addNoteController.isEdit,
+                          builder: (context, isEdit, _) =>
+                              ValueListenableBuilder<bool>(
+                            valueListenable: _addNoteController.isButtonClicked,
+                            builder: (context, isClicked, _) => isClicked
+                                ? ConfirmButtonWidget(
+                                    title: isEdit ? 'Update' : 'Done',
+                                    onPressed: isClicked
+                                        ? () async =>
+                                            _addNoteController.tryValidateNote(
+                                              context: context,
+                                              navigationController:
+                                                  navigationController,
+                                            )
+                                        : null,
+                                  )
+                                : const ProgressIndicatorWidget(
+                                    text: 'Adding note...'),
+                          ),
                         ),
                       ],
                     )

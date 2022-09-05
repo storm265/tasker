@@ -9,10 +9,10 @@ import 'package:todo2/presentation/pages/navigation/nav_bar_widget.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/status_bar_controller.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 
+const _greyColor = Color(0xff8E8E93);
+
 class NavigationPage extends StatelessWidget {
   const NavigationPage({Key? key}) : super(key: key);
-
-  final _greyColor = const Color(0xff8E8E93);
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +38,6 @@ class NavigationPage extends StatelessWidget {
                     itemCount: navigationController.pages.length,
                     controller: navigationController.pageController,
                     onPageChanged: (index) {
-                      log('index $index');
                       navigationController.pages[index];
                       switch (index) {
                         case 0:
@@ -62,7 +61,6 @@ class NavigationPage extends StatelessWidget {
                         case 6:
                           statusBarController.setRedStatusMode(true);
                           break;
-                  
                       }
                     },
                     itemBuilder: (_, i) => navigationController.pages[i]),
@@ -70,7 +68,6 @@ class NavigationPage extends StatelessWidget {
               bottomNavigationBar: ValueListenableBuilder<int>(
                   valueListenable: navigationController.pageIndex,
                   builder: (__, pageIndex, _) {
-                    log('page index $pageIndex');
                     return Container(
                       height: 60,
                       width: double.infinity,
@@ -83,8 +80,11 @@ class NavigationPage extends StatelessWidget {
                                 .moveToPage(Pages.tasks),
                             label: 'My Tasks',
                             icon: 'tasks',
-                            iconColor:
-                                pageIndex == 0 ? Colors.white : _greyColor,
+                            iconColor: pageIndex == 0 ||
+                                    pageIndex == 6 ||
+                                    pageIndex == 5
+                                ? Colors.white
+                                : _greyColor,
                           ),
                           NavBarItem(
                             onTap: () async => await navigationController

@@ -20,7 +20,7 @@ class NotesModel {
   });
 
   factory NotesModel.fromJson(Map<String, dynamic> json) => NotesModel(
-     id: json[NotesScheme.id],
+        id: json[NotesScheme.id],
         isCompleted: json[NotesScheme.isCompleted],
         color: Color(
           int.parse(json[NotesScheme.color].toString().replaceColorSymbol()),
@@ -28,5 +28,22 @@ class NotesModel {
         description: json[NotesScheme.description],
         ownerId: json[NotesScheme.ownerId],
         createdAt: json[NotesScheme.createdAt],
+      );
+
+  NotesModel copyWith({
+    String? id,
+    bool? isCompleted,
+    String? description,
+    Color? color,
+    String? ownerId,
+    String? createdAt,
+  }) =>
+      NotesModel(
+        id: id ?? this.id,
+        isCompleted: isCompleted ?? this.isCompleted,
+        color: color ?? this.color,
+        description: description ?? this.description,
+        ownerId: ownerId ?? this.ownerId,
+        createdAt: createdAt ?? this.createdAt,
       );
 }

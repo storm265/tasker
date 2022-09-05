@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:todo2/database/model/notes_model.dart';
 import 'package:todo2/database/repository/notes_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
@@ -19,6 +20,22 @@ class NewNoteController extends ChangeNotifier {
   final NoteRepositoryImpl _addNoteRepository;
   final isButtonClicked = ValueNotifier(true);
   final formKey = GlobalKey<FormState>();
+  final isEdit = ValueNotifier(false);
+
+  void changeEditStatus(bool status) {
+    isEdit.value = status;
+    isEdit.notifyListeners();
+  }
+
+  bool isEditMode() {
+    if (descriptionTextController.text.isEmpty) {
+      changeEditStatus(false);
+      return false;
+    } else {
+      changeEditStatus(true);
+      return true;
+    }
+  }
 
   void changeClickedButtonStatus({required bool newValue}) {
     isButtonClicked.value = newValue;
@@ -30,7 +47,18 @@ class NewNoteController extends ChangeNotifier {
     colorPalleteController.changeSelectedIndex(99);
   }
 
+  final _pickedModel = ValueNotifier(NotesModel(
+    id: '',
+    isCompleted: false,
+    color: Colors.red,
+    description: '',
+    ownerId: '',
+    createdAt: '',
+  ));
+
   void pickEditData({required NotesModel notesModel}) {
+    _pickedModel.value = notesModel;
+    _pickedModel.notifyListeners();
     for (int i = 0; i < colors.length; i++) {
       if (colors[i] == notesModel.color) {
         colorPalleteController.changeSelectedIndex(i);
@@ -42,7 +70,6 @@ class NewNoteController extends ChangeNotifier {
 
   Future<void> tryValidateNote({
     required BuildContext context,
-
     required NavigationController navigationController,
   }) async {
     try {
@@ -51,38 +78,31 @@ class NewNoteController extends ChangeNotifier {
         changeClickedButtonStatus(newValue: false);
 
         log('isValid');
-          final isSameProject = await isSameNoteCreated(description: descriptionTextController.text);
-        if (isSameProject) {
-          MessageService.displaySnackbar(
-            message: 'This project is already exist',
-            context: context,
-          );
-          descriptionTextController.clear();
-        } else {
-// TODO is edit
-/*
-  if (isEdit) {
-            await updateProject(
-              projectModel: selectedModel.value,
-              title: title,
-            );
 
-            onSuccessCallback();
+        if (isEditMode()) {
+          log('is edit mode');
+          await updateNote().then((_) {
+            navigationController.moveToPage(Pages.quick);
+          });
+        } else {
+          final isSameProject = await isSameNoteCreated();
+          if (isSameProject) {
+            MessageService.displaySnackbar(
+              message: 'This project is already exist',
+              context: context,
+            );
+            descriptionTextController.clear();
           } else {
-            await createProject(title: title);
-            onSuccessCallback();
+            _addNoteRepository
+                .createNote(
+              color: colors[colorPalleteController.selectedIndex.value],
+              description: descriptionTextController.text,
+            )
+                .then((_) {
+              navigationController.moveToPage(Pages.quick);
+            });
           }
-*/
- _addNoteRepository
-            .createNote(
-          color: colors[colorPalleteController.selectedIndex.value],
-          description: descriptionTextController.text,
-        )
-            .then((_) {
-          navigationController.moveToPage(Pages.quick);
-        });
         }
-       
 
         changeClickedButtonStatus(newValue: true);
       }
@@ -91,26 +111,20 @@ class NewNoteController extends ChangeNotifier {
     }
   }
 
-  Future<bool> isSameNoteCreated({
-    required String description
-  }) async {
+  Future<bool> isSameNoteCreated() async {
     try {
-      List<NotesModel> projects =
-          await _addNoteRepository.fetchUserNotes();
-      log('projects list: ${projects.length}');
+      List<NotesModel> projects = await _addNoteRepository.fetchUserNotes();
 
       for (int i = 0; i < projects.length; i++) {
-        if (description.toLowerCase() == projects[i].description.toLowerCase()) {
+        if (_pickedModel.value.id == projects[i].id) {
           return true;
         }
       }
-
       return false;
     } catch (e) {
       throw Failure(e.toString());
     }
   }
-
 
   Future<List<NotesModel>> fetchUserNotes() async {
     try {
@@ -120,21 +134,34 @@ class NewNoteController extends ChangeNotifier {
     }
   }
 
-  Future<void> deleteNote({
-    required NotesModel projectModel,
-  }) async {
+  Future<void> deleteNote({required NotesModel notesModel}) async {
     try {
-      _addNoteRepository.deleteNote(projectId: projectModel.id);
+      _addNoteRepository.deleteNote(projectId: notesModel.id);
     } catch (e) {
       throw Failure(e.toString());
     }
   }
 
-  Future<void> updateNote({
-    required NotesModel projectModel,
-  }) async {
+  Future<void> updateNote() async {
     try {
-      _addNoteRepository.updateNote(noteModel: projectModel);
+      await _addNoteRepository.updateNote(
+        color: colors[colorPalleteController.selectedIndex.value],
+        noteModel: _pickedModel.value,
+        description: descriptionTextController.text,
+      );
+    } catch (e) {
+      throw Failure(e.toString());
+    }
+  }
+
+  Future<void> updateAsDone({required NotesModel pickedModel}) async {
+    try {
+      NotesModel model = pickedModel.copyWith(isCompleted: true);
+      await _addNoteRepository.updateNote(
+        color: model.color,
+        noteModel: model,
+        description: model.description,
+      );
     } catch (e) {
       throw Failure(e.toString());
     }

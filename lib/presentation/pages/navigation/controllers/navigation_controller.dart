@@ -10,13 +10,13 @@ import 'package:todo2/presentation/pages/navigation/widgets/keep_page_alive.dart
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 class NavigationController extends ChangeNotifier {
-  final pageIndex = ValueNotifier<int>(0);
-  final pageController = PageController(initialPage: 0);
-
+  late ValueNotifier<int> pageIndex;
+  late PageController pageController;
+// add args
   final List<Widget> pages = [
     const KeepAlivePageWidget(child: TasksPage()),
     const KeepAlivePageWidget(child: MenuPage()),
-    KeepAlivePageWidget(child: QuickPage()),
+    const KeepAlivePageWidget(child: QuickPage()),
     const KeepAlivePageWidget(child: ProfilePage()),
     const AddTaskPage(),
     const AddQuickNote(),

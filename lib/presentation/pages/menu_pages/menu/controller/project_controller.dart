@@ -57,21 +57,20 @@ class ProjectController extends ChangeNotifier {
           !colorPalleteController.isNotPickerColor) {
         setClickedValue(false);
 
-        final isSameProject = await isSameProjectCreated(title: title);
-        if (isSameProject) {
-          MessageService.displaySnackbar(
-            message: 'This project is already exist',
-            context: context,
+        if (isEdit) {
+          await updateProject(
+            projectModel: selectedModel.value,
+            title: title,
           );
-          titleController.clear();
+          onSuccessCallback();
         } else {
-          if (isEdit) {
-            await updateProject(
-              projectModel: selectedModel.value,
-              title: title,
+          final isSameProject = await isSameProjectCreated();
+          if (isSameProject) {
+            MessageService.displaySnackbar(
+              message: 'This project is already exist',
+              context: context,
             );
-
-            onSuccessCallback();
+            titleController.clear();
           } else {
             await createProject(title: title);
             onSuccessCallback();
@@ -109,13 +108,13 @@ class ProjectController extends ChangeNotifier {
     }
   }
 
-  Future<bool> isSameProjectCreated({required String title}) async {
+  Future<bool> isSameProjectCreated() async {
     try {
       List<ProjectModel> projects =
           await _projectsRepository.fetchAllProjects();
 
       for (int i = 0; i < projects.length; i++) {
-        if (title.toLowerCase() == projects[i].title.toLowerCase()) {
+        if (selectedModel.value.id == projects[i].title.toLowerCase()) {
           return true;
         }
       }

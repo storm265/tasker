@@ -29,7 +29,7 @@ class NetworkSource {
     ..interceptors.add(
       InterceptorsWrapper(
         onResponse: (response, handler) async {
-          if (response.statusCode == 404) {
+          if (response.statusCode == 401) {
             await UpdateTokenService.updateToken();
             // retry last operation
             return handler.resolve(await _retry(response.requestOptions));

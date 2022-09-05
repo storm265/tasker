@@ -1,15 +1,16 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/controller/check_list_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/controller/checklist_singleton.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/widgets/add_item_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/widgets/check_box_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/widgets/remove_all_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/confirm_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/red_app_bar.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/title_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/white_box_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/color_pallete_widget.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_navigator.dart';
-import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
@@ -26,37 +27,25 @@ class CheckListPage extends StatefulWidget {
 
 class _CheckListPageState extends State<CheckListPage> {
   final _scrollController = ScrollController();
-  late final NavigationController _navigationController;
+  final _checkListController = CheckListSingleton().controller;
 
-  late final _checkListController = CheckListSingleton();
   @override
   void initState() {
-    if (_checkListController.controller.checkBoxItems.value.isEmpty) {
-      log('is not edit');
-    } else {
-      log('is  edit');
-    }
+    _checkListController.isEditMode();
     super.initState();
   }
 
   @override
-  void didChangeDependencies() {
-    _navigationController =
-        NavigationInherited.of(context).navigationController;
-
-    super.didChangeDependencies();
-  }
-
-  @override
   void dispose() {
-    _checkListController.controller.clearData();
+    _checkListController.clearData();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     int index = 0;
-
+    final navigationController =
+        NavigationInherited.of(context).navigationController;
     return AppbarWrapWidget(
       navRoute: Pages.quick,
       isRedAppBar: true,
@@ -77,11 +66,10 @@ class _CheckListPageState extends State<CheckListPage> {
                     contentPadding: const EdgeInsets.all(0),
                     title: Form(
                       autovalidateMode: AutovalidateMode.onUserInteraction,
-                      key: _checkListController.controller.formKey,
+                      key: _checkListController.formKey,
                       child: TitleWidget(
                         maxLength: 256,
-                        textController:
-                            _checkListController.controller.titleController,
+                        textController: _checkListController.titleController,
                         title: 'Title',
                         onEdiditionCompleteCallback: () =>
                             Focus.of(context).unfocus(),
@@ -89,20 +77,16 @@ class _CheckListPageState extends State<CheckListPage> {
                     ),
                     subtitle: SingleChildScrollView(
                       child: ValueListenableBuilder<List<Map<String, dynamic>>>(
-                        valueListenable:
-                            _checkListController.controller.checkBoxItems,
+                        valueListenable: _checkListController.checkBoxItems,
                         builder: (_, value, __) => ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemCount: value.length,
                           itemBuilder: (_, i) {
                             index = i;
-
                             return CheckBoxWidget(
-                              checkBoxController:
-                                  _checkListController.controller,
-                              isClicked:
-                                  _checkListController.controller.isChecked,
+                              checkBoxController: _checkListController,
+                              isClicked: _checkListController.isChecked,
                               index: i,
                             );
                           },
@@ -110,46 +94,58 @@ class _CheckListPageState extends State<CheckListPage> {
                       ),
                     ),
                   ),
-                  AddItemButton(onPressed: () {
-                    _checkListController.controller.addItem(index);
-                    _scrollController.animateTo(
-                      _scrollController.position.maxScrollExtent + 20,
-                      duration: const Duration(milliseconds: 500),
-                      curve: Curves.easeInCirc,
-                    );
-                  }),
+                  Row(
+                    children: [
+                      AddItemButton(onPressed: () {
+                        _checkListController.addItem(index);
+                        _scrollController.animateTo(
+                          _scrollController.position.maxScrollExtent + 20,
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.easeInCirc,
+                        );
+                      }),
+                      _checkListController.checkBoxItems.value.isNotEmpty
+                          ? RemoveAllItemsWidget(
+                              onPressed: () =>
+                                  _checkListController.removeAllItems())
+                          : const SizedBox()
+                    ],
+                  ),
                   Column(
                     children: [
                       ColorPalleteWidget(
-                        colorController: _checkListController
-                            .controller.colorPalleteController,
+                        colorController:
+                            _checkListController.colorPalleteController,
                       ),
                       const SizedBox(height: 40),
                       ValueListenableBuilder<bool>(
-                        valueListenable:
-                            _checkListController.controller.isClickedButton,
-                        builder: (context, isClicked, _) => isClicked
-                            ? ConfirmButtonWidget(
-                                title: 'Done',
-                                onPressed: isClicked
-                                    ? () async {
-                                        _checkListController.controller
-                                            .tryValidateCheckList(
-                                          navigationController:
-                                              _navigationController,
-                                          context: context,
-                                          color: colors[_checkListController
-                                              .controller
-                                              .colorPalleteController
-                                              .selectedIndex
-                                              .value],
-                                          title: _checkListController
-                                              .controller.titleController.text,
-                                        );
-                                      }
-                                    : null,
-                              )
-                            : const ProgressIndicatorWidget(text: 'Saving...'),
+                        valueListenable: _checkListController.isEdit,
+                        builder: (context, isEdit, _) =>
+                            ValueListenableBuilder<bool>(
+                          valueListenable: _checkListController.isClickedButton,
+                          builder: (context, isClicked, _) => isClicked
+                              ? ConfirmButtonWidget(
+                                  title: isEdit ? 'Update' : 'Done',
+                                  onPressed: isClicked
+                                      ? () async {
+                                          _checkListController
+                                              .tryValidateCheckList(
+                                            navigationController:
+                                                navigationController,
+                                            context: context,
+                                            color: colors[_checkListController
+                                                .colorPalleteController
+                                                .selectedIndex
+                                                .value],
+                                            title: _checkListController
+                                                .titleController.text,
+                                          );
+                                        }
+                                      : null,
+                                )
+                              : const ProgressIndicatorWidget(
+                                  text: 'Saving...'),
+                        ),
                       ),
                     ],
                   ),

@@ -32,7 +32,7 @@ class _MenuPageState extends State<MenuPage> {
           projectDataSource: ProjectUserDataImpl(
         secureStorageService: SecureStorageSource(),
         network: NetworkSource(),
-      )),
+      ),),
       ColorPalleteController(),
     );
     log('init MenuPage page');

@@ -15,7 +15,7 @@ abstract class NoteRepository<T> {
 
   Future<List<NotesModel>> fetchUserNotes();
 
-  Future<void> updateNote({required NotesModel noteModel});
+  Future<void> updateNote({required NotesModel noteModel, required String description,required Color color,});
 }
 
 class NoteRepositoryImpl implements NoteRepository<NotesModel> {
@@ -81,9 +81,9 @@ class NoteRepositoryImpl implements NoteRepository<NotesModel> {
   }
 
   @override
-  Future<void> updateNote({required NotesModel noteModel}) async {
+  Future<void> updateNote({required NotesModel noteModel, required String description,required Color color,}) async {
     try {
-      await _noteDataSource.updateNote(noteModel: noteModel);
+      await _noteDataSource.updateNote(noteModel: noteModel,description: description,color: color,);
     } catch (e) {
       throw Failure(e.toString());
     }

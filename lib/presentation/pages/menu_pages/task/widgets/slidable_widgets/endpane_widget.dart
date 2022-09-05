@@ -5,10 +5,12 @@ import 'package:todo2/services/theme_service/theme_data_controller.dart';
 class EndPageWidget extends StatelessWidget {
   final VoidCallback onClick;
   final IconData icon;
+  final Color color;
   const EndPageWidget({
     Key? key,
     required this.icon,
     required this.onClick,
+    this.color = Palette.red,
   }) : super(key: key);
 
   @override
@@ -17,7 +19,7 @@ class EndPageWidget extends StatelessWidget {
       borderRadius: BorderRadius.circular(3),
       onPressed: (_) => onClick(),
       backgroundColor: Colors.white,
-      foregroundColor: Palette.red,
+      foregroundColor: color,
       icon: icon,
     );
   }

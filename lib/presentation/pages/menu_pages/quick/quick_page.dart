@@ -1,9 +1,6 @@
-// ignore_for_file: must_be_immutable
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/checklist_model.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/controller/check_list_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/controller/checklist_singleton.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/controller/note_singleton.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/controller/quick_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/checkbox/checkbox_widget.dart';
@@ -53,6 +50,7 @@ class _QuickPageState extends State<QuickPage> {
                               : NoteCardWidget(
                                   navigationController: navigationController,
                                   notesModel: snapshots.data![i],
+                                  callback: () => setState(() {}),
                                 ),
                 ),
               )
