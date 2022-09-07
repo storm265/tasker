@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:todo2/database/database_scheme/notes_scheme.dart';
 import 'package:todo2/database/model/notes_model.dart';
@@ -56,6 +55,8 @@ class NotesDataSourceImpl implements NotesDataSource {
         options: await _network.getLocalRequestOptions(useContentType: true),
       );
       log('createNote ${response.data}');
+      log('createNote ${response.statusCode}');
+      log('createNote ${response.statusMessage}');
     } catch (e) {
       throw Failure(e.toString());
     }
@@ -86,8 +87,7 @@ class NotesDataSourceImpl implements NotesDataSource {
         },
         options: await _network.getLocalRequestOptions(useContentType: true),
       );
-      log('fetchUserNotes ${response.data}');
-      log('fetchUserNotes ${response.statusMessage}');
+      debugPrint('fetchUserNotes ${response.data}');
 
       return NetworkErrorService.isSuccessful(response)
           ? (response.data![NotesScheme.data] as List<dynamic>)

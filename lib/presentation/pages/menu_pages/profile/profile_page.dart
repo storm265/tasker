@@ -50,13 +50,12 @@ class _ProfilePageState extends State<ProfilePage> {
   );
   @override
   void initState() {
-    // userController.fetchStats();
+    userController.fetchStats();
     super.initState();
   }
 
   @override
   void dispose() {
-    // TODO DANGER DISPOSE
     imageController.pickedFile.dispose();
     imageController.dispose();
     super.dispose();

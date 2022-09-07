@@ -11,23 +11,21 @@ class ProjectItemWidget extends StatelessWidget {
   final int taskLength;
   final VoidCallback callback;
   final ProjectController projectController;
-  final ProjectModel data;
   const ProjectItemWidget({
     Key? key,
     required this.model,
     required this.taskLength,
     required this.callback,
     required this.projectController,
-    required this.data,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onLongPress: data.title == 'Personal'
+      onLongPress: model.title == 'Personal'
           ? null
           : () async {
-              projectController.findEditColor(model: data);
+              projectController.findEditColor(model: model);
               await showAddEditProjectDialog(
                 callback: () => callback(),
                 titleController: projectController.titleController,

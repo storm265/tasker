@@ -4,12 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http_proxy/http_proxy.dart';
 import 'package:todo2/database/data_source/user_data_source.dart';
-import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/task_attachment_repository.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/tasks_member_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
-import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_navigator.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_status.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
@@ -45,7 +43,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   late final AddTaskController _newTaskConroller;
   late final ThemeDataService _themeDataController;
-  late final ProfileController _profileController;
   late final NavigationController _navigationController;
   late final StatusBarController _statusBarController;
   @override
@@ -66,19 +63,7 @@ class _MyAppState extends State<MyApp> {
       ),
       taskAttachment: TaskAttachmentRepositoryImpl(),
     );
-
     _themeDataController = ThemeDataService();
-
-    _profileController = ProfileController(
-      secureStorageService: SecureStorageSource(),
-      authRepository: AuthRepositoryImpl(),
-      userProfileRepository: UserProfileRepositoryImpl(
-        userProfileDataSource: UserProfileDataSourceImpl(
-          network: NetworkSource(),
-          secureStorageService: SecureStorageSource(),
-        ),
-      ),
-    );
     super.initState();
   }
 
@@ -86,7 +71,6 @@ class _MyAppState extends State<MyApp> {
   void dispose() {
     _newTaskConroller.disposeAll();
     _newTaskConroller.dispose();
-    _profileController.dispose();
     _navigationController.disposeValues();
     _navigationController.dispose();
     _statusBarController.dispose();

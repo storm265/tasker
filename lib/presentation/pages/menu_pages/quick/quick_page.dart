@@ -31,8 +31,8 @@ class _QuickPageState extends State<QuickPage> {
     return AppbarWrapWidget(
       title: 'Quick Notes',
       isRedAppBar: false,
-      child: FutureBuilder<List<dynamic>>(
-        future: _quickController.fetchList(),
+      child: StreamBuilder<List<dynamic>>(
+        stream: Stream.fromFuture(_quickController.fetchList()),
         builder: ((_, AsyncSnapshot<List<dynamic>> snapshots) => snapshots
                 .hasData
             ? DisabledGlowWidget(
@@ -43,14 +43,14 @@ class _QuickPageState extends State<QuickPage> {
                           ? ShimmerQuickItem()
                           : snapshots.data![i] is CheckListModel
                               ? CheckboxWidget(
+                                  callback: () => setState(() {}),
                                   navigationController: navigationController,
                                   checklistModel: snapshots.data![i],
-                                  callback: () => setState(() {}),
                                 )
                               : NoteCardWidget(
+                                  callback: () => setState(() {}),
                                   navigationController: navigationController,
                                   notesModel: snapshots.data![i],
-                                  callback: () => setState(() {}),
                                 ),
                 ),
               )

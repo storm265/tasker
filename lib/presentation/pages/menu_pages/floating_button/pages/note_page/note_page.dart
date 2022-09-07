@@ -21,7 +21,7 @@ class _AddQuickNoteState extends State<AddQuickNote> {
   final _addNoteController = NoteSingleton().controller;
   @override
   void initState() {
-    _addNoteController.isEditMode();
+    _addNoteController.isCreateMode();
     super.initState();
   }
 

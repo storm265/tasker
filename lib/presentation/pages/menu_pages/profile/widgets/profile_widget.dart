@@ -64,7 +64,8 @@ class _ProfileWidgetState extends State<ProfileWidget>
                   context: context,
                   profileController: widget.profileController,
                   imageController: widget.imageController,
-                  updateState: () => fetchData().then((_) => setState(() {})),
+                  updateState: () async =>
+                      await fetchData().then((_) => setState(() {})),
                 ),
                 icon: RotationTransition(
                   turns: Tween(begin: 0.0, end: 1.0).animate(

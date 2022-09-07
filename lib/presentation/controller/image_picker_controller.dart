@@ -103,7 +103,7 @@ class ImageController extends ChangeNotifier {
   }) async {
     try {
       await pickAvatar(context: context);
-      if (isValidAvatar(context: context)) {
+      if (isValidAvatar(context: context) && pickedFile.value.name.isNotEmpty) {
         final url = await _secureStorageSource.getUserData(
                 type: StorageDataType.avatarUrl) ??
             '';

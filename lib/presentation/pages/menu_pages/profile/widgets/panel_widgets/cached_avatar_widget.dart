@@ -21,7 +21,6 @@ import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart
 class CachedAvatarWidget extends StatelessWidget {
   final String imageUrl;
   final Map<String, String> imageHeader;
-
   const CachedAvatarWidget({
     Key? key,
     required this.imageUrl,
@@ -38,15 +37,18 @@ class CachedAvatarWidget extends StatelessWidget {
       child: CachedNetworkImage(
         imageUrl: imageUrl,
         httpHeaders: imageHeader,
-        placeholder: (context, url) => const CircularProgressIndicator(),
         imageBuilder: (_, imageProvider) {
           return CircleAvatar(backgroundImage: imageProvider);
         },
         errorWidget: (_, url, error) {
           log('errorWidget error $error');
-          return const CircleAvatar(
-            backgroundColor: Color(0xffC4C4C4),
-            child: addPhotoWidget,
+          return SizedBox(
+            width: double.parse(maxSinze.toString()),
+            height: double.parse(maxSinze.toString()),
+            child: const CircleAvatar(
+              backgroundColor: Color(0xffC4C4C4),
+              child: addPhotoWidget,
+            ),
           );
         },
       ),

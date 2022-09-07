@@ -14,16 +14,18 @@ class QuickController {
         _checkListController = checkListController;
 
   Future<List<dynamic>> fetchList() async {
-    final resposnse = await Future.wait([
+    final responce = await Future.wait([
       _noteController.controller.fetchUserNotes(),
       _checkListController.controller.fetchAllCheckLists(),
     ]);
-    final List<NotesModel> notes = resposnse[0] as List<NotesModel>;
-    final List<CheckListModel> checkList = resposnse[1] as List<CheckListModel>;
+    final List<NotesModel> notes = responce[0] as List<NotesModel>;
+    final List<CheckListModel> checkList = responce[1] as List<CheckListModel>;
 
     List<dynamic> linkedModels = [...notes, ...checkList]
       ..reversed
       ..shuffle();
     return linkedModels;
   }
+
+ 
 }

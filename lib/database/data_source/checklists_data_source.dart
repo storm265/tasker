@@ -149,8 +149,8 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
         path: '$_userChecklists/$ownerId',
         options: await _network.getLocalRequestOptions(),
       );
-      log('fetchAllCheckLists ${response.data}');
-      log('fetchAllCheckLists ${response.statusMessage}');
+      debugPrint('fetchAllCheckLists ${response.data}');
+
       return NetworkErrorService.isSuccessful(response)
           ? (response.data![CheckListsScheme.data] as List<dynamic>)
           : throw Failure('fetchAllCheckLists error');

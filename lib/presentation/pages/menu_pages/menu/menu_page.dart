@@ -29,10 +29,11 @@ class _MenuPageState extends State<MenuPage> {
     _titleController = TextEditingController();
     _projectController = ProjectController(
       ProjectRepositoryImpl(
-          projectDataSource: ProjectUserDataImpl(
-        secureStorageService: SecureStorageSource(),
-        network: NetworkSource(),
-      ),),
+        projectDataSource: ProjectUserDataImpl(
+          secureStorageService: SecureStorageSource(),
+          network: NetworkSource(),
+        ),
+      ),
       ColorPalleteController(),
     );
     log('init MenuPage page');
@@ -50,8 +51,7 @@ class _MenuPageState extends State<MenuPage> {
   @override
   Widget build(BuildContext context) {
     return AppbarWrapWidget(
-      floatingActionButtonLocation:
-          FloatingActionButtonLocation.miniStartFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
       floatingActionButton: AddProjectButton(
         titleController: _titleController,
         projectController: _projectController,
@@ -83,20 +83,18 @@ class _MenuPageState extends State<MenuPage> {
                               mainAxisSpacing: 5.0,
                             ),
                             itemBuilder: (_, i) {
-                              final data = snapshot.data![i];
+                              log('title : ${snapshot.data![i].title}');
                               return snapshot.connectionState ==
                                       ConnectionState.waiting
                                   ? ShimmerProjectItem()
                                   : ProjectItemWidget(
-                                      callback: () => setState(() {}),
-                                      data: data,
                                       projectController: _projectController,
-                                      model: data,
+                                      model: snapshot.data![i],
                                       // taskLength: snapshot
                                       //     .data![i].tasksNumber,
+                                      callback: () => setState(() {}),
                                       taskLength: 0,
                                     );
-                           
                             });
                   },
                 ),

@@ -67,7 +67,7 @@ class StatsWidget extends StatelessWidget {
                             CircularPercentIndicator(
                               radius: 35.0,
                               lineWidth: 2.0,
-                              percent: 0.3,
+
                               // percent: double.parse(
                               //         stats[index].removeLastElement()) /
                               //     100,

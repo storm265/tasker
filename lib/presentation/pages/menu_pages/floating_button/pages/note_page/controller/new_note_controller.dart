@@ -27,13 +27,16 @@ class NewNoteController extends ChangeNotifier {
     isEdit.notifyListeners();
   }
 
-  bool isEditMode() {
+  bool isCreateMode() {
     if (descriptionTextController.text.isEmpty) {
-      changeEditStatus(false);
-      return false;
-    } else {
+      debugPrint('text len: ${descriptionTextController.text.length}');
+      log('its create mode;');
       changeEditStatus(true);
       return true;
+    } else {
+      log('its edit mode;');
+      changeEditStatus(false);
+      return false;
     }
   }
 
@@ -79,7 +82,7 @@ class NewNoteController extends ChangeNotifier {
 
         log('isValid');
 
-        if (isEditMode()) {
+        if (isCreateMode()) {
           log('is edit mode');
           await updateNote().then((_) {
             navigationController.moveToPage(Pages.quick);
