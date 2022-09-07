@@ -108,7 +108,6 @@ class ImageController extends ChangeNotifier {
                 type: StorageDataType.avatarUrl) ??
             '';
         await CachedNetworkImage.evictFromCache(url);
-
         log('image is valid!');
         await uploadAvatar().then((_) {
           callback();

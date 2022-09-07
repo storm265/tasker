@@ -12,7 +12,6 @@ class RefreshTokenController {
       final model = await _authRepository.refreshToken();
       return model;
     } catch (e) {
-  
       throw Failure(e.toString());
     }
   }

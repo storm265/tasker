@@ -70,6 +70,7 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<AuthModel> refreshToken() async {
     try {
       final response = await _authDataSource.refreshToken();
+
       return AuthModel.fromJson(json: response);
     } catch (e) {
       throw Failure(e.toString());

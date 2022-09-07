@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:todo2/database/database_scheme/env_scheme.dart';
@@ -9,8 +11,6 @@ const _authorization = 'Authorization';
 const _jsonApp = 'application/json';
 const _multipartForm = 'multipart/form-data';
 
-
-
 class NetworkSource {
   static final NetworkSource _instance = NetworkSource._internal();
 
@@ -19,7 +19,6 @@ class NetworkSource {
   }
 
   NetworkSource._internal();
-
 
   static final Dio _dio = Dio(BaseOptions(
     baseUrl: dotenv.env[EnvScheme.apiUrl] ?? 'null',
@@ -31,10 +30,12 @@ class NetworkSource {
         onResponse: (response, handler) async {
           if (response.statusCode == 401) {
             await UpdateTokenService.updateToken();
-            // retry last operation
             return handler.resolve(await _retry(response.requestOptions));
           }
           return handler.next(response);
+        },
+        onError: (error, handler) async {
+          log('error $error');
         },
       ),
     );
