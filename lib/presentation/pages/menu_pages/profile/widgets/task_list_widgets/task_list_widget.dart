@@ -48,7 +48,7 @@ class TaskListWidget extends StatelessWidget {
                       ),
                     ),
                     subtitle: const Text(
-                      '12 Tasks',
+                      '999 Tasks',
                       style: TextStyle(
                         fontSize: 14,
                         fontStyle: FontStyle.normal,

@@ -83,7 +83,7 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
           CheckListsScheme.color:
               checkListModel.color.toString().toStringColor(),
           CheckListsScheme.ownerId: ownerId,
-          CheckListsScheme.items: items ?? [],
+          CheckListsScheme.items: items ?? [{}],
         },
         options: await _network.getLocalRequestOptions(useContentType: true),
       );
@@ -114,7 +114,7 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
       final response = await _network.delete(
         path: _checklistsItems,
         queryParameters: {
-          CheckListsScheme.items: items ?? [],
+          CheckListsScheme.items: items ?? {[]},
         },
         options: await _network.getLocalRequestOptions(useContentType: true),
       );

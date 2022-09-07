@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:todo2/database/model/profile_models/stats_model.dart';
@@ -8,7 +10,6 @@ import 'package:todo2/utils/extensions/remove_last_element.dart';
 
 class StatsWidget extends StatelessWidget {
   final StatsModel statsModel;
-
   const StatsWidget({
     Key? key,
     required this.statsModel,
@@ -21,7 +22,6 @@ class StatsWidget extends StatelessWidget {
       statsModel.todo,
       statsModel.quickNotes,
     ];
-
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: horizontal,
@@ -44,7 +44,11 @@ class StatsWidget extends StatelessWidget {
             const Align(
               alignment: Alignment.topLeft,
               child: Padding(
-                padding: EdgeInsets.all(20),
+                padding: EdgeInsets.only(
+                  left: 25,
+                  top: 20,
+                  bottom: 20,
+                ),
                 child: Text(
                   'Statistic',
                   style: TextStyle(
@@ -65,32 +69,36 @@ class StatsWidget extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemCount: 3,
                     shrinkWrap: true,
-                    itemBuilder: (context, index) {
+                    itemBuilder: (_, i) {
                       return Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          CircularPercentIndicator(
-                            radius: 35.0,
-                            lineWidth: 2.0,
-                            percent:
-                                double.parse(stats[index].removeLastElement()) /
-                                    100,
-                            center: Center(
-                              child: Text(
-                                stats[index],
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w200,
-                                  fontStyle: FontStyle.italic,
-                                  fontSize: 18,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
+                            child: CircularPercentIndicator(
+                              animation: true,
+                              radius: 40.0,
+                              lineWidth: 2.3,
+                              percent:
+                                  double.parse(stats[i].removeLastElement()) /
+                                      100,
+                              center: Center(
+                                child: Text(
+                                  stats[i],
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w200,
+                                    fontStyle: FontStyle.italic,
+                                    fontSize: 18,
+                                  ),
                                 ),
                               ),
+                              progressColor: statsColors[i],
                             ),
-                            progressColor: statsColors[index],
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(top: 10),
+                            padding: const EdgeInsets.only(top: 20),
                             child: Text(
-                              labels[index],
+                              labels[i],
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
