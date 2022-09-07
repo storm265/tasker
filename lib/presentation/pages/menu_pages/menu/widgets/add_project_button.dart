@@ -4,13 +4,11 @@ import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/dialogs/add_project_dialog.dart';
 
 class AddProjectButton extends StatelessWidget {
-  final Function notifyParent;
   final ProjectController projectController;
   final TextEditingController titleController;
   const AddProjectButton({
     Key? key,
     required this.titleController,
-    required this.notifyParent,
     required this.projectController,
   }) : super(key: key);
 
@@ -21,7 +19,6 @@ class AddProjectButton extends StatelessWidget {
         titleController: titleController,
         context: context,
         projectController: projectController,
-        callback: () => notifyParent(),
       ),
       child: Container(
         width: 80,

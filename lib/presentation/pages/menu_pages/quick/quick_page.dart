@@ -13,16 +13,20 @@ import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart
 
 class QuickPage extends StatefulWidget {
   const QuickPage({Key? key}) : super(key: key);
-
+  static of(BuildContext context) =>
+      context.findAncestorStateOfType<QuickPageState>();
   @override
-  State<QuickPage> createState() => _QuickPageState();
+  State<QuickPage> createState() => QuickPageState();
 }
 
-class _QuickPageState extends State<QuickPage> {
+class QuickPageState extends State<QuickPage> {
   final _quickController = QuickController(
     checkListController: CheckListSingleton(),
     noteController: NoteSingleton(),
   );
+  void updateState() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +35,8 @@ class _QuickPageState extends State<QuickPage> {
     return AppbarWrapWidget(
       title: 'Quick Notes',
       isRedAppBar: false,
-      child: StreamBuilder<List<dynamic>>(
-        stream: Stream.fromFuture(_quickController.fetchList()),
+      child: FutureBuilder<List<dynamic>>(
+        future: _quickController.fetchList(),
         builder: ((_, AsyncSnapshot<List<dynamic>> snapshots) => snapshots
                 .hasData
             ? DisabledGlowWidget(
@@ -43,12 +47,10 @@ class _QuickPageState extends State<QuickPage> {
                           ? ShimmerQuickItem()
                           : snapshots.data![i] is CheckListModel
                               ? CheckboxWidget(
-                                  callback: () => setState(() {}),
                                   navigationController: navigationController,
                                   checklistModel: snapshots.data![i],
                                 )
                               : NoteCardWidget(
-                                  callback: () => setState(() {}),
                                   navigationController: navigationController,
                                   notesModel: snapshots.data![i],
                                 ),

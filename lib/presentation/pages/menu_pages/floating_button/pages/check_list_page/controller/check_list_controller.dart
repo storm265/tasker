@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/checklist_model.dart';
 import 'package:todo2/database/repository/checklist_repository.dart';
@@ -130,24 +129,13 @@ class AddCheckListController extends ChangeNotifier {
             navigationController.moveToPage(Pages.quick);
           });
         } else {
-          bool isDublicated =
-              await isSameProjectCreated(checkListId: _pickedModel.value.id);
-          log('isDublicated $isDublicated');
-
-          if (isDublicated) {
-            MessageService.displaySnackbar(
-              context: context,
-              message: 'This checklist it already created.',
-            );
-          } else {
-            await createCheckList(
-              title: title,
-              color: color,
-              items: checkBoxItems.value,
-            ).then((_) {
-              navigationController.moveToPage(Pages.quick);
-            });
-          }
+          await createCheckList(
+            title: title,
+            color: color,
+            items: checkBoxItems.value,
+          ).then((_) {
+            navigationController.moveToPage(Pages.quick);
+          });
         }
 
         clearData();
@@ -180,21 +168,6 @@ class AddCheckListController extends ChangeNotifier {
         checkListModel: _pickedModel.value,
         items: checkBoxItems.value,
       );
-    } catch (e) {
-      throw Failure(e.toString());
-    }
-  }
-
-
-  Future<bool> isSameProjectCreated({required String checkListId}) async {
-    try {
-      List<CheckListModel> checkLists = await fetchAllCheckLists();
-      for (int i = 0; i < checkLists.length; i++) {
-        if (checkListId == checkLists[i].id) {
-          return true;
-        }
-      }
-      return false;
     } catch (e) {
       throw Failure(e.toString());
     }

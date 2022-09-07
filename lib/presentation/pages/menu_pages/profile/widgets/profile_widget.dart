@@ -70,9 +70,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                 icon: RotationTransition(
                   turns: Tween(begin: 0.0, end: 1.0).animate(
                       widget.profileController.iconAnimationController),
-                  child: SvgPicture.asset(
-                    AssetsPath.settingsIconPath,
-                  ),
+                  child: SvgPicture.asset(AssetsPath.settingsIconPath),
                 ),
               ),
             ),

@@ -26,25 +26,33 @@ class CachedAvatarWidget extends StatelessWidget {
     required this.imageUrl,
     required this.imageHeader,
   }) : super(key: key);
-  final int maxSinze = 64;
+  final int maxSize = 64;
   @override
   Widget build(BuildContext context) {
     log('imageHeader: $imageHeader');
     log('imageUrl: $imageUrl');
     return SizedBox(
-      width: double.parse(maxSinze.toString()),
-      height: double.parse(maxSinze.toString()),
+      width: double.parse(maxSize.toString()),
+      height: double.parse(maxSize.toString()),
       child: CachedNetworkImage(
         imageUrl: imageUrl,
         httpHeaders: imageHeader,
         imageBuilder: (_, imageProvider) {
           return CircleAvatar(backgroundImage: imageProvider);
         },
+        placeholder: ((context, url) => SizedBox(
+              width: double.parse(maxSize.toString()),
+              height: double.parse(maxSize.toString()),
+              child: const CircleAvatar(
+                backgroundColor: Color(0xffC4C4C4),
+                child: addPhotoWidget,
+              ),
+            )),
         errorWidget: (_, url, error) {
           log('errorWidget error $error');
           return SizedBox(
-            width: double.parse(maxSinze.toString()),
-            height: double.parse(maxSinze.toString()),
+            width: double.parse(maxSize.toString()),
+            height: double.parse(maxSize.toString()),
             child: const CircleAvatar(
               backgroundColor: Color(0xffC4C4C4),
               child: addPhotoWidget,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:todo2/database/model/checklist_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/controller/checklist_singleton.dart';
+import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/checkbox/checkbox_item_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/color_line_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/shadow_decoration.dart';
@@ -14,12 +15,10 @@ import 'package:todo2/services/navigation_service/navigation_service.dart';
 class CheckboxWidget extends StatelessWidget {
   final CheckListModel checklistModel;
   final NavigationController navigationController;
-  final VoidCallback callback;
   CheckboxWidget({
     Key? key,
     required this.checklistModel,
     required this.navigationController,
-    required this.callback,
   }) : super(key: key);
   final checkListController = CheckListSingleton().controller;
   @override
@@ -45,8 +44,7 @@ class CheckboxWidget extends StatelessWidget {
               icon: Icons.delete,
               onClick: () async {
                 await checkListController.deleteCheckList(
-                    checkListModel: checklistModel);
-                callback();
+                    checkListModel: checklistModel).then((_) =>QuickPage.of(context).updateState());       
               },
             ),
           ],
@@ -55,7 +53,6 @@ class CheckboxWidget extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Container(
             padding: const EdgeInsets.only(left: 12),
-          
             decoration: shadowDecoration,
             child: Column(
               mainAxisSize: MainAxisSize.min,

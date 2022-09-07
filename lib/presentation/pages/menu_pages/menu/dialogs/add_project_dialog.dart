@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/menu/menu_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/color_pallete_widget.dart';
 
 Future<void> showAddEditProjectDialog({
@@ -7,7 +8,6 @@ Future<void> showAddEditProjectDialog({
   ProjectDialogStatus status = ProjectDialogStatus.add,
   required ProjectController projectController,
   required TextEditingController titleController,
-  required VoidCallback callback,
 }) async {
   status == ProjectDialogStatus.add
       ? projectController.titleController.clear()
@@ -86,8 +86,7 @@ Future<void> showAddEditProjectDialog({
                                           projectModel: projectController
                                               .selectedModel.value)
                                       .then((_) {
-                                    callback();
-
+                                    MenuPage.of(context).updateState();
                                     Navigator.pop(context);
                                     projectController.colorPalleteController
                                         .changeSelectedIndex(99);
@@ -106,8 +105,7 @@ Future<void> showAddEditProjectDialog({
                                     ? false
                                     : true,
                                 onSuccessCallback: () {
-                                  callback();
-
+                                  MenuPage.of(context).updateState();
                                   Navigator.of(context).pop();
                                   projectController.colorPalleteController
                                       .changeSelectedIndex(99);

@@ -48,6 +48,7 @@ class _ProfilePageState extends State<ProfilePage> {
     ),
     authRepository: AuthRepositoryImpl(),
   );
+
   @override
   void initState() {
     userController.fetchStats();
@@ -78,10 +79,8 @@ class _ProfilePageState extends State<ProfilePage> {
               child: ProfileWidget(
                 profileController: profileController,
                 imageController: imageController,
-                //   completedTasks: userController.stats.completedTasks,
-                //   createdTask: userController.stats.createdTasks,
-                completedTasks: 999,
-                createdTask: 999,
+                completedTasks: userController.stats.completedTasks,
+                createdTask: userController.stats.createdTasks,
               ),
             ),
             Column(

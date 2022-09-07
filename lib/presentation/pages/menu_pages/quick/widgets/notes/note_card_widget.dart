@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:todo2/database/model/notes_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/controller/note_singleton.dart';
+import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/color_line_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/shadow_decoration.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/slidable_widgets/endpane_widget.dart';
@@ -12,12 +13,10 @@ import 'package:todo2/services/navigation_service/navigation_service.dart';
 class NoteCardWidget extends StatelessWidget {
   final NavigationController navigationController;
   final NotesModel notesModel;
-  final VoidCallback callback;
   NoteCardWidget({
     Key? key,
     required this.notesModel,
     required this.navigationController,
-    required this.callback,
   }) : super(key: key);
   final _noteController = NoteSingleton().controller;
   @override
@@ -31,8 +30,7 @@ class NoteCardWidget extends StatelessWidget {
             icon: Icons.done,
             color: Colors.green,
             onClick: () async {
-              await _noteController.updateAsDone(pickedModel: notesModel);
-              callback();
+              await _noteController.updateAsDone(pickedModel: notesModel).then((_) =>QuickPage.of(context).updateState());  
             },
           ),
           const GreySlidableWidget(),
@@ -47,8 +45,7 @@ class NoteCardWidget extends StatelessWidget {
           EndPageWidget(
             icon: Icons.delete,
             onClick: () async {
-              await _noteController.deleteNote(notesModel: notesModel);
-              callback();
+              await _noteController.deleteNote(notesModel: notesModel).then((_) =>QuickPage.of(context).updateState());     
             },
           ),
         ],

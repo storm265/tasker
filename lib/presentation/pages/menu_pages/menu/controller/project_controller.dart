@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/project_models/project_stats_model.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
@@ -56,28 +54,18 @@ class ProjectController extends ChangeNotifier {
       if (formKey.currentState!.validate() &&
           !colorPalleteController.isNotPickerColor) {
         setClickedValue(false);
-
         if (isEdit) {
           await updateProject(
             projectModel: selectedModel.value,
             title: title,
           );
+          setClickedValue(true);
           onSuccessCallback();
         } else {
-          final isSameProject = await isSameProjectCreated();
-          if (isSameProject) {
-            MessageService.displaySnackbar(
-              message: 'This project is already exist',
-              context: context,
-            );
-            titleController.clear();
-          } else {
-            await createProject(title: title);
-            onSuccessCallback();
-          }
+          await createProject(title: title);
+          setClickedValue(true);
+          onSuccessCallback();
         }
-
-        setClickedValue(true);
       }
     } catch (e) {
       MessageService.displaySnackbar(
@@ -103,23 +91,6 @@ class ProjectController extends ChangeNotifier {
       final response = await _projectsRepository.fetchProjectStats();
 
       return response;
-    } catch (e) {
-      throw Failure(e.toString());
-    }
-  }
-
-  Future<bool> isSameProjectCreated() async {
-    try {
-      List<ProjectModel> projects =
-          await _projectsRepository.fetchAllProjects();
-
-      for (int i = 0; i < projects.length; i++) {
-        if (selectedModel.value.id == projects[i].title.toLowerCase()) {
-          return true;
-        }
-      }
-
-      return false;
     } catch (e) {
       throw Failure(e.toString());
     }

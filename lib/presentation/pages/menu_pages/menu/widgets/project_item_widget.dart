@@ -9,13 +9,11 @@ import 'package:todo2/presentation/pages/menu_pages/menu/widgets/circle_widget.d
 class ProjectItemWidget extends StatelessWidget {
   final ProjectModel model;
   final int taskLength;
-  final VoidCallback callback;
   final ProjectController projectController;
   const ProjectItemWidget({
     Key? key,
     required this.model,
     required this.taskLength,
-    required this.callback,
     required this.projectController,
   }) : super(key: key);
 
@@ -27,7 +25,6 @@ class ProjectItemWidget extends StatelessWidget {
           : () async {
               projectController.findEditColor(model: model);
               await showAddEditProjectDialog(
-                callback: () => callback(),
                 titleController: projectController.titleController,
                 context: context,
                 projectController: projectController,

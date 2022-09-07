@@ -78,10 +78,10 @@ class _CheckListPageState extends State<CheckListPage> {
                     subtitle: SingleChildScrollView(
                       child: ValueListenableBuilder<List<Map<String, dynamic>>>(
                         valueListenable: _checkListController.checkBoxItems,
-                        builder: (_, value, __) => ListView.builder(
+                        builder: (_, items, __) => ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          itemCount: value.length,
+                          itemCount: items.length,
                           itemBuilder: (_, i) {
                             index = i;
                             return CheckBoxWidget(
@@ -104,11 +104,9 @@ class _CheckListPageState extends State<CheckListPage> {
                           curve: Curves.easeInCirc,
                         );
                       }),
-                      _checkListController.checkBoxItems.value.isNotEmpty
-                          ? RemoveAllItemsWidget(
-                              onPressed: () =>
-                                  _checkListController.removeAllItems())
-                          : const SizedBox()
+                      RemoveAllItemsWidget(
+                          onPressed: () =>
+                              _checkListController.removeAllItems())
                     ],
                   ),
                   Column(
