@@ -9,7 +9,6 @@ import 'package:todo2/presentation/pages/menu_pages/menu/widgets/add_project_but
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/project_item_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/project_shimmer_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
-import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
@@ -23,8 +22,9 @@ void ss(BuildContext context) {
 class MenuPage extends StatefulWidget {
   const MenuPage({Key? key}) : super(key: key);
 
-  static of(BuildContext context) =>
-      context.findAncestorStateOfType<MenuPageState>();
+  static of(BuildContext context, {bool root = false}) => root
+      ? context.findRootAncestorStateOfType<MenuPageState>()
+      : context.findAncestorStateOfType<MenuPageState>();
   @override
   State<MenuPage> createState() => MenuPageState();
 }
@@ -72,45 +72,42 @@ class MenuPageState extends State<MenuPage> {
       isWhite: false,
       title: 'Projects',
       isRedAppBar: false,
-      child: DisabledGlowWidget(
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              children: [
-                FutureBuilder<List<ProjectModel>>(
-                  future: _projectController.fetchAllProjects(),
-                  builder: (_, AsyncSnapshot<List<ProjectModel>> snapshot) {
-                    return (!snapshot.hasData)
-                        ? const Center(child: Text('No projects'))
-                        : GridView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: snapshot.data!.length,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 5.0,
-                              mainAxisSpacing: 5.0,
-                            ),
-                            itemBuilder: (_, i) {
-                              log('title : ${snapshot.data![i].title}');
-                              return snapshot.connectionState ==
-                                      ConnectionState.waiting
-                                  ? ShimmerProjectItem()
-                                  : ProjectItemWidget(
-                                      projectController: _projectController,
-                                      model: snapshot.data![i],
-                                      // taskLength: snapshot
-                                      //     .data![i].tasksNumber,
-                                      taskLength: 0,
-                                    );
-                            });
-                  },
-                ),
-              ],
-            ),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            children: [
+              FutureBuilder<List<ProjectModel>>(
+                future: _projectController.fetchAllProjects(),
+                builder: (_, AsyncSnapshot<List<ProjectModel>> snapshot) {
+                  return (!snapshot.hasData)
+                      ? const Center(child: Text('No projects'))
+                      : GridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: snapshot.data!.length,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 5.0,
+                            mainAxisSpacing: 5.0,
+                          ),
+                          itemBuilder: (_, i) {
+                            return snapshot.connectionState ==
+                                    ConnectionState.waiting
+                                ? ShimmerProjectItem()
+                                : ProjectItemWidget(
+                                    projectController: _projectController,
+                                    model: snapshot.data![i],
+                                    // taskLength: snapshot
+                                    //     .data![i].tasksNumber,
+                                    taskLength: 0,
+                                  );
+                          });
+                },
+              ),
+            ],
           ),
         ),
       ),

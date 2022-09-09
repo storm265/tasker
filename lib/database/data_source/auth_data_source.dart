@@ -56,11 +56,18 @@ class AuthDataSourceImpl implements AuthDataSource {
         },
         options: _networkSource.authOptions,
       );
-
-      return NetworkErrorService.isSuccessful(response)
-          ? response.data[AuthScheme.data] as Map<String, dynamic>
-          : throw Failure(
-              'Error: ${response.data[AuthScheme.data][AuthScheme.message]}');
+      // TODO remove code
+      if (NetworkErrorService.isSuccessful(response)) {
+        return response.data[AuthScheme.data] as Map<String, dynamic>;
+      } else {
+        log(' sign in error ${response.data[AuthScheme.data][AuthScheme.message]}');
+        throw Failure(
+            'Error: ${response.data[AuthScheme.data][AuthScheme.message]}');
+      }
+      // return NetworkErrorService.isSuccessful(response)
+      //     ? response.data[AuthScheme.data] as Map<String, dynamic>
+      //     : throw Failure(
+      //         'Error: ${response.data[AuthScheme.data][AuthScheme.message]}');
     } catch (e) {
       throw Failure(e.toString());
     }

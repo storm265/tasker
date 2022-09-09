@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:todo2/database/database_scheme/check_list_items_scheme.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/controller/check_list_controller.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 
@@ -22,8 +22,8 @@ class _CheckBoxWidgetState extends State<CheckBoxWidget> {
   late final textController = TextEditingController();
   @override
   void initState() {
-    textController.text =
-        widget.checkBoxController.checkBoxItems.value[widget.index][content];
+    textController.text = widget.checkBoxController.checkBoxItems
+        .value[widget.index][CheckListItemsScheme.content];
     super.initState();
   }
 
@@ -41,7 +41,7 @@ class _CheckBoxWidgetState extends State<CheckBoxWidget> {
           scale: 1.1,
           child: Checkbox(
             value: widget.checkBoxController.checkBoxItems.value[widget.index]
-                [isCompleted],
+                [CheckListItemsScheme.isCompleted],
             onChanged: (value) => widget.checkBoxController.changeCheckBoxValue(
               index: widget.index,
               value: value,
@@ -57,26 +57,41 @@ class _CheckBoxWidgetState extends State<CheckBoxWidget> {
         ),
         const SizedBox(width: 10),
         (widget.isClicked)
-            ? SizedBox(
-                width: 170,
-                height: 30,
-                child: TextField(
-                  enabled: true,
-                  controller: textController,
-                  maxLength: 512,
-                  onEditingComplete: () {
-                    widget.isClicked = false;
-                    widget.checkBoxController.changeCheckBoxText(
-                      index: widget.index,
-                      title: textController.text,
-                    );
-                  },
+            ? Padding(
+                padding: const EdgeInsets.only(bottom: 15),
+                child: SizedBox(
+                  width: 170,
+                  height: 35,
+                  child: TextField(
+                    buildCounter: (
+                      context, {
+                      required currentLength,
+                      required isFocused,
+                      maxLength,
+                    }) =>
+                        maxLength == currentLength
+                            ? Text(
+                                '$maxLength/$maxLength',
+                                style: const TextStyle(color: Colors.red),
+                              )
+                            : null,
+                    autofocus: true,
+                    controller: textController,
+                    maxLength: 512,
+                    onEditingComplete: () {
+                      widget.isClicked = false;
+                      widget.checkBoxController.changeCheckboxText(
+                        index: widget.index,
+                        title: textController.text,
+                      );
+                    },
+                  ),
                 ),
               )
             : GestureDetector(
                 child: Text(
                   widget.checkBoxController.checkBoxItems.value[widget.index]
-                      [content],
+                      [CheckListItemsScheme.content],
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w500,

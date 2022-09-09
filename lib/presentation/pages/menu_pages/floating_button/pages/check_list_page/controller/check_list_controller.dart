@@ -1,17 +1,14 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:todo2/database/database_scheme/check_list_items_scheme.dart';
 import 'package:todo2/database/model/checklist_model.dart';
 import 'package:todo2/database/repository/checklist_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/error_service/error_service.dart';
-import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
-
-const isCompleted = 'is_completed';
-const content = 'content';
-const id = 'id';
 
 class AddCheckListController extends ChangeNotifier {
   final CheckListRepositoryImpl _checkListRepository;
@@ -57,7 +54,7 @@ class AddCheckListController extends ChangeNotifier {
   }
 
   void removeAllItems() async {
-    if (isEditMode()) {
+    if (isCreateMode()) {
       await deleteCheckListItems(items: checkBoxItems.value);
       checkBoxItems.value.clear();
     } else {
@@ -83,30 +80,33 @@ class AddCheckListController extends ChangeNotifier {
     titleController.text = checklistModel.title;
     for (int i = 0; i < checklistModel.items.length; i++) {
       checkBoxItems.value.add({
-        id: checklistModel.items[i].id,
-        isCompleted: checklistModel.items[i].isCompleted,
-        content: checklistModel.items[i].content,
+        CheckListItemsScheme.id: checklistModel.items[i].id,
+        CheckListItemsScheme.isCompleted: checklistModel.items[i].isCompleted,
+        CheckListItemsScheme.content: checklistModel.items[i].content,
       });
     }
     checkBoxItems.notifyListeners();
   }
 
-  bool isEditMode() {
-    if (checkBoxItems.value.isEmpty) {
+  bool isCreateMode() {
+    if (titleController.text.isEmpty) {
+      log('is create mode');
       changeEditStatus(false);
-      return false;
-    } else {
-      changeEditStatus(true);
       return true;
+    } else {
+      log('is edit mode');
+      changeEditStatus(true);
+      return false;
     }
   }
 
   void addItem(int index) {
     checkBoxItems.value.add({
-      content: checkBoxItems.value.isEmpty
+      CheckListItemsScheme.id: null,
+      CheckListItemsScheme.content: checkBoxItems.value.isEmpty
           ? 'List item 1'
           : 'List item ${index + 1 + 1}',
-      isCompleted: false,
+      CheckListItemsScheme.isCompleted: false,
     });
     checkBoxItems.notifyListeners();
   }
@@ -123,26 +123,49 @@ class AddCheckListController extends ChangeNotifier {
           !colorPalleteController.isNotPickerColor) {
         changeButtonStatus(false);
 
-        if (isEditMode()) {
-          log('isEditMode ${isEditMode()}');
-          await updateCheckList().then((value) {
-            navigationController.moveToPage(Pages.quick);
-          });
-        } else {
+        if (isCreateMode()) {
+          log('edit ');
           await createCheckList(
             title: title,
             color: color,
             items: checkBoxItems.value,
-          ).then((_) {
-            navigationController.moveToPage(Pages.quick);
-          });
+          );
+        } else {
+          await updateCheckList();
         }
+
+        navigationController.moveToPage(Pages.quick);
+        // QuickPage.of(context).updateState();
 
         clearData();
         changeButtonStatus(true);
       }
-    } catch (e) {
-      MessageService.displaySnackbar(context: context, message: e.toString());
+    } catch (e, t) {
+      log('tt $t');
+      throw Failure(e.toString());
+    }
+  }
+
+  void toDO(
+    BuildContext context,
+    NavigationController navigationController,
+  ) async {
+    try {
+      // navigationController.moveToPage(Pages.quick);
+      //  QuickPage.of(context).updateState();
+      final s1 = context.findAncestorStateOfType<QuickPageState>();
+      log('s1: $s1');
+      final s2 = context.findAncestorStateOfType<QuickPageState>();
+      log('s2: $s2');
+      final s3 = context.findRootAncestorStateOfType<QuickPageState>();
+      log('s3: $s3');
+      final s4 = context.findRootAncestorStateOfType<QuickPageState>();
+      log('s4: $s4');
+
+      
+    } catch (e, t) {
+      log('error $e');
+      log('trace $t');
     }
   }
 
@@ -164,6 +187,7 @@ class AddCheckListController extends ChangeNotifier {
 
   Future<void> updateCheckList() async {
     try {
+      log('updateCheckList');
       await _checkListRepository.updateCheckList(
         checkListModel: _pickedModel.value,
         items: checkBoxItems.value,
@@ -195,7 +219,7 @@ class AddCheckListController extends ChangeNotifier {
     try {
       List<String> idItems = [];
       for (int i = 0; i < items.length; i++) {
-        idItems.add(items[i][id]);
+        idItems.add(items[i][CheckListItemsScheme.id]);
       }
       return _checkListRepository.deleteCheckListItems(items: idItems);
     } catch (e) {
@@ -216,27 +240,27 @@ class AddCheckListController extends ChangeNotifier {
     required int index,
     required bool? value,
   }) {
-    checkBoxItems.value[index][isCompleted] = value;
+    checkBoxItems.value[index][CheckListItemsScheme.isCompleted] = value;
     checkBoxItems.notifyListeners();
   }
 
-  void changeCheckBoxText({
+  void changeCheckboxText({
     required int index,
     required String title,
   }) {
     if (title.isEmpty) {
       removeItem(index);
     } else {
-      checkBoxItems.value[index][content] = title;
+      checkBoxItems.value[index][CheckListItemsScheme.content] = title;
     }
 
     checkBoxItems.notifyListeners();
   }
 
   void removeItem(int index) async {
-    if (isEditMode()) {
+    if (isEdit.value) {
       await deleteCheckListItem(
-          checklistItemId: checkBoxItems.value[index][id]);
+          checklistItemId: checkBoxItems.value[index][CheckListItemsScheme.id]);
       checkBoxItems.value.removeAt(index);
       log('removed future item');
     } else {

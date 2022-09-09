@@ -13,12 +13,13 @@ class CheckBoxWidget extends StatelessWidget {
     return data.isEmpty
         ? const SizedBox()
         : ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
             scrollDirection: Axis.vertical,
             shrinkWrap: true,
             itemCount: data.length,
             itemBuilder: (context, index) {
               return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12),
+                padding: const EdgeInsets.only(bottom: 10),
                 child: Row(
                   children: [
                     Container(

@@ -30,7 +30,6 @@ class CheckboxWidget extends StatelessWidget {
         endActionPane: ActionPane(
           motion: const ScrollMotion(),
           children: [
-            const GreySlidableWidget(),
             EndPageWidget(
               icon: Icons.edit,
               onClick: () async {
@@ -43,8 +42,9 @@ class CheckboxWidget extends StatelessWidget {
             EndPageWidget(
               icon: Icons.delete,
               onClick: () async {
-                await checkListController.deleteCheckList(
-                    checkListModel: checklistModel).then((_) =>QuickPage.of(context).updateState());       
+                await checkListController
+                    .deleteCheckList(checkListModel: checklistModel)
+                    .then((_) =>    QuickPage.of(context).updateState());
               },
             ),
           ],
@@ -52,7 +52,11 @@ class CheckboxWidget extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
-            padding: const EdgeInsets.only(left: 12),
+            padding: const EdgeInsets.only(
+              left: 21,
+              bottom: 10,
+            ),
+            width: double.infinity,
             decoration: shadowDecoration,
             child: Column(
               mainAxisSize: MainAxisSize.min,

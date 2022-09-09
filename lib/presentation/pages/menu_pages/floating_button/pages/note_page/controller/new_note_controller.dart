@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:todo2/database/model/notes_model.dart';
 import 'package:todo2/database/repository/notes_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/error_service/error_service.dart';
@@ -31,11 +32,11 @@ class NewNoteController extends ChangeNotifier {
     if (descriptionTextController.text.isEmpty) {
       debugPrint('text len: ${descriptionTextController.text.length}');
       log('its create mode;');
-      changeEditStatus(true);
+      changeEditStatus(false);
       return true;
     } else {
       log('its edit mode;');
-      changeEditStatus(false);
+      changeEditStatus(true);
       return false;
     }
   }
@@ -80,52 +81,29 @@ class NewNoteController extends ChangeNotifier {
           !colorPalleteController.isNotPickerColor) {
         changeClickedButtonStatus(newValue: false);
 
-        log('isValid');
-
         if (isCreateMode()) {
           log('is edit mode');
           await updateNote().then((_) {
+            QuickPage.of(context).updateState();
             navigationController.moveToPage(Pages.quick);
           });
         } else {
-          final isSameProject = await isSameNoteCreated();
-          if (isSameProject) {
-            MessageService.displaySnackbar(
-              message: 'This project is already exist',
-              context: context,
-            );
-            descriptionTextController.clear();
-          } else {
-            _addNoteRepository
-                .createNote(
-              color: colors[colorPalleteController.selectedIndex.value],
-              description: descriptionTextController.text,
-            )
-                .then((_) {
-              navigationController.moveToPage(Pages.quick);
-            });
-          }
+          await _addNoteRepository
+              .createNote(
+            color: colors[colorPalleteController.selectedIndex.value],
+            description: descriptionTextController.text,
+          )
+              .then((_) {
+            QuickPage.of(context).updateState();
+            navigationController.moveToPage(Pages.quick);
+          });
         }
 
         changeClickedButtonStatus(newValue: true);
       }
     } catch (e) {
+      log('tryValidateNote $e');
       MessageService.displaySnackbar(message: e.toString(), context: context);
-    }
-  }
-
-  Future<bool> isSameNoteCreated() async {
-    try {
-      List<NotesModel> projects = await _addNoteRepository.fetchUserNotes();
-
-      for (int i = 0; i < projects.length; i++) {
-        if (_pickedModel.value.id == projects[i].id) {
-          return true;
-        }
-      }
-      return false;
-    } catch (e) {
-      throw Failure(e.toString());
     }
   }
 
@@ -137,9 +115,14 @@ class NewNoteController extends ChangeNotifier {
     }
   }
 
-  Future<void> deleteNote({required NotesModel notesModel}) async {
+  Future<void> deleteNote({
+    required NotesModel notesModel,
+    required BuildContext context,
+  }) async {
     try {
-      _addNoteRepository.deleteNote(projectId: notesModel.id);
+      await _addNoteRepository
+          .deleteNote(projectId: notesModel.id)
+          .then((_) => QuickPage.of(context).updateState());
     } catch (e) {
       throw Failure(e.toString());
     }
@@ -157,30 +140,19 @@ class NewNoteController extends ChangeNotifier {
     }
   }
 
-  Future<void> updateAsDone({required NotesModel pickedModel}) async {
-    try {
-      NotesModel model = pickedModel.copyWith(isCompleted: true);
-      await _addNoteRepository.updateNote(
-        color: model.color,
-        noteModel: model,
-        description: model.description,
-      );
-    } catch (e) {
-      throw Failure(e.toString());
-    }
-  }
-
-  Future<bool> isDublicated({
-    required String projectId,
+  Future<void> updateAsDone({
+    required NotesModel pickedModel,
+    required BuildContext context,
   }) async {
     try {
-      final notesList = await _addNoteRepository.fetchUserNotes();
-      for (int i = 0; i < notesList.length; i++) {
-        if (notesList[i].id == projectId) {
-          return true;
-        }
-      }
-      return false;
+      NotesModel model = pickedModel.copyWith(isCompleted: true);
+      await _addNoteRepository
+          .updateNote(
+            color: model.color,
+            noteModel: model,
+            description: model.description,
+          )
+          .then((_) => QuickPage.of(context).updateState());
     } catch (e) {
       throw Failure(e.toString());
     }

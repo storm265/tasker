@@ -22,7 +22,7 @@ class RemoveAllItemsWidget extends StatelessWidget {
           child: Row(
             children: const [
               Icon(
-                Icons.remove_circle_outline_outlined,
+                Icons.remove,
                 color: Colors.grey,
               ),
               Text(

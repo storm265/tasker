@@ -12,7 +12,7 @@ class TitleWidget extends StatelessWidget {
     return Align(
       alignment: Alignment.centerLeft,
       child: Padding(
-        padding: const EdgeInsets.only(top: 12),
+        padding: const EdgeInsets.symmetric(vertical: 12),
         child: SizedBox(
           width: double.infinity,
           height: 20,

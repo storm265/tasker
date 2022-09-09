@@ -1,6 +1,4 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/controller/check_list_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/controller/checklist_singleton.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/widgets/add_item_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/widgets/check_box_widget.dart';
@@ -10,6 +8,7 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/red_
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/title_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/white_box_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/color_pallete_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_navigator.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
@@ -31,7 +30,7 @@ class _CheckListPageState extends State<CheckListPage> {
 
   @override
   void initState() {
-    _checkListController.isEditMode();
+    _checkListController.isCreateMode();
     super.initState();
   }
 
@@ -126,18 +125,20 @@ class _CheckListPageState extends State<CheckListPage> {
                                   title: isEdit ? 'Update' : 'Done',
                                   onPressed: isClicked
                                       ? () async {
-                                          _checkListController
-                                              .tryValidateCheckList(
-                                            navigationController:
-                                                navigationController,
-                                            context: context,
-                                            color: colors[_checkListController
-                                                .colorPalleteController
-                                                .selectedIndex
-                                                .value],
-                                            title: _checkListController
-                                                .titleController.text,
-                                          );
+                                        //  await  _checkListController
+                                        //       .tryValidateCheckList(
+                                        //         navigationController:
+                                        //             navigationController,
+                                        //         context: context,
+                                        //         color: colors[
+                                        //             _checkListController
+                                        //                 .colorPalleteController
+                                        //                 .selectedIndex
+                                        //                 .value],
+                                        //         title: _checkListController
+                                        //             .titleController.text,
+                                        //       );
+                                              _checkListController.toDO(context,navigationController);
                                         }
                                       : null,
                                 )

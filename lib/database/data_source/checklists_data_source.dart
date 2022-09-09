@@ -76,6 +76,8 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
     try {
       final ownerId =
           await _secureStorage.getUserData(type: StorageDataType.id);
+
+      log(' update : $_checklists/${checkListModel.id}');
       final response = await _network.put(
         path: '$_checklists/${checkListModel.id}',
         data: {
@@ -83,7 +85,7 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
           CheckListsScheme.color:
               checkListModel.color.toString().toStringColor(),
           CheckListsScheme.ownerId: ownerId,
-          CheckListsScheme.items: items ?? [{}],
+          CheckListsScheme.items: items ?? [],
         },
         options: await _network.getLocalRequestOptions(useContentType: true),
       );

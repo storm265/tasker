@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:todo2/database/model/notes_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/controller/note_singleton.dart';
-import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/color_line_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/shadow_decoration.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/slidable_widgets/endpane_widget.dart';
@@ -26,13 +25,22 @@ class NoteCardWidget extends StatelessWidget {
       endActionPane: ActionPane(
         motion: const ScrollMotion(),
         children: [
-          EndPageWidget(
-            icon: Icons.done,
-            color: Colors.green,
-            onClick: () async {
-              await _noteController.updateAsDone(pickedModel: notesModel).then((_) =>QuickPage.of(context).updateState());  
-            },
-          ),
+          notesModel.isCompleted
+              ? EndPageWidget(
+                  icon: Icons.done,
+                  color: Colors.grey,
+                  onClick: () {},
+                )
+              : EndPageWidget(
+                  icon: Icons.done,
+                  color: Colors.green,
+                  onClick: () async {
+                    await _noteController.updateAsDone(
+                      pickedModel: notesModel,
+                      context: context,
+                    );
+                  },
+                ),
           const GreySlidableWidget(),
           EndPageWidget(
             icon: Icons.edit,
@@ -45,7 +53,10 @@ class NoteCardWidget extends StatelessWidget {
           EndPageWidget(
             icon: Icons.delete,
             onClick: () async {
-              await _noteController.deleteNote(notesModel: notesModel).then((_) =>QuickPage.of(context).updateState());     
+              await _noteController.deleteNote(
+                notesModel: notesModel,
+                context: context,
+              );
             },
           ),
         ],
@@ -53,17 +64,20 @@ class NoteCardWidget extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
-          padding: const EdgeInsets.only(left: 12),
+          padding: const EdgeInsets.only(
+            left: 30,
+            bottom: 10,
+          ),
           width: double.infinity,
           decoration: shadowDecoration,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               ColorLineWidget(color: notesModel.color),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 12),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Align(
+                  alignment: Alignment.centerLeft,
                   child: Text(
                     notesModel.description,
                     style: TextStyle(
