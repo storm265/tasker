@@ -6,10 +6,12 @@ import 'package:todo2/presentation/pages/menu_pages/menu/dialogs/add_project_dia
 class AddProjectButton extends StatelessWidget {
   final ProjectController projectController;
   final TextEditingController titleController;
+  final VoidCallback callback;
   const AddProjectButton({
     Key? key,
     required this.titleController,
     required this.projectController,
+    required this.callback,
   }) : super(key: key);
 
   @override
@@ -19,6 +21,7 @@ class AddProjectButton extends StatelessWidget {
         titleController: titleController,
         context: context,
         projectController: projectController,
+        callback: ()=> callback(),
       ),
       child: Container(
         width: 80,

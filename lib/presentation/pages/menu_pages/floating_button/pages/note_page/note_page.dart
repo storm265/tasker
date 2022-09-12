@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/controller/note_singleton.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/controller/new_note_controller.dart';
+
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/confirm_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/red_app_bar.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/title_widget.dart';
@@ -18,7 +19,7 @@ class AddQuickNote extends StatefulWidget {
 }
 
 class _AddQuickNoteState extends State<AddQuickNote> {
-  final _addNoteController = NoteSingleton().controller;
+  final _addNoteController = NewNoteController();
   @override
   void initState() {
     _addNoteController.isCreateMode();

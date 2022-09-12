@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:todo2/database/model/notes_model.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/controller/note_singleton.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/controller/new_note_controller.dart';
+
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/color_line_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/shadow_decoration.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/slidable_widgets/endpane_widget.dart';
@@ -12,12 +13,14 @@ import 'package:todo2/services/navigation_service/navigation_service.dart';
 class NoteCardWidget extends StatelessWidget {
   final NavigationController navigationController;
   final NotesModel notesModel;
+  final VoidCallback callback;
   NoteCardWidget({
     Key? key,
     required this.notesModel,
     required this.navigationController,
+    required this.callback,
   }) : super(key: key);
-  final _noteController = NoteSingleton().controller;
+  final _noteController = NewNoteController();
   @override
   Widget build(BuildContext context) {
     return Slidable(
@@ -39,6 +42,7 @@ class NoteCardWidget extends StatelessWidget {
                       pickedModel: notesModel,
                       context: context,
                     );
+                    callback();
                   },
                 ),
           const GreySlidableWidget(),
@@ -46,7 +50,7 @@ class NoteCardWidget extends StatelessWidget {
             icon: Icons.edit,
             onClick: () async {
               _noteController.pickEditData(notesModel: notesModel);
-              await navigationController.moveToPage(Pages.addNote);
+              await navigationController.moveToPage(page: Pages.addNote);
             },
           ),
           const GreySlidableWidget(),
@@ -57,6 +61,7 @@ class NoteCardWidget extends StatelessWidget {
                 notesModel: notesModel,
                 context: context,
               );
+              callback();
             },
           ),
         ],

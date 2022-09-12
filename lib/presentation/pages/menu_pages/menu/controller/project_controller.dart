@@ -1,3 +1,6 @@
+import 'dart:developer';
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/project_models/project_stats_model.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
@@ -23,6 +26,9 @@ class ProjectController extends ChangeNotifier {
   final formKey = GlobalKey<FormState>();
   final isClickedSubmitButton = ValueNotifier(true);
   final titleController = TextEditingController();
+
+  final projects = ValueNotifier<List<ProjectModel>>([]);
+
   final selectedModel = ValueNotifier(
     ProjectModel(
       id: '',
@@ -44,11 +50,15 @@ class ProjectController extends ChangeNotifier {
     isClickedSubmitButton.notifyListeners();
   }
 
+  void clearProjects() {
+    projects.value.clear();
+    projects.notifyListeners();
+  }
+
   Future<void> tryValidateProject({
     required bool isEdit,
-    required String title,
-    required VoidCallback onSuccessCallback,
     required BuildContext context,
+    required VoidCallback callback,
   }) async {
     try {
       if (formKey.currentState!.validate() &&
@@ -57,29 +67,28 @@ class ProjectController extends ChangeNotifier {
         if (isEdit) {
           await updateProject(
             projectModel: selectedModel.value,
-            title: title,
+            title: titleController.text,
           );
-          setClickedValue(true);
-          onSuccessCallback();
         } else {
-          await createProject(title: title);
-          setClickedValue(true);
-          onSuccessCallback();
+          await createProject(title: titleController.text);
         }
+        clearProjects();
+        colorPalleteController.changeSelectedIndex(99);
+        await fetchAllProjects().then((_) {
+          setClickedValue(true);
+        });
+        callback();
       }
-    } catch (e) {
-      MessageService.displaySnackbar(
-        message: e.toString(),
-        context: context,
-      );
+    } catch (e, t) {
+      log('tryValidateProject $e,$t');
       throw Failure(e.toString());
     }
   }
 
-  Future<List<ProjectModel>> fetchAllProjects() async {
+  Future<void> fetchAllProjects() async {
     try {
-      final projects = await _projectsRepository.fetchAllProjects();
-      return projects;
+      projects.value = await _projectsRepository.fetchAllProjects();
+      projects.notifyListeners();
     } catch (e) {
       debugPrint('error $e');
       throw Failure(e.toString());
@@ -89,7 +98,6 @@ class ProjectController extends ChangeNotifier {
   Future<List<ProjectStatsModel>> fetchProjectStats() async {
     try {
       final response = await _projectsRepository.fetchProjectStats();
-
       return response;
     } catch (e) {
       throw Failure(e.toString());
@@ -134,17 +142,24 @@ class ProjectController extends ChangeNotifier {
     }
   }
 
-  Future<void> deleteProject({required ProjectModel projectModel}) async {
+  Future<void> deleteProject({
+    required ProjectModel projectModel,
+  }) async {
     try {
       setClickedValue(false);
       await _projectsRepository.deleteProject(projectModel: projectModel);
-      setClickedValue(false);
+      clearProjects();
+      colorPalleteController.changeSelectedIndex(99);
+      await fetchAllProjects().then((_) {
+        setClickedValue(true);
+      });
     } catch (e) {
       throw Failure(e.toString());
     }
   }
 
   void disposeValues() {
+    projects.dispose();
     titleController.dispose();
     isClickedSubmitButton.dispose();
     selectedModel.dispose();

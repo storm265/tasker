@@ -23,7 +23,10 @@ class NavigationController extends ChangeNotifier {
     const CheckListPage(),
   ];
 
-  Future<void> moveToPage(Pages page) async {
+  Future<void> moveToPage({
+    Pages? page,
+    VoidCallback? callback,
+  }) async {
     switch (page) {
       case Pages.tasks:
         pageIndex.value = 0;

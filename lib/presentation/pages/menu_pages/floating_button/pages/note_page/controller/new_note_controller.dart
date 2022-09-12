@@ -1,47 +1,75 @@
 import 'dart:developer';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:todo2/database/data_source/notes_data_source.dart';
 import 'package:todo2/database/model/notes_model.dart';
 import 'package:todo2/database/repository/notes_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/quick/controller/quick_controller.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
+import 'package:todo2/services/network_service/network_config.dart';
+import 'package:todo2/storage/secure_storage_service.dart';
 
 class NewNoteController extends ChangeNotifier {
-  NewNoteController({
-    required this.colorPalleteController,
-    required NoteRepositoryImpl addNoteRepository,
-  }) : _addNoteRepository = addNoteRepository;
+  static final NewNoteController _instance = NewNoteController._internal();
+
+  factory NewNoteController() {
+    return _instance;
+  }
+
+  NewNoteController._internal();
+
+  final _addNoteRepository = NoteRepositoryImpl(
+    noteDataSource: NotesDataSourceImpl(
+      network: NetworkSource(),
+      secureStorage: SecureStorageSource(),
+    ),
+  );
+
   final descriptionTextController = TextEditingController();
-  final ColorPalleteController colorPalleteController;
-  final NoteRepositoryImpl _addNoteRepository;
+
+  final colorPalleteController = ColorPalleteController();
+
   final isButtonClicked = ValueNotifier(true);
+
   final formKey = GlobalKey<FormState>();
+
   final isEdit = ValueNotifier(false);
 
-  void changeEditStatus(bool status) {
+  final _quickController = QuickController();
+
+  final _pickedModel = ValueNotifier(
+    NotesModel(
+      id: '',
+      isCompleted: false,
+      color: Colors.red,
+      description: '',
+      ownerId: '',
+      createdAt: '',
+    ),
+  );
+
+  void changeEditValueStatus(bool status) {
     isEdit.value = status;
     isEdit.notifyListeners();
   }
 
   bool isCreateMode() {
     if (descriptionTextController.text.isEmpty) {
-      debugPrint('text len: ${descriptionTextController.text.length}');
       log('its create mode;');
-      changeEditStatus(false);
+      changeEditValueStatus(false);
       return true;
     } else {
       log('its edit mode;');
-      changeEditStatus(true);
+      changeEditValueStatus(true);
       return false;
     }
   }
 
-  void changeClickedButtonStatus({required bool newValue}) {
+  void changeClickedButtonValueStatus({required bool newValue}) {
     isButtonClicked.value = newValue;
     isButtonClicked.notifyListeners();
   }
@@ -50,15 +78,6 @@ class NewNoteController extends ChangeNotifier {
     descriptionTextController.clear();
     colorPalleteController.changeSelectedIndex(99);
   }
-
-  final _pickedModel = ValueNotifier(NotesModel(
-    id: '',
-    isCompleted: false,
-    color: Colors.red,
-    description: '',
-    ownerId: '',
-    createdAt: '',
-  ));
 
   void pickEditData({required NotesModel notesModel}) {
     _pickedModel.value = notesModel;
@@ -79,27 +98,20 @@ class NewNoteController extends ChangeNotifier {
     try {
       if (formKey.currentState!.validate() &&
           !colorPalleteController.isNotPickerColor) {
-        changeClickedButtonStatus(newValue: false);
+        changeClickedButtonValueStatus(newValue: false);
 
         if (isCreateMode()) {
           log('is edit mode');
-          await updateNote().then((_) {
-            QuickPage.of(context).updateState();
-            navigationController.moveToPage(Pages.quick);
-          });
+          await updateNote();
         } else {
-          await _addNoteRepository
-              .createNote(
+          await _addNoteRepository.createNote(
             color: colors[colorPalleteController.selectedIndex.value],
             description: descriptionTextController.text,
-          )
-              .then((_) {
-            QuickPage.of(context).updateState();
-            navigationController.moveToPage(Pages.quick);
-          });
+          );
         }
-
-        changeClickedButtonStatus(newValue: true);
+        await _quickController.fetchList();
+        await navigationController.moveToPage(page: Pages.quick);
+        changeClickedButtonValueStatus(newValue: true);
       }
     } catch (e) {
       log('tryValidateNote $e');
@@ -120,9 +132,7 @@ class NewNoteController extends ChangeNotifier {
     required BuildContext context,
   }) async {
     try {
-      await _addNoteRepository
-          .deleteNote(projectId: notesModel.id)
-          .then((_) => QuickPage.of(context).updateState());
+      await _addNoteRepository.deleteNote(projectId: notesModel.id);
     } catch (e) {
       throw Failure(e.toString());
     }
@@ -146,13 +156,11 @@ class NewNoteController extends ChangeNotifier {
   }) async {
     try {
       NotesModel model = pickedModel.copyWith(isCompleted: true);
-      await _addNoteRepository
-          .updateNote(
-            color: model.color,
-            noteModel: model,
-            description: model.description,
-          )
-          .then((_) => QuickPage.of(context).updateState());
+      await _addNoteRepository.updateNote(
+        color: model.color,
+        noteModel: model,
+        description: model.description,
+      );
     } catch (e) {
       throw Failure(e.toString());
     }

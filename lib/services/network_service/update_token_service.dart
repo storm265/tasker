@@ -28,12 +28,19 @@ class UpdateTokenService {
         //     value: authResponse.refreshToken);
         // await _secureStorageService.saveUserData(
         //     type: StorageDataType.accessToken, value: authResponse.accessToken);
-        await Future.delayed(const Duration(milliseconds: 1));
+
+        await Future.delayed(const Duration(milliseconds: 3))
+            .then((value) => log('updated1'));
+        await Future.delayed(const Duration(milliseconds: 3))
+            .then((value) => log('updated2'));
+        await Future.delayed(const Duration(milliseconds: 3))
+            .then((value) => log('updated3'));
+        await Future.delayed(const Duration(milliseconds: 3))
+            .then((value) => log('updated4'));
       }
     } catch (e, t) {
       log('Update token error: $e,$t');
       throw Exception('Update token error: $e');
     }
   }
-
 }

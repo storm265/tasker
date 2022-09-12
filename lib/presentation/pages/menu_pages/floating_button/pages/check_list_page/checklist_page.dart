@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/controller/checklist_singleton.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/controller/check_list_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/widgets/add_item_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/widgets/check_box_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/widgets/remove_all_widget.dart';
@@ -8,7 +8,6 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/red_
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/title_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/white_box_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/color_pallete_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_navigator.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
@@ -26,7 +25,7 @@ class CheckListPage extends StatefulWidget {
 
 class _CheckListPageState extends State<CheckListPage> {
   final _scrollController = ScrollController();
-  final _checkListController = CheckListSingleton().controller;
+  final _checkListController = CheckListController();
 
   @override
   void initState() {
@@ -96,7 +95,7 @@ class _CheckListPageState extends State<CheckListPage> {
                   Row(
                     children: [
                       AddItemButton(onPressed: () {
-                        _checkListController.addItem(index);
+                        _checkListController.addCheckboxItem(index);
                         _scrollController.animateTo(
                           _scrollController.position.maxScrollExtent + 20,
                           duration: const Duration(milliseconds: 500),
@@ -105,7 +104,7 @@ class _CheckListPageState extends State<CheckListPage> {
                       }),
                       RemoveAllItemsWidget(
                           onPressed: () =>
-                              _checkListController.removeAllItems())
+                              _checkListController.removeAllCheckboxItems())
                     ],
                   ),
                   Column(
@@ -125,20 +124,18 @@ class _CheckListPageState extends State<CheckListPage> {
                                   title: isEdit ? 'Update' : 'Done',
                                   onPressed: isClicked
                                       ? () async {
-                                        //  await  _checkListController
-                                        //       .tryValidateCheckList(
-                                        //         navigationController:
-                                        //             navigationController,
-                                        //         context: context,
-                                        //         color: colors[
-                                        //             _checkListController
-                                        //                 .colorPalleteController
-                                        //                 .selectedIndex
-                                        //                 .value],
-                                        //         title: _checkListController
-                                        //             .titleController.text,
-                                        //       );
-                                              _checkListController.toDO(context,navigationController);
+                                          await _checkListController
+                                              .tryValidateCheckList(
+                                            navigationController:
+                                                navigationController,
+                                            context: context,
+                                            color: colors[_checkListController
+                                                .colorPalleteController
+                                                .selectedIndex
+                                                .value],
+                                            title: _checkListController
+                                                .titleController.text,
+                                          );
                                         }
                                       : null,
                                 )

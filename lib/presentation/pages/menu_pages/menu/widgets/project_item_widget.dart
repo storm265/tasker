@@ -10,11 +10,13 @@ class ProjectItemWidget extends StatelessWidget {
   final ProjectModel model;
   final int taskLength;
   final ProjectController projectController;
+  final VoidCallback callback;
   const ProjectItemWidget({
     Key? key,
     required this.model,
     required this.taskLength,
     required this.projectController,
+    required this.callback,
   }) : super(key: key);
 
   @override
@@ -29,6 +31,7 @@ class ProjectItemWidget extends StatelessWidget {
                 context: context,
                 projectController: projectController,
                 status: ProjectDialogStatus.edit,
+                callback: () => callback(),
               );
             },
       child: Padding(

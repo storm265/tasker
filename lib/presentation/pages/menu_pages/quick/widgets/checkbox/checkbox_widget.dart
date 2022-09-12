@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:todo2/database/model/checklist_model.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/controller/checklist_singleton.dart';
-import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/controller/check_list_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/checkbox/checkbox_item_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/color_line_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/shadow_decoration.dart';
@@ -15,12 +14,14 @@ import 'package:todo2/services/navigation_service/navigation_service.dart';
 class CheckboxWidget extends StatelessWidget {
   final CheckListModel checklistModel;
   final NavigationController navigationController;
+  final VoidCallback callback;
   CheckboxWidget({
     Key? key,
     required this.checklistModel,
     required this.navigationController,
+    required this.callback,
   }) : super(key: key);
-  final checkListController = CheckListSingleton().controller;
+  final checkListController = CheckListController();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -35,16 +36,16 @@ class CheckboxWidget extends StatelessWidget {
               onClick: () async {
                 checkListController.pickEditData(
                     checklistModel: checklistModel);
-                await navigationController.moveToPage(Pages.addCheckList);
+                await navigationController.moveToPage(page: Pages.addCheckList);
               },
             ),
             const GreySlidableWidget(),
             EndPageWidget(
               icon: Icons.delete,
               onClick: () async {
-                await checkListController
-                    .deleteCheckList(checkListModel: checklistModel)
-                    .then((_) =>    QuickPage.of(context).updateState());
+                await checkListController.deleteChecklist(
+                    checkListModel: checklistModel);
+                callback();
               },
             ),
           ],

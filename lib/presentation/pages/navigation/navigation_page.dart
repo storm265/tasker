@@ -77,7 +77,7 @@ class NavigationPage extends StatelessWidget {
                         children: [
                           NavBarItem(
                             onTap: () async => await navigationController
-                                .moveToPage(Pages.tasks),
+                                .moveToPage(page: Pages.tasks),
                             label: 'My Tasks',
                             icon: 'tasks',
                             iconColor: pageIndex == 0 ||
@@ -88,7 +88,7 @@ class NavigationPage extends StatelessWidget {
                           ),
                           NavBarItem(
                             onTap: () async => await navigationController
-                                .moveToPage(Pages.menu),
+                                .moveToPage(page: Pages.menu),
                             label: 'Menu',
                             icon: 'menu',
                             iconColor:
@@ -97,7 +97,7 @@ class NavigationPage extends StatelessWidget {
                           const SizedBox(width: 50),
                           NavBarItem(
                             onTap: () async => await navigationController
-                                .moveToPage(Pages.quick),
+                                .moveToPage(page: Pages.quick),
                             label: 'Quick',
                             icon: 'quick',
                             iconColor:
@@ -105,7 +105,7 @@ class NavigationPage extends StatelessWidget {
                           ),
                           NavBarItem(
                             onTap: () async => await navigationController
-                                .moveToPage(Pages.profile),
+                                .moveToPage(page: Pages.profile),
                             label: 'Profile',
                             icon: 'profile',
                             iconColor:

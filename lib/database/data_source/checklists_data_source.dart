@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:todo2/database/database_scheme/checklists_scheme.dart';
 import 'package:todo2/database/model/checklist_model.dart';
@@ -32,6 +31,7 @@ abstract class CheckListsDataSource {
 class CheckListsDataSourceImpl extends CheckListsDataSource {
   final NetworkSource _network;
   final SecureStorageSource _secureStorage;
+
   CheckListsDataSourceImpl({
     required NetworkSource network,
     required SecureStorageSource secureStorage,

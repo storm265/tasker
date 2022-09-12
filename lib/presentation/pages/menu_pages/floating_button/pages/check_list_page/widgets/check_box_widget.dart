@@ -4,7 +4,7 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_
 import 'package:todo2/presentation/widgets/common/colors.dart';
 
 class CheckBoxWidget extends StatefulWidget {
-  final AddCheckListController checkBoxController;
+  final CheckListController checkBoxController;
   final int index;
   bool isClicked;
   CheckBoxWidget({
@@ -42,7 +42,7 @@ class _CheckBoxWidgetState extends State<CheckBoxWidget> {
           child: Checkbox(
             value: widget.checkBoxController.checkBoxItems.value[widget.index]
                 [CheckListItemsScheme.isCompleted],
-            onChanged: (value) => widget.checkBoxController.changeCheckBoxValue(
+            onChanged: (value) => widget.checkBoxController.changeCheckboxValue(
               index: widget.index,
               value: value,
             ),
@@ -104,7 +104,8 @@ class _CheckBoxWidgetState extends State<CheckBoxWidget> {
         Padding(
           padding: const EdgeInsets.only(left: 20),
           child: IconButton(
-            onPressed: () => widget.checkBoxController.removeItem(widget.index),
+            onPressed: () =>
+                widget.checkBoxController.removeCheckboxItem(widget.index),
             icon: const Icon(
               Icons.delete,
               color: darkGrey,

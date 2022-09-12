@@ -6,10 +6,12 @@ import 'package:todo2/presentation/widgets/common/colors.dart';
 class AddButton extends StatelessWidget {
   final ProjectController projectController;
   final TextEditingController titleController;
+  final VoidCallback callback;
   const AddButton({
     Key? key,
     required this.titleController,
     required this.projectController,
+    required this.callback,
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -19,6 +21,7 @@ class AddButton extends StatelessWidget {
         titleController: titleController,
         context: context,
         projectController: projectController,
+        callback: () => callback(),
       ),
       child: const Center(
         child: Text(

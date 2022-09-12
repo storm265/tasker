@@ -1,4 +1,3 @@
-
 class Walkthrough1 {
   final String avatarsTitle = 'first';
   final String titleText = 'Welcome to todo list';
