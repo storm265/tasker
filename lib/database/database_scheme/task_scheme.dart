@@ -8,4 +8,5 @@ class TaskScheme {
   static const projectId = 'project_id';
   static const ownerId = 'owner_id';
   static const createdAt = 'created_at';
+  static const members = 'members';
 }

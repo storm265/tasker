@@ -62,7 +62,7 @@ class NotesDataSourceImpl implements NotesDataSource {
   @override
   Future<void> deleteNote({required String projectId}) async {
     try {
-      final response = await _network.delete(
+      await _network.delete(
         path: '$_notes/$projectId',
         options: await _network.getLocalRequestOptions(),
       );

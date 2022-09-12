@@ -8,6 +8,7 @@ import 'package:todo2/database/repository/task_attachment_repository.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/tasks_member_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/new_task.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_navigator.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_status.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
@@ -45,6 +46,7 @@ class _MyAppState extends State<MyApp> {
   late final ThemeDataService _themeDataController;
   late final NavigationController _navigationController;
   late final StatusBarController _statusBarController;
+
   @override
   void initState() {
     _navigationController = NavigationController();
@@ -88,9 +90,9 @@ class _MyAppState extends State<MyApp> {
             debugShowCheckedModeBanner: false,
             title: 'Todo2',
             theme: _themeDataController.themeData,
-            initialRoute: '/',
-            routes: routes,
-            // home: QuickPage(),
+            // initialRoute: '/',
+            // routes: routes,
+            home: AddTaskPage(),
           ),
         ),
       ),

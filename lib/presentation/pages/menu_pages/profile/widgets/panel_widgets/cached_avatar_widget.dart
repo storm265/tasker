@@ -37,17 +37,6 @@ class CachedAvatarWidget extends StatelessWidget {
                         child: addPhotoWidget,
                       ),
                     )),
-                errorWidget: (_, url, error) {
-                  log('errorWidget error $error');
-                  return SizedBox(
-                    width: double.parse(maxSize.toString()),
-                    height: double.parse(maxSize.toString()),
-                    child: const CircleAvatar(
-                      backgroundColor: Color(0xffC4C4C4),
-                      child: addPhotoWidget,
-                    ),
-                  );
-                },
               ),
       ),
     );
