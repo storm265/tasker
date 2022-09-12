@@ -1,6 +1,6 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/controller/new_note_controller.dart';
-
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/confirm_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/red_app_bar.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/title_widget.dart';
@@ -21,11 +21,6 @@ class AddQuickNote extends StatefulWidget {
 class _AddQuickNoteState extends State<AddQuickNote> {
   final _addNoteController = NewNoteController();
   final formKey = GlobalKey<FormState>();
-  @override
-  void initState() {
-    _addNoteController.isCreateMode();
-    super.initState();
-  }
 
   @override
   void dispose() {
@@ -38,6 +33,7 @@ class _AddQuickNoteState extends State<AddQuickNote> {
     final navigationController =
         NavigationInherited.of(context).navigationController;
     return AppbarWrapWidget(
+      resizeToAvoidBottomInset: false,
       isRedAppBar: true,
       title: 'Add Note',
       showLeadingButton: true,
@@ -47,7 +43,7 @@ class _AddQuickNoteState extends State<AddQuickNote> {
         children: [
           const FakeAppBar(),
           WhiteBoxWidget(
-            height: 500,
+            height: 600,
             child: Padding(
               padding: const EdgeInsets.all(30.0),
               child: Form(

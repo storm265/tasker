@@ -8,7 +8,6 @@ Future<void> showSettingsDialog({
   required BuildContext context,
   required ImageController imageController,
   required ProfileController profileController,
-  required VoidCallback updateState,
 }) async {
   await showDialog(
     context: context,
@@ -39,7 +38,7 @@ Future<void> showSettingsDialog({
                     case 0:
                       await imageController.updateAvatar(
                         context: context,
-                        callback: () => updateState(),
+                        profileController: profileController,
                       );
                       break;
                     case 1:

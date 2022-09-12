@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/repository/user_repository.dart';
+import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
@@ -99,27 +100,17 @@ class ImageController extends ChangeNotifier {
 
   Future<void> updateAvatar({
     required BuildContext context,
-    required VoidCallback callback,
+    required ProfileController profileController,
   }) async {
     try {
       await pickAvatar(context: context);
       if (isValidAvatar(context: context) && pickedFile.value.name.isNotEmpty) {
-        final url = await _secureStorageSource.getUserData(
-                type: StorageDataType.avatarUrl) ??
-            '';
-        await CachedNetworkImage.evictFromCache(url);
         log('image is valid!');
-        await uploadAvatar().then((_) {
-          callback();
-          MessageService.displaySnackbar(
-            context: context,
-            message: 'For apply new avatar restard app',
-          );
-          Navigator.pop(context);
-        });
+        await profileController.clearImage();
+        await uploadAvatar().then((_) => Navigator.pop(context));
       }
-    } catch (e) {
-      log('update img error : $e');
+    } catch (e, t) {
+      log('update img error : $e, $t');
       throw Failure(e.toString());
     }
   }

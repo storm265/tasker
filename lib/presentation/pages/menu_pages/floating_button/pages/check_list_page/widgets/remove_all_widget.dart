@@ -26,7 +26,7 @@ class RemoveAllItemsWidget extends StatelessWidget {
                 color: Colors.grey,
               ),
               Text(
-                'Clear list',
+                'Remove all items',
                 style: TextStyle(
                   fontWeight: FontWeight.w200,
                   fontSize: 16,

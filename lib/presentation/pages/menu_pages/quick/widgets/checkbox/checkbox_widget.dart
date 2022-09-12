@@ -9,6 +9,7 @@ import 'package:todo2/presentation/pages/menu_pages/quick/widgets/title_widget.d
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/slidable_widgets/endpane_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/slidable_widgets/grey_slidable_widget.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
+import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 class CheckboxWidget extends StatelessWidget {
@@ -26,49 +27,49 @@ class CheckboxWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Slidable(
-        key: const ValueKey(0),
-        endActionPane: ActionPane(
-          motion: const ScrollMotion(),
-          children: [
-            EndPageWidget(
-              icon: Icons.edit,
-              onClick: () async {
-                checkListController.pickEditData(
-                    checklistModel: checklistModel);
-                await navigationController.moveToPage(page: Pages.addCheckList);
-              },
-            ),
-            const GreySlidableWidget(),
-            EndPageWidget(
-              icon: Icons.delete,
-              onClick: () async {
-                await checkListController.deleteChecklist(
-                    checkListModel: checklistModel);
-                callback();
-              },
-            ),
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Container(
-            padding: const EdgeInsets.only(
-              left: 21,
-              bottom: 10,
-            ),
-            width: double.infinity,
-            decoration: shadowDecoration,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                ColorLineWidget(color: checklistModel.color),
-                TitleWidget(title: checklistModel.title),
-                CheckBoxWidget(data: checklistModel.items),
-              ],
-            ),
+    return Slidable(
+      key: const ValueKey(0),
+      endActionPane: ActionPane(
+        motion: const ScrollMotion(),
+        children: [
+          EndPageWidget(
+            icon: Icons.edit,
+            onClick: () async {
+              checkListController.pickEditData(checklistModel: checklistModel);
+              await navigationController.moveToPage(page: Pages.addCheckList);
+            },
+          ),
+          const GreySlidableWidget(),
+          EndPageWidget(
+            icon: Icons.delete,
+            onClick: () async {
+              await checkListController.deleteChecklist(
+                  checkListModel: checklistModel);
+              callback();
+            },
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Container(
+          decoration: shadowDecoration,
+          child: Stack(
+            children: [
+              ColorLineWidget(color: checklistModel.color),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 17,
+                  vertical: 8,
+                ),
+                child: Column(
+                  children: [
+                    TitleWidget(title: checklistModel.title),
+                    CheckBoxWidget(data: checklistModel.items),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),

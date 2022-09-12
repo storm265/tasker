@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/auth/welcome/widgets/wave_colors.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
+
+const List<Color> _shadowColor = [
+  Color(0xFFC84444),
+  Color(0xFF4C62F1),
+  Color(0xFF754BF8),
+];
 
 class GetStartedButton extends StatelessWidget {
   final int pageIndex;
@@ -26,7 +31,7 @@ class GetStartedButton extends StatelessWidget {
               color: Colors.white,
               boxShadow: <BoxShadow>[
                 BoxShadow(
-                  color: waveColors[pageIndex],
+                  color: _shadowColor[pageIndex],
                   blurRadius: 10,
                   offset: const Offset(10, 10),
                 ),

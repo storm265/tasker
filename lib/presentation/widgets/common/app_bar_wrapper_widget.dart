@@ -35,7 +35,7 @@ class AppbarWrapWidget extends StatelessWidget with PreferredSizeWidget {
   final bool? isWhite;
   final bool? isPopFromNavBar;
   final Pages navRoute;
-
+final bool? resizeToAvoidBottomInset;
   const AppbarWrapWidget({
     Key? key,
     this.floatingActionButton,
@@ -51,6 +51,7 @@ class AppbarWrapWidget extends StatelessWidget with PreferredSizeWidget {
     this.isWhite,
     this.isPopFromNavBar,
     this.navRoute = Pages.tasks,
+    this.resizeToAvoidBottomInset,
   }) : super(key: key);
 
   @override
@@ -62,6 +63,7 @@ class AppbarWrapWidget extends StatelessWidget with PreferredSizeWidget {
         NavigationInherited.of(context).navigationController;
     return WillPopWrap(
       child: Scaffold(
+        resizeToAvoidBottomInset: resizeToAvoidBottomInset,
         floatingActionButton: floatingActionButton,
         floatingActionButtonLocation: floatingActionButtonLocation,
         backgroundColor:

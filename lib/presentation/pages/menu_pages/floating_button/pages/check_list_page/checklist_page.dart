@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/controller/check_list_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/widgets/add_item_button.dart';
@@ -28,12 +30,6 @@ class _CheckListPageState extends State<CheckListPage> {
   final _checkListController = CheckListController();
 
   @override
-  void initState() {
-    _checkListController.isCreateMode();
-    super.initState();
-  }
-
-  @override
   void dispose() {
     _checkListController.clearData();
     super.dispose();
@@ -45,6 +41,7 @@ class _CheckListPageState extends State<CheckListPage> {
     final navigationController =
         NavigationInherited.of(context).navigationController;
     return AppbarWrapWidget(
+      resizeToAvoidBottomInset: false,
       navRoute: Pages.quick,
       isRedAppBar: true,
       title: 'Add Check List',
@@ -66,6 +63,7 @@ class _CheckListPageState extends State<CheckListPage> {
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       key: _checkListController.formKey,
                       child: TitleWidget(
+                        textInputType: TextInputType.multiline,
                         maxLength: 256,
                         textController: _checkListController.titleController,
                         title: 'Title',
@@ -99,12 +97,13 @@ class _CheckListPageState extends State<CheckListPage> {
                         _scrollController.animateTo(
                           _scrollController.position.maxScrollExtent + 20,
                           duration: const Duration(milliseconds: 500),
-                          curve: Curves.easeInCirc,
+                          curve: Curves.easeIn,
                         );
                       }),
                       RemoveAllItemsWidget(
-                          onPressed: () =>
-                              _checkListController.removeAllCheckboxItems())
+                        onPressed: () async =>
+                            await _checkListController.removeAllCheckboxItems(),
+                      )
                     ],
                   ),
                   Column(
@@ -129,12 +128,6 @@ class _CheckListPageState extends State<CheckListPage> {
                                             navigationController:
                                                 navigationController,
                                             context: context,
-                                            color: colors[_checkListController
-                                                .colorPalleteController
-                                                .selectedIndex
-                                                .value],
-                                            title: _checkListController
-                                                .titleController.text,
                                           );
                                         }
                                       : null,

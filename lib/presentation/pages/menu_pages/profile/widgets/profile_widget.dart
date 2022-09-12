@@ -64,8 +64,6 @@ class _ProfileWidgetState extends State<ProfileWidget>
                   context: context,
                   profileController: widget.profileController,
                   imageController: widget.imageController,
-                  updateState: () async =>
-                      await fetchData().then((_) => setState(() {})),
                 ),
                 icon: RotationTransition(
                   turns: Tween(begin: 0.0, end: 1.0).animate(
@@ -78,8 +76,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 UserDataWidget(
-                  imageHeader: widget.profileController.imageHeader,
-                  imageUrl: widget.profileController.imageUrl,
+                  profileController: widget.profileController,
                   email: widget.profileController.email,
                   username: widget.profileController.username,
                 ),

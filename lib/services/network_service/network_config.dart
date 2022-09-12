@@ -93,11 +93,13 @@ class NetworkSource {
   Future<Response<dynamic>> delete({
     required String path,
     Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? data,
     Options? options,
   }) async {
     return _dio.delete(
       path,
       queryParameters: queryParameters,
+      data: data,
       options: options,
     );
   }

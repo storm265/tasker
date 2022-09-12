@@ -13,16 +13,12 @@ class TitleWidget extends StatelessWidget {
       alignment: Alignment.centerLeft,
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 12),
-        child: SizedBox(
-          width: double.infinity,
-          height: 20,
-          child: Text(
-            title,
-            style: const TextStyle(
-              fontWeight: FontWeight.w200,
-              fontSize: 16,
-              fontStyle: FontStyle.italic,
-            ),
+        child: Text(
+          title,
+          style: const TextStyle(
+            fontWeight: FontWeight.w200,
+            fontSize: 16,
+            fontStyle: FontStyle.italic,
           ),
         ),
       ),

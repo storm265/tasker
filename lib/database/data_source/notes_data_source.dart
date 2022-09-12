@@ -45,7 +45,7 @@ class NotesDataSourceImpl implements NotesDataSource {
   }) async {
     try {
       final id = await _secureStorage.getUserData(type: StorageDataType.id);
-      final response = await _network.post(
+      await _network.post(
         path: _notes,
         data: {
           NotesScheme.description: description,
@@ -54,9 +54,6 @@ class NotesDataSourceImpl implements NotesDataSource {
         },
         options: await _network.getLocalRequestOptions(useContentType: true),
       );
-      log('createNote ${response.data}');
-      log('createNote ${response.statusCode}');
-      log('createNote ${response.statusMessage}');
     } catch (e) {
       throw Failure(e.toString());
     }
@@ -69,7 +66,6 @@ class NotesDataSourceImpl implements NotesDataSource {
         path: '$_notes/$projectId',
         options: await _network.getLocalRequestOptions(),
       );
-      log('deleteNote ${response.data}');
     } catch (e) {
       throw Failure(e.toString());
     }
@@ -102,9 +98,6 @@ class NotesDataSourceImpl implements NotesDataSource {
     required Color color,
   }) async {
     try {
-      log('model: ${noteModel.id}');
-      log('model: ${noteModel.description}');
-
       final ownerId =
           await _secureStorage.getUserData(type: StorageDataType.id);
       final response = await _network.put(
@@ -117,7 +110,8 @@ class NotesDataSourceImpl implements NotesDataSource {
         },
         options: await _network.getLocalRequestOptions(useContentType: true),
       );
-      log('createNote ${response.data}');
+      log('updateNote ${response.statusMessage}');
+      log('updateNote ${response.statusCode}');
     } catch (e) {
       throw Failure(e.toString());
     }
@@ -130,7 +124,6 @@ class NotesDataSourceImpl implements NotesDataSource {
   //       '$_notes/$projectId',
   //       options: await _network.getLocalRequestOptions(),
   //     );
-  //     log('deleteNote ${response.data}');
   //     return NetworkErrorService.isSuccessful(response)
   //         ? (response.data[NotesScheme.data] as Map<String, dynamic>)
   //         : throw Failure(

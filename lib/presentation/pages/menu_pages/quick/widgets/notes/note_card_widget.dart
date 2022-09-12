@@ -14,7 +14,7 @@ class NoteCardWidget extends StatelessWidget {
   final NotesModel notesModel;
   final VoidCallback callback;
   final NewNoteController noteController;
- const  NoteCardWidget({
+  const NoteCardWidget({
     Key? key,
     required this.notesModel,
     required this.navigationController,
@@ -68,32 +68,26 @@ class NoteCardWidget extends StatelessWidget {
         ],
       ),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(12.0),
         child: Container(
-          padding: const EdgeInsets.only(
-            left: 30,
-            bottom: 10,
-          ),
-          width: double.infinity,
           decoration: shadowDecoration,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+          child: Stack(
             children: [
               ColorLineWidget(color: notesModel.color),
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 10),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    notesModel.description,
-                    style: TextStyle(
-                      decoration: notesModel.isCompleted
-                          ? TextDecoration.lineThrough
-                          : null,
-                      fontWeight: FontWeight.w200,
-                      fontSize: 16,
-                      fontStyle: FontStyle.italic,
-                    ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 17,
+                  vertical: 8,
+                ),
+                child: Text(
+                  notesModel.description,
+                  style: TextStyle(
+                    decoration: notesModel.isCompleted
+                        ? TextDecoration.lineThrough
+                        : null,
+                    fontWeight: FontWeight.w200,
+                    fontSize: 16,
+                    fontStyle: FontStyle.italic,
                   ),
                 ),
               ),

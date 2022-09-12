@@ -6,14 +6,14 @@ class AddTextFieldWidget extends StatelessWidget {
   final VoidCallback? onTap;
   final VoidCallback? onEdiditionCompleteCallback;
   final int maxLength;
-  final int maxLines;
+  final int? maxLines;
   final TextInputType? textInputType;
   const AddTextFieldWidget({
     Key? key,
     required this.titleController,
     this.onTap,
     this.maxLength = 32,
-    this.maxLines = 5,
+    this.maxLines,
     this.textInputType,
     this.onEdiditionCompleteCallback,
     this.hintText,

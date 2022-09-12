@@ -24,7 +24,6 @@ class QuickController extends ChangeNotifier {
   final linkedModels = ValueNotifier<List<dynamic>>([]);
 
   Future<void> fetchList() async {
-    log('fetchList run!');
     final responce = await Future.wait([
       noteController.fetchUserNotes(),
       checkListController.fetchAllCheckLists(),

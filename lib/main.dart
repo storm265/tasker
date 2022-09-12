@@ -50,7 +50,6 @@ class _MyAppState extends State<MyApp> {
     _navigationController = NavigationController();
     _navigationController.pageController = PageController(initialPage: 0);
     _navigationController.pageIndex = ValueNotifier<int>(0);
-
     _statusBarController = StatusBarController();
     _newTaskConroller = AddTaskController(
       tasksMembers: TasksMembersRepositoryImpl(),

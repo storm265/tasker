@@ -17,7 +17,6 @@ class NewNoteController extends ChangeNotifier {
   static final NewNoteController _instance = NewNoteController._internal();
 
   factory NewNoteController() {
-    log('NewNoteController createe');
     return _instance;
   }
 
@@ -38,7 +37,6 @@ class NewNoteController extends ChangeNotifier {
 
   final isEdit = ValueNotifier(false);
 
-
   final _pickedModel = ValueNotifier(
     NotesModel(
       id: '',
@@ -55,17 +53,17 @@ class NewNoteController extends ChangeNotifier {
     isEdit.notifyListeners();
   }
 
-  bool isCreateMode() {
-    if (descriptionTextController.text.isEmpty) {
-      log('its create mode;');
-      changeEditValueStatus(false);
-      return true;
-    } else {
-      log('its edit mode;');
-      changeEditValueStatus(true);
-      return false;
-    }
-  }
+  // bool isCreateMode() {
+  //   if (descriptionTextController.text.isEmpty) {
+  //     log('its create mode;');
+  //     changeEditValueStatus(false);
+  //     return true;
+  //   } else {
+  //     log('its edit mode;');
+  //     changeEditValueStatus(true);
+  //     return false;
+  //   }
+  // }
 
   void changeClickedButtonValueStatus({required bool newValue}) {
     isButtonClicked.value = newValue;
@@ -73,11 +71,13 @@ class NewNoteController extends ChangeNotifier {
   }
 
   void clearData() {
+    changeEditValueStatus(false);
     descriptionTextController.clear();
     colorPalleteController.changeSelectedIndex(99);
   }
 
   void pickEditData({required NotesModel notesModel}) {
+    changeEditValueStatus(true);
     _pickedModel.value = notesModel;
     _pickedModel.notifyListeners();
     for (int i = 0; i < colors.length; i++) {
@@ -98,17 +98,16 @@ class NewNoteController extends ChangeNotifier {
       if (formKey.currentState!.validate() &&
           !colorPalleteController.isNotPickerColor) {
         changeClickedButtonValueStatus(newValue: false);
+        log('isEdit $isEdit');
+        isEdit.value
+            ? await updateNote()
+            : await _addNoteRepository.createNote(
+                color: colors[colorPalleteController.selectedIndex.value],
+                description: descriptionTextController.text,
+              );
+        await quickController.fetchList();
 
-        if (isCreateMode()) {
-          log('is edit mode');
-          await updateNote();
-        } else {
-          await _addNoteRepository.createNote(
-            color: colors[colorPalleteController.selectedIndex.value],
-            description: descriptionTextController.text,
-          );
-        }
-       await quickController.fetchList();
+        clearData();
         await navigationController.moveToPage(page: Pages.quick);
         changeClickedButtonValueStatus(newValue: true);
       }

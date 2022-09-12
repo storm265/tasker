@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/widgets/panel_widgets/cached_avatar_widget.dart';
 
 class UserDataWidget extends StatelessWidget {
-  final String imageUrl;
-  final Map<String, String> imageHeader;
+  final ProfileController profileController;
   final String email;
   final String username;
 
   const UserDataWidget({
     Key? key,
-    required this.imageHeader,
-    required this.imageUrl,
+    required this.profileController,
     required this.email,
     required this.username,
   }) : super(key: key);
@@ -22,8 +21,7 @@ class UserDataWidget extends StatelessWidget {
       children: [
         const SizedBox(width: 30),
         CachedAvatarWidget(
-          imageHeader: imageHeader,
-          imageUrl: imageUrl,
+          profileController: profileController,
         ),
         const SizedBox(width: 15),
         Flexible(

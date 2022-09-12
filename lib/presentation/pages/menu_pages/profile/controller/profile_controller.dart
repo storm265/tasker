@@ -1,4 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:todo2/database/database_scheme/env_scheme.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
@@ -21,14 +23,24 @@ class ProfileController extends ChangeNotifier {
 
   late String username = '';
   late Map<String, String> imageHeader = {};
-  late String imageUrl = '';
+  final imageUrl = ValueNotifier<String>('');
   late String email = '';
   late AnimationController iconAnimationController;
 
+  Future<void> clearImage() async {
+    final url = await _secureStorageService.getUserData(
+            type: StorageDataType.avatarUrl) ??
+        '';
+    await CachedNetworkImage.evictFromCache(url);
+    imageUrl.value = url;
+    imageUrl.notifyListeners();
+  }
+
   Future<void> fetchProfileInfo() async {
     try {
-      imageUrl =
+      imageUrl.value =
           '${dotenv.env[EnvScheme.apiUrl]}/users-avatar/${await getAvatarLink()}';
+      imageUrl.notifyListeners();
       imageHeader = await getAvatarHeader();
 
       email = await _secureStorageService.getUserData(

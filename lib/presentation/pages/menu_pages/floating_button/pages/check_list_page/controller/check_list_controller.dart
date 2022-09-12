@@ -15,15 +15,14 @@ import 'package:todo2/storage/secure_storage_service.dart';
 
 class CheckListController extends ChangeNotifier {
   static final CheckListController _instance = CheckListController._internal();
-  
+
   factory CheckListController() {
-      log('CheckListController createe');
+    log('CheckListController createe');
     return _instance;
   }
 
   CheckListController._internal();
 
-  
   final _checkListRepository = CheckListRepositoryImpl(
       checkListsDataSource: CheckListsDataSourceImpl(
     network: NetworkSource(),
@@ -64,18 +63,22 @@ class CheckListController extends ChangeNotifier {
   }
 
   void clearData() {
+    changeEditValueStatus(false);
     colorPalleteController.changeSelectedIndex(99);
     checkBoxItems.value.clear();
     checkBoxItems.notifyListeners();
     titleController.clear();
   }
 
-  void removeAllCheckboxItems() async {
-    if (isCreateMode()) {
-      await deleteChecklistItems(items: checkBoxItems.value);
-      checkBoxItems.value.clear();
-    } else {
-      checkBoxItems.value.clear();
+  Future<void> removeAllCheckboxItems() async {
+    for (var i = 0; i < checkBoxItems.value.length; i++) {
+      if (checkBoxItems.value[i][CheckListItemsScheme.id] == null) {
+        checkBoxItems.value.removeAt(i);
+      } else {
+        await deleteChecklistItems(items: checkBoxItems.value)
+            .then((_) => checkBoxItems.value.clear());
+        break;
+      }
     }
     checkBoxItems.notifyListeners();
   }
@@ -86,6 +89,7 @@ class CheckListController extends ChangeNotifier {
   }
 
   void pickEditData({required CheckListModel checklistModel}) {
+    changeEditValueStatus(true);
     pickModel(checklistModel: checklistModel);
     for (int i = 0; i < colors.length; i++) {
       if (colors[i] == checklistModel.color) {
@@ -104,18 +108,6 @@ class CheckListController extends ChangeNotifier {
     checkBoxItems.notifyListeners();
   }
 
-  bool isCreateMode() {
-    if (titleController.text.isEmpty) {
-      log('is create mode');
-      changeEditValueStatus(false);
-      return true;
-    } else {
-      log('is edit mode');
-      changeEditValueStatus(true);
-      return false;
-    }
-  }
-
   void addCheckboxItem(int index) {
     checkBoxItems.value.add({
       CheckListItemsScheme.id: null,
@@ -129,8 +121,6 @@ class CheckListController extends ChangeNotifier {
 
   Future<void> tryValidateCheckList({
     required BuildContext context,
-    required String title,
-    required Color color,
     List<Map<String, dynamic>>? items,
     required NavigationController navigationController,
   }) async {
@@ -139,17 +129,15 @@ class CheckListController extends ChangeNotifier {
           !colorPalleteController.isNotPickerColor) {
         changeIsClickedValueStatus(false);
 
-        if (isCreateMode()) {
-          log('edit ');
-          await createCheckList(
-            title: title,
-            color: color,
-            items: checkBoxItems.value,
-          );
-        } else {
-          await updateCheckList();
-        }
-       await quickController.fetchList();
+        isEdit.value
+            ? await updateCheckList()
+            : await createCheckList(
+                title: titleController.text,
+                color: colors[colorPalleteController.selectedIndex.value],
+                items: checkBoxItems.value,
+              );
+
+        await quickController.fetchList();
         await navigationController.moveToPage(page: Pages.quick);
 
         clearData();
@@ -250,12 +238,11 @@ class CheckListController extends ChangeNotifier {
   }
 
   void removeCheckboxItem(int index) async {
-    if (isEdit.value) {
+    if (checkBoxItems.value[index][CheckListItemsScheme.id] == null) {
+      checkBoxItems.value.removeAt(index);
+    } else {
       await deleteChecklistItem(
           checklistItemId: checkBoxItems.value[index][CheckListItemsScheme.id]);
-      checkBoxItems.value.removeAt(index);
-      log('removed future item');
-    } else {
       checkBoxItems.value.removeAt(index);
     }
     checkBoxItems.notifyListeners();

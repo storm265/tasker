@@ -13,7 +13,6 @@ dependencies:
   connectivity_plus:
   intl:
   cached_network_image: 
-  # flutter_cache_manager: ^3.3.0
   percent_indicator:
   flutter_slidable:
   file_picker:

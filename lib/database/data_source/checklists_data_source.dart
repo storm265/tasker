@@ -61,7 +61,6 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
         },
         options: await _network.getLocalRequestOptions(useContentType: true),
       );
-
       log('createCheckList ${response.statusCode}');
     } catch (e) {
       throw Failure(e.toString());
@@ -89,8 +88,7 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
         },
         options: await _network.getLocalRequestOptions(useContentType: true),
       );
-      log('updateCheckList ${response.data}');
-      log('updateCheckList ${response.statusMessage}');
+      log('updateCheckList ${response.statusCode}');
     } catch (e) {
       throw Failure(e.toString());
     }
@@ -103,8 +101,7 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
         path: '$_checklistsItems/$checkListId',
         options: await _network.getLocalRequestOptions(),
       );
-      log('deleteCheckList ${response.data}');
-      log('deleteCheckList ${response.statusMessage}');
+      log('deleteCheckList ${response.statusCode}');
     } catch (e) {
       throw Failure(e.toString());
     }
@@ -115,8 +112,8 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
     try {
       final response = await _network.delete(
         path: _checklistsItems,
-        queryParameters: {
-          CheckListsScheme.items: items ?? {[]},
+        data: {
+          CheckListsScheme.items: items ?? {},
         },
         options: await _network.getLocalRequestOptions(useContentType: true),
       );
@@ -135,8 +132,7 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
         path: '$_checklists/${checkListModel.id}',
         options: await _network.getLocalRequestOptions(),
       );
-      log('deleteCheckList ${response.data}');
-      log('deleteCheckList ${response.statusMessage}');
+      log('deleteCheckList ${response.statusCode}');
     } catch (e) {
       throw Failure(e.toString());
     }
