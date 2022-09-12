@@ -17,6 +17,7 @@ class NewNoteController extends ChangeNotifier {
   static final NewNoteController _instance = NewNoteController._internal();
 
   factory NewNoteController() {
+    log('NewNoteController createe');
     return _instance;
   }
 
@@ -35,11 +36,8 @@ class NewNoteController extends ChangeNotifier {
 
   final isButtonClicked = ValueNotifier(true);
 
-  final formKey = GlobalKey<FormState>();
-
   final isEdit = ValueNotifier(false);
 
-  final _quickController = QuickController();
 
   final _pickedModel = ValueNotifier(
     NotesModel(
@@ -94,6 +92,7 @@ class NewNoteController extends ChangeNotifier {
   Future<void> tryValidateNote({
     required BuildContext context,
     required NavigationController navigationController,
+    required GlobalKey<FormState> formKey,
   }) async {
     try {
       if (formKey.currentState!.validate() &&
@@ -109,7 +108,7 @@ class NewNoteController extends ChangeNotifier {
             description: descriptionTextController.text,
           );
         }
-        await _quickController.fetchList();
+       await quickController.fetchList();
         await navigationController.moveToPage(page: Pages.quick);
         changeClickedButtonValueStatus(newValue: true);
       }

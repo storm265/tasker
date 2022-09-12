@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:todo2/database/model/notes_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/controller/new_note_controller.dart';
-
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/color_line_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/shadow_decoration.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/slidable_widgets/endpane_widget.dart';
@@ -14,13 +13,15 @@ class NoteCardWidget extends StatelessWidget {
   final NavigationController navigationController;
   final NotesModel notesModel;
   final VoidCallback callback;
-  NoteCardWidget({
+  final NewNoteController noteController;
+ const  NoteCardWidget({
     Key? key,
     required this.notesModel,
     required this.navigationController,
     required this.callback,
+    required this.noteController,
   }) : super(key: key);
-  final _noteController = NewNoteController();
+
   @override
   Widget build(BuildContext context) {
     return Slidable(
@@ -38,7 +39,7 @@ class NoteCardWidget extends StatelessWidget {
                   icon: Icons.done,
                   color: Colors.green,
                   onClick: () async {
-                    await _noteController.updateAsDone(
+                    await noteController.updateAsDone(
                       pickedModel: notesModel,
                       context: context,
                     );
@@ -49,7 +50,7 @@ class NoteCardWidget extends StatelessWidget {
           EndPageWidget(
             icon: Icons.edit,
             onClick: () async {
-              _noteController.pickEditData(notesModel: notesModel);
+              noteController.pickEditData(notesModel: notesModel);
               await navigationController.moveToPage(page: Pages.addNote);
             },
           ),
@@ -57,7 +58,7 @@ class NoteCardWidget extends StatelessWidget {
           EndPageWidget(
             icon: Icons.delete,
             onClick: () async {
-              await _noteController.deleteNote(
+              await noteController.deleteNote(
                 notesModel: notesModel,
                 context: context,
               );

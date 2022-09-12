@@ -10,6 +10,7 @@ import 'package:todo2/presentation/pages/menu_pages/menu/widgets/add_project_but
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/project_item_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/project_shimmer_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
+import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
@@ -68,7 +69,7 @@ class MenuPageState extends State<MenuPage> {
           child: ValueListenableBuilder<List<ProjectModel>>(
             valueListenable: _projectController.projects,
             builder: ((__, projectsList, _) => (projectsList.isEmpty)
-                ? const Center(child: Text('No projects'))
+                ?  const ProgressIndicatorWidget(text: 'No data')
                 : GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),

@@ -17,6 +17,7 @@ class CheckListController extends ChangeNotifier {
   static final CheckListController _instance = CheckListController._internal();
   
   factory CheckListController() {
+      log('CheckListController createe');
     return _instance;
   }
 
@@ -28,8 +29,6 @@ class CheckListController extends ChangeNotifier {
     network: NetworkSource(),
     secureStorage: SecureStorageSource(),
   ));
-
-  final _quickController = QuickController();
 
   final TextEditingController titleController = TextEditingController();
 
@@ -150,7 +149,7 @@ class CheckListController extends ChangeNotifier {
         } else {
           await updateCheckList();
         }
-        await _quickController.fetchList();
+       await quickController.fetchList();
         await navigationController.moveToPage(page: Pages.quick);
 
         clearData();

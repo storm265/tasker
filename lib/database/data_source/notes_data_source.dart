@@ -87,8 +87,6 @@ class NotesDataSourceImpl implements NotesDataSource {
         },
         options: await _network.getLocalRequestOptions(useContentType: true),
       );
-      debugPrint('fetchUserNotes ${response.data}');
-
       return NetworkErrorService.isSuccessful(response)
           ? (response.data![NotesScheme.data] as List<dynamic>)
           : throw Failure('Error: Get project error');

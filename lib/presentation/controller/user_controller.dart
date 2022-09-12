@@ -11,9 +11,9 @@ class UserController {
   StatsModel stats = StatsModel(
     createdTasks: 0,
     completedTasks: 0,
-    events: 'events',
-    quickNotes: 'quickNotes',
-    todo: 'todo',
+    events: '1%',
+    quickNotes: '1%',
+    todo: '1%',
   );
 
   Future<void> fetchStats() async {

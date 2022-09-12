@@ -20,6 +20,7 @@ class AddQuickNote extends StatefulWidget {
 
 class _AddQuickNoteState extends State<AddQuickNote> {
   final _addNoteController = NewNoteController();
+  final formKey = GlobalKey<FormState>();
   @override
   void initState() {
     _addNoteController.isCreateMode();
@@ -50,7 +51,7 @@ class _AddQuickNoteState extends State<AddQuickNote> {
             child: Padding(
               padding: const EdgeInsets.all(30.0),
               child: Form(
-                key: _addNoteController.formKey,
+                key: formKey,
                 child: Column(
                   children: [
                     TitleWidget(
@@ -77,6 +78,7 @@ class _AddQuickNoteState extends State<AddQuickNote> {
                                     onPressed: isClicked
                                         ? () async =>
                                             _addNoteController.tryValidateNote(
+                                              formKey: formKey,
                                               context: context,
                                               navigationController:
                                                   navigationController,

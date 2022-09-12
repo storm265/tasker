@@ -51,7 +51,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   void initState() {
-    userController.fetchStats();
+    userController.fetchStats().then((_) => setState(() {}));
     super.initState();
   }
 

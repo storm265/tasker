@@ -15,13 +15,15 @@ class CheckboxWidget extends StatelessWidget {
   final CheckListModel checklistModel;
   final NavigationController navigationController;
   final VoidCallback callback;
-  CheckboxWidget({
+  final CheckListController checkListController;
+  const CheckboxWidget({
     Key? key,
     required this.checklistModel,
     required this.navigationController,
     required this.callback,
+    required this.checkListController,
   }) : super(key: key);
-  final checkListController = CheckListController();
+
   @override
   Widget build(BuildContext context) {
     return Padding(
