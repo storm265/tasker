@@ -76,16 +76,14 @@ class NoteCardWidget extends StatelessWidget {
             children: [
               ColorLineWidget(color: notesModel.color),
               Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 17,
-                  vertical: 8,
-                ),
+                padding: const EdgeInsets.all(16),
                 child: Text(
                   notesModel.description,
                   style: TextStyle(
                     decoration: notesModel.isCompleted
                         ? TextDecoration.lineThrough
                         : null,
+                    overflow: TextOverflow.ellipsis,
                     fontWeight: FontWeight.w200,
                     fontSize: 16,
                     fontStyle: FontStyle.italic,

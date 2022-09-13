@@ -90,25 +90,27 @@ class _CheckBoxWidgetState extends State<CheckBoxWidget> {
                   ),
                 ),
               )
-            : GestureDetector(
-                child: Text(
-                  widget.checkBoxController.checkBoxItems.value[widget.index]
-                      [CheckListItemsScheme.content],
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xFF313131),
+            : Expanded(
+                child: GestureDetector(
+                  child: SelectableText(
+                    widget.checkBoxController.checkBoxItems.value[widget.index]
+                        [CheckListItemsScheme.content],
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xFF313131),
+                    ),
                   ),
+                  onTap: () =>
+                      setState(() => widget.isClicked = !widget.isClicked),
                 ),
-                onTap: () =>
-                    setState(() => widget.isClicked = !widget.isClicked),
               ),
         Padding(
           padding: const EdgeInsets.only(left: 20),
-          child: IconButton(
-            onPressed: () =>
+          child: GestureDetector(
+            onTap: () =>
                 widget.checkBoxController.removeCheckboxItem(widget.index),
-            icon: const Icon(
+            child: const Icon(
               Icons.delete,
               color: darkGrey,
             ),

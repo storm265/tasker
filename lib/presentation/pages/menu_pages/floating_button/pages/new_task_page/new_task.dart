@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/add_member_widget/add_member_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/description_field_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/for_in_field_widget.dart';
@@ -14,6 +15,11 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/whit
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 
+class MyMode {
+  int id;
+  DateTime date;
+  MyMode({required this.id, required this.date});
+}
 
 class AddTaskPage extends StatefulWidget {
   const AddTaskPage({Key? key}) : super(key: key);
@@ -32,15 +38,29 @@ class _AddTaskPageState extends State<AddTaskPage> {
     descriptionController.dispose();
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     final newTaskController =
         InheritedNewTaskController.of(context).addTaskController;
     return AppbarWrapWidget(
       title: 'New Task',
+      resizeToAvoidBottomInset: false,
       showLeadingButton: true,
       isPopFromNavBar: true,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          List<MyMode> numbers = [
+            MyMode(id: 5, date: DateTime.utc(2022, 11, 01)),
+            MyMode(id: 9, date: DateTime.utc(2022, 01, 01)),
+            MyMode(id: 1, date: DateTime.utc(2022, 04, 04)),
+            MyMode(id: 3, date: DateTime.utc(2022, 05, 11)),
+          ];
+          numbers.sort((a, b) => b.date.compareTo(a.date));
+          for (var i = 0; i < numbers.length; i++) {
+            print(numbers[i].date);
+          }
+        },
+      ),
       child: Stack(
         children: [
           const FakeAppBar(),

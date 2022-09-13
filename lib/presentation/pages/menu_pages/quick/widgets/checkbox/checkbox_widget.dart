@@ -57,10 +57,7 @@ class CheckboxWidget extends StatelessWidget {
             children: [
               ColorLineWidget(color: checklistModel.color),
               Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 17,
-                  vertical: 8,
-                ),
+                padding: const EdgeInsets.all(16),
                 child: Column(
                   children: [
                     TitleWidget(title: checklistModel.title),

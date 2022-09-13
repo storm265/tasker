@@ -5,7 +5,7 @@ class CheckListItemModel {
   final String content;
   final bool isCompleted;
   final String? checklistId;
-  final String? createdAt;
+  final DateTime createdAt;
   CheckListItemModel({
     required this.checklistId,
     required this.content,
@@ -19,6 +19,6 @@ class CheckListItemModel {
         isCompleted: json[CheckListItemsScheme.isCompleted],
         id: json[CheckListItemsScheme.id],
         checklistId: json[CheckListItemsScheme.checklistId],
-        createdAt: json[CheckListItemsScheme.createdAt],
+        createdAt: DateTime.parse(json[CheckListItemsScheme.createdAt]),
       );
 }

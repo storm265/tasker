@@ -51,7 +51,6 @@ class NotesDataSourceImpl implements NotesDataSource {
           NotesScheme.description: description,
           NotesScheme.color: color.toString().toStringColor(),
           NotesScheme.ownerId: id,
-          NotesScheme.createdAt: DateTime.now().toUtc().toIso8601String(),
         },
         options: await _network.getLocalRequestOptions(useContentType: true),
       );

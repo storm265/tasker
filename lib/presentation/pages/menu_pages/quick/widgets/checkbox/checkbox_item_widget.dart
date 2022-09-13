@@ -37,15 +37,17 @@ class CheckBoxWidget extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 10),
-                    Text(
-                      data[index].content,
-                      style: TextStyle(
-                        fontSize: 16,
-                        decoration: data[index].isCompleted
-                            ? TextDecoration.lineThrough
-                            : null,
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.w500,
+                    Expanded(
+                      child: Text(
+                        data[index].content,
+                        style: TextStyle(
+                          fontSize: 16,
+                          decoration: data[index].isCompleted
+                              ? TextDecoration.lineThrough
+                              : null,
+                          fontStyle: FontStyle.normal,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     )
                   ],

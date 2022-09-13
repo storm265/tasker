@@ -60,7 +60,6 @@ class ProjectUserDataImpl implements ProjectUserData {
           ProjectDataScheme.title: title,
           ProjectDataScheme.color: '$color'.toStringColor(),
           ProjectDataScheme.ownerId: ownerId,
-          ProjectDataScheme.createdAt: DateTime.now().toUtc().toIso8601String(),
         },
         options: await _network.getLocalRequestOptions(useContentType: true),
       );
