@@ -44,7 +44,7 @@ class NewNoteController extends ChangeNotifier {
       color: Colors.red,
       description: '',
       ownerId: '',
-      createdAt: '',
+      createdAt: DateTime(2022),
     ),
   );
 
@@ -52,18 +52,6 @@ class NewNoteController extends ChangeNotifier {
     isEdit.value = status;
     isEdit.notifyListeners();
   }
-
-  // bool isCreateMode() {
-  //   if (descriptionTextController.text.isEmpty) {
-  //     log('its create mode;');
-  //     changeEditValueStatus(false);
-  //     return true;
-  //   } else {
-  //     log('its edit mode;');
-  //     changeEditValueStatus(true);
-  //     return false;
-  //   }
-  // }
 
   void changeClickedButtonValueStatus({required bool newValue}) {
     isButtonClicked.value = newValue;
@@ -90,7 +78,6 @@ class NewNoteController extends ChangeNotifier {
   }
 
   Future<void> tryValidateNote({
-    required BuildContext context,
     required NavigationController navigationController,
     required GlobalKey<FormState> formKey,
   }) async {
@@ -105,15 +92,15 @@ class NewNoteController extends ChangeNotifier {
                 color: colors[colorPalleteController.selectedIndex.value],
                 description: descriptionTextController.text,
               );
-        await quickController.fetchList();
+       await quickController.fetchList();
 
-        clearData();
-        await navigationController.moveToPage(Pages.quick);
-        changeClickedButtonValueStatus(newValue: true);
+       clearData();
+       await navigationController.moveToPage(Pages.quick);
+       changeClickedButtonValueStatus(newValue: true);
       }
-    } catch (e) {
-      log('tryValidateNote $e');
-      MessageService.displaySnackbar(message: e.toString(), context: context);
+    } catch (e, t) {
+      log('tryValidateNote $e, $t');
+      throw Failure(e.toString());
     }
   }
 

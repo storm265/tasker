@@ -7,7 +7,7 @@ class CheckListModel {
   String id;
   String title;
   Color color;
-  String createdAt;
+  DateTime createdAt;
   String ownerId;
   List<CheckListItemModel> items;
 
@@ -28,7 +28,7 @@ class CheckListModel {
               json[CheckListsScheme.color].toString().replaceColorSymbol()),
         ),
         ownerId: json[CheckListsScheme.ownerId],
-        createdAt: json[CheckListsScheme.createdAt],
+        createdAt: DateTime.parse(json[CheckListsScheme.createdAt]),
         items: (json[CheckListsScheme.items] as List<dynamic>)
             .map((e) => CheckListItemModel.fromJson(e))
             .toList(),
@@ -38,7 +38,7 @@ class CheckListModel {
     String? id,
     String? title,
     Color? color,
-    String? createdAt,
+    DateTime? createdAt,
     String? ownerId,
     List<CheckListItemModel>? items,
   }) =>

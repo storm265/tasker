@@ -76,7 +76,6 @@ class _AddQuickNoteState extends State<AddQuickNote> {
                                         ? () async =>
                                             _addNoteController.tryValidateNote(
                                               formKey: formKey,
-                                              context: context,
                                               navigationController:
                                                   navigationController,
                                             )

@@ -43,7 +43,7 @@ class CheckListController extends ChangeNotifier {
       title: '',
       color: Colors.red,
       ownerId: '',
-      createdAt: '',
+      createdAt: DateTime(2022),
       items: [],
     ),
   );

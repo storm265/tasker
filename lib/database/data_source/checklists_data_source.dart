@@ -59,6 +59,7 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
           CheckListsScheme.color: color.toString().toStringColor(),
           CheckListsScheme.ownerId: id,
           CheckListsScheme.items: items,
+          CheckListsScheme.createdAt:DateTime.now().toUtc().toIso8601String(),
         },
         options: await _network.getLocalRequestOptions(useContentType: true),
       );

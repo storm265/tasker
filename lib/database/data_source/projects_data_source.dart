@@ -52,13 +52,15 @@ class ProjectUserDataImpl implements ProjectUserData {
     required String title,
   }) async {
     try {
+      final ownerId =
+          await _secureStorageService.getUserData(type: StorageDataType.id);
       await _network.post(
         path: _projects,
         data: {
           ProjectDataScheme.title: title,
           ProjectDataScheme.color: '$color'.toStringColor(),
-          ProjectDataScheme.ownerId:
-              await _secureStorageService.getUserData(type: StorageDataType.id),
+          ProjectDataScheme.ownerId: ownerId,
+          ProjectDataScheme.createdAt: DateTime.now().toUtc().toIso8601String(),
         },
         options: await _network.getLocalRequestOptions(useContentType: true),
       );
@@ -86,7 +88,6 @@ class ProjectUserDataImpl implements ProjectUserData {
       throw Failure('Failure expersion $e');
     }
   }
- 
 
   @override
   Future<List<dynamic>> searchProject({required String title}) async {

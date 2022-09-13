@@ -3,9 +3,8 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
-import 'package:todo2/database/repository/task_attachment_repository.dart';
+import 'package:todo2/database/repository/comment_repository.dart';
 import 'package:todo2/database/repository/task_repository.dart';
-import 'package:todo2/database/repository/tasks_member_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
@@ -20,7 +19,6 @@ enum InputFieldStatus {
 class AddTaskController extends ChangeNotifier {
   UserProfileRepositoryImpl userProfileRepository;
   TaskRepositoryImpl taskRepository;
-  TaskAttachmentRepositoryImpl taskAttachment;
   TasksMembersRepositoryImpl tasksMembers;
 
   final formKey = GlobalKey<FormState>();
@@ -28,7 +26,6 @@ class AddTaskController extends ChangeNotifier {
   AddTaskController({
     required this.userProfileRepository,
     required this.taskRepository,
-    required this.taskAttachment,
     required this.tasksMembers,
   });
 
@@ -72,11 +69,12 @@ class AddTaskController extends ChangeNotifier {
 
   final pickedProject = ValueNotifier<ProjectModel>(
     ProjectModel(
-        id: '',
-        color: Colors.red,
-        createdAt: DateTime.now(),
-        title: '',
-        ownerId: ''),
+      id: '',
+      color: Colors.red,
+      createdAt: DateTime.now(),
+      title: '',
+      ownerId: '',
+    ),
   );
 
   void pickProject({
@@ -94,7 +92,9 @@ class AddTaskController extends ChangeNotifier {
   final isClickedAddTask = ValueNotifier<bool>(true);
 
   final isShowPickUserWidget = ValueNotifier(false);
+
   final isShowProjectWidget = ValueNotifier(false);
+
   final panelStatus = ValueNotifier<InputFieldStatus>(InputFieldStatus.hide);
 
   void changePanelStatus({required InputFieldStatus newStatus}) {
@@ -157,7 +157,7 @@ class AddTaskController extends ChangeNotifier {
         await putTask(
           description: description,
           title: title,
-        ).then((value) => NavigationService.navigateTo(
+        ).then((_) => NavigationService.navigateTo(
               context,
               Pages.tasks,
             ));
@@ -182,13 +182,13 @@ class AddTaskController extends ChangeNotifier {
       // await userProfileRepository.fetchId();
       int projectId = 0;
 
-      await taskRepository.postTask(
-        title: title,
-        description: description,
-        assignedTo: userId,
-        projectId: projectId,
-        dueDate: pickedTime.value!,
-      );
+      // await taskRepository.postTask(
+      //   title: title,
+      //   description: description,
+      //   assignedTo: userId,
+      //   projectId: projectId,
+      //   dueDate: pickedTime.value!,
+      // );
       //TODO fix it
       // int currentProjectId = await taskRepository.fetchTaskId(title: title);
       // // push attachment

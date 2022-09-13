@@ -8,7 +8,7 @@ class NotesModel {
   final String description;
   final Color color;
   final String ownerId;
-  final String createdAt;
+  final DateTime createdAt;
 
   NotesModel({
     required this.id,
@@ -27,7 +27,7 @@ class NotesModel {
         ),
         description: json[NotesScheme.description],
         ownerId: json[NotesScheme.ownerId],
-        createdAt: json[NotesScheme.createdAt],
+        createdAt: DateTime.parse(json[NotesScheme.createdAt]),
       );
 
   NotesModel copyWith({
@@ -36,7 +36,7 @@ class NotesModel {
     String? description,
     Color? color,
     String? ownerId,
-    String? createdAt,
+    DateTime? createdAt,
   }) =>
       NotesModel(
         id: id ?? this.id,

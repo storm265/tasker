@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/checklist_model.dart';
 import 'package:todo2/database/model/notes_model.dart';
@@ -18,22 +16,22 @@ class QuickController extends ChangeNotifier {
 
   // QuickController._internal();
 
-  final noteController = NewNoteController();
-  final checkListController = CheckListController();
+  final _noteController = NewNoteController();
+  final _checkListController = CheckListController();
 
   final linkedModels = ValueNotifier<List<dynamic>>([]);
 
   Future<void> fetchList() async {
     final responce = await Future.wait([
-      noteController.fetchUserNotes(),
-      checkListController.fetchAllCheckLists(),
+      _noteController.fetchUserNotes(),
+      _checkListController.fetchAllCheckLists(),
     ]);
     final List<NotesModel> notes = responce[0] as List<NotesModel>;
     final List<CheckListModel> checkList = responce[1] as List<CheckListModel>;
 
-    linkedModels.value = [...notes, ...checkList]
-      ..reversed
-      ..shuffle();
+    linkedModels.value = [...notes, ...checkList]..shuffle();
+    linkedModels.value.sort((a, b) => b.createdAt.compareTo(DateTime(a)));
+
     linkedModels.notifyListeners();
   }
 }

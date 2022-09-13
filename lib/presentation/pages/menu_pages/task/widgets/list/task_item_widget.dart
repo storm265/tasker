@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/database/model/task_model.dart';
+import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/circle_widget.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
