@@ -70,6 +70,7 @@ class NoteCardWidget extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Container(
+          width: double.infinity,
           decoration: shadowDecoration,
           child: Stack(
             children: [

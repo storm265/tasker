@@ -14,13 +14,13 @@ abstract class CheckListsRepository<T> {
   Future<void> updateCheckList({
     required CheckListModel checkListModel,
     List<Map<String, dynamic>>? items,
+    required String title,
   });
   Future<void> deleteCheckList({required CheckListModel checkListModel});
 
   Future<void> deleteCheckListItem({required String checkListId});
 
- Future<void> deleteCheckListItems(
-      {required List<String> items});
+  Future<void> deleteCheckListItems({required List<String> items});
 
   Future<List<CheckListModel>> fetchAllCheckLists();
 }
@@ -68,8 +68,7 @@ class CheckListRepositoryImpl extends CheckListsRepository<CheckListModel> {
   }
 
   @override
-  Future<void> deleteCheckListItems(
-      {required List<String> items}) async {
+  Future<void> deleteCheckListItems({required List<String> items}) async {
     try {
       await _checkListsDataSource.deleteCheckListItems(items: items);
     } catch (e) {
@@ -97,11 +96,13 @@ class CheckListRepositoryImpl extends CheckListsRepository<CheckListModel> {
   Future<void> updateCheckList({
     required CheckListModel checkListModel,
     List<Map<String, dynamic>>? items,
+    required String title,
   }) async {
     try {
       await _checkListsDataSource.updateCheckList(
         checkListModel: checkListModel,
         items: items,
+        title: title,
       );
     } catch (e) {
       throw Failure(e.toString());

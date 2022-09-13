@@ -85,6 +85,7 @@ class _CheckBoxWidgetState extends State<CheckBoxWidget> {
                         index: widget.index,
                         title: textController.text,
                       );
+                      FocusScope.of(context).unfocus();
                     },
                   ),
                 ),

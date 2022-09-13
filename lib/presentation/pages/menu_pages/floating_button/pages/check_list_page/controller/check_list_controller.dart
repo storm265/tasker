@@ -71,14 +71,17 @@ class CheckListController extends ChangeNotifier {
   }
 
   Future<void> removeAllCheckboxItems() async {
+    bool hasOnlineItems = false;
     for (var i = 0; i < checkBoxItems.value.length; i++) {
       if (checkBoxItems.value[i][CheckListItemsScheme.id] == null) {
         checkBoxItems.value.removeAt(i);
       } else {
-        await deleteChecklistItems(items: checkBoxItems.value)
-            .then((_) => checkBoxItems.value.clear());
-        break;
+        hasOnlineItems = true;
       }
+      hasOnlineItems
+          ? await deleteChecklistItems(items: checkBoxItems.value)
+              .then((_) => checkBoxItems.value.clear())
+          : null;
     }
     checkBoxItems.notifyListeners();
   }
@@ -128,7 +131,6 @@ class CheckListController extends ChangeNotifier {
       if (formKey.currentState!.validate() &&
           !colorPalleteController.isNotPickerColor) {
         changeIsClickedValueStatus(false);
-
         isEdit.value
             ? await updateCheckList()
             : await createCheckList(
@@ -171,6 +173,7 @@ class CheckListController extends ChangeNotifier {
       await _checkListRepository.updateCheckList(
         checkListModel: _pickedModel.value,
         items: checkBoxItems.value,
+        title: titleController.text,
       );
     } catch (e) {
       throw Failure(e.toString());

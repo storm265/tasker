@@ -57,6 +57,7 @@ class _AddQuickNoteState extends State<AddQuickNote> {
                           _addNoteController.descriptionTextController,
                       title: 'Description',
                     ),
+                    const SizedBox(height: 100),
                     Column(
                       children: [
                         ColorPalleteWidget(

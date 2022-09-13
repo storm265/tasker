@@ -18,6 +18,7 @@ abstract class CheckListsDataSource {
   Future<void> updateCheckList({
     required CheckListModel checkListModel,
     List<Map<String, dynamic>>? items,
+    required String title,
   });
   Future<void> deleteCheckList({required CheckListModel checkListModel});
 
@@ -71,6 +72,7 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
   Future<void> updateCheckList({
     required CheckListModel checkListModel,
     List<Map<String, dynamic>>? items,
+    required String title,
   }) async {
     try {
       final ownerId =
@@ -80,7 +82,7 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
       final response = await _network.put(
         path: '$_checklists/${checkListModel.id}',
         data: {
-          CheckListsScheme.title: checkListModel.title,
+          CheckListsScheme.title: title,
           CheckListsScheme.color:
               checkListModel.color.toString().toStringColor(),
           CheckListsScheme.ownerId: ownerId,
