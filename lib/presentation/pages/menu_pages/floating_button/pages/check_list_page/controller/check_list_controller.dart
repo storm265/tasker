@@ -140,7 +140,7 @@ class CheckListController extends ChangeNotifier {
               );
 
         await quickController.fetchList();
-        await navigationController.moveToPage(page: Pages.quick);
+        await navigationController.moveToPage(Pages.quick);
 
         clearData();
         changeIsClickedValueStatus(true);

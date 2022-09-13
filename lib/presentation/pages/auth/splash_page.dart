@@ -14,7 +14,8 @@ class SplashPage extends StatefulWidget {
 
 class SplashPageState extends State<SplashPage> {
   late SecureStorageSource _secureStorageService;
-  bool isAuth = false;
+
+  
   @override
   void initState() {
     _secureStorageService = SecureStorageSource();

@@ -108,7 +108,7 @@ class NewNoteController extends ChangeNotifier {
         await quickController.fetchList();
 
         clearData();
-        await navigationController.moveToPage(page: Pages.quick);
+        await navigationController.moveToPage(Pages.quick);
         changeClickedButtonValueStatus(newValue: true);
       }
     } catch (e) {

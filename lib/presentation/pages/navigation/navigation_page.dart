@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_navigator.dart';
@@ -77,7 +75,7 @@ class NavigationPage extends StatelessWidget {
                         children: [
                           NavBarItem(
                             onTap: () async => await navigationController
-                                .moveToPage(page: Pages.tasks),
+                                .moveToPage(Pages.tasks),
                             label: 'My Tasks',
                             icon: 'tasks',
                             iconColor: pageIndex == 0 ||
@@ -88,7 +86,7 @@ class NavigationPage extends StatelessWidget {
                           ),
                           NavBarItem(
                             onTap: () async => await navigationController
-                                .moveToPage(page: Pages.menu),
+                                .moveToPage(Pages.menu),
                             label: 'Menu',
                             icon: 'menu',
                             iconColor:
@@ -97,7 +95,7 @@ class NavigationPage extends StatelessWidget {
                           const SizedBox(width: 50),
                           NavBarItem(
                             onTap: () async => await navigationController
-                                .moveToPage(page: Pages.quick),
+                                .moveToPage(Pages.quick),
                             label: 'Quick',
                             icon: 'quick',
                             iconColor:
@@ -105,7 +103,7 @@ class NavigationPage extends StatelessWidget {
                           ),
                           NavBarItem(
                             onTap: () async => await navigationController
-                                .moveToPage(page: Pages.profile),
+                                .moveToPage(Pages.profile),
                             label: 'Profile',
                             icon: 'profile',
                             iconColor:

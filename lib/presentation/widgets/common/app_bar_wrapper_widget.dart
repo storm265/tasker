@@ -35,7 +35,7 @@ class AppbarWrapWidget extends StatelessWidget with PreferredSizeWidget {
   final bool? isWhite;
   final bool? isPopFromNavBar;
   final Pages navRoute;
-final bool? resizeToAvoidBottomInset;
+  final bool? resizeToAvoidBottomInset;
   const AppbarWrapWidget({
     Key? key,
     this.floatingActionButton,
@@ -78,7 +78,7 @@ final bool? resizeToAvoidBottomInset;
                         padding: const EdgeInsets.only(left: 10),
                         child: GestureDetector(
                           onTap: () => isPopFromNavBar != null
-                              ? navigationController.moveToPage(page: navRoute)
+                              ? navigationController.moveToPage(navRoute)
                               : Navigator.pop(context),
                           child: Icon(
                             Icons.west_rounded,

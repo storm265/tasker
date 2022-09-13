@@ -51,7 +51,7 @@ class NoteCardWidget extends StatelessWidget {
             icon: Icons.edit,
             onClick: () async {
               noteController.pickEditData(notesModel: notesModel);
-              await navigationController.moveToPage(page: Pages.addNote);
+              await navigationController.moveToPage(Pages.addNote);
             },
           ),
           const GreySlidableWidget(),

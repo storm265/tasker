@@ -9,7 +9,6 @@ import 'package:todo2/presentation/pages/menu_pages/quick/widgets/title_widget.d
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/slidable_widgets/endpane_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/slidable_widgets/grey_slidable_widget.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
-import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 class CheckboxWidget extends StatelessWidget {
@@ -36,7 +35,7 @@ class CheckboxWidget extends StatelessWidget {
             icon: Icons.edit,
             onClick: () async {
               checkListController.pickEditData(checklistModel: checklistModel);
-              await navigationController.moveToPage(page: Pages.addCheckList);
+              await navigationController.moveToPage(Pages.addCheckList);
             },
           ),
           const GreySlidableWidget(),
