@@ -6,7 +6,7 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_p
 import 'package:todo2/presentation/pages/menu_pages/quick/controller/quick_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/checkbox/checkbox_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/notes/note_card_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/quick/widgets/quick_shimmer_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/quick/widgets/common_widgets/quick_shimmer_widget.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_navigator.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';

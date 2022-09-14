@@ -19,6 +19,7 @@ abstract class CheckListsDataSource {
     required CheckListModel checkListModel,
     List<Map<String, dynamic>>? items,
     required String title,
+    required Color color,
   });
   Future<void> deleteCheckList({required CheckListModel checkListModel});
 
@@ -72,6 +73,7 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
     required CheckListModel checkListModel,
     List<Map<String, dynamic>>? items,
     required String title,
+    required Color color,
   }) async {
     try {
       final ownerId =
@@ -82,8 +84,7 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
         path: '$_checklists/${checkListModel.id}',
         data: {
           CheckListsScheme.title: title,
-          CheckListsScheme.color:
-              checkListModel.color.toString().toStringColor(),
+          CheckListsScheme.color: color.toString().toStringColor(),
           CheckListsScheme.ownerId: ownerId,
           CheckListsScheme.items: items ?? [],
         },

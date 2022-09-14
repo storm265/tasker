@@ -3,9 +3,9 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:todo2/database/model/checklist_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/controller/check_list_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/checkbox/checkbox_item_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/quick/widgets/color_line_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/quick/widgets/shadow_decoration.dart';
-import 'package:todo2/presentation/pages/menu_pages/quick/widgets/title_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/quick/widgets/common_widgets/color_line_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/quick/widgets/common_widgets/shadow_decoration.dart';
+import 'package:todo2/presentation/pages/menu_pages/quick/widgets/common_widgets/title_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/slidable_widgets/endpane_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/slidable_widgets/grey_slidable_widget.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
@@ -57,7 +57,8 @@ class CheckboxWidget extends StatelessWidget {
             children: [
               ColorLineWidget(color: checklistModel.color),
               Padding(
-                padding: const EdgeInsets.all(16),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
                 child: Column(
                   children: [
                     TitleWidget(title: checklistModel.title),

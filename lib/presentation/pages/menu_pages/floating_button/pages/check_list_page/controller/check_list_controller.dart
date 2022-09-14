@@ -113,13 +113,13 @@ class CheckListController extends ChangeNotifier {
     try {
       if (formKey.currentState!.validate() &&
           !colorPalleteController.isNotPickerColor) {
+        removeItemsWhereTitleIsEmpty();
         FocusScope.of(context).unfocus();
         changeIsClickedValueStatus(false);
         isEdit.value
             ? await updateCheckList()
             : await createCheckList(
                 title: titleController.text,
-                color: colors[colorPalleteController.selectedIndex.value],
                 items: checkBoxItems.value,
               );
 
@@ -137,13 +137,12 @@ class CheckListController extends ChangeNotifier {
 
   Future<void> createCheckList({
     required String title,
-    required Color color,
     List<Map<String, dynamic>>? items,
   }) async {
     try {
       await _checkListRepository.createCheckList(
         title: title,
-        color: color,
+        color: colors[colorPalleteController.selectedIndex.value],
         items: items,
       );
     } catch (e) {
@@ -154,6 +153,7 @@ class CheckListController extends ChangeNotifier {
   Future<void> updateCheckList() async {
     try {
       await _checkListRepository.updateCheckList(
+        color: colors[colorPalleteController.selectedIndex.value],
         checkListModel: _pickedModel.value,
         items: checkBoxItems.value,
         title: titleController.text,
@@ -180,14 +180,19 @@ class CheckListController extends ChangeNotifier {
     }
   }
 
-  Future<void> deleteChecklistItems(
-      {required List<Map<String, dynamic>> items}) async {
+  Future<void> deleteAllChecklistItems() async {
     try {
       List<String> idItems = [];
-      for (int i = 0; i < items.length; i++) {
-        idItems.add(items[i][CheckListItemsScheme.id]);
+      for (int i = 0; i < checkBoxItems.value.length; i++) {
+        checkBoxItems.value[i][CheckListItemsScheme.id] != null
+            ? idItems.add(checkBoxItems.value[i][CheckListItemsScheme.id])
+            : checkBoxItems.value.removeWhere(
+                (element) => element[CheckListItemsScheme.id] == null);
       }
-      return _checkListRepository.deleteCheckListItems(items: idItems);
+      idItems.isEmpty
+          ? {}
+          : await _checkListRepository.deleteCheckListItems(items: idItems);
+      checkBoxItems.notifyListeners();
     } catch (e) {
       throw Failure(e.toString());
     }
@@ -214,12 +219,7 @@ class CheckListController extends ChangeNotifier {
     required int index,
     required String title,
   }) {
-    if (title.isEmpty) {
-      removeCheckboxItem(index);
-    } else {
-      checkBoxItems.value[index][CheckListItemsScheme.content] = title;
-    }
-
+    checkBoxItems.value[index][CheckListItemsScheme.content] = title;
     checkBoxItems.notifyListeners();
   }
 
@@ -230,6 +230,14 @@ class CheckListController extends ChangeNotifier {
       await deleteChecklistItem(
           checklistItemId: checkBoxItems.value[index][CheckListItemsScheme.id]);
       checkBoxItems.value.removeAt(index);
+    }
+    checkBoxItems.notifyListeners();
+  }
+
+  void removeItemsWhereTitleIsEmpty() async {
+    for (var i = 0; i < checkBoxItems.value.length; i++) {
+      checkBoxItems.value.removeWhere(
+          (element) => element[CheckListItemsScheme.content].isEmpty);
     }
     checkBoxItems.notifyListeners();
   }

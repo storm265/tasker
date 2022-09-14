@@ -86,7 +86,7 @@ class _CheckBoxWidgetState extends State<CheckBoxWidget> {
               onChanged: ((value) =>
                   widget.checkBoxController.changeCheckboxText(
                     index: widget.index,
-                    title: textController.text,
+                    title: textController.text.trim(),
                   )),
               onEditingComplete: () => FocusScope.of(context).unfocus(),
             ),

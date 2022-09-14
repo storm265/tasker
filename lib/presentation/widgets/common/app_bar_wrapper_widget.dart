@@ -77,9 +77,14 @@ class AppbarWrapWidget extends StatelessWidget with PreferredSizeWidget {
                     ? Padding(
                         padding: const EdgeInsets.only(left: 10),
                         child: GestureDetector(
-                          onTap: () => isPopFromNavBar != null
-                              ? navigationController.moveToPage(navRoute)
-                              : Navigator.pop(context),
+                          onTap: () async {
+                            if (isPopFromNavBar == true) {
+                              FocusScope.of(context).unfocus();
+                              await navigationController.moveToPage(navRoute);
+                            } else {
+                              Navigator.pop(context);
+                            }
+                          },
                           child: Icon(
                             Icons.west_rounded,
                             size: 30,

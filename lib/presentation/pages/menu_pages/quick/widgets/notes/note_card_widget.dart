@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:todo2/database/model/notes_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/controller/new_note_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/quick/widgets/color_line_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/quick/widgets/shadow_decoration.dart';
+import 'package:todo2/presentation/pages/menu_pages/quick/widgets/common_widgets/color_line_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/quick/widgets/common_widgets/shadow_decoration.dart';
+import 'package:todo2/presentation/pages/menu_pages/quick/widgets/common_widgets/title_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/slidable_widgets/endpane_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/slidable_widgets/grey_slidable_widget.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
@@ -76,18 +77,13 @@ class NoteCardWidget extends StatelessWidget {
             children: [
               ColorLineWidget(color: notesModel.color),
               Padding(
-                padding: const EdgeInsets.all(16),
-                child: Text(
-                  notesModel.description,
-                  style: TextStyle(
-                    decoration: notesModel.isCompleted
-                        ? TextDecoration.lineThrough
-                        : null,
-                    overflow: TextOverflow.ellipsis,
-                    fontWeight: FontWeight.w200,
-                    fontSize: 16,
-                    fontStyle: FontStyle.italic,
-                  ),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                child: TitleWidget(
+                  title: notesModel.description,
+                  textDecoration: notesModel.isCompleted
+                      ? TextDecoration.lineThrough
+                      : null,
                 ),
               ),
             ],

@@ -19,7 +19,7 @@ class TextFieldWidget extends StatelessWidget {
     required this.labelText,
     required this.textController,
     required this.title,
-    final this.isObcecure = false,
+    this.isObcecure = false,
     this.top = 0,
     required this.isEmail,
     this.signInController,

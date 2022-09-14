@@ -15,6 +15,7 @@ abstract class CheckListsRepository<T> {
     required CheckListModel checkListModel,
     List<Map<String, dynamic>>? items,
     required String title,
+    required Color color,
   });
   Future<void> deleteCheckList({required CheckListModel checkListModel});
 
@@ -97,12 +98,14 @@ class CheckListRepositoryImpl extends CheckListsRepository<CheckListModel> {
     required CheckListModel checkListModel,
     List<Map<String, dynamic>>? items,
     required String title,
+    required Color color,
   }) async {
     try {
       await _checkListsDataSource.updateCheckList(
         checkListModel: checkListModel,
         items: items,
         title: title,
+        color: color,
       );
     } catch (e) {
       throw Failure(e.toString());
