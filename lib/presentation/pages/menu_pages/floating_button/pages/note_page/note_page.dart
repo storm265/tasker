@@ -73,12 +73,13 @@ class _AddQuickNoteState extends State<AddQuickNote> {
                                 ? ConfirmButtonWidget(
                                     title: isEdit ? 'Update' : 'Done',
                                     onPressed: isClicked
-                                        ? () async =>
-                                            _addNoteController.tryValidateNote(
-                                              formKey: formKey,
-                                              navigationController:
-                                                  navigationController,
-                                            )
+                                        ? () async =>                                   
+                                        _addNoteController.tryValidateNote(
+                                          context: context,
+                                          formKey: formKey,
+                                          navigationController:
+                                              navigationController,
+                                        )
                                         : null,
                                   )
                                 : const ProgressIndicatorWidget(

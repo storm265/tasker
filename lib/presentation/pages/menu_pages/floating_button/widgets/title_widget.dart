@@ -12,7 +12,7 @@ class TitleWidget extends StatelessWidget {
     Key? key,
     required this.textController,
     required this.title,
-    this.maxLines ,
+    this.maxLines,
     this.maxLength = 32,
     this.textInputType,
     this.onEdiditionCompleteCallback,
@@ -22,24 +22,30 @@ class TitleWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            title,
-            style: const TextStyle(
-              fontWeight: FontWeight.w200,
-              fontSize: 18,
-              fontStyle: FontStyle.italic,
+        Padding(
+          padding: const EdgeInsets.only(left: 17),
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              title,
+              style: const TextStyle(
+                fontWeight: FontWeight.w200,
+                fontSize: 18,
+                fontStyle: FontStyle.italic,
+              ),
             ),
           ),
         ),
-        AddTextFieldWidget(
-          textInputType: textInputType,
-          maxLength: maxLength,
-          maxLines: maxLines,
-          hintText: 'Enter $title:',
-          titleController: textController,
-          onEdiditionCompleteCallback: onEdiditionCompleteCallback,
+        Padding(
+          padding: const EdgeInsets.only(left: 14),
+          child: AddTextFieldWidget(
+            textInputType: textInputType,
+            maxLength: maxLength,
+            maxLines: maxLines,
+            hintText: 'Enter $title:',
+            titleController: textController,
+            onEdiditionCompleteCallback: onEdiditionCompleteCallback,
+          ),
         ),
       ],
     );

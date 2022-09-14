@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 const List<String> settingsTextItems = [
   'Update avatar',
-  'Locale',
+  'Language',
   'Sign out',
 ];
 const List<IconData> settingsIconsItems = [

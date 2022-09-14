@@ -38,6 +38,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
     descriptionController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     final newTaskController =
@@ -129,7 +130,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                           onPressed: isClicked
                                               ? () async {
                                                   await newTaskController
-                                                      .validate(
+                                                      .tryValidate(
                                                     context: context,
                                                     title: titleController.text,
                                                     description:

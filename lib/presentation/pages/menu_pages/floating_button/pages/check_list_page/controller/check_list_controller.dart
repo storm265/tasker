@@ -50,7 +50,6 @@ class CheckListController extends ChangeNotifier {
 
   final isEdit = ValueNotifier(false);
   final isClickedButton = ValueNotifier(true);
-  final isChecked = false;
 
   void changeEditValueStatus(bool status) {
     isEdit.value = status;
@@ -68,22 +67,6 @@ class CheckListController extends ChangeNotifier {
     checkBoxItems.value.clear();
     checkBoxItems.notifyListeners();
     titleController.clear();
-  }
-
-  Future<void> removeAllCheckboxItems() async {
-    bool hasOnlineItems = false;
-    for (var i = 0; i < checkBoxItems.value.length; i++) {
-      if (checkBoxItems.value[i][CheckListItemsScheme.id] == null) {
-        checkBoxItems.value.removeAt(i);
-      } else {
-        hasOnlineItems = true;
-      }
-      hasOnlineItems
-          ? await deleteChecklistItems(items: checkBoxItems.value)
-              .then((_) => checkBoxItems.value.clear())
-          : null;
-    }
-    checkBoxItems.notifyListeners();
   }
 
   void pickModel({required CheckListModel checklistModel}) {
@@ -130,6 +113,7 @@ class CheckListController extends ChangeNotifier {
     try {
       if (formKey.currentState!.validate() &&
           !colorPalleteController.isNotPickerColor) {
+        FocusScope.of(context).unfocus();
         changeIsClickedValueStatus(false);
         isEdit.value
             ? await updateCheckList()
@@ -169,7 +153,6 @@ class CheckListController extends ChangeNotifier {
 
   Future<void> updateCheckList() async {
     try {
-      log('updateCheckList');
       await _checkListRepository.updateCheckList(
         checkListModel: _pickedModel.value,
         items: checkBoxItems.value,

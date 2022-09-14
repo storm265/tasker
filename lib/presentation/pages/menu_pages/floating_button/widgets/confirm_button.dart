@@ -31,7 +31,7 @@ class ConfirmButtonWidget extends StatelessWidget {
           title,
           style: const TextStyle(
             fontSize: 18,
-            fontWeight: FontWeight.w300,
+            fontWeight: FontWeight.w200,
             fontStyle: FontStyle.italic,
             color: Colors.white,
           ),

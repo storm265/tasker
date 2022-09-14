@@ -144,13 +144,14 @@ class AddTaskController extends ChangeNotifier {
 
 // validation
 
-  Future<void> validate({
+  Future<void> tryValidate({
     required BuildContext context,
     required String title,
     required String description,
   }) async {
     try {
       if (formKey.currentState!.validate()) {
+        FocusScope.of(context).unfocus();
         isClickedAddTask.value = false;
         isClickedAddTask.notifyListeners();
 // TODo remove navigation
@@ -166,7 +167,6 @@ class AddTaskController extends ChangeNotifier {
         isClickedAddTask.notifyListeners();
 
         //  disposeAll();
-
       }
     } catch (e) {
       throw Failure(e.toString());

@@ -30,7 +30,7 @@ class QuickController extends ChangeNotifier {
     final List<CheckListModel> checkList = responce[1] as List<CheckListModel>;
 
     linkedModels.value = [...notes, ...checkList]..shuffle();
-   linkedModels.value.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    linkedModels.value.sort((a, b) => b.createdAt.compareTo(a.createdAt));
     linkedModels.notifyListeners();
   }
 }

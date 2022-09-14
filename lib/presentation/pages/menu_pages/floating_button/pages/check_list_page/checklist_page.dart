@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/controller/check_list_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/widgets/add_item_button.dart';
@@ -12,7 +10,6 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/whit
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/color_pallete_widget.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_navigator.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
-import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 
@@ -52,7 +49,7 @@ class _CheckListPageState extends State<CheckListPage> {
           const FakeAppBar(),
           WhiteBoxWidget(
             scrollController: _scrollController,
-            height: 600,
+            height: 500,
             child: Padding(
               padding: const EdgeInsets.all(30.0),
               child: Column(
@@ -68,7 +65,7 @@ class _CheckListPageState extends State<CheckListPage> {
                         textController: _checkListController.titleController,
                         title: 'Title',
                         onEdiditionCompleteCallback: () =>
-                            Focus.of(context).unfocus(),
+                            FocusScope.of(context).unfocus(),
                       ),
                     ),
                     subtitle: SingleChildScrollView(
@@ -82,7 +79,6 @@ class _CheckListPageState extends State<CheckListPage> {
                             index = i;
                             return CheckBoxWidget(
                               checkBoxController: _checkListController,
-                              isClicked: _checkListController.isChecked,
                               index: i,
                             );
                           },
@@ -90,22 +86,19 @@ class _CheckListPageState extends State<CheckListPage> {
                       ),
                     ),
                   ),
-                  Row(
-                    children: [
-                      AddItemButton(onPressed: () {
-                        _checkListController.addCheckboxItem(index);
-                        _scrollController.animateTo(
-                          _scrollController.position.maxScrollExtent + 20,
-                          duration: const Duration(milliseconds: 500),
-                          curve: Curves.easeIn,
-                        );
-                      }),
-                      RemoveAllItemsWidget(
-                        onPressed: () async =>
-                            await _checkListController.removeAllCheckboxItems(),
-                      )
-                    ],
-                  ),
+                  AddItemButton(onPressed: () async {
+                    _checkListController.addCheckboxItem(index);
+                    await _scrollController.animateTo(
+                      _scrollController.position.maxScrollExtent + 20,
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeIn,
+                    );
+                  }),
+                  // RemoveAllItemsWidget(
+                  //   onPressed: () async =>
+                  //       await _checkListController.removeAllCheckboxItems(),
+                  // )
+
                   Column(
                     children: [
                       ColorPalleteWidget(

@@ -69,7 +69,7 @@ class MenuPageState extends State<MenuPage> {
           child: ValueListenableBuilder<List<ProjectModel>>(
             valueListenable: _projectController.projects,
             builder: ((__, projectsList, _) => (projectsList.isEmpty)
-                ?  const ProgressIndicatorWidget(text: 'No data')
+                ? const Center(child: ProgressIndicatorWidget(text: 'No data'))
                 : GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),

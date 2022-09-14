@@ -7,10 +7,9 @@ import 'package:todo2/presentation/widgets/common/colors.dart';
 class CheckBoxWidget extends StatefulWidget {
   final CheckListController checkBoxController;
   final int index;
-  bool isClicked;
-  CheckBoxWidget({
+
+  const CheckBoxWidget({
     Key? key,
-    required this.isClicked,
     required this.checkBoxController,
     required this.index,
   }) : super(key: key);
@@ -57,54 +56,42 @@ class _CheckBoxWidgetState extends State<CheckBoxWidget> {
           ),
         ),
         const SizedBox(width: 10),
-        (widget.isClicked)
-            ? Padding(
-                padding: const EdgeInsets.only(bottom: 15),
-                child: SizedBox(
-                  width: 170,
-                  height: 35,
-                  child: TextField(
-                    buildCounter: (
-                      context, {
-                      required currentLength,
-                      required isFocused,
-                      maxLength,
-                    }) =>
-                        maxLength == currentLength
-                            ? Text(
-                                '$maxLength/$maxLength',
-                                style: const TextStyle(color: Colors.red),
-                              )
-                            : null,
-                    autofocus: true,
-                    controller: textController,
-                    maxLength: 512,
-                    onEditingComplete: () {
-                      widget.isClicked = false;
-                      widget.checkBoxController.changeCheckboxText(
-                        index: widget.index,
-                        title: textController.text,
-                      );
-                      FocusScope.of(context).unfocus();
-                    },
-                  ),
-                ),
-              )
-            : Expanded(
-                child: GestureDetector(
-                  child: SelectableText(
-                    widget.checkBoxController.checkBoxItems.value[widget.index]
-                        [CheckListItemsScheme.content],
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: Color(0xFF313131),
-                    ),
-                  ),
-                  onTap: () =>
-                      setState(() => widget.isClicked = !widget.isClicked),
-                ),
+        Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: SizedBox(
+            width: 170,
+            height: 40,
+            child: TextField(
+              style: const TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 16,
+                fontStyle: FontStyle.normal,
+                color: Colors.black,
               ),
+              decoration: const InputDecoration(border: InputBorder.none),
+              buildCounter: (
+                context, {
+                required currentLength,
+                required isFocused,
+                maxLength,
+              }) =>
+                  maxLength == currentLength
+                      ? Text(
+                          '$maxLength/$maxLength',
+                          style: const TextStyle(color: Colors.red),
+                        )
+                      : null,
+              controller: textController,
+              maxLength: 512,
+              onChanged: ((value) =>
+                  widget.checkBoxController.changeCheckboxText(
+                    index: widget.index,
+                    title: textController.text,
+                  )),
+              onEditingComplete: () => FocusScope.of(context).unfocus(),
+            ),
+          ),
+        ),
         Padding(
           padding: const EdgeInsets.only(left: 20),
           child: GestureDetector(

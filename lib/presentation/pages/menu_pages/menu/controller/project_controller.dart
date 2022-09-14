@@ -51,8 +51,10 @@ class ProjectController extends ChangeNotifier {
   }
 
   void clearProjects() {
+    titleController.clear();
     projects.value.clear();
     projects.notifyListeners();
+    colorPalleteController.changeSelectedIndex(99);
   }
 
   Future<void> tryValidateProject({

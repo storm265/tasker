@@ -25,7 +25,6 @@ class _TasksPageState extends State<TasksPage>
   // TODO create controller for this
   final taskController = TaskRepositoryImpl();
 
- 
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
@@ -69,6 +68,7 @@ class _TasksPageState extends State<TasksPage>
             child: TabBarView(
               controller: _tabController,
               children: [
+                Column(children: const [Text('disabled ')]),
                 // DisabledGlowWidget(
                 //   child: FutureBuilder<List<TaskModel>>(
                 //       future: taskController.fetchTask(),
@@ -100,7 +100,7 @@ class _TasksPageState extends State<TasksPage>
                 //       }),
                 // ),
                 // month
-                Column(children: const [Text('dadiadhjiajdad ')])
+                Column(children: const [Text('disabled ')])
               ],
             ),
           ),

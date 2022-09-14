@@ -13,6 +13,7 @@ Future<void> showAddEditProjectDialog({
       ? projectController.titleController.clear()
       : null;
   await showDialog(
+    barrierDismissible: false,
     context: context,
     builder: (_) => AlertDialog(
       insetPadding: const EdgeInsets.all(0),
@@ -69,12 +70,15 @@ Future<void> showAddEditProjectDialog({
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   TextButton(
-                    onPressed: () {
-                      projectController.colorPalleteController
-                          .changeSelectedIndex(99);
-                      isClicked ? callback() : null;
-                    },
                     child: const Text('Back'),
+                    onPressed: isClicked
+                        ? () {
+                            projectController.titleController.clear();
+                            projectController.colorPalleteController
+                                .changeSelectedIndex(99);
+                            Navigator.pop(context);
+                          }
+                        : null,
                   ),
                   status == ProjectDialogStatus.add
                       ? const SizedBox()

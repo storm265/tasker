@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_navigator.dart';
@@ -66,6 +68,7 @@ class NavigationPage extends StatelessWidget {
               bottomNavigationBar: ValueListenableBuilder<int>(
                   valueListenable: navigationController.pageIndex,
                   builder: (__, pageIndex, _) {
+                    log('page index : $pageIndex');
                     return Container(
                       height: 60,
                       width: double.infinity,
@@ -78,11 +81,8 @@ class NavigationPage extends StatelessWidget {
                                 .moveToPage(Pages.tasks),
                             label: 'My Tasks',
                             icon: 'tasks',
-                            iconColor: pageIndex == 0 ||
-                                    pageIndex == 6 ||
-                                    pageIndex == 5
-                                ? Colors.white
-                                : _greyColor,
+                            iconColor:
+                                pageIndex == 0 ? Colors.white : _greyColor,
                           ),
                           NavBarItem(
                             onTap: () async => await navigationController
@@ -98,8 +98,11 @@ class NavigationPage extends StatelessWidget {
                                 .moveToPage(Pages.quick),
                             label: 'Quick',
                             icon: 'quick',
-                            iconColor:
-                                pageIndex == 2 ? Colors.white : _greyColor,
+                            iconColor: pageIndex == 2 ||
+                                    pageIndex == 6 ||
+                                    pageIndex == 5
+                                ? Colors.white
+                                : _greyColor,
                           ),
                           NavBarItem(
                             onTap: () async => await navigationController

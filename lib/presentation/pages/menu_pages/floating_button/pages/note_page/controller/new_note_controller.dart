@@ -80,10 +80,12 @@ class NewNoteController extends ChangeNotifier {
   Future<void> tryValidateNote({
     required NavigationController navigationController,
     required GlobalKey<FormState> formKey,
+    required BuildContext context,
   }) async {
     try {
       if (formKey.currentState!.validate() &&
           !colorPalleteController.isNotPickerColor) {
+        FocusScope.of(context).unfocus();
         changeClickedButtonValueStatus(newValue: false);
         log('isEdit $isEdit');
         isEdit.value
@@ -92,11 +94,11 @@ class NewNoteController extends ChangeNotifier {
                 color: colors[colorPalleteController.selectedIndex.value],
                 description: descriptionTextController.text,
               );
-       await quickController.fetchList();
+        await quickController.fetchList();
 
-       clearData();
-       await navigationController.moveToPage(Pages.quick);
-       changeClickedButtonValueStatus(newValue: true);
+        clearData();
+        await navigationController.moveToPage(Pages.quick);
+        changeClickedButtonValueStatus(newValue: true);
       }
     } catch (e, t) {
       log('tryValidateNote $e, $t');
