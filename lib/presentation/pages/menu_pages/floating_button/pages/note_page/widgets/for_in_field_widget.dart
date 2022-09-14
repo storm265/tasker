@@ -62,9 +62,11 @@ class EnterUserWidget extends StatelessWidget {
 
                 isForFieldActive
                     ? newTaskController.changePanelStatus(
-                        newStatus: InputFieldStatus.showUserPanel)
+                        newStatus: InputFieldStatus.showUserPanel,
+                      )
                     : newTaskController.changePanelStatus(
-                        newStatus: InputFieldStatus.showProjectPanel);
+                        newStatus: InputFieldStatus.showProjectPanel,
+                      );
               },
               controller: titleController,
               onEditingComplete: () => newTaskController.changePanelStatus(

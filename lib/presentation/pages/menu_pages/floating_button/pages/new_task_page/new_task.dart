@@ -14,12 +14,7 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/red_
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/white_box_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
-
-class MyMode {
-  int id;
-  DateTime date;
-  MyMode({required this.id, required this.date});
-}
+import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 class AddTaskPage extends StatefulWidget {
   const AddTaskPage({Key? key}) : super(key: key);
@@ -29,13 +24,10 @@ class AddTaskPage extends StatefulWidget {
 }
 
 class _AddTaskPageState extends State<AddTaskPage> {
-  final titleController = TextEditingController();
-  final descriptionController = TextEditingController();
-
   @override
   void dispose() {
-    titleController.dispose();
-    descriptionController.dispose();
+      newTaskController.titleController.dispose();
+      newTaskController.descriptionController.dispose();
     super.dispose();
   }
 
@@ -48,19 +40,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
       resizeToAvoidBottomInset: false,
       showLeadingButton: true,
       isPopFromNavBar: true,
+      navRoute: Pages.tasks,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          List<MyMode> numbers = [
-            MyMode(id: 5, date: DateTime.utc(2022, 11, 01)),
-            MyMode(id: 9, date: DateTime.utc(2022, 01, 01)),
-            MyMode(id: 1, date: DateTime.utc(2022, 04, 04)),
-            MyMode(id: 3, date: DateTime.utc(2022, 05, 11)),
-          ];
-          numbers.sort((a, b) => b.date.compareTo(a.date));
-          for (var i = 0; i < numbers.length; i++) {
-            print(numbers[i].date);
-          }
-        },
+        onPressed: () {},
       ),
       child: Stack(
         children: [
@@ -113,11 +95,13 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           ? SelectPanelWidget()
                           : Column(
                               children: [
-                                TitleWidget(
-                                  titleController: titleController,
+                                TaskTitleWidget(
+                                  titleController:
+                                      newTaskController.titleController,
                                 ),
                                 DescriptionFieldWidget(
-                                  descriptionController: descriptionController,
+                                  descriptionController:
+                                      newTaskController.descriptionController,
                                 ),
                                 const PickTimeFieldWidget(),
                                 const AddUserWidget(),
@@ -132,10 +116,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                                   await newTaskController
                                                       .tryValidate(
                                                     context: context,
-                                                    title: titleController.text,
-                                                    description:
-                                                        descriptionController
-                                                            .text,
                                                   );
                                                 }
                                               : null,

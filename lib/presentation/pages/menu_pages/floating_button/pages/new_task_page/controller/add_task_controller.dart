@@ -17,17 +17,20 @@ enum InputFieldStatus {
 }
 
 class AddTaskController extends ChangeNotifier {
+  AddTaskController({
+    required this.userProfileRepository,
+    required this.taskRepository,
+    required this.tasksMembers,
+  });
+
   UserProfileRepositoryImpl userProfileRepository;
   TaskRepositoryImpl taskRepository;
   TasksMembersRepositoryImpl tasksMembers;
 
   final formKey = GlobalKey<FormState>();
 
-  AddTaskController({
-    required this.userProfileRepository,
-    required this.taskRepository,
-    required this.tasksMembers,
-  });
+  final titleController = TextEditingController();
+  final descriptionController = TextEditingController();
 
   final taskMembers = ValueNotifier<List<UserProfileModel>>([]);
 
@@ -144,11 +147,7 @@ class AddTaskController extends ChangeNotifier {
 
 // validation
 
-  Future<void> tryValidate({
-    required BuildContext context,
-    required String title,
-    required String description,
-  }) async {
+  Future<void> tryValidate({required BuildContext context}) async {
     try {
       if (formKey.currentState!.validate()) {
         FocusScope.of(context).unfocus();
@@ -156,8 +155,8 @@ class AddTaskController extends ChangeNotifier {
         isClickedAddTask.notifyListeners();
 // TODo remove navigation
         await putTask(
-          description: description,
-          title: title,
+          description: descriptionController.text,
+          title: titleController.text,
         ).then((_) => NavigationService.navigateTo(
               context,
               Pages.tasks,

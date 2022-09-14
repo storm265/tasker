@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/atachment_message_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/controller_inherited.dart';
-
-import 'package:todo2/presentation/pages/menu_pages/profile/widgets/panel_widgets/cached_avatar_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 import 'package:todo2/utils/assets_path.dart';
 
@@ -27,13 +25,13 @@ class DescriptionFieldWidget extends StatelessWidget {
     final newTaskController =
         InheritedNewTaskController.of(context).addTaskController;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           const Padding(
             padding: EdgeInsets.only(
-              left: 30,
+              left: 15,
               bottom: 10,
             ),
             child: Align(
@@ -44,6 +42,7 @@ class DescriptionFieldWidget extends StatelessWidget {
                   color: Colors.grey,
                   fontSize: 16,
                   fontStyle: FontStyle.italic,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
             ),
