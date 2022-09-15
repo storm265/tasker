@@ -24,12 +24,12 @@ class AddTaskPage extends StatefulWidget {
 }
 
 class _AddTaskPageState extends State<AddTaskPage> {
-  @override
-  void dispose() {
-      newTaskController.titleController.dispose();
-      newTaskController.descriptionController.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //     newTaskController.titleController.dispose();
+  //     newTaskController.descriptionController.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +77,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                         ),
                         EnterUserWidget(
                           isForFieldActive: false,
-                          onChanged: (value) async => await Future.delayed(
+                          onChanged: (_) async => await Future.delayed(
                               const Duration(milliseconds: 500),
                               () => setState(() {})),
                           titleController:

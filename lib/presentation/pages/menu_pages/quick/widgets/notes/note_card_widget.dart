@@ -9,6 +9,7 @@ import 'package:todo2/presentation/pages/menu_pages/task/widgets/slidable_widget
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/slidable_widgets/grey_slidable_widget.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
+import 'package:todo2/utils/assets_path.dart';
 
 class NoteCardWidget extends StatelessWidget {
   final NavigationController navigationController;
@@ -49,7 +50,7 @@ class NoteCardWidget extends StatelessWidget {
                 ),
           const GreySlidableWidget(),
           EndPageWidget(
-            icon: Icons.edit,
+            iconPath: AssetsPath.editIconPath,
             onClick: () async {
               noteController.pickEditData(notesModel: notesModel);
               await navigationController.moveToPage(Pages.addNote);

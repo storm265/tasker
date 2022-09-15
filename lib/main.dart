@@ -24,7 +24,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
   await SystemChromeProvider.setSystemChrome();
-  if (kReleaseMode) {
+  if (kDebugMode) {
     HttpProxy httpProxy = await HttpProxy.createHttpProxy();
     httpProxy.host = "10.101.4.108"; // replace with your server ip
     httpProxy.port = "8888"; // replace with your server port
@@ -86,9 +86,9 @@ class _MyAppState extends State<MyApp> {
             debugShowCheckedModeBanner: false,
             title: 'Todo2',
             theme: _themeDataController.themeData,
-            //  initialRoute: '/',
-            // routes: routes,
-            home: AddTaskPage(),
+            initialRoute: '/',
+            routes: routes,
+            // home: AddTaskPage(),
           ),
         ),
       ),

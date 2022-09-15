@@ -29,9 +29,9 @@ class NetworkSource {
       InterceptorsWrapper(
         onResponse: (response, handler) async {
           if (response.statusCode == 401) {
-        //    await UpdateTokenService.updateToken();
-           // log('resolve');
-            // return handler.resolve(await _retry(response.requestOptions));
+           await UpdateTokenService.updateToken();
+           log('resolve');
+            return handler.resolve(await _retry(response.requestOptions));
           }
        //   log('next');
           return handler.next(response);

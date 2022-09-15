@@ -10,6 +10,7 @@ import 'package:todo2/presentation/pages/menu_pages/task/widgets/slidable_widget
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/slidable_widgets/grey_slidable_widget.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
+import 'package:todo2/utils/assets_path.dart';
 
 class CheckboxWidget extends StatelessWidget {
   final CheckListModel checklistModel;
@@ -31,8 +32,9 @@ class CheckboxWidget extends StatelessWidget {
       endActionPane: ActionPane(
         motion: const ScrollMotion(),
         children: [
+       
           EndPageWidget(
-            icon: Icons.edit,
+          iconPath: AssetsPath.editIconPath,
             onClick: () async {
               checkListController.pickEditData(checklistModel: checklistModel);
               await navigationController.moveToPage(Pages.addCheckList);
@@ -40,7 +42,7 @@ class CheckboxWidget extends StatelessWidget {
           ),
           const GreySlidableWidget(),
           EndPageWidget(
-            icon: Icons.delete,
+           iconPath: AssetsPath.deleteIconPath,
             onClick: () async {
               await checkListController.deleteChecklist(
                   checkListModel: checklistModel);

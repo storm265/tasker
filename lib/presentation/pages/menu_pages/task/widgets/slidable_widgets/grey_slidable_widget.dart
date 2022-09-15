@@ -6,7 +6,7 @@ class GreySlidableWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 75,
+      height: 60,
       width: 2,
       child: ColoredBox(color: Colors.grey.withOpacity(0.25)),
     );
