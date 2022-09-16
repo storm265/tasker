@@ -24,7 +24,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
   await SystemChromeProvider.setSystemChrome();
-  if (kDebugMode) {
+  if (kReleaseMode) {
     HttpProxy httpProxy = await HttpProxy.createHttpProxy();
     httpProxy.host = "10.101.4.108"; // replace with your server ip
     httpProxy.port = "8888"; // replace with your server port

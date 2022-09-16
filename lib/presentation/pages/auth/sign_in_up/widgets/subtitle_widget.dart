@@ -12,7 +12,7 @@ class SubTitleWidget extends StatelessWidget {
       text!,
       style: const TextStyle(
         fontSize: 16,
-        color: Color(0xFF313131),
+        color: Colors.grey,
         fontWeight: FontWeight.w500,
       ),
     );

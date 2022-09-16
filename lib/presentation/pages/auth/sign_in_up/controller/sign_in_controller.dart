@@ -27,7 +27,6 @@ class SignInController extends ChangeNotifier {
 
   final formKey = GlobalKey<FormState>();
   final isActiveSubmitButton = ValueNotifier(true);
-  final isActiveScrolling = ValueNotifier(false);
   late ScrollController scrollController;
 
   void changeSubmitButtonValue({required bool isActive}) {
@@ -35,17 +34,6 @@ class SignInController extends ChangeNotifier {
     isActiveSubmitButton.notifyListeners();
   }
 
-  void changeScrollStatus({required bool isActive}) {
-    isActiveScrolling.value = isActive;
-    isActiveScrolling.notifyListeners();
-    if (!isActiveScrolling.value) {
-      scrollController.animateTo(
-        scrollController.position.minScrollExtent - 0.2,
-        duration: const Duration(milliseconds: 600),
-        curve: Curves.ease,
-      );
-    }
-  }
 
   Future<void> tryToSignIn({
     required String emailController,
@@ -129,7 +117,7 @@ class SignInController extends ChangeNotifier {
 
   void disposeObjects() {
     isActiveSubmitButton.dispose();
-    isActiveScrolling.dispose();
+
     scrollController.dispose();
   }
 }

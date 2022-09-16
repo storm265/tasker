@@ -86,22 +86,14 @@ class _CheckListPageState extends State<CheckListPage> {
                       ),
                     ),
                   ),
-                  Row(
-                    children: [
-                      AddItemButton(onPressed: () async {
-                        _checkListController.addCheckboxItem(index);
-                        await _scrollController.animateTo(
-                          _scrollController.position.maxScrollExtent + 20,
-                          duration: const Duration(milliseconds: 500),
-                          curve: Curves.easeIn,
-                        );
-                      }),
-                      RemoveAllItemsWidget(
-                        onPressed: () async => await _checkListController
-                            .deleteAllChecklistItems(),
-                      )
-                    ],
-                  ),
+                  AddItemButton(onPressed: () async {
+                    _checkListController.addCheckboxItem(index);
+                    await _scrollController.animateTo(
+                      _scrollController.position.maxScrollExtent + 20,
+                      duration: const Duration(milliseconds: 500),
+                      curve: Curves.easeIn,
+                    );
+                  }),
                   Column(
                     children: [
                       ColorPalleteWidget(

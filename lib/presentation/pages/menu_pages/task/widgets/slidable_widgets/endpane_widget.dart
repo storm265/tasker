@@ -21,9 +21,15 @@ class EndPageWidget extends StatelessWidget {
       width: 60,
       height: 70,
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(3),
-      ),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(3),
+          boxShadow: [
+            BoxShadow(
+              color: const Color(0xFFE0E0E0).withOpacity(0.5),
+              offset: const Offset(1, 0),
+              blurRadius: 9,
+            )
+          ]),
       child: Center(
         child: IconButton(
           icon: iconPath == null
