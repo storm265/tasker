@@ -87,6 +87,7 @@ class _SignInPageState extends State<SignInPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: const [
                         TitleTextWidget(text: 'Welcome back'),
+                        SizedBox(height: 6),
                         SubTitleWidget(text: 'Sign in to continue'),
                       ],
                     ),
