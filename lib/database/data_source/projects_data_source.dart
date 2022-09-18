@@ -16,16 +16,20 @@ abstract class ProjectUserData {
     required Color color,
     required String title,
   });
+
   Future<void> deleteProject({
     required ProjectModel projectModel,
   });
-  Future<void> createProject({
+
+  Future<Map<String, dynamic>> createProject({
     required Color color,
     required String title,
   });
+
   Future<List<dynamic>> searchProject({required String title});
 
   // Future<Map<String, dynamic>> fetchOneProject();
+
   Future<List<dynamic>> fetchAllProjects();
 
   Future<List<dynamic>> fetchProjectStats();
@@ -47,14 +51,14 @@ class ProjectUserDataImpl implements ProjectUserData {
   final _projectsStats = '/projects-statistics';
 
   @override
-  Future<void> createProject({
+  Future<Map<String, dynamic>> createProject({
     required Color color,
     required String title,
   }) async {
     try {
       final ownerId =
           await _secureStorageService.getUserData(type: StorageDataType.id);
-      await _network.post(
+      final response = await _network.post(
         path: _projects,
         data: {
           ProjectDataScheme.title: title,
@@ -63,6 +67,10 @@ class ProjectUserDataImpl implements ProjectUserData {
         },
         options: await _network.getLocalRequestOptions(useContentType: true),
       );
+      return NetworkErrorService.isSuccessful(response)
+          ? (response.data[ProjectDataScheme.data] as Map<String, dynamic>)
+          : throw Failure(
+              'Error: ${response.data[ProjectDataScheme.data][ProjectDataScheme.message]}');
     } catch (e) {
       throw Failure('Error: Create project error');
     }
@@ -80,9 +88,6 @@ class ProjectUserDataImpl implements ProjectUserData {
       return NetworkErrorService.isSuccessful(response)
           ? (response.data![ProjectDataScheme.data] as List<dynamic>)
           : throw Failure('Error: ${response.data![ProjectDataScheme.data]}');
-    } on DioError catch (e) {
-      log('DIO expersion $e');
-      throw Failure('DIO expersion $e');
     } catch (e) {
       throw Failure('Failure expersion $e');
     }
@@ -125,13 +130,12 @@ class ProjectUserDataImpl implements ProjectUserData {
   }
 
   @override
-  Future<void> updateProject({
+  Future<Map<String, dynamic>> updateProject({
     required ProjectModel projectModel,
     required Color color,
     required String title,
   }) async {
     try {
-      log('update project data: $title');
       final id =
           await _secureStorageService.getUserData(type: StorageDataType.id);
       final response = await _network.put(
@@ -143,11 +147,10 @@ class ProjectUserDataImpl implements ProjectUserData {
         },
         options: await _network.getLocalRequestOptions(useContentType: true),
       );
-      log('updating project: ${response.data[ProjectDataScheme.data]}');
-      if (!NetworkErrorService.isSuccessful(response)) {
-        throw Failure(
-            'Error: ${response.data[ProjectDataScheme.data][ProjectDataScheme.message]}');
-      }
+      return NetworkErrorService.isSuccessful(response)
+          ? (response.data[ProjectDataScheme.data] as Map<String, dynamic>)
+          : throw Failure(
+              'Error: ${response.data[ProjectDataScheme.data][ProjectDataScheme.message]}');
     } catch (e) {
       throw Failure(e.toString());
     }

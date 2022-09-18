@@ -3,7 +3,7 @@ description: A new Flutter project.
 publish_to: 'none' 
 version: 3.8.0+3
 environment:
-  sdk: ">=2.16.2 <3.0.0"
+  sdk: ">=2.18.0-0 <3.0.0"
 
 
 dependencies:
@@ -21,7 +21,6 @@ dependencies:
   flutter_dotenv:
   http_proxy:
   # animations
-  flutter_spinkit: ^5.1.0
   shimmer:
   equatable: ^2.0.5
   

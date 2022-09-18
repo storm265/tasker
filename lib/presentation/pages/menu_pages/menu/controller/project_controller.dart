@@ -1,6 +1,4 @@
 import 'dart:developer';
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/project_models/project_stats_model.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
@@ -8,7 +6,6 @@ import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/error_service/error_service.dart';
-import 'package:todo2/services/message_service/message_service.dart';
 
 enum ProjectDialogStatus {
   add,
@@ -17,14 +14,19 @@ enum ProjectDialogStatus {
 }
 
 class ProjectController extends ChangeNotifier {
-  ProjectController(
-    this._projectsRepository,
-    this.colorPalleteController,
-  );
+  ProjectController({
+    required ProjectRepositoryImpl projectsRepository,
+    required this.colorPalleteController,
+  }) : _projectsRepository = projectsRepository;
+
   final ProjectRepositoryImpl _projectsRepository;
+
   final ColorPalleteController colorPalleteController;
+
   final formKey = GlobalKey<FormState>();
+
   final isClickedSubmitButton = ValueNotifier(true);
+
   final titleController = TextEditingController();
 
   final projects = ValueNotifier<List<ProjectModel>>([]);
@@ -52,37 +54,25 @@ class ProjectController extends ChangeNotifier {
 
   void clearProjects() {
     titleController.clear();
-    projects.value.clear();
-    projects.notifyListeners();
     colorPalleteController.changeSelectedIndex(99);
   }
 
   Future<void> tryValidateProject({
     required bool isEdit,
-    required BuildContext context,
-    required VoidCallback callback,
   }) async {
     try {
       if (formKey.currentState!.validate() &&
           !colorPalleteController.isNotPickerColor) {
         setClickedValue(false);
         if (isEdit) {
-          await updateProject(
-            projectModel: selectedModel.value,
-            title: titleController.text,
-          );
+          await updateProject(projectModel: selectedModel.value);
         } else {
-          await createProject(title: titleController.text);
+          await createProject();
         }
         clearProjects();
-        colorPalleteController.changeSelectedIndex(99);
-        await fetchAllProjects().then((_) {
-          setClickedValue(true);
-        });
-        callback();
+        setClickedValue(true);
       }
-    } catch (e, t) {
-      log('tryValidateProject $e,$t');
+    } catch (e) {
       throw Failure(e.toString());
     }
   }
@@ -92,7 +82,6 @@ class ProjectController extends ChangeNotifier {
       projects.value = await _projectsRepository.fetchAllProjects();
       projects.notifyListeners();
     } catch (e) {
-      debugPrint('error $e');
       throw Failure(e.toString());
     }
   }
@@ -106,29 +95,48 @@ class ProjectController extends ChangeNotifier {
     }
   }
 
-  Future<void> createProject({
-    required String title,
-  }) async {
+  Future<void> createProject() async {
     try {
-      await _projectsRepository.createProject(
+      final model = await _projectsRepository.createProject(
         color: colors[colorPalleteController.selectedIndex.value],
-        title: title,
+        title: titleController.text,
       );
+      projects.value.add(model);
+      projects.notifyListeners();
     } catch (e) {
       throw Failure(e.toString());
     }
   }
 
-  Future<void> updateProject({
-    required ProjectModel projectModel,
-    required String title,
-  }) async {
+  Future<void> updateProject({required ProjectModel projectModel}) async {
     try {
-      await _projectsRepository.updateProject(
+      final updatedModel = await _projectsRepository.updateProject(
         color: colors[colorPalleteController.selectedIndex.value],
         projectModel: projectModel,
-        title: title,
+        title: titleController.text,
       );
+      for (var i = 0; i < projects.value.length; i++) {
+        if (projects.value[i].id == updatedModel.id) {
+          projects.value[i] = updatedModel;
+          projects.notifyListeners();
+          break;
+        }
+      }
+    } catch (e) {
+      throw Failure(e.toString());
+    }
+  }
+
+  Future<void> deleteProject() async {
+    try {
+      setClickedValue(false);
+      await _projectsRepository.deleteProject(
+          projectModel: selectedModel.value);
+      projects.value
+          .removeWhere((element) => selectedModel.value.id == element.id);
+      projects.notifyListeners();
+      clearProjects();
+      setClickedValue(true);
     } catch (e) {
       throw Failure(e.toString());
     }
@@ -141,22 +149,6 @@ class ProjectController extends ChangeNotifier {
         colorPalleteController.changeSelectedIndex(i);
         break;
       }
-    }
-  }
-
-  Future<void> deleteProject({
-    required ProjectModel projectModel,
-  }) async {
-    try {
-      setClickedValue(false);
-      await _projectsRepository.deleteProject(projectModel: projectModel);
-      clearProjects();
-      colorPalleteController.changeSelectedIndex(99);
-      await fetchAllProjects().then((_) {
-        setClickedValue(true);
-      });
-    } catch (e) {
-      throw Failure(e.toString());
     }
   }
 

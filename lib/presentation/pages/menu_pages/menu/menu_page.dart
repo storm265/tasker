@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/projects_data_source.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
@@ -22,20 +20,19 @@ class MenuPage extends StatefulWidget {
 }
 
 class MenuPageState extends State<MenuPage> {
-  late TextEditingController _titleController;
+  final formKey = GlobalKey<FormState>();
   late ProjectController _projectController;
 
   @override
   void initState() {
-    _titleController = TextEditingController();
     _projectController = ProjectController(
-      ProjectRepositoryImpl(
+      projectsRepository: ProjectRepositoryImpl(
         projectDataSource: ProjectUserDataImpl(
           secureStorageService: SecureStorageSource(),
           network: NetworkSource(),
         ),
       ),
-      ColorPalleteController(),
+      colorPalleteController: ColorPalleteController(),
     );
     _projectController.fetchAllProjects();
     super.initState();
@@ -43,10 +40,8 @@ class MenuPageState extends State<MenuPage> {
 
   @override
   void dispose() {
-    log('disposed menu');
     _projectController.disposeValues();
     _projectController.dispose();
-    _titleController.dispose();
     super.dispose();
   }
 
@@ -55,9 +50,7 @@ class MenuPageState extends State<MenuPage> {
     return AppbarWrapWidget(
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
       floatingActionButton: AddProjectButton(
-        titleController: _titleController,
         projectController: _projectController,
-        callback: () => Navigator.pop(context),
       ),
       isWhite: false,
       title: 'Projects',
@@ -89,7 +82,6 @@ class MenuPageState extends State<MenuPage> {
                               // taskLength: snapshot
                               //     .data![i].tasksNumber,
                               taskLength: 0,
-                              callback: () => Navigator.pop(context),
                             );
                     })),
           ),

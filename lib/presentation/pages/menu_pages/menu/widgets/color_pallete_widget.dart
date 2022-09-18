@@ -5,8 +5,10 @@ import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.da
 
 class ColorPalleteWidget extends StatelessWidget {
   final ColorPalleteController colorController;
-  const ColorPalleteWidget({Key? key, required this.colorController})
-      : super(key: key);
+  const ColorPalleteWidget({
+    Key? key,
+    required this.colorController,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

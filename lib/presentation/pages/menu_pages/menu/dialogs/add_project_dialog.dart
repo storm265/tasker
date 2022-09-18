@@ -6,12 +6,7 @@ Future<void> showAddEditProjectDialog({
   required BuildContext context,
   ProjectDialogStatus status = ProjectDialogStatus.add,
   required ProjectController projectController,
-  required TextEditingController titleController,
-  required VoidCallback callback,
 }) async {
-  status == ProjectDialogStatus.add
-      ? projectController.titleController.clear()
-      : null;
   await showDialog(
     barrierDismissible: false,
     context: context,
@@ -58,7 +53,8 @@ Future<void> showAddEditProjectDialog({
             ),
             const SizedBox(height: 40),
             ColorPalleteWidget(
-                colorController: projectController.colorPalleteController)
+              colorController: projectController.colorPalleteController,
+            )
           ],
         ),
       ),
@@ -70,26 +66,22 @@ Future<void> showAddEditProjectDialog({
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   TextButton(
-                    child: const Text('Back'),
                     onPressed: isClicked
                         ? () {
-                            projectController.titleController.clear();
-                            projectController.colorPalleteController
-                                .changeSelectedIndex(99);
+                            projectController.clearProjects();
                             Navigator.pop(context);
                           }
                         : null,
+                    child: const Text('Back'),
                   ),
                   status == ProjectDialogStatus.add
                       ? const SizedBox()
                       : TextButton(
                           onPressed: isClicked
                               ? () async {
-                                  await projectController.deleteProject(
-                                    projectModel:
-                                        projectController.selectedModel.value,
-                                  );
-                                  callback();
+                                  await projectController
+                                      .deleteProject()
+                                      .then((_) => Navigator.pop(context));
                                 }
                               : null,
                           child: const Text('Delete Project'),
@@ -97,13 +89,13 @@ Future<void> showAddEditProjectDialog({
                   TextButton(
                     onPressed: isClicked
                         ? () async {
-                            await projectController.tryValidateProject(
-                              context: context,
-                              isEdit: status == ProjectDialogStatus.add
-                                  ? false
-                                  : true,
-                              callback: () => callback(),
-                            );
+                            await projectController
+                                .tryValidateProject(
+                                  isEdit: status == ProjectDialogStatus.add
+                                      ? false
+                                      : true,
+                                )
+                                .then((_) => Navigator.pop(context));
                           }
                         : null,
                     child: Text(

@@ -1,5 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 class ProgressIndicatorWidget extends StatelessWidget {
@@ -14,8 +13,7 @@ class ProgressIndicatorWidget extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const SpinKitThreeInOut(
-          size: 30,
+        const CupertinoActivityIndicator(
           color: Palette.red,
         ),
         text == null

@@ -6,7 +6,6 @@ import 'package:todo2/presentation/pages/auth/welcome/welcome_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/checklist_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/note_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/new_task.dart';
-
 import 'package:todo2/presentation/pages/menu_pages/menu/menu_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/profile_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
@@ -42,7 +41,7 @@ Map<String, Widget Function(BuildContext)> routes = {
   signIn: (_) => const SignInPage(),
   tasks: (_) => const TasksPage(),
   menu: (_) => const MenuPage(),
-  quick: (_) =>const  QuickPage(),
+  quick: (_) => const QuickPage(),
   profile: (_) => const ProfilePage(),
   addTask: (_) => const AddTaskPage(),
   addNote: (_) => const AddQuickNote(),
@@ -104,7 +103,7 @@ class NavigationService {
       case Pages.addCheckList:
         await Navigator.pushNamed(context, addCheckList);
         break;
-     
+
       case Pages.addNote:
         await Navigator.pushNamed(context, addNote);
         break;

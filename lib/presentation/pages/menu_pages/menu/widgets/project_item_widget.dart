@@ -5,33 +5,32 @@ import 'package:todo2/presentation/pages/menu_pages/menu/dialogs/add_project_dia
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/category_length_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/category_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/circle_widget.dart';
+import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 class ProjectItemWidget extends StatelessWidget {
   final ProjectModel model;
   final int taskLength;
   final ProjectController projectController;
-  final VoidCallback callback;
   const ProjectItemWidget({
     Key? key,
     required this.model,
     required this.taskLength,
     required this.projectController,
-    required this.callback,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      highlightColor: Palette.red.withOpacity(0.4),
+      borderRadius: BorderRadius.circular(5),
       onLongPress: model.title == 'Personal'
           ? null
           : () async {
               projectController.findEditColor(model: model);
               await showAddEditProjectDialog(
-                titleController: projectController.titleController,
                 context: context,
                 projectController: projectController,
                 status: ProjectDialogStatus.edit,
-                callback: () => callback(),
               );
             },
       child: Padding(
@@ -39,6 +38,7 @@ class ProjectItemWidget extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
+            borderRadius: BorderRadius.circular(5),
             boxShadow: [
               BoxShadow(
                 color: Colors.grey.withOpacity(0.08),

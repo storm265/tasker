@@ -4,7 +4,6 @@ import 'package:todo2/database/model/project_models/project_stats_model.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 
-
 abstract class ProjectRepository {
   // Future fetchOneProject();
 
@@ -18,7 +17,7 @@ abstract class ProjectRepository {
   Future<void> deleteProject({required ProjectModel projectModel});
 
   Future<void> updateProject({
- required ProjectModel projectModel,
+    required ProjectModel projectModel,
     required String title,
     required Color color,
   });
@@ -61,15 +60,16 @@ class ProjectRepositoryImpl implements ProjectRepository {
   }
 
   @override
-  Future<void> createProject({
+  Future<ProjectModel> createProject({
     required Color color,
     required String title,
   }) async {
     try {
-      await _projectDataSource.createProject(
+      final response = await _projectDataSource.createProject(
         color: color,
         title: title,
       );
+      return ProjectModel.fromJson(response);
     } catch (e) {
       throw Failure(e.toString());
     }
@@ -86,6 +86,24 @@ class ProjectRepositoryImpl implements ProjectRepository {
   }
 
   @override
+  Future<ProjectModel> updateProject({
+    required ProjectModel projectModel,
+    required String title,
+    required Color color,
+  }) async {
+    try {
+      final response = await _projectDataSource.updateProject(
+        color: color,
+        projectModel: projectModel,
+        title: title,
+      );
+      return ProjectModel.fromJson(response);
+    } catch (e) {
+      throw Failure(e.toString());
+    }
+  }
+
+  @override
   Future<List<ProjectStatsModel>> fetchProjectStats() async {
     try {
       final response = await _projectDataSource.fetchProjectStats();
@@ -94,23 +112,6 @@ class ProjectRepositoryImpl implements ProjectRepository {
         statsModels.add(ProjectStatsModel.fromJson(response[i]));
       }
       return statsModels;
-    } catch (e) {
-      throw Failure(e.toString());
-    }
-  }
-
-  @override
-  Future<void> updateProject({
-required ProjectModel projectModel,
-    required String title,
-    required Color color,
-  }) async {
-    try {
-      await _projectDataSource.updateProject(
-        color: color,
-        projectModel: projectModel,
-        title: title,
-      );
     } catch (e) {
       throw Failure(e.toString());
     }
