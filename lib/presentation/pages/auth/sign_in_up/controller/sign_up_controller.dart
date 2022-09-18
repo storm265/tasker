@@ -18,29 +18,23 @@ class SignUpController extends ChangeNotifier {
         _storageSource = storageSource;
 
   final AuthRepositoryImpl _authRepository;
+
   final FormValidatorController formValidatorController;
+
   final ImageController imgPickerController;
+
   final SecureStorageSource _storageSource;
+  
   final formKey = GlobalKey<FormState>();
+
   final isActiveSubmitButton = ValueNotifier<bool>(true);
+
   final isActiveScrolling = ValueNotifier<bool>(false);
-  final scrollController = ScrollController();
+
 
   void changeSubmitButtonValue({required bool isActive}) {
     isActiveSubmitButton.value = isActive;
     isActiveSubmitButton.notifyListeners();
-  }
-
-  void changeScrollStatus({required bool isActive}) {
-    isActiveScrolling.value = isActive;
-    isActiveScrolling.notifyListeners();
-    if (!isActiveScrolling.value) {
-      scrollController.animateTo(
-        scrollController.position.minScrollExtent - 0.2,
-        duration: const Duration(milliseconds: 600),
-        curve: Curves.ease,
-      );
-    }
   }
 
   Future<void> trySignUp({
@@ -144,10 +138,4 @@ class SignUpController extends ChangeNotifier {
     }
   }
 
-  void disposeObjects() {
-    imgPickerController.dispose();
-    isActiveSubmitButton.dispose();
-    isActiveScrolling.dispose();
-    scrollController.dispose();
-  }
 }

@@ -55,6 +55,8 @@ class WeekView extends StatelessWidget {
                   child: Text(
                     '${date.day}',
                     style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
                       color: isSelected || isToday
                           ? theme.colorScheme.onPrimary
                           : isHighlight || highlightMonth == null

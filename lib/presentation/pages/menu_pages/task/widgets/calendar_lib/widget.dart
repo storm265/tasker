@@ -1,5 +1,7 @@
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'controller.dart';
 import 'datetime_util.dart';
 
@@ -14,7 +16,7 @@ class AdvancedCalendar extends StatefulWidget {
   const AdvancedCalendar({
     Key? key,
     this.controller,
-    this.startWeekDay =1 ,
+    this.startWeekDay = 1,
     this.events,
     this.weekLineHeight = 32.0,
     this.preloadMonthViewAmount = 13,
@@ -65,6 +67,7 @@ class AdvancedCalendar extends StatefulWidget {
 
 class _AdvancedCalendarState extends State<AdvancedCalendar>
     with SingleTickerProviderStateMixin {
+
   late ValueNotifier<int> _monthViewCurrentPage;
   late AnimationController _animationController;
   late AdvancedCalendarController _controller;
@@ -144,7 +147,6 @@ class _AdvancedCalendarState extends State<AdvancedCalendar>
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return GestureDetector(
       onVerticalDragStart: (details) {
         _captureOffset = details.globalPosition;
@@ -201,9 +203,6 @@ class _AdvancedCalendarState extends State<AdvancedCalendar>
             },
           ),
           WeekDays(
-            style: theme.textTheme.bodyText1!.copyWith(
-              color: theme.hintColor,
-            ),
             weekNames: _weekNames != null
                 ? _weekNames!
                 : const <String>['S', 'M', 'T', 'W', 'T', 'F', 'S'],

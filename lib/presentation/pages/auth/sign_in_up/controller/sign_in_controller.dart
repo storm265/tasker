@@ -1,10 +1,8 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/presentation/controller/user_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
-
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
@@ -26,14 +24,14 @@ class SignInController extends ChangeNotifier {
         _userController = userController;
 
   final formKey = GlobalKey<FormState>();
-  final isActiveSubmitButton = ValueNotifier(true);
-  late ScrollController scrollController;
 
-  void changeSubmitButtonValue({required bool isActive}) {
+  final isActiveSubmitButton = ValueNotifier(true);
+  
+
+  void changeSubmitButtonStatus({required bool isActive}) {
     isActiveSubmitButton.value = isActive;
     isActiveSubmitButton.notifyListeners();
   }
-
 
   Future<void> tryToSignIn({
     required String emailController,
@@ -42,7 +40,7 @@ class SignInController extends ChangeNotifier {
   }) async {
     try {
       if (formKey.currentState!.validate()) {
-        changeSubmitButtonValue(isActive: false);
+        changeSubmitButtonStatus(isActive: false);
         await _signIn(
           context: context,
           email: emailController,
@@ -56,7 +54,7 @@ class SignInController extends ChangeNotifier {
       log(' trace : $t');
       throw Failure(e.toString());
     } finally {
-      changeSubmitButtonValue(isActive: true);
+      changeSubmitButtonStatus(isActive: true);
     }
   }
 
@@ -106,18 +104,17 @@ class SignInController extends ChangeNotifier {
       MessageService.displaySnackbar(
         context: context,
         message:
-            'Token will expire: ${DateTime.fromMillisecondsSinceEpoch(authModel.expiresIn)..day..month}',
+            'Token will expire: ${DateTime.fromMillisecondsSinceEpoch(authModel.expiresIn)
+              ..day
+              ..month}',
       );
     } catch (e, t) {
       log(' trace : $t');
-      MessageService.displaySnackbar(message: e.toString(), context: context);
+      MessageService.displaySnackbar(
+        message: e.toString(),
+        context: context,
+      );
       throw Failure(e.toString());
     }
-  }
-
-  void disposeObjects() {
-    isActiveSubmitButton.dispose();
-
-    scrollController.dispose();
   }
 }

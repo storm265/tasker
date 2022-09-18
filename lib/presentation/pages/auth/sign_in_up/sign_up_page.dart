@@ -15,8 +15,6 @@ import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/sign_up_button_
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/subtitle_widget.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/textfield_widget.dart';
 import 'package:todo2/presentation/pages/auth/widgets/title_widget.dart';
-import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
-import 'package:todo2/presentation/widgets/common/dynamic_single_scroll.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
@@ -53,7 +51,6 @@ class _SignUpPageState extends State<SignUpPage> {
     _emailController.dispose();
     _passwordController.dispose();
     _usernameController.dispose();
-    _signUpController.disposeObjects();
     _signUpController.dispose();
     super.dispose();
   }

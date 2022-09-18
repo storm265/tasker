@@ -14,10 +14,7 @@ import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/sign_up_button_
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/subtitle_widget.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/textfield_widget.dart';
 import 'package:todo2/presentation/pages/auth/widgets/title_widget.dart';
-import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
-import 'package:todo2/presentation/widgets/common/dynamic_single_scroll.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
-
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
@@ -31,13 +28,6 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
-  @override
-  void initState() {
-    // TODO: put it in Constructor of SignInController
-    _signInController.scrollController = ScrollController();
-    super.initState();
-  }
 
   final _signInController = SignInController(
     userController: UserController(
@@ -57,7 +47,6 @@ class _SignInPageState extends State<SignInPage> {
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
-    _signInController.disposeObjects();
     _signInController.dispose();
     super.dispose();
   }

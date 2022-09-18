@@ -59,7 +59,7 @@ class DateBox extends StatelessWidget {
           decoration: ShapeDecoration(
             shape: const CircleBorder(),
             color: isSelected
-                ? Colors.purpleAccent
+                ? getAppColor(color: CategoryColor.blue)
                 : isToday
                     ? theme.highlightColor
                     : null,

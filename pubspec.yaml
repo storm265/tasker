@@ -1,7 +1,7 @@
 name: todo2
 description: A new Flutter project.
 publish_to: 'none' 
-version: 3.8.0+3
+version: 3.8.0+4
 environment:
   sdk: ">=2.18.0-0 <3.0.0"
 
@@ -22,7 +22,6 @@ dependencies:
   http_proxy:
   # animations
   shimmer:
-  equatable: ^2.0.5
   
 
 
