@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/checklists_data_source.dart';
 import 'package:todo2/database/model/checklist_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
+import 'package:todo2/services/navigation_service/network_error_service.dart';
 
 abstract class CheckListsRepository<T> {
   Future<void> createCheckList({
@@ -33,17 +34,18 @@ class CheckListRepositoryImpl extends CheckListsRepository<CheckListModel> {
   final CheckListsDataSourceImpl _checkListsDataSource;
 
   @override
-  Future<void> createCheckList({
+  Future<CheckListModel> createCheckList({
     required String title,
     required Color color,
     List<Map<String, dynamic>>? items,
   }) async {
     try {
-      await _checkListsDataSource.createCheckList(
+      final response = await _checkListsDataSource.createCheckList(
         title: title,
         color: color,
         items: items,
       );
+      return CheckListModel.fromJson(response);
     } catch (e) {
       throw Failure(e.toString());
     }
@@ -94,19 +96,20 @@ class CheckListRepositoryImpl extends CheckListsRepository<CheckListModel> {
   }
 
   @override
-  Future<void> updateCheckList({
+  Future<CheckListModel> updateCheckList({
     required CheckListModel checkListModel,
     List<Map<String, dynamic>>? items,
     required String title,
     required Color color,
   }) async {
     try {
-      await _checkListsDataSource.updateCheckList(
+      final response = await _checkListsDataSource.updateCheckList(
         checkListModel: checkListModel,
         items: items,
         title: title,
         color: color,
       );
+      return CheckListModel.fromJson(response);
     } catch (e) {
       throw Failure(e.toString());
     }

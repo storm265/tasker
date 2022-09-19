@@ -14,13 +14,12 @@ import 'package:todo2/utils/assets_path.dart';
 class NoteCardWidget extends StatelessWidget {
   final NavigationController navigationController;
   final NotesModel notesModel;
-  final VoidCallback callback;
+
   final NewNoteController noteController;
   const NoteCardWidget({
     Key? key,
     required this.notesModel,
     required this.navigationController,
-    required this.callback,
     required this.noteController,
   }) : super(key: key);
 
@@ -45,7 +44,6 @@ class NoteCardWidget extends StatelessWidget {
                       pickedModel: notesModel,
                       context: context,
                     );
-                    callback();
                   },
                 ),
           const GreySlidableWidget(),
@@ -60,11 +58,7 @@ class NoteCardWidget extends StatelessWidget {
           EndPageWidget(
             icon: Icons.delete,
             onClick: () async {
-              await noteController.deleteNote(
-                notesModel: notesModel,
-                context: context,
-              );
-              callback();
+              await noteController.deleteNote(notesModel: notesModel);
             },
           ),
         ],

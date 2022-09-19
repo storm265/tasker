@@ -26,7 +26,6 @@ class SignInController extends ChangeNotifier {
   final formKey = GlobalKey<FormState>();
 
   final isActiveSubmitButton = ValueNotifier(true);
-  
 
   void changeSubmitButtonStatus({required bool isActive}) {
     isActiveSubmitButton.value = isActive;
@@ -98,15 +97,6 @@ class SignInController extends ChangeNotifier {
       await _storageSource.storageApi.saveUserData(
         type: StorageDataType.accessToken,
         value: authModel.accessToken,
-      );
-
-      // TODO testing, remove context
-      MessageService.displaySnackbar(
-        context: context,
-        message:
-            'Token will expire: ${DateTime.fromMillisecondsSinceEpoch(authModel.expiresIn)
-              ..day
-              ..month}',
       );
     } catch (e, t) {
       log(' trace : $t');

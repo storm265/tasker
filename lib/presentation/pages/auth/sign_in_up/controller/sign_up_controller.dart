@@ -24,13 +24,12 @@ class SignUpController extends ChangeNotifier {
   final ImageController imgPickerController;
 
   final SecureStorageSource _storageSource;
-  
+
   final formKey = GlobalKey<FormState>();
 
   final isActiveSubmitButton = ValueNotifier<bool>(true);
 
   final isActiveScrolling = ValueNotifier<bool>(false);
-
 
   void changeSubmitButtonValue({required bool isActive}) {
     isActiveSubmitButton.value = isActive;
@@ -57,16 +56,10 @@ class SignUpController extends ChangeNotifier {
             );
             final imageResponse = await imgPickerController.uploadAvatar();
             log('avatar respose $imageResponse');
-            await _storageSource.storageApi
-                .saveUserData(
-                    type: StorageDataType.avatarUrl, value: imageResponse)
-                .then((_) {
-              MessageService.displaySnackbar(
-                  message: 'Sign up success!', context: context);
-
-              NavigationService.navigateTo(
-                  context, Pages.navigationReplacement);
-            });
+            await _storageSource.storageApi.saveUserData(
+              type: StorageDataType.avatarUrl,
+              value: imageResponse,
+            );
           } else {
             throw Failure('Form is not valid');
           }
@@ -78,16 +71,17 @@ class SignUpController extends ChangeNotifier {
             username: userName,
             email: email,
             password: password,
-          ).then((_) {
-            MessageService.displaySnackbar(
-                message: 'Sign up success!', context: context);
-
-            NavigationService.navigateTo(context, Pages.navigationReplacement);
-          });
+          );
         } else {
           throw Failure('Form is not valid');
         }
       }
+      MessageService.displaySnackbar(
+          message: 'Sign up success!', context: context);
+      await Future.delayed(
+          Duration.zero,
+          () => NavigationService.navigateTo(
+              context, Pages.navigationReplacement));
     } catch (e) {
       MessageService.displaySnackbar(message: e.toString(), context: context);
       throw Failure(e.toString());
@@ -108,15 +102,29 @@ class SignUpController extends ChangeNotifier {
         email: email,
         password: password,
       );
-
-      await _storageSource.storageApi
-          .saveUserData(type: StorageDataType.id, value: authModel.id);
-      await _storageSource.storageApi
-          .saveUserData(type: StorageDataType.email, value: email);
-      await _storageSource.storageApi
-          .saveUserData(type: StorageDataType.password, value: password);
-      await _storageSource.storageApi
-          .saveUserData(type: StorageDataType.username, value: username);
+      MessageService.displaySnackbar(
+        context: context,
+        message:
+            'Token will expire: ${DateTime.fromMillisecondsSinceEpoch(authModel.expiresIn)
+              ..day
+              ..month}',
+      );
+      await _storageSource.storageApi.saveUserData(
+        type: StorageDataType.id,
+        value: authModel.id,
+      );
+      await _storageSource.storageApi.saveUserData(
+        type: StorageDataType.email,
+        value: email,
+      );
+      await _storageSource.storageApi.saveUserData(
+        type: StorageDataType.password,
+        value: password,
+      );
+      await _storageSource.storageApi.saveUserData(
+        type: StorageDataType.username,
+        value: username,
+      );
       await _storageSource.storageApi.saveUserData(
         type: StorageDataType.refreshToken,
         value: authModel.refreshToken,
@@ -125,17 +133,9 @@ class SignUpController extends ChangeNotifier {
         type: StorageDataType.accessToken,
         value: authModel.accessToken,
       );
-      MessageService.displaySnackbar(
-        context: context,
-        message:
-            'Token will expire: ${DateTime.fromMillisecondsSinceEpoch(authModel.expiresIn)
-              ..day
-              ..month}',
-      );
     } catch (e, t) {
       debugPrint(' error: $e, trace: $t');
       throw Failure('Sign up failed');
     }
   }
-
 }

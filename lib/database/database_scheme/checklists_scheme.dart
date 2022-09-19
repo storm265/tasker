@@ -6,4 +6,5 @@ class CheckListsScheme {
   static const ownerId = 'owner_id';
   static const items = 'items';
   static const createdAt = 'created_at';
+  static const message ='message';
 }

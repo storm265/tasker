@@ -40,7 +40,6 @@ class MenuPageState extends State<MenuPage> {
 
   @override
   void dispose() {
-    _projectController.disposeValues();
     _projectController.dispose();
     super.dispose();
   }

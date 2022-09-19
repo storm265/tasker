@@ -31,29 +31,27 @@ class CheckListController extends ChangeNotifier {
 
   final TextEditingController titleController = TextEditingController();
 
-  final checkBoxItems = ValueNotifier<List<Map<String, dynamic>>>([]);
+  final checklist = ValueNotifier<List<CheckListModel>>([]);
 
   final colorPalleteController = ColorPalleteController();
 
   final formKey = GlobalKey<FormState>();
 
-  final _pickedModel = ValueNotifier<CheckListModel>(
-    CheckListModel(
-      id: 'id',
-      title: '',
-      color: Colors.red,
-      ownerId: '',
-      createdAt: DateTime(2022),
-      items: [],
-    ),
+  CheckListModel _pickedModel = CheckListModel(
+    id: 'id',
+    title: '',
+    color: Colors.red,
+    ownerId: '',
+    createdAt: DateTime(2022),
+    items: [],
   );
 
-  final isEdit = ValueNotifier(false);
+  final isEditStatus = ValueNotifier(false);
   final isClickedButton = ValueNotifier(true);
 
   void changeEditValueStatus(bool status) {
-    isEdit.value = status;
-    isEdit.notifyListeners();
+    isEditStatus.value = status;
+    isEditStatus.notifyListeners();
   }
 
   void changeIsClickedValueStatus(bool status) {
@@ -62,47 +60,43 @@ class CheckListController extends ChangeNotifier {
   }
 
   void clearData() {
-    changeEditValueStatus(false);
     colorPalleteController.changeSelectedIndex(99);
-    checkBoxItems.value.clear();
-    checkBoxItems.notifyListeners();
+    checklist.value.clear();
+    checklist.notifyListeners();
     titleController.clear();
   }
 
-  void pickModel({required CheckListModel checklistModel}) {
-    _pickedModel.value = checklistModel;
-    _pickedModel.notifyListeners();
-  }
+  void pickModel({required CheckListModel checklistModel}) =>
+      _pickedModel = checklistModel;
 
-  void pickEditData({required CheckListModel checklistModel}) {
-    changeEditValueStatus(true);
-    pickModel(checklistModel: checklistModel);
+  void pickEditData({required CheckListModel pickedModel}) {
+    pickModel(checklistModel: pickedModel);
     for (int i = 0; i < colors.length; i++) {
-      if (colors[i] == checklistModel.color) {
+      if (colors[i] == pickedModel.color) {
         colorPalleteController.changeSelectedIndex(i);
         break;
       }
     }
-    titleController.text = checklistModel.title;
-    for (int i = 0; i < checklistModel.items.length; i++) {
-      checkBoxItems.value.add({
-        CheckListItemsScheme.id: checklistModel.items[i].id,
-        CheckListItemsScheme.isCompleted: checklistModel.items[i].isCompleted,
-        CheckListItemsScheme.content: checklistModel.items[i].content,
+    titleController.text = pickedModel.title;
+    for (int i = 0; i < pickedModel.items.length; i++) {
+      checklist.value.add({
+        CheckListItemsScheme.id: pickedModel.items[i].id,
+        CheckListItemsScheme.isCompleted: pickedModel.items[i].isCompleted,
+        CheckListItemsScheme.content: pickedModel.items[i].content,
       });
     }
-    checkBoxItems.notifyListeners();
+    checklist.notifyListeners();
   }
 
   void addCheckboxItem(int index) {
-    checkBoxItems.value.add({
+    checklist.value.add({
       CheckListItemsScheme.id: null,
-      CheckListItemsScheme.content: checkBoxItems.value.isEmpty
+      CheckListItemsScheme.content: checklist.value.isEmpty
           ? 'List item 1'
           : 'List item ${index + 1 + 1}',
       CheckListItemsScheme.isCompleted: false,
     });
-    checkBoxItems.notifyListeners();
+    checklist.notifyListeners();
   }
 
   Future<void> tryValidateCheckList({
@@ -116,35 +110,33 @@ class CheckListController extends ChangeNotifier {
         removeItemsWhereTitleIsEmpty();
         FocusScope.of(context).unfocus();
         changeIsClickedValueStatus(false);
-        isEdit.value
+        isEditStatus.value
             ? await updateCheckList()
             : await createCheckList(
-                title: titleController.text,
-                items: checkBoxItems.value,
+                items: checklist.value,
               );
-
-        await quickController.fetchList();
-        await navigationController.moveToPage(Pages.quick);
 
         clearData();
         changeIsClickedValueStatus(true);
+        await navigationController.moveToPage(Pages.quick);
       }
     } catch (e, t) {
       log('tt $t');
       throw Failure(e.toString());
+    } finally {
+      changeIsClickedValueStatus(true);
     }
   }
 
-  Future<void> createCheckList({
-    required String title,
-    List<Map<String, dynamic>>? items,
-  }) async {
+  Future<void> createCheckList({List<Map<String, dynamic>>? items}) async {
     try {
-      await _checkListRepository.createCheckList(
-        title: title,
+      final model = await _checkListRepository.createCheckList(
+        title: titleController.text,
         color: colors[colorPalleteController.selectedIndex.value],
         items: items,
       );
+      checklist.value.add(model);
+      checklist.notifyListeners();
     } catch (e) {
       throw Failure(e.toString());
     }
@@ -152,12 +144,18 @@ class CheckListController extends ChangeNotifier {
 
   Future<void> updateCheckList() async {
     try {
-      await _checkListRepository.updateCheckList(
+      final updatedModel = await _checkListRepository.updateCheckList(
         color: colors[colorPalleteController.selectedIndex.value],
-        checkListModel: _pickedModel.value,
-        items: checkBoxItems.value,
+        checkListModel: _pickedModel,
+        items: checklist.value,
         title: titleController.text,
       );
+         for (var i = 0; i < userNotes.length; i++) {
+        if (userNotes[i].id == newModel.id) {
+          userNotes[i] = newModel;
+          break;
+        }
+      }
     } catch (e) {
       throw Failure(e.toString());
     }
@@ -180,24 +178,6 @@ class CheckListController extends ChangeNotifier {
     }
   }
 
-  Future<void> deleteAllChecklistItems() async {
-    try {
-      List<String> idItems = [];
-      for (int i = 0; i < checkBoxItems.value.length; i++) {
-        checkBoxItems.value[i][CheckListItemsScheme.id] != null
-            ? idItems.add(checkBoxItems.value[i][CheckListItemsScheme.id])
-            : checkBoxItems.value.removeWhere(
-                (element) => element[CheckListItemsScheme.id] == null);
-      }
-      idItems.isEmpty
-          ? {}
-          : await _checkListRepository.deleteCheckListItems(items: idItems);
-      checkBoxItems.notifyListeners();
-    } catch (e) {
-      throw Failure(e.toString());
-    }
-  }
-
   Future<void> deleteChecklist({required CheckListModel checkListModel}) async {
     try {
       return _checkListRepository.deleteCheckList(
@@ -211,39 +191,39 @@ class CheckListController extends ChangeNotifier {
     required int index,
     required bool? value,
   }) {
-    checkBoxItems.value[index][CheckListItemsScheme.isCompleted] = value;
-    checkBoxItems.notifyListeners();
+    checklist.value[index][CheckListItemsScheme.isCompleted] = value;
+    checklist.notifyListeners();
   }
 
   void changeCheckboxText({
     required int index,
     required String title,
   }) {
-    checkBoxItems.value[index][CheckListItemsScheme.content] = title;
-    checkBoxItems.notifyListeners();
+    checklist.value[index][CheckListItemsScheme.content] = title;
+    checklist.notifyListeners();
   }
 
   void removeCheckboxItem(int index) async {
-    if (checkBoxItems.value[index][CheckListItemsScheme.id] == null) {
-      checkBoxItems.value.removeAt(index);
+    if (checklist.value[index][CheckListItemsScheme.id] == null) {
+      checklist.value.removeAt(index);
     } else {
       await deleteChecklistItem(
-          checklistItemId: checkBoxItems.value[index][CheckListItemsScheme.id]);
-      checkBoxItems.value.removeAt(index);
+          checklistItemId: checklist.value[index][CheckListItemsScheme.id]);
+      checklist.value.removeAt(index);
     }
-    checkBoxItems.notifyListeners();
+    checklist.notifyListeners();
   }
 
   void removeItemsWhereTitleIsEmpty() async {
-    for (var i = 0; i < checkBoxItems.value.length; i++) {
-      checkBoxItems.value.removeWhere(
+    for (var i = 0; i < checklist.value.length; i++) {
+      checklist.value.removeWhere(
           (element) => element[CheckListItemsScheme.content].isEmpty);
     }
-    checkBoxItems.notifyListeners();
+    checklist.notifyListeners();
   }
 
   void disposeValues() {
-    checkBoxItems.dispose();
+    checklist.dispose();
     titleController.dispose();
     colorPalleteController.disposeValues();
     colorPalleteController.dispose();

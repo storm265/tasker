@@ -151,11 +151,4 @@ class ProjectController extends ChangeNotifier {
       }
     }
   }
-
-  void disposeValues() {
-    projects.dispose();
-    titleController.dispose();
-    isClickedSubmitButton.dispose();
-    selectedModel.dispose();
-  }
 }

@@ -4,12 +4,12 @@ import 'package:todo2/database/model/checklist_item_model.dart';
 import 'package:todo2/utils/extensions/color_extension/color_string_extension.dart';
 
 class CheckListModel {
-  String id;
-  String title;
-  Color color;
-  DateTime createdAt;
-  String ownerId;
-  List<CheckListItemModel> items;
+  final String id;
+  final String title;
+  final Color color;
+  final DateTime createdAt;
+  final String ownerId;
+  final List<CheckListItemModel> items;
 
   CheckListModel({
     required this.id,

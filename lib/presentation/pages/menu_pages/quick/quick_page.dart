@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/checklist_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/controller/check_list_controller.dart';
@@ -48,15 +47,11 @@ class _QuickPageState extends State<QuickPage> {
                             navigationController: navigationController,
                             checklistModel: projectsList[i],
                             checkListController: checkListController,
-                            callback: () async =>
-                                await quickController.fetchList(),
                           )
                         : NoteCardWidget(
                             navigationController: navigationController,
                             notesModel: projectsList[i],
                             noteController: noteController,
-                            callback: () async =>
-                                await quickController.fetchList(),
                           ),
               )),
       ),

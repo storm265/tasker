@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
-
 import 'package:todo2/storage/secure_storage_service.dart';
 import 'package:todo2/utils/assets_path.dart';
 
@@ -15,7 +14,6 @@ class SplashPage extends StatefulWidget {
 class SplashPageState extends State<SplashPage> {
   late SecureStorageSource _secureStorageService;
 
-  
   @override
   void initState() {
     _secureStorageService = SecureStorageSource();
@@ -28,7 +26,7 @@ class SplashPageState extends State<SplashPage> {
         type: StorageDataType.accessToken);
     await Future.delayed(
       const Duration(seconds: 1),
-      () async => NavigationService.navigateTo(context,
+      () async => await NavigationService.navigateTo(context,
           accessToken == null ? Pages.welcome : Pages.navigationReplacement),
     );
   }

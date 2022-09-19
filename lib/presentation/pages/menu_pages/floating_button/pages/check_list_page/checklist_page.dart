@@ -70,7 +70,7 @@ class _CheckListPageState extends State<CheckListPage> {
                     ),
                     subtitle: SingleChildScrollView(
                       child: ValueListenableBuilder<List<Map<String, dynamic>>>(
-                        valueListenable: _checkListController.checkBoxItems,
+                        valueListenable: _checkListController.checklist,
                         builder: (_, items, __) => ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
@@ -102,7 +102,7 @@ class _CheckListPageState extends State<CheckListPage> {
                       ),
                       const SizedBox(height: 40),
                       ValueListenableBuilder<bool>(
-                        valueListenable: _checkListController.isEdit,
+                        valueListenable: _checkListController.isEditStatus,
                         builder: (context, isEdit, _) =>
                             ValueListenableBuilder<bool>(
                           valueListenable: _checkListController.isClickedButton,

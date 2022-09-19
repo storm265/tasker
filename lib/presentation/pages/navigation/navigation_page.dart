@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_navigator.dart';
@@ -68,7 +66,6 @@ class NavigationPage extends StatelessWidget {
               bottomNavigationBar: ValueListenableBuilder<int>(
                   valueListenable: navigationController.pageIndex,
                   builder: (__, pageIndex, _) {
-                    log('page index : $pageIndex');
                     return Container(
                       height: 60,
                       width: double.infinity,

@@ -15,13 +15,13 @@ import 'package:todo2/utils/assets_path.dart';
 class CheckboxWidget extends StatelessWidget {
   final CheckListModel checklistModel;
   final NavigationController navigationController;
-  final VoidCallback callback;
   final CheckListController checkListController;
+
+  
   const CheckboxWidget({
     Key? key,
     required this.checklistModel,
     required this.navigationController,
-    required this.callback,
     required this.checkListController,
   }) : super(key: key);
 
@@ -32,21 +32,19 @@ class CheckboxWidget extends StatelessWidget {
       endActionPane: ActionPane(
         motion: const ScrollMotion(),
         children: [
-       
           EndPageWidget(
-          iconPath: AssetsPath.editIconPath,
+            iconPath: AssetsPath.editIconPath,
             onClick: () async {
-              checkListController.pickEditData(checklistModel: checklistModel);
+              checkListController.pickEditData(pickedModel: checklistModel);
               await navigationController.moveToPage(Pages.addCheckList);
             },
           ),
           const GreySlidableWidget(),
           EndPageWidget(
-           iconPath: AssetsPath.deleteIconPath,
+            iconPath: AssetsPath.deleteIconPath,
             onClick: () async {
               await checkListController.deleteChecklist(
                   checkListModel: checklistModel);
-              callback();
             },
           ),
         ],

@@ -22,7 +22,7 @@ class _CheckBoxWidgetState extends State<CheckBoxWidget> {
   late final textController = TextEditingController();
   @override
   void initState() {
-    textController.text = widget.checkBoxController.checkBoxItems
+    textController.text = widget.checkBoxController.checklist
         .value[widget.index][CheckListItemsScheme.content];
     super.initState();
   }
@@ -40,7 +40,7 @@ class _CheckBoxWidgetState extends State<CheckBoxWidget> {
         Transform.scale(
           scale: 1.1,
           child: Checkbox(
-            value: widget.checkBoxController.checkBoxItems.value[widget.index]
+            value: widget.checkBoxController.checklist.value[widget.index]
                 [CheckListItemsScheme.isCompleted],
             onChanged: (value) => widget.checkBoxController.changeCheckboxValue(
               index: widget.index,

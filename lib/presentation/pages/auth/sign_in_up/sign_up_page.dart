@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
@@ -128,7 +130,8 @@ class _SignUpPageState extends State<SignUpPage> {
                           ? SubmitUpButtonWidget(
                               buttonText: 'Sign Up',
                               onPressed: isClicked
-                                  ? () async => _signUpController.trySignUp(
+                                  ? () async => _signUpController
+                                      .trySignUp(
                                         context: context,
                                         userName: _usernameController.text,
                                         email: _emailController.text,

@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
@@ -26,7 +25,10 @@ class AdvancedCalendar extends StatefulWidget {
     this.dateStyle,
     this.onHorizontalDrag,
     this.innerDot = false,
+    this.isMonthMode = false,
   }) : super(key: key);
+
+  final bool isMonthMode;
 
   /// Calendar selection date controller.
   final AdvancedCalendarController? controller;
@@ -67,7 +69,6 @@ class AdvancedCalendar extends StatefulWidget {
 
 class _AdvancedCalendarState extends State<AdvancedCalendar>
     with SingleTickerProviderStateMixin {
-
   late ValueNotifier<int> _monthViewCurrentPage;
   late AnimationController _animationController;
   late AdvancedCalendarController _controller;
@@ -80,10 +81,26 @@ class _AdvancedCalendarState extends State<AdvancedCalendar>
   Offset? _captureOffset;
   DateTime? _todayDate;
   List<String>? _weekNames;
-  bool isMonthMode = false;
+
+  late bool isMonthMode;
+
   @override
   void initState() {
     super.initState();
+
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+      value: 0,
+    );
+
+    _animationValue = _animationController.value;
+
+    isMonthMode = widget.isMonthMode;
+    if (isMonthMode) {
+      _animationController.forward();
+      _animationValue = 1.0;
+    }
 
     final monthPageIndex = widget.preloadMonthViewAmount ~/ 2;
 
@@ -98,14 +115,6 @@ class _AdvancedCalendarState extends State<AdvancedCalendar>
     _weekPageController = PageController(
       initialPage: weekPageIndex,
     );
-
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 300),
-      value: 0,
-    );
-
-    _animationValue = _animationController.value;
 
     _controller = widget.controller ?? AdvancedCalendarController.today();
     _todayDate = _controller.value;

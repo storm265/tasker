@@ -45,7 +45,7 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
   final _checklistsItems = '/checklists-items';
 
   @override
-  Future<void> createCheckList({
+  Future<Map<String, dynamic>> createCheckList({
     required String title,
     required Color color,
     List<Map<String, dynamic>>? items,
@@ -62,14 +62,17 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
         },
         options: await _network.getLocalRequestOptions(useContentType: true),
       );
-      log('createCheckList ${response.statusCode}');
+         return NetworkErrorService.isSuccessful(response)
+          ? (response.data[CheckListsScheme.data] as Map<String, dynamic>)
+          : throw Failure(
+              'Error: ${response.data[CheckListsScheme.data][CheckListsScheme.message]}');
     } catch (e) {
       throw Failure(e.toString());
     }
   }
 
   @override
-  Future<void> updateCheckList({
+  Future<Map<String, dynamic>> updateCheckList({
     required CheckListModel checkListModel,
     List<Map<String, dynamic>>? items,
     required String title,
@@ -90,7 +93,10 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
         },
         options: await _network.getLocalRequestOptions(useContentType: true),
       );
-      log('updateCheckList ${response.statusCode}');
+       return NetworkErrorService.isSuccessful(response)
+          ? (response.data[CheckListsScheme.data] as Map<String, dynamic>)
+          : throw Failure(
+              'Error: ${response.data[CheckListsScheme.data][CheckListsScheme.message]}');
     } catch (e) {
       throw Failure(e.toString());
     }

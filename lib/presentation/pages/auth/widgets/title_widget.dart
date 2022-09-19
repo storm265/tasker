@@ -13,7 +13,7 @@ class TitleTextWidget extends StatelessWidget {
     return Text(
       text!,
       style: const TextStyle(
-        fontSize: 32,
+        fontSize: 24,
         fontWeight: FontWeight.w200,
         fontStyle: FontStyle.italic,
       ),

@@ -15,7 +15,11 @@ abstract class NoteRepository<T> {
 
   Future<List<NotesModel>> fetchUserNotes();
 
-  Future<void> updateNote({required NotesModel noteModel, required String description,required Color color,});
+  Future<void> updateNote({
+    required NotesModel noteModel,
+    required String description,
+    required Color color,
+  });
 }
 
 class NoteRepositoryImpl implements NoteRepository<NotesModel> {
@@ -24,18 +28,17 @@ class NoteRepositoryImpl implements NoteRepository<NotesModel> {
   NoteRepositoryImpl({required NotesDataSourceImpl noteDataSource})
       : _noteDataSource = noteDataSource;
 
-
-
   @override
-  Future<void> createNote({
+  Future<NotesModel> createNote({
     required Color color,
     required String description,
   }) async {
     try {
-      await _noteDataSource.createNote(
+      final response = await _noteDataSource.createNote(
         color: color,
         description: description,
       );
+      return NotesModel.fromJson(response);
     } catch (e) {
       throw Failure(e.toString());
     }
@@ -81,9 +84,18 @@ class NoteRepositoryImpl implements NoteRepository<NotesModel> {
   }
 
   @override
-  Future<void> updateNote({required NotesModel noteModel, required String description,required Color color,}) async {
+  Future<NotesModel> updateNote({
+    required NotesModel noteModel,
+    required String description,
+    required Color color,
+  }) async {
     try {
-      await _noteDataSource.updateNote(noteModel: noteModel,description: description,color: color,);
+      final response = await _noteDataSource.updateNote(
+        noteModel: noteModel,
+        description: description,
+        color: color,
+      );
+      return NotesModel.fromJson(response);
     } catch (e) {
       throw Failure(e.toString());
     }
