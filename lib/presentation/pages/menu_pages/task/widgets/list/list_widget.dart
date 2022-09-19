@@ -6,6 +6,7 @@ import 'package:todo2/presentation/pages/menu_pages/task/widgets/list/task_item_
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/list/text.dart';
 import 'package:todo2/presentation/widgets/common/slidable_widgets/endpane_widget.dart';
 import 'package:todo2/presentation/widgets/common/slidable_widgets/grey_slidable_widget.dart';
+import 'package:todo2/utils/assets_path.dart';
 
 class ListWidget extends StatelessWidget {
   final int index;
@@ -20,7 +21,7 @@ class ListWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final data = model[index];
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
+      padding: const EdgeInsets.all(8.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -28,7 +29,7 @@ class ListWidget extends StatelessWidget {
           ListView.builder(
               physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
-              itemCount: model.length,
+              itemCount: 4,
               itemBuilder: (context, index) {
                 return Slidable(
                   key: const ValueKey(0),
@@ -36,12 +37,12 @@ class ListWidget extends StatelessWidget {
                     motion: const ScrollMotion(),
                     children: [
                       EndPageWidget(
-                        icon: Icons.edit,
+                        iconPath: AssetsPath.editIconPath,
                         onClick: () {},
                       ),
                       const GreySlidableWidget(),
                       EndPageWidget(
-                        icon: Icons.delete,
+                        iconPath: AssetsPath.deleteIconPath,
                         onClick: () {},
                       ),
                     ],

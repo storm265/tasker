@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/database/repository/task_repository.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/dialogs/tasks_dialog.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/calendar_lib/controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/calendar_lib/widget.dart';
@@ -25,6 +26,7 @@ class _TasksPageState extends State<TasksPage>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   late TabController _tabController;
 
+  final taskController = TaskController();
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
@@ -37,15 +39,6 @@ class _TasksPageState extends State<TasksPage>
     super.dispose();
   }
 
-  final _calendarControllerToday = AdvancedCalendarController.today();
-  
-  final List<DateTime> events = [
-    DateTime.utc(2022, 09, 19, 12),
-    DateTime.utc(2022, 09, 20, 12),
-    DateTime.utc(2022, 09, 21, 12),
-    DateTime.utc(2022, 09, 22, 12),
-    DateTime.utc(2022, 09, 23, 12),
-  ];
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -72,55 +65,37 @@ class _TasksPageState extends State<TasksPage>
         ),
       ),
       child: TabBarView(
+        physics: const NeverScrollableScrollPhysics(),
         controller: _tabController,
         children: [
           KeepAlivePageWidget(
-            child: Column(
-              children: [
-                AdvancedCalendar(
-                  controller: _calendarControllerToday,
-                  events: events,
-                ),
-              ],
+            child: SingleChildScrollView(
+              child: ValueListenableBuilder<List<TaskModel>>(
+                  valueListenable: taskController.taskList,
+                  builder: (_, tasksList, __) {
+                    if (tasksList.isEmpty) {
+                      return const Center(
+                          child: ProgressIndicatorWidget(text: 'No data'));
+                    } else {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: 2,
+                        itemBuilder: ((context, index) => ListWidget(
+                              index: index,
+                              model: tasksList,
+                            )),
+                      );
+                    }
+                  }),
             ),
           ),
 
-          // DisabledGlowWidget(
-          //   child: FutureBuilder<List<TaskModel>>(
-          //       future: taskController.fetchTask(),
-          //       initialData: const [],
-          //       builder:
-          //           (context, AsyncSnapshot<List<TaskModel>> snapshot) {
-          //         if (snapshot.data!.isEmpty) {
-          //           return const Center(
-          //             child: Text(
-          //               'No tasks',
-          //               style:
-          //                   TextStyle(color: Colors.black, fontSize: 20),
-          //             ),
-          //           );
-          //         } else if (snapshot.hasData) {
-          //           return ListView.builder(
-          //             scrollDirection: Axis.vertical,
-          //             itemCount: snapshot.data!.length,
-          //             itemBuilder: ((context, index) => ListWidget(
-          //                   index: index,
-          //                   model: snapshot.data!,
-          //                 )),
-          //           );
-          //         } else {
-          //           return const Center(
-          //             child: ProgressIndicatorWidget(),
-          //           );
-          //         }
-          //       }),
-          // ),
           // month
           KeepAlivePageWidget(
             child: Column(children: [
               AdvancedCalendar(
-                controller: _calendarControllerToday,
-                events: events,
+                controller: taskController.calendarControllerToday,
+                events: taskController.events,
                 isMonthMode: true,
               ),
               const Text('disabled ')

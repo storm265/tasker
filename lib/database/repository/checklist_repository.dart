@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/checklists_data_source.dart';
 import 'package:todo2/database/model/checklist_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
-import 'package:todo2/services/navigation_service/network_error_service.dart';
 
 abstract class CheckListsRepository<T> {
   Future<void> createCheckList({
@@ -18,6 +17,7 @@ abstract class CheckListsRepository<T> {
     required String title,
     required Color color,
   });
+
   Future<void> deleteCheckList({required CheckListModel checkListModel});
 
   Future<void> deleteCheckListItem({required String checkListId});
@@ -89,8 +89,7 @@ class CheckListRepositoryImpl extends CheckListsRepository<CheckListModel> {
       }
       log('model: $statsModels');
       return statsModels;
-    } catch (e, t) {
-      print('trace $t');
+    } catch (e) {
       throw Failure(e.toString());
     }
   }

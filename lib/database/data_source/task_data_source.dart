@@ -94,7 +94,7 @@ class TaskDataSourceImpl implements TaskDataSource {
         _secureStorage = secureStorage;
 
   @override
-  Future<void> createTask({
+  Future<Map<String, dynamic>> createTask({
     required String title,
     required String description,
     required String assignedTo,
@@ -105,48 +105,36 @@ class TaskDataSourceImpl implements TaskDataSource {
     try {
       final ownerId =
           await _secureStorage.getUserData(type: StorageDataType.id);
-      // final response = await _network.post(
-      //   path: _tasks,
-      //   data: {
-      //     TaskScheme.title: title,
-      //     TaskScheme.dueDate: dueDate,
-      //     TaskScheme.description: description,
-      //     TaskScheme.assignedTo: assignedTo,
-      //     TaskScheme.isCompleted: false,
-      //     TaskScheme.projectId: projectId, // id of project (menu)
-      //     TaskScheme.ownerId: ownerId,
-      //     TaskScheme.members: members,
-      //     TaskScheme.attachments: null,
-      //     TaskScheme.createdAt: DateTime.now().toUtc().toIso8601String(),
-      //   },
-      //   options: await _network.getLocalRequestOptions(useContentType: true),
-      // );
-      Response<dynamic> response =
-          Response(requestOptions: RequestOptions(path: 'path'), data: {
-        "data": {
-          "id": "890bb7b9-78a9-47da-84b6-7a0dd29af8df",
-          "title": "task 1",
-          "due_date": "2025-06-21T23:56:02.394631",
-          "description": "task1 description",
-          "assigned_to": "66e5270a-7c8d-4fd8-ac7d-1e74745f1798",
-          "is_completed": false,
-          "project_id": "eda45acd-22d1-4dc6-9f75-0c0e7b172d0f",
-          "owner_id": "76d2fab4-fd06-4909-bf8e-875c6b55c1f7",
-          "attachments": null,
-          "members": null,
-          "created_at": "2022-07-13T09:15:33.460129129"
-        }
-      });
 
+      final response = await _network.post(
+        path: _tasks,
+        data: {
+          TaskScheme.title: title,
+          TaskScheme.dueDate: dueDate,
+          TaskScheme.description: description,
+          TaskScheme.assignedTo: assignedTo,
+          TaskScheme.isCompleted: false,
+          TaskScheme.projectId: projectId, // id of project (menu)
+          TaskScheme.ownerId: ownerId,
+          TaskScheme.members: members,
+          TaskScheme.attachments: null,
+          TaskScheme.createdAt: DateTime.now().toUtc().toIso8601String(),
+        },
+        options: await _network.getLocalRequestOptions(useContentType: true),
+      );
       log('createTask ${response.statusMessage}');
       log('createTask ${response.statusCode}');
+      return NetworkErrorService.isSuccessful(response)
+          ? (response.data[TaskScheme.data] as Map<String, dynamic>)
+          : throw Failure(
+              'Error: ${response.data[TaskScheme.data][TaskScheme.message]}');
     } catch (e) {
       throw Failure(e.toString());
     }
   }
 
   @override
-  Future<void> updateTask({
+  Future<Map<String, dynamic>> updateTask({
     required String title,
     required String description,
     required String assignedTo,
@@ -172,10 +160,12 @@ class TaskDataSourceImpl implements TaskDataSource {
         },
         options: await _network.getLocalRequestOptions(useContentType: true),
       );
-
-      log('createTask ${response.data}');
       log('updateTask ${response.statusMessage}');
       log('updateTask ${response.statusCode}');
+      return NetworkErrorService.isSuccessful(response)
+          ? (response.data[TaskScheme.data] as Map<String, dynamic>)
+          : throw Failure(
+              'Error: ${response.data[TaskScheme.data][TaskScheme.message]}');
     } catch (e) {
       throw Failure(e.toString());
     }

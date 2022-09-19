@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:todo2/database/database_scheme/notes_scheme.dart';
 import 'package:todo2/database/model/notes_model.dart';

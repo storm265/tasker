@@ -6,57 +6,61 @@ import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 class TaskCardWidget extends StatelessWidget {
   final TaskModel data;
-  const TaskCardWidget({Key? key, required this.data}) : super(key: key);
+  const TaskCardWidget({
+    Key? key,
+    required this.data,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final date = DateTime.parse(data.dueDate);
     String isAm = (date.hour > 12) ? 'pm' : 'am';
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Card(
-        elevation: 3,
-        child: Stack(
-          children: [
-            Positioned(
-              top: 25,
-              left: 366,
-              child: SizedBox(
-                width: 5,
-                height: 25,
-                child: ColoredBox(
-                  color: data.isCompleted ? Colors.red : getAppColor(color: CategoryColor.blue),
-                ),
+    return Card(
+      elevation: 3,
+      child: Stack(
+        children: [
+          Positioned(
+            top: 25,
+            left: 365,
+            child: SizedBox(
+              width: 4,
+              height: 25,
+              child: ColoredBox(
+                color: data.isCompleted
+                    ? Colors.red
+                    : getAppColor(color: CategoryColor.blue),
               ),
             ),
-            ListTile(
-              leading: data.isCompleted
-                  ? const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Icon(Icons.check_circle, color: Palette.red),
-                    )
-                  : Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: CustomPaint(
-                        size: const Size(20, 20),
-                        painter: CirclePainter(circleColor: getAppColor(color: CategoryColor.blue),),
+          ),
+          ListTile(
+            leading: data.isCompleted
+                ? const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Icon(Icons.check_circle, color: Palette.red),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: CustomPaint(
+                      size: const Size(20, 20),
+                      painter: CirclePainter(
+                        circleColor: getAppColor(color: CategoryColor.blue),
                       ),
                     ),
-              subtitle: Text(
-                '${date.hour}:${date.minute} $isAm',
-                style: data.isCompleted
-                    ? const TextStyle(decoration: TextDecoration.lineThrough)
-                    : null,
-              ),
-              title: Text(
-                data.title,
-                style: data.isCompleted
-                    ? const TextStyle(decoration: TextDecoration.lineThrough)
-                    : null,
-              ),
+                  ),
+            subtitle: Text(
+              '${date.hour}:${date.minute} $isAm',
+              style: data.isCompleted
+                  ? const TextStyle(decoration: TextDecoration.lineThrough)
+                  : null,
             ),
-          ],
-        ),
+            title: Text(
+              data.title,
+              style: data.isCompleted
+                  ? const TextStyle(decoration: TextDecoration.lineThrough)
+                  : null,
+            ),
+          ),
+        ],
       ),
     );
   }

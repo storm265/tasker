@@ -14,7 +14,10 @@ Future<void> showAddEditProjectDialog({
       insetPadding: const EdgeInsets.all(0),
       title: const Text(
         'Title',
-        style: TextStyle(fontWeight: FontWeight.w300),
+        style: TextStyle(
+          fontWeight: FontWeight.w200,
+          fontSize: 18,
+        ),
       ),
       content: SizedBox(
         height: 230,

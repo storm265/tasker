@@ -24,15 +24,17 @@ class ListDayWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String isToday = getDay(index);
-    return Padding(
-      padding: const EdgeInsets.only(top: 25, right: 220),
-      child: Text(
-        '$isToday, ${DateFormat('MMM').format(date)} ${date.day + index}/${date.year}',
-        style: const TextStyle(
-          fontSize: 14,
-          fontWeight: FontWeight.w400,
-          fontStyle: FontStyle.italic,
-          color: Colors.black54,
+    return Align(
+      alignment: Alignment.topLeft,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 5),
+        child: Text(
+          '$isToday, ${DateFormat('MMM').format(date)} ${date.day + index}/${date.year}',
+          style: const TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w200,
+            fontStyle: FontStyle.italic,
+          ),
         ),
       ),
     );

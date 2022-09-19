@@ -24,25 +24,33 @@ class MonthView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: List<Widget>.generate(
-        // column len
-        5,
-        (weekIndex) {
-          final weekStart = weekIndex * 7;
+    final index = selectedDate.findWeekIndex(monthView.dates);
+    final offset = index / (weeksAmount - 1) * 2 - 1.0;
 
-          return WeekView(
-            innerDot: innerDot,
-            dates: monthView.dates.sublist(weekStart, weekStart + 7),
-            selectedDate: selectedDate,
-            highlightMonth: monthView.firstDay.month,
-            lineHeight: weekLineHeight,
-            onChanged: onChanged,
-            events: events,
-          );
-        },
-        growable: false,
+    return OverflowBox(
+      alignment: Alignment(0, offset),
+      minHeight: weekLineHeight,
+      maxHeight: weekLineHeight * weeksAmount,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: List<Widget>.generate(
+          // column len
+          5,
+          (weekIndex) {
+            final weekStart = weekIndex * 7;
+
+            return WeekView(
+              innerDot: innerDot,
+              dates: monthView.dates.sublist(weekStart, weekStart + 7),
+              selectedDate: selectedDate,
+              highlightMonth: monthView.firstDay.month,
+              lineHeight: weekLineHeight,
+              onChanged: onChanged,
+              events: events,
+            );
+          },
+          growable: false,
+        ),
       ),
     );
   }

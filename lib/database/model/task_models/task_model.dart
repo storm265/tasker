@@ -3,6 +3,7 @@ import 'package:todo2/database/model/profile_models/users_profile_model.dart';
 import 'package:todo2/database/model/task_models/task_attachments_model.dart';
 
 class TaskModel {
+  final String id;
   final String title;
   final String dueDate;
   final String description;
@@ -15,6 +16,7 @@ class TaskModel {
   final List<UserProfileModel>? members;
 
   TaskModel({
+    required this.id,
     required this.title,
     required this.dueDate,
     required this.description,
@@ -28,6 +30,7 @@ class TaskModel {
   });
 
   factory TaskModel.fromJson(Map<String, dynamic> json) => TaskModel(
+        id: json[TaskScheme.id],
         title: json[TaskScheme.title],
         dueDate: json[TaskScheme.dueDate],
         description: json[TaskScheme.description],

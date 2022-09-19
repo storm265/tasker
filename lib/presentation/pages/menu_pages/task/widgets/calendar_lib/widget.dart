@@ -3,7 +3,6 @@ import 'package:intl/intl.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'controller.dart';
 import 'datetime_util.dart';
-
 part 'date_box.dart';
 part 'month_view.dart';
 part 'month_view_bean.dart';
@@ -27,8 +26,6 @@ class AdvancedCalendar extends StatefulWidget {
     this.innerDot = false,
     this.isMonthMode = false,
   }) : super(key: key);
-
-  final bool isMonthMode;
 
   /// Calendar selection date controller.
   final AdvancedCalendarController? controller;
@@ -63,6 +60,8 @@ class AdvancedCalendar extends StatefulWidget {
   /// Show DateBox event in container.
   final bool innerDot;
 
+  final bool isMonthMode;
+
   @override
   State<AdvancedCalendar> createState() => _AdvancedCalendarState();
 }
@@ -81,26 +80,10 @@ class _AdvancedCalendarState extends State<AdvancedCalendar>
   Offset? _captureOffset;
   DateTime? _todayDate;
   List<String>? _weekNames;
-
-  late bool isMonthMode;
-
+  late bool isMonthMode = false;
   @override
   void initState() {
     super.initState();
-
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 100),
-      value: 0,
-    );
-
-    _animationValue = _animationController.value;
-
-    isMonthMode = widget.isMonthMode;
-    if (isMonthMode) {
-      _animationController.forward();
-      _animationValue = 1.0;
-    }
 
     final monthPageIndex = widget.preloadMonthViewAmount ~/ 2;
 
@@ -115,6 +98,18 @@ class _AdvancedCalendarState extends State<AdvancedCalendar>
     _weekPageController = PageController(
       initialPage: weekPageIndex,
     );
+
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+      value: 0,
+    );
+    isMonthMode = widget.isMonthMode;
+    if (isMonthMode) {
+      _animationController.forward();
+      _animationValue = 1.0;
+    }
+    _animationValue = _animationController.value;
 
     _controller = widget.controller ?? AdvancedCalendarController.today();
     _todayDate = _controller.value;

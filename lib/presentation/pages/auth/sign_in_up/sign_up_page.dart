@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/repository/auth_repository.dart';

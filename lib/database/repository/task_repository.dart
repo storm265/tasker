@@ -10,6 +10,7 @@ import 'package:todo2/storage/secure_storage_service.dart';
 
 List<TaskModel> taskModel = [
   TaskModel(
+    id: '',
     title: 'title',
     dueDate: '2025-06-21T23:56:02.394631',
     description: 'description',
@@ -21,6 +22,44 @@ List<TaskModel> taskModel = [
     attachments: [],
   ),
   TaskModel(
+    id: '',
+    title: 'fdsfsdfs',
+    dueDate: '2025-06-21T23:56:02.394631',
+    description: 'description',
+    assignedTo: 1,
+    isCompleted: false,
+    projectId: 2,
+    ownerId: 'ownerId',
+    createdAt: DateTime.now(),
+    attachments: [],
+  ),
+  TaskModel(
+    id: '',
+    title: 'titlsdfsdfsdfsdfe',
+    dueDate: '2025-06-21T23:56:02.394631',
+    description: 'description',
+    assignedTo: 1,
+    isCompleted: false,
+    projectId: 2,
+    ownerId: 'ownerId',
+    createdAt: DateTime.now(),
+    attachments: [],
+  ),
+  TaskModel(
+    id: '',
+    title:
+        'titlrtyrtyrtyrtyrtytyryrtyrtyrtyrtyrtytryrtytryrtyrutyrdsadsadsadsadadadasde',
+    dueDate: '2025-06-21T23:56:02.394631',
+    description: 'description',
+    assignedTo: 1,
+    isCompleted: true,
+    projectId: 2,
+    ownerId: 'ownerId',
+    createdAt: DateTime.now(),
+    attachments: [],
+  ),
+  TaskModel(
+    id: '',
     title: 'title',
     dueDate: '2025-06-21T23:56:02.394631',
     description: 'description',
@@ -32,17 +71,7 @@ List<TaskModel> taskModel = [
     attachments: [],
   ),
   TaskModel(
-    title: 'title',
-    dueDate: '2025-06-21T23:56:02.394631',
-    description: 'description',
-    assignedTo: 1,
-    isCompleted: true,
-    projectId: 2,
-    ownerId: 'ownerId',
-    createdAt: DateTime.now(),
-    attachments: [],
-  ),
-  TaskModel(
+    id: '',
     title: 'title',
     dueDate: '2025-06-21T23:56:02.394631',
     description: 'description',
@@ -73,7 +102,7 @@ class TaskRepositoryImpl implements TaskRepository {
     secureStorage: SecureStorageSource(),
   );
 
-  Future<void> createTask({
+  Future<TaskModel> createTask({
     required String title,
     required String description,
     required String assignedTo,
@@ -82,13 +111,14 @@ class TaskRepositoryImpl implements TaskRepository {
     List<String>? members,
   }) async {
     try {
-      await _taskDataSource.createTask(
+      final response = await _taskDataSource.createTask(
         title: title,
         description: description,
         assignedTo: assignedTo,
         projectId: projectId,
         dueDate: dueDate,
       );
+      return TaskModel.fromJson(response);
     } catch (e) {
       throw Failure(e.toString());
     }
@@ -102,7 +132,7 @@ class TaskRepositoryImpl implements TaskRepository {
     }
   }
 
-  Future<void> updateTask({
+  Future<TaskModel> updateTask({
     required String title,
     required String description,
     required String assignedTo,
@@ -111,13 +141,13 @@ class TaskRepositoryImpl implements TaskRepository {
     List<String>? members,
   }) async {
     try {
-      await _taskDataSource.updateTask(
+     final response =  await _taskDataSource.updateTask(
         title: title,
         description: description,
         assignedTo: assignedTo,
         projectId: projectId,
         dueDate: dueDate,
-      );
+      );   return TaskModel.fromJson(response);
     } catch (e) {
       throw Failure(e.toString());
     }

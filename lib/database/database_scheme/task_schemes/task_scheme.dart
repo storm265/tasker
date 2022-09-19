@@ -14,4 +14,5 @@ class TaskScheme {
   static const createdAt = 'created_at';
   static const members = 'members';
   static const attachments = 'attachments';
+  static const message = 'message';
 }
