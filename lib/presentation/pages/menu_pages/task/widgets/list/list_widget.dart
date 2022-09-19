@@ -4,8 +4,8 @@ import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/detailed_page/detailed_task.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/list/task_item_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/list/text.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/widgets/slidable_widgets/endpane_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/widgets/slidable_widgets/grey_slidable_widget.dart';
+import 'package:todo2/presentation/widgets/common/slidable_widgets/endpane_widget.dart';
+import 'package:todo2/presentation/widgets/common/slidable_widgets/grey_slidable_widget.dart';
 
 class ListWidget extends StatelessWidget {
   final int index;

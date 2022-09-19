@@ -48,7 +48,7 @@ class NewNoteController extends ChangeNotifier {
     ),
   );
 
-  List<NotesModel> userNotes = [];
+  List<NotesModel> userNotesList = [];
 
   void changeEditValueStatus(bool status) {
     isEdit.value = status;
@@ -91,6 +91,8 @@ class NewNoteController extends ChangeNotifier {
         log('isEdit $isEdit');
         isEdit.value ? await updateNote() : await createNote();
         clearData();
+        quickController.fetchNotesLocally();
+
         await navigationController.moveToPage(Pages.quick);
       }
     } catch (e, t) {
@@ -107,15 +109,17 @@ class NewNoteController extends ChangeNotifier {
         color: colors[colorPalleteController.selectedIndex.value],
         description: descriptionTextController.text,
       );
-      userNotes.add(model);
+      userNotesList.add(model);
     } catch (e) {
       throw Failure(e.toString());
     }
   }
 
-  Future<void> fetchUserNotes() async {
+  Future<List<NotesModel>> fetchUserNotes() async {
     try {
-      userNotes = await _addNoteRepository.fetchUserNotes();
+      final notes = await _addNoteRepository.fetchUserNotes();
+      userNotesList = notes;
+      return notes;
     } catch (e) {
       throw Failure(e.toString());
     }
@@ -123,7 +127,8 @@ class NewNoteController extends ChangeNotifier {
 
   Future<void> deleteNote({required NotesModel notesModel}) async {
     await _addNoteRepository.deleteNote(projectId: notesModel.id);
-    userNotes.removeWhere((element) => element.id == notesModel.id);
+    userNotesList.removeWhere((element) => element.id == notesModel.id);
+    quickController.fetchNotesLocally();
   }
 
   Future<void> updateNote() async {
@@ -133,9 +138,9 @@ class NewNoteController extends ChangeNotifier {
         noteModel: _pickedModel.value,
         description: descriptionTextController.text,
       );
-      for (var i = 0; i < userNotes.length; i++) {
-        if (userNotes[i].id == updatedModel.id) {
-          userNotes[i] = updatedModel;
+      for (var i = 0; i < userNotesList.length; i++) {
+        if (userNotesList[i].id == updatedModel.id) {
+          userNotesList[i] = updatedModel;
           break;
         }
       }
@@ -155,19 +160,15 @@ class NewNoteController extends ChangeNotifier {
         noteModel: model,
         description: model.description,
       );
-      for (var i = 0; i < userNotes.length; i++) {
-        if (userNotes[i].id == newModel.id) {
-          userNotes[i] = newModel;
+      for (var i = 0; i < userNotesList.length; i++) {
+        if (userNotesList[i].id == newModel.id) {
+          userNotesList[i] = newModel;
           break;
         }
       }
+      quickController.fetchNotesLocally();
     } catch (e) {
       throw Failure(e.toString());
     }
-  }
-
-  void disposeValues() {
-    colorPalleteController.dispose();
-    isButtonClicked.dispose();
   }
 }

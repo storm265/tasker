@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
@@ -41,7 +42,10 @@ class EndPageWidget extends StatelessWidget {
                   iconPath!,
                   color: color,
                 ),
-          onPressed: () => onClick(),
+          onPressed: () async {
+            await Slidable.of(context)?.close();
+            onClick();
+          },
         ),
       ),
     );

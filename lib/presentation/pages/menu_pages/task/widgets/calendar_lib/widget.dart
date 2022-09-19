@@ -90,7 +90,7 @@ class _AdvancedCalendarState extends State<AdvancedCalendar>
 
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 100),
       value: 0,
     );
 

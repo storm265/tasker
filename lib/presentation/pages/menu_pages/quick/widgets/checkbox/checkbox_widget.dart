@@ -6,8 +6,8 @@ import 'package:todo2/presentation/pages/menu_pages/quick/widgets/checkbox/check
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/common_widgets/color_line_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/common_widgets/shadow_decoration.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/common_widgets/title_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/widgets/slidable_widgets/endpane_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/widgets/slidable_widgets/grey_slidable_widget.dart';
+import 'package:todo2/presentation/widgets/common/slidable_widgets/endpane_widget.dart';
+import 'package:todo2/presentation/widgets/common/slidable_widgets/grey_slidable_widget.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/utils/assets_path.dart';

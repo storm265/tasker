@@ -34,6 +34,16 @@ class CheckListModel {
             .toList(),
       );
 
+  Map<String, dynamic> toMap() {
+    return {
+      CheckListsScheme.id: id,
+      CheckListsScheme.title: title,
+      CheckListsScheme.color: color,
+      CheckListsScheme.createdAt: createdAt,
+      CheckListsScheme.items: items,
+    };
+  }
+
   CheckListModel copyWith({
     String? id,
     String? title,

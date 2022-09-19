@@ -5,14 +5,15 @@ class CheckListItemModel {
   final String content;
   final bool isCompleted;
   final String? checklistId;
-  final DateTime createdAt;
+  final DateTime? createdAt;
   CheckListItemModel({
-    required this.checklistId,
+    this.checklistId,
     required this.content,
     required this.isCompleted,
-    required this.id,
-    required this.createdAt,
+    this.id,
+    this.createdAt,
   });
+
   factory CheckListItemModel.fromJson(Map<String, dynamic> json) =>
       CheckListItemModel(
         content: json[CheckListItemsScheme.content],
@@ -20,5 +21,20 @@ class CheckListItemModel {
         id: json[CheckListItemsScheme.id],
         checklistId: json[CheckListItemsScheme.checklistId],
         createdAt: DateTime.parse(json[CheckListItemsScheme.createdAt]),
+      );
+
+  CheckListItemModel copyWith({
+    String? id,
+    String? content,
+    bool? isCompleted,
+    String? checklistId,
+    DateTime? createdAt,
+  }) =>
+      CheckListItemModel(
+        id: id ?? this.id,
+        content: content ?? this.content,
+        isCompleted: isCompleted ?? this.isCompleted,
+        checklistId: checklistId,
+        createdAt: createdAt,
       );
 }

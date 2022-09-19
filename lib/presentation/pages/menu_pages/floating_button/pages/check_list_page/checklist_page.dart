@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:todo2/database/model/checklist_item_model.dart';
+import 'package:todo2/database/model/checklist_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/controller/check_list_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/widgets/add_item_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/widgets/check_box_widget.dart';
@@ -70,7 +72,7 @@ class _CheckListPageState extends State<CheckListPage> {
                     ),
                     subtitle: SingleChildScrollView(
                       child: ValueListenableBuilder<List<Map<String, dynamic>>>(
-                        valueListenable: _checkListController.checklist,
+                        valueListenable: _checkListController.checkBoxItems,
                         builder: (_, items, __) => ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
