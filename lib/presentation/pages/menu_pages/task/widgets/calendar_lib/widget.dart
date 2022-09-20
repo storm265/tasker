@@ -24,8 +24,13 @@ class AdvancedCalendar extends StatefulWidget {
     this.dateStyle,
     this.onHorizontalDrag,
     this.innerDot = false,
-    this.isMonthMode = false,
+    this.isMonth = false,
+    this.useShadow = true,
+    this.canExtend = true,
   }) : super(key: key);
+  final bool canExtend;
+  final bool isMonth;
+  final bool useShadow;
 
   /// Calendar selection date controller.
   final AdvancedCalendarController? controller;
@@ -60,8 +65,6 @@ class AdvancedCalendar extends StatefulWidget {
   /// Show DateBox event in container.
   final bool innerDot;
 
-  final bool isMonthMode;
-
   @override
   State<AdvancedCalendar> createState() => _AdvancedCalendarState();
 }
@@ -77,13 +80,15 @@ class _AdvancedCalendarState extends State<AdvancedCalendar>
 
   PageController? _monthPageController;
   PageController? _weekPageController;
-  Offset? _captureOffset;
+
   DateTime? _todayDate;
   List<String>? _weekNames;
-  late bool isMonthMode = false;
+  late bool isMonthMode;
+
   @override
   void initState() {
     super.initState();
+    isMonthMode = widget.isMonth;
 
     final monthPageIndex = widget.preloadMonthViewAmount ~/ 2;
 
@@ -104,13 +109,12 @@ class _AdvancedCalendarState extends State<AdvancedCalendar>
       duration: const Duration(milliseconds: 300),
       value: 0,
     );
-    isMonthMode = widget.isMonthMode;
+    _animationValue = _animationController.value;
+
     if (isMonthMode) {
       _animationController.forward();
       _animationValue = 1.0;
     }
-    _animationValue = _animationController.value;
-
     _controller = widget.controller ?? AdvancedCalendarController.today();
     _todayDate = _controller.value;
 
@@ -151,60 +155,68 @@ class _AdvancedCalendarState extends State<AdvancedCalendar>
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onVerticalDragStart: (details) {
-        _captureOffset = details.globalPosition;
-      },
-      onVerticalDragUpdate: (details) {
-        final moveOffset = details.globalPosition;
-        final diffY = moveOffset.dy - _captureOffset!.dy;
-
-        _animationController.value =
-            _animationValue + diffY / (widget.weekLineHeight * 5);
-      },
-      onVerticalDragEnd: (details) => _handleFinishDrag(),
-      onVerticalDragCancel: _handleFinishDrag,
+    return Container(
+      padding: const EdgeInsets.only(bottom: 17),
+      decoration: widget.useShadow
+          ? const BoxDecoration(color: Colors.white, boxShadow: [
+              BoxShadow(
+                offset: Offset(0, 2),
+                blurRadius: 10,
+                color: Color(0xFFE3E3E3),
+              )
+            ])
+          : null,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ValueListenableBuilder<int>(
-            valueListenable: _monthViewCurrentPage,
-            builder: (_, value, __) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    DateFormat()
-                        .add_yMMMM()
-                        .format(_monthRangeList[value].firstDay),
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w200,
-                      fontStyle: FontStyle.italic,
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8),
+            child: ValueListenableBuilder<int>(
+              valueListenable: _monthViewCurrentPage,
+              builder: (_, value, __) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      DateFormat()
+                          .add_yMMMM()
+                          .format(_monthRangeList[value].firstDay),
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w200,
+                        fontStyle: FontStyle.italic,
+                      ),
                     ),
-                  ),
-                  InkWell(
-                    child: Icon(
-                      isMonthMode ? Icons.expand_less : Icons.expand_more,
-                    ),
-                    onTap: () async {
-                      setState(() {
-                        isMonthMode = !isMonthMode;
-                      });
-                      if (isMonthMode) {
-                        await _animationController.forward();
-                        _animationValue = 1.0;
-                      } else {
-                        await _animationController.reverse();
-                        _animationValue = 0.0;
-                      }
-                    },
-                  )
-                ],
-              );
-            },
+                    widget.canExtend
+                        ? Padding(
+                            padding: const EdgeInsets.only(left: 5),
+                            child: InkWell(
+                              child: Icon(
+                                isMonthMode
+                                    ? Icons.expand_less
+                                    : Icons.expand_more,
+                                color: Colors.black,
+                                size: 27,
+                              ),
+                              onTap: () async {
+                                setState(() {
+                                  isMonthMode = !isMonthMode;
+                                });
+                                if (isMonthMode) {
+                                  await _animationController.forward();
+                                  _animationValue = 1.0;
+                                } else {
+                                  await _animationController.reverse();
+                                  _animationValue = 0.0;
+                                }
+                              },
+                            ),
+                          )
+                        : const SizedBox()
+                  ],
+                );
+              },
+            ),
           ),
           WeekDays(
             weekNames: _weekNames != null
@@ -219,7 +231,7 @@ class _AdvancedCalendarState extends State<AdvancedCalendar>
                 end: widget.weekLineHeight * widget.weeksInMonthViewAmount,
               ).transform(_animationController.value);
               return SizedBox(
-                height: height,
+                height: isMonthMode ? 170 : height,
                 child: ValueListenableBuilder<DateTime>(
                   valueListenable: _controller,
                   builder: (_, selectedDate, __) {
@@ -343,18 +355,6 @@ class _AdvancedCalendarState extends State<AdvancedCalendar>
 
   void _handleDateChanged(DateTime date) {
     _controller.value = date;
-  }
-
-  void _handleFinishDrag() async {
-    _captureOffset = null;
-
-    if (_animationController.value > 0.5) {
-      await _animationController.forward();
-      _animationValue = 1.0;
-    } else {
-      await _animationController.reverse();
-      _animationValue = 0.0;
-    }
   }
 
   ScrollPhysics closeMonthScroll() {

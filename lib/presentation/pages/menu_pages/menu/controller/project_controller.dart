@@ -1,11 +1,14 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:todo2/database/data_source/projects_data_source.dart';
 import 'package:todo2/database/model/project_models/project_stats_model.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/error_service/error_service.dart';
+import 'package:todo2/services/network_service/network_config.dart';
+import 'package:todo2/storage/secure_storage_service.dart';
 
 enum ProjectDialogStatus {
   add,
@@ -14,14 +17,13 @@ enum ProjectDialogStatus {
 }
 
 class ProjectController extends ChangeNotifier {
-  ProjectController({
-    required ProjectRepositoryImpl projectsRepository,
-    required this.colorPalleteController,
-  }) : _projectsRepository = projectsRepository;
+  final _projectsRepository = ProjectRepositoryImpl(
+      projectDataSource: ProjectUserDataImpl(
+    secureStorageService: SecureStorageSource(),
+    network: NetworkSource(),
+  ));
 
-  final ProjectRepositoryImpl _projectsRepository;
-
-  final ColorPalleteController colorPalleteController;
+  final colorPalleteController = ColorPalleteController();
 
   final formKey = GlobalKey<FormState>();
 
@@ -107,6 +109,9 @@ class ProjectController extends ChangeNotifier {
       throw Failure(e.toString());
     }
   }
+
+  Future<List<ProjectModel>> searchProject({required String title}) async =>
+      _projectsRepository.searchProject(title: title);
 
   Future<void> updateProject({required ProjectModel projectModel}) async {
     try {

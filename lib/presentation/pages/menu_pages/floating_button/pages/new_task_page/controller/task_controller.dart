@@ -1,14 +1,20 @@
 import 'dart:developer';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
+import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/database/repository/comment_repository.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
+import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/widgets/calendar_lib/controller.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
+import 'package:todo2/services/network_service/network_config.dart';
+import 'package:todo2/storage/secure_storage_service.dart';
 
 enum InputFieldStatus {
   showUserPanel,
@@ -17,15 +23,84 @@ enum InputFieldStatus {
 }
 
 class AddTaskController extends ChangeNotifier {
-  AddTaskController({
-    required this.userProfileRepository,
-    required this.taskRepository,
-    required this.tasksMembers,
-  });
+  Future<void> createTask({
+    required String? assignedTo,
+    required String projectId,
+    List<String>? members,
+  }) async {
+    try {
+      final model = await _taskRepository.createTask(
+        title: titleController.text,
+        description: descriptionController.text,
+        assignedTo: assignedTo,
+        projectId: projectId,
+        dueDate: pickedDate.value,
+      );
+      taskList.value.add(model);
+      taskList.notifyListeners();
+    } catch (e) {
+      throw Failure(e.toString());
+    }
+  }
 
-  UserProfileRepositoryImpl userProfileRepository;
-  TaskRepositoryImpl taskRepository;
-  TasksMembersRepositoryImpl tasksMembers;
+  Future<void> deleteTask({required String projectId}) async {
+    try {
+      await _taskRepository.deleteTask(projectId: projectId);
+      taskList.value.removeWhere((element) => element.id == projectId);
+      taskList.notifyListeners();
+    } catch (e) {
+      throw Failure(e.toString());
+    }
+  }
+
+  Future<void> updateTask({
+    required String title,
+    required String description,
+    required String assignedTo,
+    required String projectId,
+    required DateTime dueDate,
+    List<String>? members,
+  }) async {
+    try {
+      final updatedModel = await _taskRepository.updateTask(
+        title: title,
+        description: description,
+        assignedTo: assignedTo,
+        projectId: projectId,
+        dueDate: dueDate,
+      );
+      for (var i = 0; i < taskList.value.length; i++) {
+        if (taskList.value[i].id == updatedModel.id) {
+          taskList.value[i] = updatedModel;
+          break;
+        }
+      }
+      taskList.notifyListeners();
+    } catch (e) {
+      throw Failure(e.toString());
+    }
+  }
+
+  final _taskRepository = TaskRepositoryImpl();
+  final userProfileRepository = UserProfileRepositoryImpl(
+    userProfileDataSource: UserProfileDataSourceImpl(
+      secureStorageService: SecureStorageSource(),
+      network: NetworkSource(),
+    ),
+  );
+  final projectController = ProjectController();
+
+  final taskList = ValueNotifier<List<TaskModel>>([]);
+
+  final pickedDate = AdvancedCalendarController.today();
+  final calendarController = AdvancedCalendarController.today();
+  final List<DateTime> events = [
+    DateTime.utc(2022, 09, 19, 12),
+    DateTime.utc(2022, 09, 20, 12),
+    DateTime.utc(2022, 09, 21, 12),
+    DateTime.utc(2022, 09, 22, 12),
+    DateTime.utc(2022, 09, 23, 12),
+  ];
 
   final formKey = GlobalKey<FormState>();
 
@@ -105,46 +180,6 @@ class AddTaskController extends ChangeNotifier {
     panelStatus.notifyListeners();
   }
 
-  final pickedTime = ValueNotifier<DateTime?>(null);
-  void pickTime({required DateTime newTime}) {
-    pickedTime.value = newTime;
-    pickedTime.notifyListeners();
-  }
-
-  Future<void> pickFile({required BuildContext context}) async {
-    const int maxSize = 26214400;
-    try {
-      FilePickerResult? result = await FilePicker.platform.pickFiles();
-
-      if (result!.files.first.size >= maxSize) {
-        result.files.clear();
-        MessageService.displaySnackbar(
-          message: 'You cant put huge file',
-          context: context,
-        );
-      } else {
-        PlatformFile file = result.files.first;
-        files.value.add(file);
-      }
-      log(files.value[0].path.toString());
-      files.notifyListeners();
-    } catch (e) {
-      throw Failure(e.toString());
-    }
-  }
-
-  late String userName = '', image = '';
-  Future<List<String>> fetchCommentInfo() async {
-    try {
-      // TODO fix it
-      // image = await userProfileRepository.fetchAvatarFromStorage();
-      // userName = await userProfileRepository.fetchUserName();
-      return [image, userName];
-    } catch (e) {
-      throw Failure(e.toString());
-    }
-  }
-
 // validation
 
   Future<void> tryValidate({required BuildContext context}) async {
@@ -153,69 +188,17 @@ class AddTaskController extends ChangeNotifier {
         FocusScope.of(context).unfocus();
         isClickedAddTask.value = false;
         isClickedAddTask.notifyListeners();
-// TODo remove navigation
-        await putTask(
-          description: descriptionController.text,
-          title: titleController.text,
-        ).then((_) => NavigationService.navigateTo(
-              context,
-              Pages.tasks,
-            ));
+        // await createTask(
 
+        // ).then((_) => NavigationService.navigateTo(
+        //       context,
+        //       Pages.tasks,
+        //     ));
         isClickedAddTask.value = true;
         isClickedAddTask.notifyListeners();
-
-        //  disposeAll();
       }
     } catch (e) {
       throw Failure(e.toString());
     }
-  }
-
-  Future<void> putTask({
-    required String title,
-    required String description,
-  }) async {
-    try {
-      int userId = 0;
-      // await userProfileRepository.fetchId();
-      int projectId = 0;
-
-      // await taskRepository.postTask(
-      //   title: title,
-      //   description: description,
-      //   assignedTo: userId,
-      //   projectId: projectId,
-      //   dueDate: pickedTime.value!,
-      // );
-      //TODO fix it
-      // int currentProjectId = await taskRepository.fetchTaskId(title: title);
-      // // push attachment
-      // for (int i = 0; i < files.value.length; i++) {
-      //   await taskAttachment.putAttachment(
-      //       url: files.value[i].name, taskId: currentProjectId);
-      // }
-      //
-      // // task members
-      // for (int i = 0; i < taskMembers.value.length; i++) {
-      //   tasksMembers.putMember();
-      // }
-    } catch (e) {
-      throw Failure(e.toString());
-    }
-  }
-
-  void disposeAll() {
-    taskMembers.dispose();
-    pickedUser.dispose();
-    pickedProject.dispose();
-    userTextController.dispose();
-    projectTextController.dispose();
-    isShowPickUserWidget.dispose();
-    isShowProjectWidget.dispose();
-    panelStatus.dispose();
-    pickedTime.dispose();
-    files.dispose();
-    isClickedAddTask.dispose();
   }
 }

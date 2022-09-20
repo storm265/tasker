@@ -1,7 +1,7 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/add_task_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/controller_inherited.dart';
 
 class EnterUserWidget extends StatelessWidget {
@@ -28,7 +28,7 @@ class EnterUserWidget extends StatelessWidget {
           child: Text(
             text,
             style: const TextStyle(
-              fontWeight: FontWeight.w300,
+              fontWeight: FontWeight.w200,
               fontSize: 18,
               fontStyle: FontStyle.italic,
             ),
@@ -44,15 +44,6 @@ class EnterUserWidget extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(left: 15),
             child: TextFormField(
-              validator: (text) {
-                if (text == 'Assignee' || text == 'Project') {
-                  return 'Pick data!';
-                }
-                if (text == null || text.isEmpty) {
-                  return 'Pick data!';
-                }
-                return null;
-              },
               onChanged: onChanged,
               onTap: () {
                 titleController.selection = TextSelection(

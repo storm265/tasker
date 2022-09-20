@@ -27,7 +27,7 @@ class ListDayWidget extends StatelessWidget {
     return Align(
       alignment: Alignment.topLeft,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5),
+        padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
         child: Text(
           '$isToday, ${DateFormat('MMM').format(date)} ${date.day + index}/${date.year}',
           style: const TextStyle(

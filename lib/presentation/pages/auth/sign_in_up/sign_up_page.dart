@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
-import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/controller/image_picker_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/sign_up_controller.dart';
@@ -16,7 +14,6 @@ import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/subtitle_widget
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/textfield_widget.dart';
 import 'package:todo2/presentation/pages/auth/widgets/title_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
-import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -33,15 +30,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   final _signUpController = SignUpController(
     authRepository: AuthRepositoryImpl(),
-    imgPickerController: ImageController(
-      secureStorageSource: SecureStorageSource(),
-      userRepository: UserProfileRepositoryImpl(
-        userProfileDataSource: UserProfileDataSourceImpl(
-          network: NetworkSource(),
-          secureStorageService: SecureStorageSource(),
-        ),
-      ),
-    ),
+    fileController: FileController(),
     formValidatorController: FormValidatorController(),
     storageSource: SecureStorageSource(),
   );
@@ -88,7 +77,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                     ),
                     AvatarWidget(
-                      imgController: _signUpController.imgPickerController,
+                      imgController: _signUpController.fileController,
                     ),
                     TextFieldWidget(
                       validateCallback: (text) => _signUpController
@@ -128,8 +117,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           ? SubmitUpButtonWidget(
                               buttonText: 'Sign Up',
                               onPressed: isClicked
-                                  ? () async => _signUpController
-                                      .trySignUp(
+                                  ? () async => _signUpController.trySignUp(
                                         context: context,
                                         userName: _usernameController.text,
                                         email: _emailController.text,

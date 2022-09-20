@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/add_member_widget/add_member_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/description_field_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/description_widgets/description_field_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/for_in_field_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/title_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/add_task_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/controller_inherited.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/fake_nav_bar.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/pick_time_field_widget.dart';
@@ -115,8 +115,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                               ? () async {
                                                   await newTaskController
                                                       .tryValidate(
-                                                    context: context,
-                                                  );
+                                                          context: context);
                                                 }
                                               : null,
                                         )

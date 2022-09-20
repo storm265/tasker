@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/controller_inherited.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/grey_container.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/pick_date_widget.dart';
-
 import 'package:todo2/presentation/widgets/common/colors.dart';
 
 class PickTimeFieldWidget extends StatelessWidget {
@@ -10,8 +9,8 @@ class PickTimeFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final addTaskController = InheritedNewTaskController.of(context).addTaskController;
-    
+    final taskController =
+        InheritedNewTaskController.of(context).addTaskController;
     return GreyContainerWidget(
       child: Align(
         alignment: Alignment.centerLeft,
@@ -26,13 +25,16 @@ class PickTimeFieldWidget extends StatelessWidget {
               child: SizedBox(
                 width: 100,
                 height: 35,
-                child: ValueListenableBuilder<DateTime?>(
-                  valueListenable: addTaskController.pickedTime,
+                child: ValueListenableBuilder<DateTime>(
+                  valueListenable: taskController.pickedDate,
                   builder: (context, time, _) => ElevatedButton(
-                    style: ElevatedButton.styleFrom(primary: getAppColor(color: CategoryColor.blue)),
-                    onPressed: () => showCalendarDatePicker(context),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor:
+                            getAppColor(color: CategoryColor.blue)),
+                    onPressed: () async =>
+                        await showCalendarDatePicker(context),
                     child: Text(
-                      time == null
+                      time.day == DateTime.now().day
                           ? 'Anytime'
                           : '${time.day}/${time.month}/${time.year}',
                     ),

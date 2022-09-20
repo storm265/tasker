@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/database/repository/task_repository.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/controller/task_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/controller_inherited.dart';
+
 import 'package:todo2/presentation/pages/menu_pages/task/dialogs/tasks_dialog.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/calendar_lib/controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/calendar_lib/widget.dart';
@@ -26,7 +27,6 @@ class _TasksPageState extends State<TasksPage>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
   late TabController _tabController;
 
-  final taskController = TaskController();
   @override
   void initState() {
     _tabController = TabController(length: 2, vsync: this);
@@ -41,6 +41,8 @@ class _TasksPageState extends State<TasksPage>
 
   @override
   Widget build(BuildContext context) {
+       final taksController =
+          InheritedNewTaskController.of(context).addTaskController;
     super.build(context);
     return AppbarWrapWidget(
       preferredHeight: 90,
@@ -71,7 +73,7 @@ class _TasksPageState extends State<TasksPage>
           KeepAlivePageWidget(
             child: SingleChildScrollView(
               child: ValueListenableBuilder<List<TaskModel>>(
-                  valueListenable: taskController.taskList,
+                  valueListenable: taksController.taskList,
                   builder: (_, tasksList, __) {
                     if (tasksList.isEmpty) {
                       return const Center(
@@ -94,9 +96,8 @@ class _TasksPageState extends State<TasksPage>
           KeepAlivePageWidget(
             child: Column(children: [
               AdvancedCalendar(
-                controller: taskController.calendarControllerToday,
-                events: taskController.events,
-                isMonthMode: true,
+                controller: taksController.calendarController,
+                events: taksController.events,
               ),
               const Text('disabled ')
             ]),

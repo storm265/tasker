@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:todo2/presentation/controller/image_picker_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/atachment_message_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/controller_inherited.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
@@ -10,16 +11,15 @@ import 'package:todo2/utils/assets_path.dart';
 class DescriptionFieldWidget extends StatelessWidget {
   final TextEditingController descriptionController;
   final String? hintText;
-  final bool showImageIcon;
   final int maxLength;
-  const DescriptionFieldWidget({
+  DescriptionFieldWidget({
     Key? key,
     required this.descriptionController,
     this.hintText,
     this.maxLength = 512,
-    this.showImageIcon = false,
   }) : super(key: key);
 
+  final fileController = FileController();
   @override
   Widget build(BuildContext context) {
     final newTaskController =
@@ -112,29 +112,20 @@ class DescriptionFieldWidget extends StatelessWidget {
                     ),
                     width: double.infinity,
                     height: 40,
-                    child: Row(
-                      children: [
-                        showImageIcon
-                            ? Padding(
-                                padding: const EdgeInsets.only(left: 10),
-                                child: GestureDetector(
-                                  child: SvgPicture.asset(
-                                      AssetsPath.imageIconIconPath),
-                                ),
-                              )
-                            : const SizedBox(),
-                        Transform.rotate(
-                          angle: 43.1,
-                          child: IconButton(
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Transform.rotate(
+                        angle: 43.2,
+                        child: IconButton(
                             icon: const Icon(
                               Icons.attachment_outlined,
                               color: Colors.grey,
                             ),
-                            onPressed: () =>
-                                newTaskController.pickFile(context: context),
-                          ),
-                        ),
-                      ],
+                            onPressed: () async {
+                              final file = await fileController.pickFile(
+                                  context: context);
+                            }),
+                      ),
                     ),
                   ),
                 ],
@@ -145,7 +136,7 @@ class DescriptionFieldWidget extends StatelessWidget {
           ValueListenableBuilder<List<PlatformFile>>(
             valueListenable: newTaskController.files,
             builder: (context, imgList, value) => FutureBuilder<List<String>>(
-              future: newTaskController.fetchCommentInfo(),
+              //future: newTaskController.fetchCommentInfo(),
               initialData: const [],
               builder: ((context, AsyncSnapshot<List<String>> snapshot) {
                 if (!snapshot.hasData) {
@@ -166,8 +157,8 @@ class DescriptionFieldWidget extends StatelessWidget {
                           //   subtitle: Text(
                           //       '${dateNow.day}/${dateNow.month}/${dateNow.year}'),
                           // ),
-                          imgList[index].path!.contains('.jpg') ||
-                                  imgList[index].path!.contains('.jpg')
+                          fileController
+                                  .isValidImageFormat(imgList[index].path ?? '')
                               ? Container(
                                   width: 300,
                                   height: 200,

@@ -1,45 +1,46 @@
 import 'dart:developer';
 import 'dart:io';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
+import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
 const _jpeg = 'jpeg';
 const _png = 'png';
 const _jpg = 'jpg';
 
-class ImageController extends ChangeNotifier {
-  final UserProfileRepositoryImpl _userRepository;
-  final SecureStorageSource _secureStorageSource;
-
-  ImageController({
-    required UserProfileRepositoryImpl userRepository,
-    required SecureStorageSource secureStorageSource,
-  })  : _userRepository = userRepository,
-        _secureStorageSource = secureStorageSource;
+class FileController extends ChangeNotifier {
+  final UserProfileRepositoryImpl _userRepository = UserProfileRepositoryImpl(
+    userProfileDataSource: UserProfileDataSourceImpl(
+      secureStorageService: SecureStorageSource(),
+      network: NetworkSource(),
+    ),
+  );
 
   final _emptyImage = const PlatformFile(name: '', size: 0, path: '');
+
   var pickedFile =
       ValueNotifier(const PlatformFile(name: '', size: 0, path: ''));
 
-  bool get wrongFormat =>
-      pickedFile.value.extension != _jpeg &&
-      pickedFile.value.extension != _png &&
-      pickedFile.value.extension != _jpg;
+  bool isValidImageFormat(String image) {
+    if (image.endsWith(_jpeg) || image.endsWith(_png) || image.endsWith(_jpg)) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   final _maxImageSize = 4000 * 1000; // 4mb
   final _maxFileSize = 26214 * 1000; // 26mb
 
   Future<PlatformFile> pickAvatar({
     required BuildContext context,
-    bool isImagePicker = true,
   }) async {
-    final int maxSize = isImagePicker ? _maxImageSize : _maxFileSize;
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles(
             allowCompression: true,
@@ -56,9 +57,10 @@ class ImageController extends ChangeNotifier {
 
       debugPrint('picker image path : ${pickedFile.value.path}');
       debugPrint('picker extension : ${pickedFile.value.extension}');
-      debugPrint('wrongFormat: $wrongFormat');
+      debugPrint(
+          'wrongFormat: ${isValidImageFormat(pickedFile.value.extension ?? '')}');
 
-      if (result.files.last.size >= maxSize) {
+      if (result.files.last.size >= _maxImageSize) {
         pickedFile.value = _emptyImage;
         result.files.clear();
         pickedFile.notifyListeners();
@@ -66,7 +68,11 @@ class ImageController extends ChangeNotifier {
           message: 'You cant put huge file',
           context: context,
         );
-      } else if (wrongFormat) {
+      } else if (isValidImageFormat(pickedFile.value.extension ?? '')) {
+        pickedFile.value = result.files.last;
+        pickedFile.notifyListeners();
+        return pickedFile.value = result.files.last;
+      } else {
         pickedFile.value = _emptyImage;
         result.files.clear();
         pickedFile.notifyListeners();
@@ -74,10 +80,25 @@ class ImageController extends ChangeNotifier {
           message: 'Wrong image, supported formats: .$_jpeg, .$_jpg, .$_png.',
           context: context,
         );
+      }
+    } catch (e) {
+      throw Failure(e.toString());
+    }
+  }
+
+  Future<PlatformFile> pickFile({required BuildContext context}) async {
+    try {
+      FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+      if (result!.files.first.size >= _maxFileSize) {
+        result.files.clear();
+        throw MessageService.displaySnackbar(
+          message: 'You cant put huge file',
+          context: context,
+        );
       } else {
-        pickedFile.value = result.files.last;
-        pickedFile.notifyListeners();
-        return pickedFile.value = result.files.last;
+        PlatformFile file = result.files.first;
+        return file;
       }
     } catch (e) {
       throw Failure(e.toString());
@@ -86,25 +107,14 @@ class ImageController extends ChangeNotifier {
 
   bool shouldUploadAvatar() => pickedFile.value.path != '';
 
-  bool isValidAvatar({required BuildContext context}) {
-    try {
-      if (wrongFormat) {
-        return false;
-      } else {
-        return true;
-      }
-    } catch (e) {
-      throw Failure(e.toString());
-    }
-  }
-
   Future<void> updateAvatar({
     required BuildContext context,
     required ProfileController profileController,
   }) async {
     try {
       await pickAvatar(context: context);
-      if (isValidAvatar(context: context) && pickedFile.value.name.isNotEmpty) {
+      if (isValidImageFormat(pickedFile.value.extension ?? '') &&
+          pickedFile.value.name.isNotEmpty) {
         log('image is valid!');
         await profileController.clearImage();
         await uploadAvatar().then((_) => Navigator.pop(context));
@@ -119,17 +129,9 @@ class ImageController extends ChangeNotifier {
     try {
       final image = await _userRepository.uploadAvatar(
         name: pickedFile.value.name,
-        file: File(pickedFile.value.path!),
+        file: File(pickedFile.value.path ?? ''),
       );
       return image;
-    } catch (e) {
-      throw Failure(e.toString());
-    }
-  }
-
-  void disposeValues() {
-    try {
-      pickedFile.dispose();
     } catch (e) {
       throw Failure(e.toString());
     }

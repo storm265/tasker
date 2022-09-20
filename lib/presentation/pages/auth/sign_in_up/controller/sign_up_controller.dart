@@ -12,7 +12,7 @@ class SignUpController extends ChangeNotifier {
   SignUpController({
     required AuthRepositoryImpl authRepository,
     required this.formValidatorController,
-    required this.imgPickerController,
+    required this.fileController,
     required SecureStorageSource storageSource,
   })  : _authRepository = authRepository,
         _storageSource = storageSource;
@@ -21,7 +21,7 @@ class SignUpController extends ChangeNotifier {
 
   final FormValidatorController formValidatorController;
 
-  final ImageController imgPickerController;
+  final FileController fileController;
 
   final SecureStorageSource _storageSource;
 
@@ -45,8 +45,9 @@ class SignUpController extends ChangeNotifier {
     try {
       changeSubmitButtonValue(isActive: false);
 
-      if (imgPickerController.shouldUploadAvatar()) {
-        if (imgPickerController.isValidAvatar(context: context)) {
+      if (fileController.shouldUploadAvatar()) {
+        if (fileController
+            .isValidImageFormat(fileController.pickedFile.value.extension!)) {
           if (formKey.currentState!.validate()) {
             await _signUp(
               context: context,
@@ -54,7 +55,7 @@ class SignUpController extends ChangeNotifier {
               email: email,
               password: password,
             );
-            final imageResponse = await imgPickerController.uploadAvatar();
+            final imageResponse = await fileController.uploadAvatar();
             log('avatar respose $imageResponse');
             await _storageSource.storageApi.saveUserData(
               type: StorageDataType.avatarUrl,
@@ -78,10 +79,9 @@ class SignUpController extends ChangeNotifier {
       }
       MessageService.displaySnackbar(
           message: 'Sign up success!', context: context);
-      await Future.delayed(
-          Duration.zero,
-          () => NavigationService.navigateTo(
-              context, Pages.navigationReplacement));
+
+      // ignore: use_build_context_synchronously
+      await NavigationService.navigateTo(context, Pages.navigationReplacement);
     } catch (e) {
       MessageService.displaySnackbar(message: e.toString(), context: context);
       throw Failure(e.toString());

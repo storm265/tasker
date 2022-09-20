@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/database/data_source/projects_data_source.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
-import 'package:todo2/database/repository/projects_repository.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/add_project_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/project_item_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/project_shimmer_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
-import 'package:todo2/services/network_service/network_config.dart';
-import 'package:todo2/storage/secure_storage_service.dart';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({Key? key}) : super(key: key);
@@ -26,13 +21,7 @@ class MenuPageState extends State<MenuPage> {
   @override
   void initState() {
     _projectController = ProjectController(
-      projectsRepository: ProjectRepositoryImpl(
-        projectDataSource: ProjectUserDataImpl(
-          secureStorageService: SecureStorageSource(),
-          network: NetworkSource(),
-        ),
-      ),
-      colorPalleteController: ColorPalleteController(),
+
     );
     _projectController.fetchAllProjects();
     super.initState();

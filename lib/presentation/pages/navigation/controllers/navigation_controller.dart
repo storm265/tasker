@@ -55,8 +55,4 @@ class NavigationController extends ChangeNotifier {
     pageController.jumpToPage(pageIndex.value);
   }
 
-  void disposeValues() {
-    pageIndex.dispose();
-    pageController.dispose();
-  }
 }

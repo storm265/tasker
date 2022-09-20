@@ -6,7 +6,7 @@ import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 Future<void> showSettingsDialog({
   required BuildContext context,
-  required ImageController imageController,
+  required FileController imageController,
   required ProfileController profileController,
 }) async {
   await showDialog(

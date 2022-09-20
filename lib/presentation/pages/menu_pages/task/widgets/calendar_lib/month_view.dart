@@ -24,11 +24,7 @@ class MonthView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final index = selectedDate.findWeekIndex(monthView.dates);
-    final offset = index / (weeksAmount - 1) * 2 - 1.0;
-
     return OverflowBox(
-      alignment: Alignment(0, offset),
       minHeight: weekLineHeight,
       maxHeight: weekLineHeight * weeksAmount,
       child: Column(

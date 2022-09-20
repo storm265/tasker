@@ -33,7 +33,8 @@ class _AttachementWidgetState extends State<AttachementWidget> {
     return ValueListenableBuilder<List<PlatformFile>>(
       valueListenable: newTaskController.files,
       builder: (context, imgList, value) => FutureBuilder<List<String>>(
-        future: newTaskController.fetchCommentInfo(),
+        // future: newTaskController.fetchCommentInfo(),
+
         initialData: const [],
         builder: ((context, AsyncSnapshot<List<String>> snapshot) {
           if (!snapshot.hasData) {

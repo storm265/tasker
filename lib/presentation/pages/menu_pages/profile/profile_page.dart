@@ -21,15 +21,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final imageController = ImageController(
-    secureStorageSource: SecureStorageSource(),
-    userRepository: UserProfileRepositoryImpl(
-      userProfileDataSource: UserProfileDataSourceImpl(
-        network: NetworkSource(),
-        secureStorageService: SecureStorageSource(),
-      ),
-    ),
-  );
+  final fileController = FileController();
   final userController = UserController(
     userProfileRepository: UserProfileRepositoryImpl(
       userProfileDataSource: UserProfileDataSourceImpl(
@@ -57,8 +49,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   void dispose() {
-    imageController.pickedFile.dispose();
-    imageController.dispose();
+    fileController.pickedFile.dispose();
+    fileController.dispose();
     super.dispose();
   }
 
@@ -78,7 +70,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               child: ProfileWidget(
                 profileController: profileController,
-                imageController: imageController,
+                imageController: fileController,
                 completedTasks: userController.stats.completedTasks,
                 createdTask: userController.stats.createdTasks,
               ),

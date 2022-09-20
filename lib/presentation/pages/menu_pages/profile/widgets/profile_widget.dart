@@ -12,7 +12,7 @@ class ProfileWidget extends StatefulWidget {
   final int completedTasks;
   final int createdTask;
   final ProfileController profileController;
-  final ImageController imageController;
+  final FileController imageController;
   const ProfileWidget({
     Key? key,
     required this.profileController,

@@ -105,9 +105,9 @@ class TaskRepositoryImpl implements TaskRepository {
   Future<TaskModel> createTask({
     required String title,
     required String description,
-    required String assignedTo,
+    required String? assignedTo,
     required String projectId,
-    required DateTime dueDate,
+    required DateTime? dueDate,
     List<String>? members,
   }) async {
     try {

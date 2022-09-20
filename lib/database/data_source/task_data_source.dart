@@ -97,9 +97,9 @@ class TaskDataSourceImpl implements TaskDataSource {
   Future<Map<String, dynamic>> createTask({
     required String title,
     required String description,
-    required String assignedTo,
+    required String? assignedTo,
     required String projectId,
-    required DateTime dueDate,
+    required DateTime? dueDate,
     List<String>? members,
   }) async {
     try {
@@ -110,11 +110,11 @@ class TaskDataSourceImpl implements TaskDataSource {
         path: _tasks,
         data: {
           TaskScheme.title: title,
-          TaskScheme.dueDate: dueDate,
+          TaskScheme.dueDate: dueDate?.toUtc().toIso8601String(),
           TaskScheme.description: description,
           TaskScheme.assignedTo: assignedTo,
           TaskScheme.isCompleted: false,
-          TaskScheme.projectId: projectId, // id of project (menu)
+          TaskScheme.projectId: projectId,
           TaskScheme.ownerId: ownerId,
           TaskScheme.members: members,
           TaskScheme.attachments: null,

@@ -6,7 +6,7 @@ import 'package:todo2/presentation/widgets/common/add_photo_widget.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 class AvatarWidget extends StatelessWidget {
-  final ImageController imgController;
+  final FileController imgController;
   const AvatarWidget({
     Key? key,
     required this.imgController,
