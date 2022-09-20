@@ -12,11 +12,15 @@ Future<void> showAddEditProjectDialog({
     context: context,
     builder: (_) => AlertDialog(
       insetPadding: const EdgeInsets.all(0),
-      title: const Text(
-        'Title',
-        style: TextStyle(
-          fontWeight: FontWeight.w200,
-          fontSize: 18,
+      title: const Padding(
+        padding: EdgeInsets.only(left: 16),
+        child: Text(
+          'Title',
+          style: TextStyle(
+            fontWeight: FontWeight.w200,
+            fontStyle: FontStyle.italic,
+            fontSize: 18,
+          ),
         ),
       ),
       content: SizedBox(

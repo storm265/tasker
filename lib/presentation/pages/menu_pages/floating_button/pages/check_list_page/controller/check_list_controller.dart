@@ -17,7 +17,6 @@ class CheckListController extends ChangeNotifier {
   static final CheckListController _instance = CheckListController._internal();
 
   factory CheckListController() {
-    log('CheckListController createe');
     return _instance;
   }
 
@@ -31,7 +30,7 @@ class CheckListController extends ChangeNotifier {
 
   final TextEditingController titleController = TextEditingController();
 
-  final checklist = ValueNotifier<List<CheckListModel>>([]);
+  List<CheckListModel> checklist = [];
 
   final checkBoxItems = ValueNotifier<List<Map<String, dynamic>>>([]);
 
@@ -99,9 +98,11 @@ class CheckListController extends ChangeNotifier {
         FocusScope.of(context).unfocus();
         changeIsClickedValueStatus(false);
         isEditStatus.value ? await updateCheckList() : await createCheckList();
+        log('checkList len : ${checklist.length}');
         quickController.fetchNotesLocally();
         clearData();
         changeIsClickedValueStatus(true);
+        log('checkList len2 : ${checklist.length}');
         await navigationController.moveToPage(Pages.quick);
       }
     } catch (e, t) {
@@ -119,7 +120,7 @@ class CheckListController extends ChangeNotifier {
         color: colors[colorPalleteController.selectedIndex.value],
         items: checkBoxItems.value,
       );
-      checklist.value.add(CheckListModel(
+      checklist.add(CheckListModel(
         id: model.id,
         title: model.title,
         color: model.color,
@@ -127,7 +128,6 @@ class CheckListController extends ChangeNotifier {
         createdAt: model.createdAt,
         items: model.items,
       ));
-      checklist.notifyListeners();
     } catch (e) {
       throw Failure(e.toString());
     }
@@ -137,14 +137,14 @@ class CheckListController extends ChangeNotifier {
     try {
       final updatedModel = await _checkListRepository.updateCheckList(
         color: colors[colorPalleteController.selectedIndex.value],
-        checkListModel: _pickedModel,
+        checklistId: _pickedModel.id,
         items: checkBoxItems.value,
         title: titleController.text,
       );
-      for (var i = 0; i < checklist.value.length; i++) {
-        if (checklist.value[i].id == updatedModel.id) {
-          checklist.value[i] = updatedModel;
-          checklist.notifyListeners();
+      for (var i = 0; i < checklist.length; i++) {
+        if (checklist[i].id == updatedModel.id) {
+          checklist[i] = updatedModel;
+
           break;
         }
       }
@@ -155,7 +155,10 @@ class CheckListController extends ChangeNotifier {
 
   Future<List<CheckListModel>> fetchAllCheckLists() async {
     try {
-      return _checkListRepository.fetchAllCheckLists();
+      final lists = await _checkListRepository.fetchAllCheckLists();
+      checklist = lists;
+
+      return lists;
     } catch (e) {
       throw Failure(e.toString());
     }
@@ -175,7 +178,7 @@ class CheckListController extends ChangeNotifier {
     try {
       await _checkListRepository.deleteCheckList(
           checkListModel: checkListModel);
-      checklist.value.removeWhere((element) => element.id == checkListModel.id);
+      checklist.removeWhere((element) => element.id == checkListModel.id);
       quickController.fetchNotesLocally();
     } catch (e) {
       throw Failure(e.toString());
@@ -184,9 +187,10 @@ class CheckListController extends ChangeNotifier {
 
   void addCheckboxItem(int index) {
     checkBoxItems.value.add({
-      CheckListItemsScheme.content: checklist.value.isEmpty
-          ? 'List item 1'
-          : 'List item ${index + 1 + 1}',
+      CheckListItemsScheme.id: null,
+      CheckListItemsScheme.content: checkBoxItems.value.isEmpty
+          ? 'List item $index'
+          : 'List item ${index + 1}',
       CheckListItemsScheme.isCompleted: false,
     });
     checkBoxItems.notifyListeners();
@@ -221,7 +225,7 @@ class CheckListController extends ChangeNotifier {
   }
 
   void removeItemsWhereTitleIsEmpty() async {
-    for (var i = 0; i < checklist.value.length; i++) {
+    for (var i = 0; i < checklist.length; i++) {
       checkBoxItems.value.removeWhere(
           (element) => element[CheckListItemsScheme.content].isEmpty);
     }

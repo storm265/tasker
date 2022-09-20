@@ -16,7 +16,7 @@ abstract class CheckListsDataSource {
   });
 
   Future<void> updateCheckList({
-    required CheckListModel checkListModel,
+    required String checklistId,
     List<Map<String, dynamic>>? items,
     required String title,
     required Color color,
@@ -62,7 +62,7 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
         },
         options: await _network.getLocalRequestOptions(useContentType: true),
       );
-         return NetworkErrorService.isSuccessful(response)
+      return NetworkErrorService.isSuccessful(response)
           ? (response.data[CheckListsScheme.data] as Map<String, dynamic>)
           : throw Failure(
               'Error: ${response.data[CheckListsScheme.data][CheckListsScheme.message]}');
@@ -73,7 +73,7 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
 
   @override
   Future<Map<String, dynamic>> updateCheckList({
-    required CheckListModel checkListModel,
+    required String checklistId,
     List<Map<String, dynamic>>? items,
     required String title,
     required Color color,
@@ -81,19 +81,19 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
     try {
       final ownerId =
           await _secureStorage.getUserData(type: StorageDataType.id);
-
-      log(' update : $_checklists/${checkListModel.id}');
       final response = await _network.put(
-        path: '$_checklists/${checkListModel.id}',
+        path: '$_checklists/$checklistId',
         data: {
           CheckListsScheme.title: title,
           CheckListsScheme.color: color.toString().toStringColor(),
           CheckListsScheme.ownerId: ownerId,
-          CheckListsScheme.items: items ?? [],
+          CheckListsScheme.items: items,
         },
         options: await _network.getLocalRequestOptions(useContentType: true),
       );
-       return NetworkErrorService.isSuccessful(response)
+      log('update status ${response.statusCode}');
+      log('update status ${response.statusMessage}');
+      return NetworkErrorService.isSuccessful(response)
           ? (response.data[CheckListsScheme.data] as Map<String, dynamic>)
           : throw Failure(
               'Error: ${response.data[CheckListsScheme.data][CheckListsScheme.message]}');

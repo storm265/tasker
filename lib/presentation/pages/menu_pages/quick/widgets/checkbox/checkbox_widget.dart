@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:todo2/database/model/checklist_model.dart';
@@ -17,7 +19,6 @@ class CheckboxWidget extends StatelessWidget {
   final NavigationController navigationController;
   final CheckListController checkListController;
 
-  
   const CheckboxWidget({
     Key? key,
     required this.checklistModel,
@@ -35,7 +36,9 @@ class CheckboxWidget extends StatelessWidget {
           EndPageWidget(
             iconPath: AssetsPath.editIconPath,
             onClick: () async {
+              log('checklistModel: ${checklistModel.id}');
               checkListController.pickEditData(pickedModel: checklistModel);
+              checkListController.changeEditValueStatus(true);
               await navigationController.moveToPage(Pages.addCheckList);
             },
           ),

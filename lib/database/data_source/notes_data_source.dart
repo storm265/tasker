@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:todo2/database/database_scheme/notes_scheme.dart';
 import 'package:todo2/database/model/notes_model.dart';
@@ -37,7 +39,7 @@ class NotesDataSourceImpl implements NotesDataSource {
         _secureStorage = secureStorage;
 
   final _notes = '/notes';
-
+final _userNotes = '/user-notes';
   @override
   Future<Map<String, dynamic>> createNote({
     required Color color,
@@ -81,12 +83,15 @@ class NotesDataSourceImpl implements NotesDataSource {
       final ownerId =
           await _secureStorage.getUserData(type: StorageDataType.id);
       final response = await _network.get(
-        path: '$_notes/$ownerId',
+        path: '$_userNotes/$ownerId',
         queryParameters: {
           NotesScheme.ownerId: ownerId,
         },
         options: await _network.getLocalRequestOptions(useContentType: true),
       );
+      log('notes ${response.data}');
+          log('notes ${response.statusCode}');
+              log('notes ${response.statusMessage}');
       return NetworkErrorService.isSuccessful(response)
           ? (response.data![NotesScheme.data] as List<dynamic>)
           : throw Failure('Error: Get project error');
@@ -124,6 +129,7 @@ class NotesDataSourceImpl implements NotesDataSource {
   }
 
   // @override
+  // here need note ID not project
   // Future<Map<String, dynamic>> fetchOneNote({required String projectId}) async {
   //   try {
   //     final response = await _network.dio.get(

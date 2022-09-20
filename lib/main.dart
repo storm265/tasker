@@ -91,7 +91,7 @@ class _MyAppState extends State<MyApp> {
             theme: _themeDataController.themeData,
             initialRoute: '/',
             routes: routes,
-            //  home: TasksPage(),
+           //   home: QuickPage(),
           ),
         ),
       ),

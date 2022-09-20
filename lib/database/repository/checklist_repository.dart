@@ -12,7 +12,7 @@ abstract class CheckListsRepository<T> {
   });
 
   Future<void> updateCheckList({
-    required CheckListModel checkListModel,
+    required String checklistId,
     List<Map<String, dynamic>>? items,
     required String title,
     required Color color,
@@ -96,14 +96,14 @@ class CheckListRepositoryImpl extends CheckListsRepository<CheckListModel> {
 
   @override
   Future<CheckListModel> updateCheckList({
-    required CheckListModel checkListModel,
+    required String checklistId,
     List<Map<String, dynamic>>? items,
     required String title,
     required Color color,
   }) async {
     try {
       final response = await _checkListsDataSource.updateCheckList(
-        checkListModel: checkListModel,
+        checklistId: checklistId,
         items: items,
         title: title,
         color: color,
