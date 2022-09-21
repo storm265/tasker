@@ -379,11 +379,59 @@ class TaskDataSourceImpl implements TaskDataSource {
   @override
   Future<List<dynamic>> taskMemberSearch({required String nickname}) async {
     try {
-      final response = await _network.get(
-        path: '$_taskMemberSearch?query=$nickname',
-        options: await _network.getLocalRequestOptions(),
+      // FAKE
+      // final response = await _network.get(
+      //   path: '$_taskMemberSearch?query=$nickname',
+      //   options: await _network.getLocalRequestOptions(),
+      // );
+      final response = Response(
+        requestOptions: RequestOptions(path: ''),
+        data: {
+          "data": [
+            {
+              "id": "76d2fab4-fd06-4909-bf8e-875c6b55c1f7",
+              "email": "andrei.kastsiuk@cogniteq.com",
+              "username": "andreikastsiuk",
+              "avatar_url":
+                  "https://todolist.dev2.cogniteq.com/api/v1/users-avatar/76d2fab4-fd06-4909-bf8e-875c6b55c1f7",
+              "created_at": "2022-07-12T14:46:44.750598"
+            },
+            {
+              "id": "66e5270a-7c8d-4fd8-ac7d-1e74745f1798",
+              "email": "andrei.kastsiuk1@cogniteq.com",
+              "username": "andreikastsiuk",
+              "avatar_url":
+                  "https://todolist.dev2.cogniteq.com/api/v1/users-avatar/66e5270a-7c8d-4fd8-ac7d-1e74745f1798",
+              "created_at": "2022-07-13T08:38:15.119284"
+            },
+            {
+              "id": "d0712893-00b7-4658-8227-2957ef11cad0",
+              "email": "andrei.kastsiuk2@cogniteq.com",
+              "username": "andreikastsiuk",
+              "avatar_url":
+                  "https://todolist.dev2.cogniteq.com/api/v1/users-avatar/d0712893-00b7-4658-8227-2957ef11cad0",
+              "created_at": "2022-07-13T09:16:30.841251"
+            },
+            {
+              "id": "d96e5ab4-dc94-4388-8fb4-b9c6153714dd",
+              "email": "andrei.kastsiuk3@cogniteq.com",
+              "username": "andreikastsiuk",
+              "avatar_url":
+                  "https://todolist.dev2.cogniteq.com/api/v1/users-avatar/d96e5ab4-dc94-4388-8fb4-b9c6153714dd",
+              "created_at": "2022-07-13T09:16:33.113941"
+            },
+            {
+              "id": "4a6af995-3111-4dc6-ab09-a1abc02e7892",
+              "email": "andrei.kastsiuk5@cogniteq.com",
+              "username": "andreikastsiuk",
+              "avatar_url":
+                  "https://todolist.dev2.cogniteq.com/api/v1/users-avatar/4a6af995-3111-4dc6-ab09-a1abc02e7892",
+              "created_at": "2022-07-13T09:16:35.924425"
+            }
+          ]
+        },
+        statusCode: 200,
       );
-
       return NetworkErrorService.isSuccessful(response)
           ? (response.data![TaskScheme.data] as List<dynamic>)
           : throw Failure('Error: get taskMemberSearch error');

@@ -14,6 +14,11 @@ class TaskTitleWidget extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.only(left: 40, top: 10),
         child: TextFormField(
+          style: const TextStyle(
+            fontSize: 18,
+            fontStyle: FontStyle.italic,
+            fontWeight: FontWeight.w200,
+          ),
           validator: (text) {
             if (text == null || text.isEmpty) {
               return 'Please enter title';

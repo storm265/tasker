@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/add_member_widget/add_member_dialog.dart';
-
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/controller_inherited.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/add_member_widget/member_item_widget.dart';
 
 class AddUserWidget extends StatefulWidget {
   const AddUserWidget({Key? key}) : super(key: key);
@@ -37,10 +37,10 @@ class _AddUserWidgetState extends State<AddUserWidget> {
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         elevation: 0,
+                        backgroundColor: const Color(0xFFF4F4F4),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50),
                         ),
-                        primary: const Color(0xFFF4F4F4),
                       ),
                       onPressed: () {},
                       child: const Text(
@@ -71,26 +71,18 @@ class _AddUserWidgetState extends State<AddUserWidget> {
                 scrollDirection: Axis.horizontal,
                 shrinkWrap: true,
                 itemCount: users.length,
-                itemBuilder: (context, index) {
-                  // final avatar = NetworkSource()
-                  //
-                  //         .storage
-                  //         .from(StorageScheme.avatar)
-                  //         .getPublicUrl(users[index].avatarUrl)
-                  //         .data ??
-                  //     '';
+                itemBuilder: (_, i) {
                   return Row(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 3),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 3),
                         child: CircleAvatar(
                           radius: 17,
                           backgroundColor: Colors.red,
-                          // backgroundImage: NetworkImage(avatar),
-                          // child: Text(users[index].username),
+                          backgroundImage: NetworkImage(url),
                         ),
                       ),
-                      (index == users.length - 1)
+                      (i == users.length - 1)
                           ? RawMaterialButton(
                               onPressed: () => showDialog(
                                   context: context,

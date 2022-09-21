@@ -46,16 +46,13 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return AppbarWrapWidget(
       resizeToAvoidBottomInset: false,
       showLeadingButton: true,
       isRedAppBar: false,
       child: SingleChildScrollView(
         child: UnfocusWidget(
-          child: SizedBox(
-            width: size.width - minFactor,
-            height: size.height - minFactor,
+          child: Expanded(
             child: Form(
               key: _signUpController.formKey,
               autovalidateMode: AutovalidateMode.onUserInteraction,

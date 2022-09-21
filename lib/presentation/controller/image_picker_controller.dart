@@ -29,14 +29,14 @@ class FileController extends ChangeNotifier {
 
   bool isValidImageFormat(String image) {
     if (image.endsWith(_jpeg) || image.endsWith(_png) || image.endsWith(_jpg)) {
-      return false;
-    } else {
       return true;
+    } else {
+      return false;
     }
   }
 
-  final _maxImageSize = 4000 * 1000; // 4mb
-  final _maxFileSize = 26214 * 1000; // 26mb
+  final _maxImageSize = 5000 * 1024; // 5mb
+  final _maxFileSize = 26000 * 1024; // 26mb
 
   Future<PlatformFile> pickAvatar({
     required BuildContext context,

@@ -1,20 +1,21 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:todo2/presentation/controller/image_picker_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/atachment_message_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/controller_inherited.dart';
-import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/description_widgets/desciption_text.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/description_widgets/description_text_field.dart';
+import 'package:todo2/presentation/widgets/common/colors.dart';
+import 'package:todo2/presentation/widgets/common/slidable_widgets/endpane_widget.dart';
 import 'package:todo2/utils/assets_path.dart';
 
 class DescriptionFieldWidget extends StatelessWidget {
-  final TextEditingController descriptionController;
   final String? hintText;
   final int maxLength;
   DescriptionFieldWidget({
     Key? key,
-    required this.descriptionController,
     this.hintText,
     this.maxLength = 512,
   }) : super(key: key);
@@ -29,24 +30,7 @@ class DescriptionFieldWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.only(
-              left: 15,
-              bottom: 10,
-            ),
-            child: Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                'Description',
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 16,
-                  fontStyle: FontStyle.italic,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-          ),
+          desciptionTextWidget,
           Container(
             width: 290,
             height: 110,
@@ -60,71 +44,38 @@ class DescriptionFieldWidget extends StatelessWidget {
             ),
             child: SingleChildScrollView(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  const DescriptionTextField(),
                   Padding(
-                    padding: const EdgeInsets.only(
-                      left: 15,
-                      top: 20,
-                    ),
-                    child: TextFormField(
-                      validator: (text) {
-                        if (text == null || text.isEmpty) {
-                          return 'Please enter description text';
-                        }
-                        return null;
-                      },
-                      controller: descriptionController,
-                      onEditingComplete: () => FocusScope.of(context).unfocus(),
-                      maxLength: maxLength,
-                      buildCounter: (
-                        context, {
-                        required currentLength,
-                        required isFocused,
-                        maxLength,
-                      }) =>
-                          maxLength == currentLength
-                              ? Text(
-                                  '$maxLength/$maxLength',
-                                  style: const TextStyle(color: Colors.red),
-                                )
-                              : null,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: null,
-                      decoration: InputDecoration(
-                        hintText: hintText,
-                        border: InputBorder.none,
-                        hintStyle: const TextStyle(
-                          fontSize: 18,
-                          fontStyle: FontStyle.italic,
-                        ),
+                    padding: const EdgeInsets.only(top: 23),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: const Color(0xFFEAEAEA), width: 1),
+                        borderRadius: const BorderRadius.horizontal(
+                            right: Radius.circular(5),
+                            left: Radius.circular(5)),
+                        color: const Color(0xFFF8F8F8),
                       ),
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                      border:
-                          Border.all(color: const Color(0xFFEAEAEA), width: 1),
-                      borderRadius: const BorderRadius.horizontal(
-                          right: Radius.circular(5), left: Radius.circular(5)),
-                      color: const Color(0xFFF8F8F8),
-                    ),
-                    width: double.infinity,
-                    height: 40,
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Transform.rotate(
-                        angle: 43.2,
-                        child: IconButton(
-                            icon: const Icon(
-                              Icons.attachment_outlined,
-                              color: Colors.grey,
-                            ),
-                            onPressed: () async {
-                              final file = await fileController.pickFile(
-                                  context: context);
-                            }),
+                      width: double.infinity,
+                      height: 40,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Transform.rotate(
+                          angle: 43.2,
+                          child: IconButton(
+                              icon: const Icon(
+                                Icons.attachment_outlined,
+                                color: Colors.grey,
+                              ),
+                              onPressed: () async {
+                                final file = await fileController.pickFile(
+                                    context: context);
+                                newTaskController.addAttachment(
+                                    attachment: file);
+                              }),
+                        ),
                       ),
                     ),
                   ),
@@ -132,69 +83,82 @@ class DescriptionFieldWidget extends StatelessWidget {
               ),
             ),
           ),
-          const AttachementWidget(),
+          //   const AttachementWidget(),
           ValueListenableBuilder<List<PlatformFile>>(
-            valueListenable: newTaskController.files,
-            builder: (context, imgList, value) => FutureBuilder<List<String>>(
-              //future: newTaskController.fetchCommentInfo(),
-              initialData: const [],
-              builder: ((context, AsyncSnapshot<List<String>> snapshot) {
-                if (!snapshot.hasData) {
+              valueListenable: newTaskController.attachments,
+              builder: (_, imgList, __) {
+                print(
+                  '${imgList[0].size / 1000}mb ',
+                );
+                if (imgList.isEmpty) {
                   return const SizedBox();
-                } else if (snapshot.hasData) {
+                } else {
                   return ListView.builder(
-                    itemBuilder: (context, index) {
-                      final dateNow = DateTime.now();
-
-                      return Column(
+                    itemCount: newTaskController.attachments.value.length,
+                    shrinkWrap: true,
+                    itemBuilder: (_, i) {
+                      return Wrap(
+                        alignment: WrapAlignment.start,
                         children: [
-                          // ListTile(
-                          //   leading: CachedAvatarWidget(
-                          //     radius: 40,
-                          //     image: snapshot.data![index],
-                          //   ),
-                          //   title: Text(snapshot.data![1]),
-                          //   subtitle: Text(
-                          //       '${dateNow.day}/${dateNow.month}/${dateNow.year}'),
-                          // ),
-                          fileController
-                                  .isValidImageFormat(imgList[index].path ?? '')
-                              ? Container(
-                                  width: 300,
-                                  height: 200,
-                                  decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      fit: BoxFit.cover,
-                                      image: FileImage(
-                                        File(imgList[index].path ?? ''),
-                                      ),
+                          Slidable(
+                            key: const ValueKey(0),
+                            endActionPane: ActionPane(
+                              motion: const ScrollMotion(),
+                              children: [
+                                SlidableAction(
+                                  onPressed: (_) =>
+                                      newTaskController.removeAttachment(i),
+                                  icon: Icons.delete,
+                                  backgroundColor: Colors.red,
+                                ),
+                              ],
+                            ),
+                            child: Row(
+                              children: [
+                                Chip(
+                                  avatar: fileController.isValidImageFormat(
+                                          imgList[i].path ?? '')
+                                      ? CircleAvatar(
+                                          radius: 20,
+                                          backgroundImage: FileImage(
+                                            File(imgList[i].path ?? ''),
+                                          ),
+                                        )
+                                      : const Icon(
+                                          Icons.file_present,
+                                          color: Colors.white,
+                                        ),
+                                  backgroundColor:
+                                      getAppColor(color: CategoryColor.blue),
+                                  label: Text(
+                                    imgList[i].name,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      overflow: TextOverflow.ellipsis,
+                                      fontSize: 12,
                                     ),
-                                    color: Colors.grey,
-                                    borderRadius: BorderRadius.circular(5),
                                   ),
-                                )
-                              : Column(
-                                  children: [
-                                    const Icon(
-                                      Icons.file_present,
-                                      size: 40,
-                                      color: Colors.grey,
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 5),
+                                  child: Text(
+                                    '${(imgList[i].size / 1024 / 1024).toStringAsFixed(3)} mb',
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      overflow: TextOverflow.ellipsis,
+                                      fontSize: 12,
                                     ),
-                                    Text(imgList[index].name)
-                                  ],
-                                )
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
                       );
                     },
-                    itemCount: newTaskController.files.value.length,
-                    shrinkWrap: true,
                   );
-                } else {
-                  return const ProgressIndicatorWidget();
                 }
               }),
-            ),
-          ),
         ],
       ),
     );

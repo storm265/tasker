@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/database/repository/task_repository.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/pick_time_dialog.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/add_member_widget/add_member_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/description_widgets/description_field_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/for_in_field_widget.dart';
@@ -42,7 +43,12 @@ class _AddTaskPageState extends State<AddTaskPage> {
       isPopFromNavBar: true,
       navRoute: Pages.tasks,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          // print('time ${DateTime.now()}');
+          // print('time ${DateTime.now().toUtc()}');
+          // print('time ${DateTime.now().toUtc().toIso8601String()}');
+          pickTime(context: context);
+        },
       ),
       child: Stack(
         children: [
@@ -67,7 +73,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       children: [
                         EnterUserWidget(
                           isForFieldActive: true,
-                          onChanged: (value) async {
+                          onChanged: (_) async {
                             await Future.delayed(
                                 const Duration(milliseconds: 500),
                                 () => setState(() {}));
@@ -99,10 +105,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                   titleController:
                                       newTaskController.titleController,
                                 ),
-                                DescriptionFieldWidget(
-                                  descriptionController:
-                                      newTaskController.descriptionController,
-                                ),
+                                DescriptionFieldWidget(),
                                 const PickTimeFieldWidget(),
                                 const AddUserWidget(),
                                 ValueListenableBuilder<bool>(

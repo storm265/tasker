@@ -81,6 +81,10 @@ class AddTaskController extends ChangeNotifier {
     }
   }
 
+  Future<List<UserProfileModel>> taskMemberSearch(
+          {required String nickname}) async =>
+      await _taskRepository.taskMemberSearch(nickname: nickname);
+
   final _taskRepository = TaskRepositoryImpl();
   final userProfileRepository = UserProfileRepositoryImpl(
     userProfileDataSource: UserProfileDataSourceImpl(
@@ -88,12 +92,13 @@ class AddTaskController extends ChangeNotifier {
       network: NetworkSource(),
     ),
   );
-  final projectController = ProjectController();
 
   final taskList = ValueNotifier<List<TaskModel>>([]);
+  final projectController = ProjectController();
 
   final pickedDate = AdvancedCalendarController.today();
   final calendarController = AdvancedCalendarController.today();
+
   final List<DateTime> events = [
     DateTime.utc(2022, 09, 19, 12),
     DateTime.utc(2022, 09, 20, 12),
@@ -127,10 +132,27 @@ class AddTaskController extends ChangeNotifier {
   final userTextController = TextEditingController(text: 'Assignee');
   final projectTextController = TextEditingController(text: 'Project');
 
-  final files = ValueNotifier<List<PlatformFile>>([]);
+  final attachments = ValueNotifier<List<PlatformFile>>([]);
+  
+  void addAttachment({required PlatformFile attachment}){
+    attachments.value.add(attachment);
+    attachments.notifyListeners();
+  }
+    void removeAttachment(int index){
+    attachments.value.removeAt(index);
+    attachments.notifyListeners();
+  }
+
+  
 
   final pickedUser = ValueNotifier<UserProfileModel>(
-    UserProfileModel(avatarUrl: '', createdAt: '', username: '', id: ''),
+    UserProfileModel(
+      avatarUrl: '',
+      createdAt: '',
+      username: '',
+      id: '',
+      email: '',
+    ),
   );
 
   void pickUser({
@@ -140,7 +162,6 @@ class AddTaskController extends ChangeNotifier {
     pickedUser.value = newUser;
     userTextController.text = pickedUser.value.username;
     pickedUser.notifyListeners();
-    log(pickedUser.value.toString());
     FocusScope.of(context).unfocus();
     changePanelStatus(newStatus: InputFieldStatus.hide);
   }

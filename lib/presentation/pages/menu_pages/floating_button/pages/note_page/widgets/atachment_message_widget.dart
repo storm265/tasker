@@ -31,7 +31,7 @@ class _AttachementWidgetState extends State<AttachementWidget> {
     final newTaskController =
         InheritedNewTaskController.of(context).addTaskController;
     return ValueListenableBuilder<List<PlatformFile>>(
-      valueListenable: newTaskController.files,
+      valueListenable: newTaskController.attachments,
       builder: (context, imgList, value) => FutureBuilder<List<String>>(
         // future: newTaskController.fetchCommentInfo(),
 
@@ -85,7 +85,7 @@ class _AttachementWidgetState extends State<AttachementWidget> {
                   ],
                 );
               },
-              itemCount: newTaskController.files.value.length,
+              itemCount: newTaskController.attachments.value.length,
               shrinkWrap: true,
             );
           } else {

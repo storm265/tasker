@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/controller_inherited.dart';
 
-import 'package:todo2/services/theme_service/theme_data_controller.dart';
+const url =
+    'https://image.winudf.com/v2/image1/Y29tLmFwcDNkd2FsbHBhcGVyaGQubW91bnRhaW53YWxscGFwZXJfc2NyZWVuXzVfMTU2NzAzMDU0MF8wNjk/screen-5.jpg?fakeurl=1&type=.jpg';
 
 class UserItemWidget extends StatefulWidget {
   final int index;
   final UserProfileModel data;
-  final String email;
+
   const UserItemWidget({
     Key? key,
     required this.data,
     required this.index,
-    required this.email,
   }) : super(key: key);
 
   @override
@@ -26,13 +26,21 @@ class _UserItemWidgetState extends State<UserItemWidget> {
     final newTaskController =
         InheritedNewTaskController.of(context).addTaskController;
     return ListTile(
-      // leading: CachedAvatarWidget(
-      //   image: widget.data.avatarUrl,
-      // ),
+      leading: CircleAvatar(
+        // backgroundImage: NetworkImage(widget.data.avatarUrl),
+        backgroundImage: NetworkImage(url),
+      ),
       title: Text(widget.data.username),
-      subtitle: Text(widget.email),
-      trailing: IconButton(
-        onPressed: () {
+      subtitle: Text(
+        widget.data.email,
+        overflow: TextOverflow.ellipsis,
+      ),
+      trailing: InkWell(
+        child: Icon(
+          Icons.done,
+          color: isSelected ? Colors.green : Colors.grey,
+        ),
+        onTap: () {
           setState(() {
             isSelected = !isSelected;
             if (isSelected) {
@@ -42,10 +50,6 @@ class _UserItemWidgetState extends State<UserItemWidget> {
             }
           });
         },
-        icon: const Icon(
-          Icons.done,
-        ),
-        color: isSelected ? Palette.red : Colors.grey,
       ),
     );
   }
