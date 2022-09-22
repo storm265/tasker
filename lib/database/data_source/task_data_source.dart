@@ -8,15 +8,15 @@ import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
 abstract class TaskDataSource {
-   Future<Map<String, dynamic>> createTask({
+  Future<Map<String, dynamic>> createTask({
     required String title,
     required String description,
     required String? assignedTo,
     required String projectId,
     required DateTime? dueDate,
-     List<Map<String,dynamic>>? attachments,
+    List<Map<String, dynamic>>? attachments,
     List<String>? members,
-  }) ;
+  });
 
   Future<void> deleteTask({required String projectId});
 
@@ -100,7 +100,7 @@ class TaskDataSourceImpl implements TaskDataSource {
     required String? assignedTo,
     required String projectId,
     required DateTime? dueDate,
-     List<Map<String,dynamic>>? attachments,
+    List<Map<String, dynamic>>? attachments,
     List<String>? members,
   }) async {
     try {
@@ -297,7 +297,7 @@ class TaskDataSourceImpl implements TaskDataSource {
             file.path,
             filename: fileName,
           ),
-          "type": isFile == true ? 'file' : 'image',
+          "type": isFile == true ? 'FILE' : 'IMAGE',
           TaskScheme.taskId: taskId,
         },
       );

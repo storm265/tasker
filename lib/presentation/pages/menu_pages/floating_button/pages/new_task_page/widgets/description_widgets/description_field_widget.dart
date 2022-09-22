@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:todo2/presentation/controller/image_picker_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/description_widgets/desciption_text.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/description_widgets/description_text_field.dart';
@@ -12,14 +11,13 @@ class DescriptionFieldWidget extends StatelessWidget {
   final String? hintText;
   final int maxLength;
   final AddTaskController taskController;
-  DescriptionFieldWidget({
+  const DescriptionFieldWidget({
     Key? key,
     this.hintText,
     required this.taskController,
     this.maxLength = 512,
   }) : super(key: key);
 
-  final fileController = FileController();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -67,8 +65,8 @@ class DescriptionFieldWidget extends StatelessWidget {
                                 color: Colors.grey,
                               ),
                               onPressed: () async {
-                                final file = await fileController.pickFile(
-                                    context: context);
+                                final file = await taskController.fileController
+                                    .pickFile(context: context);
                                 taskController.addAttachment(attachment: file);
                               }),
                         ),
@@ -109,8 +107,9 @@ class DescriptionFieldWidget extends StatelessWidget {
                             child: Row(
                               children: [
                                 Chip(
-                                  avatar: fileController.isValidImageFormat(
-                                          imgList[i].path ?? '')
+                                  avatar: taskController.fileController
+                                          .isValidImageFormat(
+                                              imgList[i].path ?? '')
                                       ? CircleAvatar(
                                           radius: 20,
                                           backgroundImage: FileImage(

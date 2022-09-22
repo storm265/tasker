@@ -35,6 +35,8 @@ class FileController extends ChangeNotifier {
     }
   }
 
+ 
+
   final _maxImageSize = 5000 * 1024; // 5mb
   final _maxFileSize = 26000 * 1024; // 26mb
 

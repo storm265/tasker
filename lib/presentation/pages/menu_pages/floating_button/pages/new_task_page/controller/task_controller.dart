@@ -1,11 +1,14 @@
 import 'dart:developer';
+import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
+import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
+import 'package:todo2/presentation/controller/image_picker_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/calendar_lib/controller.dart';
 import 'package:todo2/services/error_service/error_service.dart';
@@ -28,6 +31,8 @@ class AddTaskController extends ChangeNotifier {
   }
 
   AddTaskController._internal();
+
+  final fileController = FileController();
 
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
@@ -187,12 +192,16 @@ class AddTaskController extends ChangeNotifier {
   }
 
 // validation
+
   bool isEdit = false;
+  bool hasAttachments() => attachments.value.isEmpty ? false : true;
+
   Future<void> tryValidate({
     required BuildContext context,
     required GlobalKey<FormState> formKey,
   }) async {
     try {
+      String taskId = '';
       if (formKey.currentState!.validate()) {
         FocusScope.of(context).unfocus();
         changeIsClickedStatus(false);
@@ -210,7 +219,13 @@ class AddTaskController extends ChangeNotifier {
           } else {
             _assignedTo = pickedProject.value.ownerId;
           }
-          isEdit ? print('createTask') : await createTask();
+          if (isEdit) {
+            print('update task');
+            final model = await createTask();
+            taskId = model.id;
+          }
+
+          hasAttachments() ? uploadTaskAttachment(taskId: taskId) : null;
         }
 
         // NavigationService.navigateTo(
@@ -228,7 +243,7 @@ class AddTaskController extends ChangeNotifier {
 
 // Main operations
 
-  Future<void> createTask() async {
+  Future<TaskModel> createTask() async {
     try {
       List<String> members = [];
       if (taskMembers.value.isNotEmpty) {
@@ -237,12 +252,11 @@ class AddTaskController extends ChangeNotifier {
         }
       }
 
-      await _taskRepository.createTask(
+      return await _taskRepository.createTask(
         title: titleController.text,
         description: descriptionController.text,
         assignedTo: _assignedTo,
         projectId: _projectId ?? '',
-        
         dueDate: (pickedDate.value.day == DateTime.now().day ||
                 pickedDate.value.day < DateTime.now().day)
             ? null
@@ -275,6 +289,23 @@ class AddTaskController extends ChangeNotifier {
         projectId: projectId,
         dueDate: pickedDate.value,
       );
+    } catch (e) {
+      throw Failure(e.toString());
+    }
+  }
+
+  Future<void> uploadTaskAttachment({required String taskId}) async {
+    try {
+      for (int i = 0; i < attachments.value.length; i++) {
+        await _taskRepository.uploadTaskAttachment(
+          name: attachments.value[i].name,
+          file: File(attachments.value[i].path ?? ""),
+          taskId: taskId,
+          isFile: fileController.isValidImageFormat(attachments.value[i].name)
+              ? true
+              : false,
+        );
+      }
     } catch (e) {
       throw Failure(e.toString());
     }
