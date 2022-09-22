@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:todo2/database/database_scheme/env_scheme.dart';
@@ -10,6 +9,8 @@ const _contentType = 'Content-Type';
 const _authorization = 'Authorization';
 const _jsonApp = 'application/json';
 const _multipartForm = 'multipart/form-data';
+
+final _tokenService = UpdateTokenService();
 
 class NetworkSource {
   static final NetworkSource _instance = NetworkSource._internal();
@@ -29,11 +30,11 @@ class NetworkSource {
       InterceptorsWrapper(
         onResponse: (response, handler) async {
           if (response.statusCode == 401) {
-           await UpdateTokenService.updateToken();
-           log('resolve');
+            await _tokenService.updateToken();
+            log('resolve');
             return handler.resolve(await _retry(response.requestOptions));
           }
-       //   log('next');
+          //   log('next');
           return handler.next(response);
         },
         onError: (error, handler) async {

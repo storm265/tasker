@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -40,7 +42,9 @@ class ProfileController extends ChangeNotifier {
       imageUrl.value =
           '${dotenv.env[EnvScheme.apiUrl]}/users-avatar/${await getAvatarLink()}';
       imageUrl.notifyListeners();
+      log('img url ${imageUrl.value}');
       imageHeader = await getAvatarHeader();
+      log('img imageHeader $imageHeader');
 
       email = await _secureStorageService.getUserData(
               type: StorageDataType.email) ??

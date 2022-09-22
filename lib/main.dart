@@ -40,7 +40,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     _navigationController = NavigationController();
     _statusBarController = StatusBarController();
-
     _themeDataController = ThemeDataService();
     super.initState();
   }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/add_member_widget/add_member_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/description_widgets/description_field_widget.dart';
@@ -13,6 +15,7 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/whit
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
+import 'package:todo2/storage/secure_storage_service.dart';
 
 class AddTaskPage extends StatefulWidget {
   const AddTaskPage({Key? key}) : super(key: key);
@@ -27,26 +30,40 @@ class _AddTaskPageState extends State<AddTaskPage> {
   @override
   void initState() {
     taskController.getAccessHeader();
+    log('imageHeader: ${taskController.imageHeader}');
     super.initState();
   }
+
   // @override
   // void dispose() {
   //   titleController.dispose();
   //   descriptionController.dispose();
   //   super.dispose();
   // }
-
+  final _secureStorageService = SecureStorageSource();
   @override
   Widget build(BuildContext context) {
     return AppbarWrapWidget(
-      floatingActionButton: FloatingActionButton(onPressed: () {
-        //  taskController.taskMemberSearch(nickname: 'Adr');
-        print('toUtc -  ${taskController.pickedDate.value.toUtc()}');
-        print(
-            'toIso8601String -  ${taskController.pickedDate.value.toIso8601String()}');
-        print(
-            'toUtc().toString() -  ${taskController.pickedDate.value.toUtc().toString()}');
-      }),
+      floatingActionButton: FloatingActionButton(
+          child: CircleAvatar(
+              backgroundImage: NetworkImage(
+                  'https://todolist.dev2.cogniteq.com/api/v1/users-avatar/fbd1792c-dfa4-4507-b3ff-5ea561c416e1',
+                  headers: {
+                'Authorization':
+                    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJodHRwOi8vMC4wLjAuMDo4MDgwLyIsImlzcyI6Imh0dHA6Ly8wLjAuMC4wOjgwODAvIiwiZXhwIjoxNjY0MDUzMjI1LCJlbWFpbCI6ImphamFAbWFpbC5ydSJ9.U-ZPTxH-bQ5gbdCxCsMstGU8MfyovK6Krnicsok41D4'
+              })),
+          onPressed: () async {
+            final list = await taskController.taskMemberSearch(nickname: 'adr');
+            //  taskController.taskMemberSearch(nickname: 'Adr');
+            for (var i = 0; i < list.length; i++) {
+              log('users ${list[i].username}');
+            }
+            print('toUtc -  ${taskController.pickedDate.value.toUtc()}');
+            print(
+                'toIso8601String -  ${taskController.pickedDate.value.toIso8601String()}');
+            print(
+                'toUtc().toString() -  ${taskController.pickedDate.value.toUtc().toString()}');
+          }),
       title: 'New Task',
       resizeToAvoidBottomInset: false,
       showLeadingButton: true,

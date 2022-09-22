@@ -385,7 +385,9 @@ class TaskDataSourceImpl implements TaskDataSource {
         path: '$_taskMemberSearch?query=$nickname',
         options: await _network.getLocalRequestOptions(),
       );
-
+      log('search ${response.statusCode}');
+      log('search ${response.statusMessage}');
+      log('search ${response.data}');
       return NetworkErrorService.isSuccessful(response)
           ? (response.data![TaskScheme.data] as List<dynamic>)
           : throw Failure('Error: get taskMemberSearch error');

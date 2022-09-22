@@ -6,8 +6,7 @@ class AssetsPath {
   static const avatarsPath = 'assets/start_page/avatars/';
   static const tuneIconPath = 'assets/tasks_list/tune.svg';
   static const editIconPath = 'assets/tasks_list/edit.svg';
-    static const deleteIconPath = 'assets/tasks_list/delete.svg';
-
+  static const deleteIconPath = 'assets/tasks_list/delete.svg';
   static const calendarIconPath = '$_detailedPath/calendar.svg';
   static const imageIconIconPath = '$_detailedPath/image_attachment.svg';
   static const doubleArrowIconPath = '$_detailedPath/double_arrow.svg';
