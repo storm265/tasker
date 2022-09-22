@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/database/repository/task_repository.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/pick_time_dialog.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/add_member_widget/add_member_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/description_widgets/description_field_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/for_in_field_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/title_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/add_member_widget/add_member_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/description_widgets/description_field_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/for_in_field_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/title_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/controller_inherited.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/fake_nav_bar.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/pick_time_field_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/selected_panel_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/common/fake_nav_bar.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/date_widgets/pick_time_field_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/panels/selected_panel_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/confirm_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/red_app_bar.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/white_box_widget.dart';
@@ -25,41 +22,46 @@ class AddTaskPage extends StatefulWidget {
 }
 
 class _AddTaskPageState extends State<AddTaskPage> {
+  final formKey = GlobalKey<FormState>();
+  final taskController = AddTaskController();
+  @override
+  void initState() {
+    taskController.getAccessHeader();
+    super.initState();
+  }
   // @override
   // void dispose() {
-  //     newTaskController.titleController.dispose();
-  //     newTaskController.descriptionController.dispose();
+  //   titleController.dispose();
+  //   descriptionController.dispose();
   //   super.dispose();
   // }
 
   @override
   Widget build(BuildContext context) {
-    final newTaskController =
-        InheritedNewTaskController.of(context).addTaskController;
     return AppbarWrapWidget(
+      floatingActionButton: FloatingActionButton(onPressed: () {
+        //  taskController.taskMemberSearch(nickname: 'Adr');
+        print('toUtc -  ${taskController.pickedDate.value.toUtc()}');
+        print(
+            'toIso8601String -  ${taskController.pickedDate.value.toIso8601String()}');
+        print(
+            'toUtc().toString() -  ${taskController.pickedDate.value.toUtc().toString()}');
+      }),
       title: 'New Task',
       resizeToAvoidBottomInset: false,
       showLeadingButton: true,
       isPopFromNavBar: true,
       navRoute: Pages.tasks,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // print('time ${DateTime.now()}');
-          // print('time ${DateTime.now().toUtc()}');
-          // print('time ${DateTime.now().toUtc().toIso8601String()}');
-          pickTime(context: context);
-        },
-      ),
       child: Stack(
         children: [
           const FakeAppBar(),
           const FakeNavBarWidget(),
           Form(
-            key: newTaskController.formKey,
+            key: formKey,
             child: WhiteBoxWidget(
               onClick: () {
                 FocusScope.of(context).unfocus();
-                newTaskController.changePanelStatus(
+                taskController.changePanelStatus(
                     newStatus: InputFieldStatus.hide);
               },
               height: 660,
@@ -72,29 +74,29 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         EnterUserWidget(
+                          taskController: taskController,
                           isForFieldActive: true,
                           onChanged: (_) async {
-                            await Future.delayed(
-                                const Duration(milliseconds: 500),
+                            await Future.delayed(const Duration(seconds: 1),
                                 () => setState(() {}));
                           },
-                          titleController: newTaskController.userTextController,
+                          titleController: taskController.userTextController,
                           text: 'For',
                         ),
                         EnterUserWidget(
+                          taskController: taskController,
                           isForFieldActive: false,
                           onChanged: (_) async => await Future.delayed(
-                              const Duration(milliseconds: 500),
+                              const Duration(seconds: 1),
                               () => setState(() {})),
-                          titleController:
-                              newTaskController.projectTextController,
+                          titleController: taskController.projectTextController,
                           text: 'In',
                         )
                       ],
                     ),
                   ),
                   ValueListenableBuilder<InputFieldStatus>(
-                    valueListenable: newTaskController.panelStatus,
+                    valueListenable: taskController.panelStatus,
                     builder: (_, value, __) {
                       return (value != InputFieldStatus.hide)
                           // not updating if const
@@ -103,22 +105,28 @@ class _AddTaskPageState extends State<AddTaskPage> {
                               children: [
                                 TaskTitleWidget(
                                   titleController:
-                                      newTaskController.titleController,
+                                      taskController.titleController,
                                 ),
-                                DescriptionFieldWidget(),
+                                DescriptionFieldWidget(
+                                  taskController: taskController,
+                                ),
                                 const PickTimeFieldWidget(),
-                                const AddUserWidget(),
+                                AddUserWidget(
+                                  taskController: taskController,
+                                ),
                                 ValueListenableBuilder<bool>(
                                   valueListenable:
-                                      newTaskController.isClickedAddTask,
+                                      taskController.isClickedAddTask,
                                   builder: (_, isClicked, __) => isClicked
                                       ? ConfirmButtonWidget(
                                           title: 'Add Task',
                                           onPressed: isClicked
                                               ? () async {
-                                                  await newTaskController
+                                                  await taskController
                                                       .tryValidate(
-                                                          context: context);
+                                                    context: context,
+                                                    formKey: formKey,
+                                                  );
                                                 }
                                               : null,
                                         )

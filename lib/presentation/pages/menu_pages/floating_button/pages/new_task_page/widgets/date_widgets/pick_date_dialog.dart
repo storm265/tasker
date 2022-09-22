@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/controller_inherited.dart';
+
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/confirm_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/calendar_lib/widget.dart';
 
-Future<void> showCalendarDatePicker(BuildContext context) async {
+Future<void> showCalendarDatePicker({
+  required BuildContext context,
+  required AddTaskController taskController,
+}) async {
   await showDialog(
     context: context,
     builder: (_) {
-      final addTaskController =
-          InheritedNewTaskController.of(context).addTaskController;
       return AlertDialog(
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(5.0))),
         content: SizedBox(
-          height: 300,
-          width: 350,
+          height: 350,
+          width: 300, //350
           child: StatefulBuilder(
             builder: (context, setState) => Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -25,8 +27,17 @@ Future<void> showCalendarDatePicker(BuildContext context) async {
                   isMonth: true,
                   events: const [],
                   innerDot: false,
-                  controller: addTaskController.pickedDate,
+                  controller: taskController.pickedDate,
                 ),
+                // TextButton(
+                //     onPressed: () async {
+                //       await pickTime(
+                //         context: context,
+                //         taskController: addTaskController,
+                //       );
+                //       addTaskController.formatTime();
+                //     },
+                //     child: const Text('Pick time')),
                 ConfirmButtonWidget(
                   width: 170,
                   onPressed: () => Navigator.pop(context),

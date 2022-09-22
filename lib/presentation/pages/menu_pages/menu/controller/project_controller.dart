@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/projects_data_source.dart';
 import 'package:todo2/database/model/project_models/project_stats_model.dart';
@@ -79,10 +78,12 @@ class ProjectController extends ChangeNotifier {
     }
   }
 
-  Future<void> fetchAllProjects() async {
+  Future<List<ProjectModel>> fetchAllProjects() async {
     try {
-      projects.value = await _projectsRepository.fetchAllProjects();
+      final list = await _projectsRepository.fetchAllProjects();
+      projects.value = list;
       projects.notifyListeners();
+      return list;
     } catch (e) {
       throw Failure(e.toString());
     }

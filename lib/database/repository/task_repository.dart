@@ -108,6 +108,7 @@ class TaskRepositoryImpl implements TaskRepository {
     required String? assignedTo,
     required String projectId,
     required DateTime? dueDate,
+    List<Map<String, dynamic>>? attachments,
     List<String>? members,
   }) async {
     try {
@@ -117,6 +118,8 @@ class TaskRepositoryImpl implements TaskRepository {
         assignedTo: assignedTo,
         projectId: projectId,
         dueDate: dueDate,
+        attachments: attachments,
+        members: members,
       );
       return TaskModel.fromJson(response);
     } catch (e) {
@@ -141,13 +144,14 @@ class TaskRepositoryImpl implements TaskRepository {
     List<String>? members,
   }) async {
     try {
-     final response =  await _taskDataSource.updateTask(
+      final response = await _taskDataSource.updateTask(
         title: title,
         description: description,
         assignedTo: assignedTo,
         projectId: projectId,
         dueDate: dueDate,
-      );   return TaskModel.fromJson(response);
+      );
+      return TaskModel.fromJson(response);
     } catch (e) {
       throw Failure(e.toString());
     }

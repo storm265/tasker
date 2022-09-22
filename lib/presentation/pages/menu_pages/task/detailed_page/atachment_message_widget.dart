@@ -1,14 +1,15 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:todo2/database/repository/user_repository.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/controller_inherited.dart';
-
-import 'package:todo2/presentation/pages/menu_pages/profile/widgets/panel_widgets/cached_avatar_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 
 class AttachementWidget extends StatefulWidget {
-  const AttachementWidget({Key? key}) : super(key: key);
+  final AddTaskController taskController;
+  const AttachementWidget({
+    Key? key,
+    required this.taskController,
+  }) : super(key: key);
 
   @override
   State<AttachementWidget> createState() => _AttachementWidgetState();
@@ -28,10 +29,8 @@ class _AttachementWidgetState extends State<AttachementWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final newTaskController =
-        InheritedNewTaskController.of(context).addTaskController;
     return ValueListenableBuilder<List<PlatformFile>>(
-      valueListenable: newTaskController.attachments,
+      valueListenable: widget.taskController.attachments,
       builder: (context, imgList, value) => FutureBuilder<List<String>>(
         // future: newTaskController.fetchCommentInfo(),
 
@@ -85,7 +84,7 @@ class _AttachementWidgetState extends State<AttachementWidget> {
                   ],
                 );
               },
-              itemCount: newTaskController.attachments.value.length,
+              itemCount: widget.taskController.attachments.value.length,
               shrinkWrap: true,
             );
           } else {

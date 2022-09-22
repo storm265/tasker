@@ -3,25 +3,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http_proxy/http_proxy.dart';
-import 'package:todo2/database/data_source/user_data_source.dart';
-import 'package:todo2/database/repository/comment_repository.dart';
-import 'package:todo2/database/repository/task_repository.dart';
-import 'package:todo2/database/repository/user_repository.dart';
-import 'package:todo2/presentation/pages/auth/sign_in_up/sign_up_page.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/new_task.dart';
-import 'package:todo2/presentation/pages/menu_pages/menu/menu_page.dart';
-import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/tasks_page.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_navigator.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_status.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/status_bar_controller.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
-import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/services/system_service/system_chrome.dart';
-import 'package:todo2/storage/secure_storage_service.dart';
-import 'presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
-import 'presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/controller_inherited.dart';
 import 'services/theme_service/theme_data_controller.dart';
 
 void main() async {
@@ -45,7 +32,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late final AddTaskController _newTaskConroller;
   late final ThemeDataService _themeDataController;
   late final NavigationController _navigationController;
   late final StatusBarController _statusBarController;
@@ -54,14 +40,13 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     _navigationController = NavigationController();
     _statusBarController = StatusBarController();
-    _newTaskConroller = AddTaskController();
+
     _themeDataController = ThemeDataService();
     super.initState();
   }
 
   @override
   void dispose() {
-    _newTaskConroller.dispose();
     _navigationController.dispose();
     _statusBarController.dispose();
     super.dispose();
@@ -73,17 +58,13 @@ class _MyAppState extends State<MyApp> {
       statusBarController: _statusBarController,
       child: NavigationInherited(
         navigationController: _navigationController,
-        child: InheritedNewTaskController(
-          addTaskController: _newTaskConroller,
-          child: MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Todo2',
-            theme: _themeDataController.themeData,
-           // initialRoute: '/',
-            //routes: routes,
-            home: AddTaskPage(),
-              
-          ),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Todo2',
+          theme: _themeDataController.themeData,
+          initialRoute: '/',
+          routes: routes,
+          //   home: AddTaskPage(),
         ),
       ),
     );

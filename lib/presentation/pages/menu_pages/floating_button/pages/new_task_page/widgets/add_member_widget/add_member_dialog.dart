@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/add_member_widget/member_item_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/controller_inherited.dart';
-
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/add_member_widget/member_item_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/confirm_button.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 class AddUserDialog extends StatelessWidget {
-  AddUserDialog({Key? key}) : super(key: key);
+  final AddTaskController taskController;
+  AddUserDialog({
+    Key? key,
+    required this.taskController,
+  }) : super(key: key);
 
   final userTextController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    final newTaskController =
-        InheritedNewTaskController.of(context).addTaskController;
+    final taskController = AddTaskController();
 
     return AlertDialog(
       shape: const RoundedRectangleBorder(
@@ -35,14 +37,14 @@ class AddUserDialog extends StatelessWidget {
                   width: double.infinity,
                   height: 35,
                   child: TextField(
-                    onChanged: (value) async => Future.delayed(
+                    onChanged: (_) async => Future.delayed(
                         const Duration(milliseconds: 600),
                         () => setState(() {})),
                     controller: userTextController,
                     decoration: InputDecoration(
-                      suffixIcon: IconButton(
-                        onPressed: () => newTaskController.clearMemberList(),
-                        icon: const Icon(
+                      suffixIcon: InkWell(
+                        onTap: () => userTextController.clear(),
+                        child: const Icon(
                           Icons.delete,
                           color: Palette.red,
                         ),
@@ -73,7 +75,7 @@ class AddUserDialog extends StatelessWidget {
                 child: DisabledGlowWidget(
                   child: FutureBuilder<List<UserProfileModel>>(
                     initialData: const [],
-                    future: newTaskController.taskMemberSearch(
+                    future: taskController.taskMemberSearch(
                         nickname: userTextController.text),
                     builder: (context,
                         AsyncSnapshot<List<UserProfileModel>> snapshot) {
@@ -85,6 +87,7 @@ class AddUserDialog extends StatelessWidget {
                               itemCount: snapshot.data!.length,
                               itemBuilder: (_, i) {
                                 return UserItemWidget(
+                                  taskController: taskController,
                                   data: snapshot.data![i],
                                   index: i,
                                 );

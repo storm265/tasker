@@ -22,10 +22,10 @@ class FileController extends ChangeNotifier {
     ),
   );
 
-  final _emptyImage = const PlatformFile(name: '', size: 0, path: '');
+  final _emptyImage =  PlatformFile(name: '', size: 0, path: '');
 
   var pickedFile =
-      ValueNotifier(const PlatformFile(name: '', size: 0, path: ''));
+      ValueNotifier( PlatformFile(name: '', size: 0, path: ''));
 
   bool isValidImageFormat(String image) {
     if (image.endsWith(_jpeg) || image.endsWith(_png) || image.endsWith(_jpg)) {

@@ -3,28 +3,25 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:todo2/presentation/controller/image_picker_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/atachment_message_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/controller_inherited.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/description_widgets/desciption_text.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/description_widgets/description_text_field.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/description_widgets/desciption_text.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/description_widgets/description_text_field.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
-import 'package:todo2/presentation/widgets/common/slidable_widgets/endpane_widget.dart';
-import 'package:todo2/utils/assets_path.dart';
 
 class DescriptionFieldWidget extends StatelessWidget {
   final String? hintText;
   final int maxLength;
+  final AddTaskController taskController;
   DescriptionFieldWidget({
     Key? key,
     this.hintText,
+    required this.taskController,
     this.maxLength = 512,
   }) : super(key: key);
 
   final fileController = FileController();
   @override
   Widget build(BuildContext context) {
-    final newTaskController =
-        InheritedNewTaskController.of(context).addTaskController;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       child: Column(
@@ -46,7 +43,7 @@ class DescriptionFieldWidget extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  const DescriptionTextField(),
+                  DescriptionTextField(taskController: taskController),
                   Padding(
                     padding: const EdgeInsets.only(top: 23),
                     child: Container(
@@ -72,8 +69,7 @@ class DescriptionFieldWidget extends StatelessWidget {
                               onPressed: () async {
                                 final file = await fileController.pickFile(
                                     context: context);
-                                newTaskController.addAttachment(
-                                    attachment: file);
+                                taskController.addAttachment(attachment: file);
                               }),
                         ),
                       ),
@@ -85,16 +81,13 @@ class DescriptionFieldWidget extends StatelessWidget {
           ),
           //   const AttachementWidget(),
           ValueListenableBuilder<List<PlatformFile>>(
-              valueListenable: newTaskController.attachments,
+              valueListenable: taskController.attachments,
               builder: (_, imgList, __) {
-                print(
-                  '${imgList[0].size / 1000}mb ',
-                );
                 if (imgList.isEmpty) {
                   return const SizedBox();
                 } else {
                   return ListView.builder(
-                    itemCount: newTaskController.attachments.value.length,
+                    itemCount: taskController.attachments.value.length,
                     shrinkWrap: true,
                     itemBuilder: (_, i) {
                       return Wrap(
@@ -107,7 +100,7 @@ class DescriptionFieldWidget extends StatelessWidget {
                               children: [
                                 SlidableAction(
                                   onPressed: (_) =>
-                                      newTaskController.removeAttachment(i),
+                                      taskController.removeAttachment(i),
                                   icon: Icons.delete,
                                   backgroundColor: Colors.red,
                                 ),

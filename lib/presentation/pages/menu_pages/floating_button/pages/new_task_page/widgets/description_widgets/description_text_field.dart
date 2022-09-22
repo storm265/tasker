@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/controller_inherited.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
 
 class DescriptionTextField extends StatelessWidget {
-  const DescriptionTextField({super.key});
+  final AddTaskController taskController;
+  const DescriptionTextField({
+    super.key,
+    required this.taskController,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final newTaskController =
-        InheritedNewTaskController.of(context).addTaskController;
     return TextFormField(
       style: const TextStyle(
         fontSize: 18,
@@ -20,7 +22,7 @@ class DescriptionTextField extends StatelessWidget {
         }
         return null;
       },
-      controller: newTaskController.descriptionController,
+      controller: taskController.descriptionController,
       onEditingComplete: () => FocusScope.of(context).unfocus(),
       maxLength: 512,
       buildCounter: (

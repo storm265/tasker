@@ -96,46 +96,11 @@ class ProjectUserDataImpl implements ProjectUserData {
   @override
   Future<List<dynamic>> searchProject({required String title}) async {
     try {
-      // TODO FAKE
-      // final response = await _network.get(
-      //   path: '$_projectsSearch?query=$title',
-      //   options: await _network.getLocalRequestOptions(useContentType: true),
-      // );
-      final response = await Response(
-          requestOptions: RequestOptions(path: ''),
-          data: {
-            "data": [
-              {
-                "id": "eda45acd-22d1-4dc6-9f75-0c0e7b172d0f",
-                "title": "Project 1",
-                "color": "#FFFFD4",
-                "owner_id": "76d2fab4-fd06-4909-bf8e-875c6b55c1f7",
-                "created_at": "2022-07-13T08:43:24.147065"
-              },
-              {
-                "id": "85732d06-0d93-4be9-b1ec-30defc76fad0",
-                "title": "Project 2",
-                "color": "#FFFFD4",
-                "owner_id": "76d2fab4-fd06-4909-bf8e-875c6b55c1f7",
-                "created_at": "2022-07-13T08:43:43.903710"
-              },
-              {
-                "id": "2fe0fa38-9dec-4e1f-a259-161dde928258",
-                "title": "Project 3",
-                "color": "#FFFFD4",
-                "owner_id": "76d2fab4-fd06-4909-bf8e-875c6b55c1f7",
-                "created_at": "2022-07-13T08:43:46.231289"
-              },
-              {
-                "id": "28ce0b43-78d5-4fc6-bd4f-9bea47d4b2d0",
-                "title": "Project 4",
-                "color": "#FFFFD4",
-                "owner_id": "76d2fab4-fd06-4909-bf8e-875c6b55c1f7",
-                "created_at": "2022-07-13T08:43:48.699244"
-              }
-            ]
-          },
-          statusCode: 200);
+      final response = await _network.get(
+        path: '$_projectsSearch?query=$title',
+        options: await _network.getLocalRequestOptions(useContentType: true),
+      );
+
       return NetworkErrorService.isSuccessful(response)
           ? (response.data![ProjectDataScheme.data] as List<dynamic>)
           : throw Failure('Error: get project error');

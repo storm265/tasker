@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/controller_inherited.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
 
-const url =
-    'https://image.winudf.com/v2/image1/Y29tLmFwcDNkd2FsbHBhcGVyaGQubW91bnRhaW53YWxscGFwZXJfc2NyZWVuXzVfMTU2NzAzMDU0MF8wNjk/screen-5.jpg?fakeurl=1&type=.jpg';
 
 class UserItemWidget extends StatefulWidget {
+    final AddTaskController taskController;
   final int index;
   final UserProfileModel data;
 
@@ -13,6 +12,7 @@ class UserItemWidget extends StatefulWidget {
     Key? key,
     required this.data,
     required this.index,
+    required this.taskController,
   }) : super(key: key);
 
   @override
@@ -21,14 +21,12 @@ class UserItemWidget extends StatefulWidget {
 
 class _UserItemWidgetState extends State<UserItemWidget> {
   bool isSelected = false;
+  final taskController = AddTaskController();
   @override
   Widget build(BuildContext context) {
-    final newTaskController =
-        InheritedNewTaskController.of(context).addTaskController;
     return ListTile(
       leading: CircleAvatar(
-        // backgroundImage: NetworkImage(widget.data.avatarUrl),
-        backgroundImage: NetworkImage(url),
+        backgroundImage: NetworkImage(widget.data.avatarUrl, headers: taskController.imageHeader),
       ),
       title: Text(widget.data.username),
       subtitle: Text(
@@ -44,9 +42,9 @@ class _UserItemWidgetState extends State<UserItemWidget> {
           setState(() {
             isSelected = !isSelected;
             if (isSelected) {
-              newTaskController.addMember(chipTitle: widget.data);
+              taskController.addMember(userModel: widget.data);
             } else {
-              newTaskController.removeMember(index: widget.index);
+              taskController.removeMember(index: widget.index);
             }
           });
         },

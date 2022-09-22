@@ -1,29 +1,23 @@
-// ignore_for_file: must_be_immutable
-
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/controller_inherited.dart';
 
 class EnterUserWidget extends StatelessWidget {
-  TextEditingController titleController;
+  final TextEditingController titleController;
+  final AddTaskController taskController;
   final Function(String)? onChanged;
   final bool isForFieldActive;
   final String text;
-  EnterUserWidget({
+  const EnterUserWidget({
     Key? key,
     required this.isForFieldActive,
     required this.onChanged,
     required this.titleController,
     required this.text,
+    required this.taskController,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final newTaskController =
-        InheritedNewTaskController.of(context).addTaskController;
-
     return Row(
       children: [
         Padding(
@@ -47,22 +41,27 @@ class EnterUserWidget extends StatelessWidget {
           ),
           child: Center(
             child: isForFieldActive
-                ? Row(
-                    mainAxisAlignment:
-                        newTaskController.pickedUser.value.id.isEmpty
-                            ? MainAxisAlignment.center
-                            : MainAxisAlignment.start,
-                    children: [
-                      newTaskController.pickedUser.value.id.isEmpty
-                          ? const SizedBox()
-                          : const CircleAvatar(
-                              radius: 17,
-                              backgroundColor: Colors.red,
-                            ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: SizedBox(
-                          width: 40,
+                ? ValueListenableBuilder(
+                    valueListenable: taskController.pickedDate,
+                    builder: (_, value, __) => Row(
+                      mainAxisAlignment:
+                          taskController.pickedUser.value.id.isEmpty
+                              ? MainAxisAlignment.center
+                              : MainAxisAlignment.start,
+                      children: [
+                        taskController.pickedUser.value.id.isEmpty
+                            ? const SizedBox()
+                            : Padding(
+                                padding: const EdgeInsets.all(2.0),
+                                child: CircleAvatar(
+                                  radius: 17,
+                                  backgroundImage: NetworkImage(
+                                      taskController.pickedUser.value.avatarUrl,
+                                      headers: taskController.imageHeader),
+                                ),
+                              ),
+                        SizedBox(
+                          width: 55,
                           child: TextFormField(
                             style: const TextStyle(
                               fontSize: 14,
@@ -72,24 +71,23 @@ class EnterUserWidget extends StatelessWidget {
                             ),
                             onChanged: onChanged,
                             onTap: () {
-                              titleController.selection = TextSelection(
-                                baseOffset: 0,
-                                extentOffset: titleController.value.text.length,
-                              );
+                              titleController.clear();
 
                               isForFieldActive
-                                  ? newTaskController.changePanelStatus(
+                                  ? taskController.changePanelStatus(
                                       newStatus: InputFieldStatus.showUserPanel,
                                     )
-                                  : newTaskController.changePanelStatus(
+                                  : taskController.changePanelStatus(
                                       newStatus:
                                           InputFieldStatus.showProjectPanel,
                                     );
                             },
                             controller: titleController,
-                            onEditingComplete: () =>
-                                newTaskController.changePanelStatus(
-                                    newStatus: InputFieldStatus.hide),
+                            onEditingComplete: () {
+                              taskController.changePanelStatus(
+                                  newStatus: InputFieldStatus.hide);
+                              FocusScope.of(context).unfocus();
+                            },
                             decoration: const InputDecoration(
                               border: InputBorder.none,
                               labelStyle: TextStyle(
@@ -98,8 +96,8 @@ class EnterUserWidget extends StatelessWidget {
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   )
                 : Padding(
                     padding: const EdgeInsets.only(left: 30),
@@ -115,16 +113,19 @@ class EnterUserWidget extends StatelessWidget {
                         titleController.clear();
 
                         isForFieldActive
-                            ? newTaskController.changePanelStatus(
+                            ? taskController.changePanelStatus(
                                 newStatus: InputFieldStatus.showUserPanel,
                               )
-                            : newTaskController.changePanelStatus(
+                            : taskController.changePanelStatus(
                                 newStatus: InputFieldStatus.showProjectPanel,
                               );
                       },
                       controller: titleController,
-                      onEditingComplete: () => newTaskController
-                          .changePanelStatus(newStatus: InputFieldStatus.hide),
+                      onEditingComplete: () {
+                        taskController.changePanelStatus(
+                            newStatus: InputFieldStatus.hide);
+                        FocusScope.of(context).unfocus();
+                      },
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                         labelStyle: TextStyle(

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/add_member_widget/add_member_dialog.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/controller_inherited.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/widgets/add_member_widget/member_item_widget.dart';
-
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/add_member_widget/add_member_dialog.dart';
 class AddUserWidget extends StatefulWidget {
-  const AddUserWidget({Key? key}) : super(key: key);
+  final AddTaskController taskController;
+  const AddUserWidget({
+    Key? key,
+    required this.taskController,
+  }) : super(key: key);
 
   @override
   State<AddUserWidget> createState() => _AddUserWidgetState();
@@ -22,10 +24,8 @@ class _AddUserWidgetState extends State<AddUserWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final addTaskController =
-        InheritedNewTaskController.of(context).addTaskController;
     return ValueListenableBuilder<List<UserProfileModel>>(
-      valueListenable: addTaskController.taskMembers,
+      valueListenable: widget.taskController.taskMembers,
       builder: (_, users, __) => (users.isEmpty)
           ? Padding(
               padding: const EdgeInsets.only(left: 15, bottom: 20, top: 20),
@@ -52,7 +52,10 @@ class _AddUserWidgetState extends State<AddUserWidget> {
                   RawMaterialButton(
                     elevation: 0,
                     onPressed: () => showDialog(
-                        context: context, builder: (_) => AddUserDialog()),
+                        context: context,
+                        builder: (_) => AddUserDialog(
+                              taskController: widget.taskController,
+                            )),
                     fillColor: Colors.grey.withOpacity(0.5),
                     shape: const CircleBorder(),
                     child: const Icon(
@@ -74,19 +77,21 @@ class _AddUserWidgetState extends State<AddUserWidget> {
                 itemBuilder: (_, i) {
                   return Row(
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 3),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 3),
                         child: CircleAvatar(
                           radius: 17,
-                          backgroundColor: Colors.red,
-                          backgroundImage: NetworkImage(url),
+                          backgroundImage: NetworkImage(users[i].avatarUrl,
+                              headers: widget.taskController.imageHeader),
                         ),
                       ),
                       (i == users.length - 1)
                           ? RawMaterialButton(
                               onPressed: () => showDialog(
                                   context: context,
-                                  builder: (_) => AddUserDialog()),
+                                  builder: (_) => AddUserDialog(
+                                        taskController: widget.taskController,
+                                      )),
                               fillColor: Colors.grey.withOpacity(0.5),
                               shape: const CircleBorder(),
                               child: const Icon(

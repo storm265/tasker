@@ -6,7 +6,6 @@ import 'package:todo2/presentation/pages/auth/sign_in_up/controller/sign_up_cont
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/padding_contstant.dart';
 import 'package:todo2/presentation/pages/auth/widgets/unfocus_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
-import 'package:todo2/presentation/pages/auth/widgets/constants.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/avatar_widget.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/sign_in_button_widget.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/sign_up_button_widget.dart';

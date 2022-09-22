@@ -2,22 +2,20 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/controller_inherited.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 
 class UserPanelPickerWidget extends StatelessWidget {
-  const UserPanelPickerWidget({Key? key}) : super(key: key);
+  UserPanelPickerWidget({Key? key}) : super(key: key);
+  final taskController = AddTaskController();
   @override
   Widget build(BuildContext context) {
-    final newTaskController =
-        InheritedNewTaskController.of(context).addTaskController;
     return FutureBuilder<List<UserProfileModel>>(
       initialData: const [],
-      future: newTaskController.taskMemberSearch(
-          nickname: newTaskController.userTextController.text),
+      future: taskController.taskMemberSearch(
+          nickname: taskController.userTextController.text),
       builder: (context, AsyncSnapshot<List<UserProfileModel>> snapshot) {
         log('data len : ${snapshot.data!.length}');
-        return (snapshot.hasError || !snapshot.hasData)
+        return (!snapshot.hasData)
             ? const Center(
                 child: ProgressIndicatorWidget(text: 'Loading...'),
               )
@@ -29,9 +27,9 @@ class UserPanelPickerWidget extends StatelessWidget {
                   return ListTile(
                     onTap: () {
                       FocusScope.of(context).unfocus();
-                      newTaskController.changePanelStatus(
+                      taskController.changePanelStatus(
                           newStatus: InputFieldStatus.hide);
-                      newTaskController.pickUser(
+                      taskController.pickUser(
                         newUser: data,
                         context: context,
                       );
