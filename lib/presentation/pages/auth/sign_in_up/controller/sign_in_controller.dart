@@ -63,6 +63,7 @@ class SignInController extends ChangeNotifier {
     required String password,
   }) async {
     try {
+      ///
       final authModel = await _authRepository.signIn(
         email: email,
         password: password,

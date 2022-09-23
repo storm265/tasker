@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
@@ -31,6 +32,14 @@ class AddTaskController extends ChangeNotifier {
   }
 
   AddTaskController._internal();
+
+  void changeTabIndexValue(
+    int index,
+    ValueNotifier<TabController> controller,
+  ) {
+    controller.value.index = index;
+    controller.notifyListeners();
+  }
 
   final fileController = FileController();
 
@@ -325,4 +334,92 @@ class AddTaskController extends ChangeNotifier {
       throw Failure(e.toString());
     }
   }
+
+  Future<List<TaskModel>> fetchTasks() async {
+    print('fetch tasks');
+    return taskModel;
+  }
 }
+
+final now = DateTime.now();
+final today = DateFormat('yyyy-MM-dd').format(now);
+final tomorrow =
+    DateFormat('yyyy-MM-dd').format(DateTime.utc(now.year, now.month, now.day+1));
+List<TaskModel> taskModel = [
+  // today
+
+  TaskModel(
+    id: '',
+    title: 'today',
+    dueDate: DateTime.parse('${today}T14:39:02.394631'),
+    description: 'description',
+    assignedTo: 1,
+    isCompleted: false,
+    projectId: 2,
+    ownerId: 'ownerId',
+    createdAt: DateTime.now(),
+    attachments: [],
+  ),
+  TaskModel(
+    id: '',
+    title: 'today',
+    dueDate: DateTime.parse('${today}T13:45:02.394631'),
+    description: 'description',
+    assignedTo: 1,
+    isCompleted: true,
+    projectId: 2,
+    ownerId: 'ownerId',
+    createdAt: DateTime.now(),
+    attachments: [],
+  ),
+  TaskModel(
+    id: '',
+    title: 'today',
+    dueDate: DateTime.parse('${today}T16:30:02.394631'),
+    description: 'description',
+    assignedTo: 1,
+    isCompleted: true,
+    projectId: 2,
+    ownerId: 'ownerId',
+    createdAt: DateTime.now(),
+    attachments: [],
+  ),
+
+// tomorrow
+  TaskModel(
+    id: '',
+    title: 'tomorrow',
+    dueDate: DateTime.parse('${tomorrow}T17:10:02.394631'),
+    description: 'description',
+    assignedTo: 1,
+    isCompleted: false,
+    projectId: 2,
+    ownerId: 'ownerId',
+    createdAt: DateTime.now(),
+    attachments: [],
+  ),
+  TaskModel(
+    id: '',
+    title: 'tomorrow',
+    dueDate: DateTime.parse('${tomorrow}T22:56:02.394631'),
+    description: 'description',
+    assignedTo: 1,
+    isCompleted: false,
+    projectId: 2,
+    ownerId: 'ownerId',
+    createdAt: DateTime.now(),
+    attachments: [],
+  ),
+  TaskModel(
+    id: '',
+    title: 'tomorrow',
+    dueDate: DateTime.parse('${tomorrow}T20:15:02.394631'),
+    description: 'description',
+    assignedTo: 1,
+    isCompleted: false,
+    projectId: 2,
+    ownerId: 'ownerId',
+    createdAt: DateTime.now(),
+    attachments: [],
+  ),
+];

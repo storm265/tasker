@@ -3,6 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http_proxy/http_proxy.dart';
+import 'package:todo2/presentation/pages/auth/sign_in_up/sign_up_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/new_task.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/tasks_page.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_navigator.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_status.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
@@ -58,12 +61,15 @@ class _MyAppState extends State<MyApp> {
       child: NavigationInherited(
         navigationController: _navigationController,
         child: MaterialApp(
+          builder: (context, child) {
+            // maybe here
+          },
           debugShowCheckedModeBanner: false,
           title: 'Todo2',
           theme: _themeDataController.themeData,
-          initialRoute: '/',
-          routes: routes,
-          //   home: AddTaskPage(),
+         // initialRoute: '/',
+         // routes: routes,
+          home: TasksPage(),
         ),
       ),
     );

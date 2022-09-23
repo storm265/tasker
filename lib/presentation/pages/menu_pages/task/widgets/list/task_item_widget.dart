@@ -5,15 +5,17 @@ import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 class TaskCardWidget extends StatelessWidget {
-  final TaskModel data;
+  final int index;
+  final List<TaskModel> data;
   const TaskCardWidget({
     Key? key,
     required this.data,
+    required this.index,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final date = DateTime.parse(data.dueDate);
+    final date = data[index].dueDate;
     String isAm = (date.hour > 12) ? 'pm' : 'am';
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -37,14 +39,14 @@ class TaskCardWidget extends StatelessWidget {
                 width: 4,
                 height: 25,
                 child: ColoredBox(
-                  color: data.isCompleted
+                  color: data[index].isCompleted
                       ? Colors.red
                       : getAppColor(color: CategoryColor.blue),
                 ),
               ),
             ),
             ListTile(
-              leading: data.isCompleted
+              leading: data[index].isCompleted
                   ? const Padding(
                       padding: EdgeInsets.all(8.0),
                       child: Icon(Icons.check_circle, color: Palette.red),
@@ -58,17 +60,32 @@ class TaskCardWidget extends StatelessWidget {
                         ),
                       ),
                     ),
+              title: Padding(
+                padding: const EdgeInsets.only(right: 20),
+                child: Text(
+                  data[index].title,
+                  style: TextStyle(
+                    overflow: TextOverflow.ellipsis,
+                    decoration: data[index].isCompleted
+                        ? TextDecoration.lineThrough
+                        : null,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: data[index].isCompleted ? Colors.grey : null,
+                  ),
+                ),
+              ),
               subtitle: Text(
                 '${date.hour}:${date.minute} $isAm',
-                style: data.isCompleted
-                    ? const TextStyle(decoration: TextDecoration.lineThrough)
-                    : null,
-              ),
-              title: Text(
-                data.title,
-                style: data.isCompleted
-                    ? const TextStyle(decoration: TextDecoration.lineThrough)
-                    : null,
+                style: TextStyle(
+                  overflow: TextOverflow.ellipsis,
+                  decoration: data[index].isCompleted
+                      ? TextDecoration.lineThrough
+                      : null,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.grey,
+                ),
               ),
             ),
           ],

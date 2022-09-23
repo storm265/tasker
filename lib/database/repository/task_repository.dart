@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:todo2/database/data_source/task_data_source.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
 import 'package:todo2/database/model/task_models/comment_model.dart';
@@ -8,81 +7,6 @@ import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
-List<TaskModel> taskModel = [
-  TaskModel(
-    id: '',
-    title: 'title',
-    dueDate: '2025-06-21T23:56:02.394631',
-    description: 'description',
-    assignedTo: 1,
-    isCompleted: true,
-    projectId: 2,
-    ownerId: 'ownerId',
-    createdAt: DateTime.now(),
-    attachments: [],
-  ),
-  TaskModel(
-    id: '',
-    title: 'fdsfsdfs',
-    dueDate: '2025-06-21T23:56:02.394631',
-    description: 'description',
-    assignedTo: 1,
-    isCompleted: false,
-    projectId: 2,
-    ownerId: 'ownerId',
-    createdAt: DateTime.now(),
-    attachments: [],
-  ),
-  TaskModel(
-    id: '',
-    title: 'titlsdfsdfsdfsdfe',
-    dueDate: '2025-06-21T23:56:02.394631',
-    description: 'description',
-    assignedTo: 1,
-    isCompleted: false,
-    projectId: 2,
-    ownerId: 'ownerId',
-    createdAt: DateTime.now(),
-    attachments: [],
-  ),
-  TaskModel(
-    id: '',
-    title:
-        'titlrtyrtyrtyrtyrtytyryrtyrtyrtyrtyrtytryrtytryrtyrutyrdsadsadsadsadadadasde',
-    dueDate: '2025-06-21T23:56:02.394631',
-    description: 'description',
-    assignedTo: 1,
-    isCompleted: true,
-    projectId: 2,
-    ownerId: 'ownerId',
-    createdAt: DateTime.now(),
-    attachments: [],
-  ),
-  TaskModel(
-    id: '',
-    title: 'title',
-    dueDate: '2025-06-21T23:56:02.394631',
-    description: 'description',
-    assignedTo: 1,
-    isCompleted: true,
-    projectId: 2,
-    ownerId: 'ownerId',
-    createdAt: DateTime.now(),
-    attachments: [],
-  ),
-  TaskModel(
-    id: '',
-    title: 'title',
-    dueDate: '2025-06-21T23:56:02.394631',
-    description: 'description',
-    assignedTo: 1,
-    isCompleted: true,
-    projectId: 2,
-    ownerId: 'ownerId',
-    createdAt: DateTime.now(),
-    attachments: [],
-  ),
-];
 
 abstract class TaskRepository<T> {
   // Future fetchTaskId({required String title});

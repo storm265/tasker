@@ -120,8 +120,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     )
                                 : null,
                           )
-                        : const ProgressIndicatorWidget(
-                            text: 'Validating...'),
+                        : const ProgressIndicatorWidget(text: 'Validating...'),
                   ),
                   const SignInButtonWidget(buttonText: 'Sign In'),
                 ],

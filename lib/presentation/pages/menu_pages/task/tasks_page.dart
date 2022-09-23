@@ -1,11 +1,18 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/dialogs/tasks_dialog.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/calendar_lib/widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/widgets/list/list_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/tabs/bottom_tabs.dart';
 import 'package:todo2/presentation/pages/navigation/widgets/keep_page_alive.dart';
-import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
+import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
+import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapp.dart';
+import 'package:todo2/services/theme_service/theme_data_controller.dart';
 import 'package:todo2/utils/assets_path.dart';
 
 class TasksPage extends StatefulWidget {
@@ -16,13 +23,8 @@ class TasksPage extends StatefulWidget {
 
 class _TasksPageState extends State<TasksPage>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
-  late TabController _tabController;
-
-  @override
-  void initState() {
-    _tabController = TabController(length: 2, vsync: this);
-    super.initState();
-  }
+  late final _tabController =
+      ValueNotifier<TabController>(TabController(length: 2, vsync: this));
 
   @override
   void dispose() {
@@ -31,69 +33,134 @@ class _TasksPageState extends State<TasksPage>
   }
 
   final taskController = AddTaskController();
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return AppbarWrapWidget(
-      preferredHeight: 90,
-      showLeadingButton: false,
-      actionWidget: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: GestureDetector(
-          child: SvgPicture.asset(AssetsPath.tuneIconPath),
-          onTap: () => showTasksDialog(context),
+    return WillPopWrap(
+      child: Scaffold(
+        backgroundColor: const Color(0xffFDFDFD),
+        appBar: AppBar(
+          systemOverlayStyle: const SystemUiOverlayStyle(
+            statusBarColor: Palette.red,
+            statusBarIconBrightness: Brightness.light,
+            statusBarBrightness: Brightness.light,
+          ),
+          elevation: 0,
+          backgroundColor: Palette.red,
+          centerTitle: true,
+          title: const Text(
+            'Work List',
+            style: TextStyle(
+              fontStyle: FontStyle.italic,
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.w200,
+            ),
+          ),
+          actions: [
+            ValueListenableBuilder<TabController>(
+              valueListenable: _tabController,
+              builder: (_, tabController, __) => tabController.index == 0
+                  ? Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GestureDetector(
+                        child: SvgPicture.asset(AssetsPath.tuneIconPath),
+                        onTap: () => showTasksDialog(context),
+                      ),
+                    )
+                  : const SizedBox(),
+            ),
+          ],
+          bottom: TabBar(
+            onTap: (value) =>
+                taskController.changeTabIndexValue(value, _tabController),
+            splashFactory: NoSplash.splashFactory,
+            indicatorColor: Colors.white,
+            indicatorSize: TabBarIndicatorSize.label,
+            controller: _tabController.value,
+            tabs: const [todayTab, monthTab],
+            labelStyle: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
         ),
-      ),
-      title: 'Work list',
-      bottom: TabBar(
-        splashFactory: NoSplash.splashFactory,
-        indicatorColor: Colors.white,
-        indicatorSize: TabBarIndicatorSize.label,
-        controller: _tabController,
-        tabs: const [todayTab, monthTab],
-        labelStyle: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-      child: TabBarView(
-        physics: const NeverScrollableScrollPhysics(),
-        controller: _tabController,
-        children: [
-          const SizedBox(),
-          // KeepAlivePageWidget(
-          //   child: SingleChildScrollView(
-          //     child: ValueListenableBuilder<List<TaskModel>>(
-          //         valueListenable: taksController.taskList,
-          //         builder: (_, tasksList, __) {
-          //           if (tasksList.isEmpty) {
-          //             return const Center(
-          //                 child: ProgressIndicatorWidget(text: 'No data'));
-          //           } else {
-          //             return ListView.builder(
-          //               shrinkWrap: true,
-          //               itemCount: 2,
-          //               itemBuilder: ((context, index) => ListWidget(
-          //                     index: index,
-          //                     model: tasksList,
-          //                   )),
-          //             );
-          //           }
-          //         }),
-          //   ),
-          // ),
-
-          // month
-          KeepAlivePageWidget(
-            child: Column(children: [
-              AdvancedCalendar(
-                controller: taskController.calendarController,
-                events: taskController.events,
+        body: SafeArea(
+          maintainBottomViewPadding: true,
+          bottom: false,
+          child: TabBarView(
+            physics: const NeverScrollableScrollPhysics(),
+            controller: _tabController.value,
+            children: [
+              // today
+              SingleChildScrollView(
+                child: KeepAlivePageWidget(
+                  child: FutureBuilder(
+                      initialData: const <TaskModel>[],
+                      future: taskController.fetchTasks(),
+                      builder: (_, AsyncSnapshot<List<TaskModel>> snapshots) {
+                        final data = snapshots.data!;
+                        if (!snapshots.hasData || snapshots.data == null) {
+                          return const Center(
+                            child: ProgressIndicatorWidget(text: 'No data'),
+                          );
+                        } else {
+                          return Column(
+                            children: [
+                              ListWidget(
+                                modelList: data,
+                                isToday: true,
+                              ),
+                              ListWidget(
+                                modelList: data,
+                                isToday: false,
+                              ),
+                            ],
+                          );
+                        }
+                      }),
+                ),
               ),
-              const Text('disabled ')
-            ]),
-          )
-        ],
+
+              // month
+              SingleChildScrollView(
+                child: KeepAlivePageWidget(
+                  child: Column(children: [
+                    AdvancedCalendar(
+                      controller: taskController.calendarController,
+                      events: taskController.events,
+                    ),
+                    FutureBuilder(
+                        initialData: const <TaskModel>[],
+                        future: taskController.fetchTasks(),
+                        builder: (_, AsyncSnapshot<List<TaskModel>> snapshots) {
+                          final data = snapshots.data!;
+                          if (!snapshots.hasData || snapshots.data == null) {
+                            return const Center(
+                                child:
+                                    ProgressIndicatorWidget(text: 'No data'));
+                          } else {
+                            return Column(
+                              children: [
+                                ListWidget(
+                                  modelList: data,
+                                  isToday: true,
+                                ),
+                                ListWidget(
+                                  modelList: data,
+                                  isToday: false,
+                                ),
+                              ],
+                            );
+                          }
+                        }),
+                  ]),
+                ),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }

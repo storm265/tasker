@@ -5,7 +5,7 @@ import 'package:todo2/database/model/task_models/task_attachments_model.dart';
 class TaskModel {
   final String id;
   final String title;
-  final String dueDate;
+  final DateTime dueDate;
   final String description;
   final int assignedTo;
   final bool isCompleted;
@@ -32,7 +32,7 @@ class TaskModel {
   factory TaskModel.fromJson(Map<String, dynamic> json) => TaskModel(
         id: json[TaskScheme.id],
         title: json[TaskScheme.title],
-        dueDate: json[TaskScheme.dueDate],
+        dueDate: DateTime.parse(json[TaskScheme.dueDate]),
         description: json[TaskScheme.description],
         assignedTo: json[TaskScheme.assignedTo],
         isCompleted: json[TaskScheme.isCompleted],
