@@ -2,18 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/add_member_widget/add_member_dialog.dart';
-class AddUserWidget extends StatefulWidget {
+
+class AddMemberWidget extends StatefulWidget {
   final AddTaskController taskController;
-  const AddUserWidget({
+  const AddMemberWidget({
     Key? key,
     required this.taskController,
   }) : super(key: key);
 
   @override
-  State<AddUserWidget> createState() => _AddUserWidgetState();
+  State<AddMemberWidget> createState() => _AddMemberWidgetState();
 }
 
-class _AddUserWidgetState extends State<AddUserWidget> {
+class _AddMemberWidgetState extends State<AddMemberWidget> {
   late final _scrollController = ScrollController();
 
   @override
@@ -24,7 +25,7 @@ class _AddUserWidgetState extends State<AddUserWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder<List<UserProfileModel>>(
+    return ValueListenableBuilder<Set<UserProfileModel>>(
       valueListenable: widget.taskController.taskMembers,
       builder: (_, users, __) => (users.isEmpty)
           ? Padding(
@@ -52,10 +53,11 @@ class _AddUserWidgetState extends State<AddUserWidget> {
                   RawMaterialButton(
                     elevation: 0,
                     onPressed: () => showDialog(
-                        context: context,
-                        builder: (_) => AddUserDialog(
-                              taskController: widget.taskController,
-                            )),
+                      context: context,
+                      builder: (_) => AddUserDialog(
+                        taskController: widget.taskController,
+                      ),
+                    ),
                     fillColor: Colors.grey.withOpacity(0.5),
                     shape: const CircleBorder(),
                     child: const Icon(
@@ -75,14 +77,21 @@ class _AddUserWidgetState extends State<AddUserWidget> {
                 shrinkWrap: true,
                 itemCount: users.length,
                 itemBuilder: (_, i) {
+                  final userList = users.toList();
                   return Row(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 3),
-                        child: CircleAvatar(
-                          radius: 17,
-                          backgroundImage: NetworkImage(users[i].avatarUrl,
-                              headers: widget.taskController.imageHeader),
+                      InkWell(
+                        onLongPress: () {
+                          widget.taskController
+                              .removeMember(model: userList[i]);
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 3),
+                          child: CircleAvatar(
+                            radius: 17,
+                            backgroundImage: NetworkImage(userList[i].avatarUrl,
+                                headers: widget.taskController.imageHeader),
+                          ),
                         ),
                       ),
                       (i == users.length - 1)

@@ -106,12 +106,12 @@ class TaskDataSourceImpl implements TaskDataSource {
     try {
       final ownerId =
           await _secureStorage.getUserData(type: StorageDataType.id);
-
+      log('due data $dueDate');
       final response = await _network.post(
         path: _tasks,
         data: {
           TaskScheme.title: title,
-          TaskScheme.dueDate: dueDate?.toUtc().toIso8601String(),
+          TaskScheme.dueDate: dueDate?.toIso8601String(),
           TaskScheme.description: description,
           TaskScheme.assignedTo: assignedTo,
           TaskScheme.isCompleted: false,

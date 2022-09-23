@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
@@ -14,7 +16,8 @@ class ProjectPanelPickerWidget extends StatelessWidget {
       future: taskController.projectController
           .searchProject(title: taskController.projectTextController.text),
       builder: (context, AsyncSnapshot<List<ProjectModel>> snapshot) {
-        return (!snapshot.hasData)
+        log('snapshot.data ${snapshot.data}');
+        return (!snapshot.hasData || snapshot.data == null)
             ? const Center(
                 child: ProgressIndicatorWidget(text: 'Loading...'),
               )

@@ -14,8 +14,8 @@ class UserPanelPickerWidget extends StatelessWidget {
       future: taskController.taskMemberSearch(
           nickname: taskController.userTextController.text),
       builder: (context, AsyncSnapshot<List<UserProfileModel>> snapshot) {
-        log('data len : ${snapshot.data!.length}');
-        return (!snapshot.hasData)
+        log('data  : ${snapshot.data}');
+        return (!snapshot.hasData || snapshot.data == null)
             ? const Center(
                 child: ProgressIndicatorWidget(text: 'Loading...'),
               )
@@ -34,10 +34,13 @@ class UserPanelPickerWidget extends StatelessWidget {
                         context: context,
                       );
                     },
-                    leading: const CircleAvatar(
-                        backgroundColor: Colors.grey,
-                        backgroundImage: NetworkImage(
-                            'https://image.winudf.com/v2/image1/Y29tLmFwcDNkd2FsbHBhcGVyaGQubW91bnRhaW53YWxscGFwZXJfc2NyZWVuXzVfMTU2NzAzMDU0MF8wNjk/screen-5.jpg?fakeurl=1&type=.jpg')),
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.grey,
+                      backgroundImage: NetworkImage(
+                        data.avatarUrl,
+                        headers: taskController.imageHeader,
+                      ),
+                    ),
                     title: Text(
                       data.username,
                       style: const TextStyle(

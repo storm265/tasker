@@ -96,15 +96,15 @@ class AddTaskController extends ChangeNotifier {
     DateTime.utc(2022, 09, 23, 12),
   ];
 
-  final taskMembers = ValueNotifier<List<UserProfileModel>>([]);
+  final taskMembers = ValueNotifier<Set<UserProfileModel>>({});
 
   void addMember({required UserProfileModel userModel}) {
     taskMembers.value.add(userModel);
     taskMembers.notifyListeners();
   }
 
-  void removeMember({required int index}) {
-    taskMembers.value.removeAt(index);
+  void removeMember({required UserProfileModel model}) {
+    taskMembers.value.removeWhere((element) => element.id == model.id);
     taskMembers.notifyListeners();
   }
 
@@ -201,14 +201,16 @@ class AddTaskController extends ChangeNotifier {
     required GlobalKey<FormState> formKey,
   }) async {
     try {
+      log('tryValidate');
       String taskId = '';
       if (formKey.currentState!.validate()) {
+        log('is Valid');
         FocusScope.of(context).unfocus();
         changeIsClickedStatus(false);
         if (_assignedTo == null) {
           if (pickedProject.value.id.isEmpty) {
             final projects = await projectController.fetchAllProjects();
-
+            log('projects ${projects.length}');
             for (var i = 0; i < projects.length; i++) {
               if (projects[i].title == 'Personal') {
                 _assignedTo = projects[i].ownerId;
@@ -219,9 +221,22 @@ class AddTaskController extends ChangeNotifier {
           } else {
             _assignedTo = pickedProject.value.ownerId;
           }
+          log('is edit $isEdit');
           if (isEdit) {
+          } else {
             print('update task');
             final model = await createTask();
+            log('model : $model');
+            taskId = model.id;
+          }
+
+          hasAttachments() ? uploadTaskAttachment(taskId: taskId) : null;
+        } else {
+          log('is assigned');
+          if (isEdit) {
+          } else {
+            final model = await createTask();
+
             taskId = model.id;
           }
 
@@ -247,8 +262,8 @@ class AddTaskController extends ChangeNotifier {
     try {
       List<String> members = [];
       if (taskMembers.value.isNotEmpty) {
-        for (var i = 0; i < taskMembers.value.length; i++) {
-          members.add(taskMembers.value[i].id);
+        for (var element in taskMembers.value) {
+          members.add(element.id);
         }
       }
 

@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
 
-
 class UserItemWidget extends StatefulWidget {
-    final AddTaskController taskController;
+  final AddTaskController taskController;
   final int index;
   final UserProfileModel data;
 
@@ -26,7 +25,8 @@ class _UserItemWidgetState extends State<UserItemWidget> {
   Widget build(BuildContext context) {
     return ListTile(
       leading: CircleAvatar(
-        backgroundImage: NetworkImage(widget.data.avatarUrl, headers: taskController.imageHeader),
+        backgroundImage: NetworkImage(widget.data.avatarUrl,
+            headers: taskController.imageHeader),
       ),
       title: Text(widget.data.username),
       subtitle: Text(
@@ -44,7 +44,7 @@ class _UserItemWidgetState extends State<UserItemWidget> {
             if (isSelected) {
               taskController.addMember(userModel: widget.data);
             } else {
-              taskController.removeMember(index: widget.index);
+              taskController.removeMember(model: widget.data);
             }
           });
         },

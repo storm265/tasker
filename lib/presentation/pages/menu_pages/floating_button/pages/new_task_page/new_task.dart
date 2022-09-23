@@ -40,30 +40,16 @@ class _AddTaskPageState extends State<AddTaskPage> {
   //   descriptionController.dispose();
   //   super.dispose();
   // }
-  final _secureStorageService = SecureStorageSource();
   @override
   Widget build(BuildContext context) {
     return AppbarWrapWidget(
-      floatingActionButton: FloatingActionButton(
-          child: CircleAvatar(
-              backgroundImage: NetworkImage(
-                  'https://todolist.dev2.cogniteq.com/api/v1/users-avatar/fbd1792c-dfa4-4507-b3ff-5ea561c416e1',
-                  headers: {
-                'Authorization':
-                    'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJodHRwOi8vMC4wLjAuMDo4MDgwLyIsImlzcyI6Imh0dHA6Ly8wLjAuMC4wOjgwODAvIiwiZXhwIjoxNjY0MDUzMjI1LCJlbWFpbCI6ImphamFAbWFpbC5ydSJ9.U-ZPTxH-bQ5gbdCxCsMstGU8MfyovK6Krnicsok41D4'
-              })),
-          onPressed: () async {
-            final list = await taskController.taskMemberSearch(nickname: 'adr');
-            //  taskController.taskMemberSearch(nickname: 'Adr');
-            for (var i = 0; i < list.length; i++) {
-              log('users ${list[i].username}');
-            }
-            print('toUtc -  ${taskController.pickedDate.value.toUtc()}');
-            print(
-                'toIso8601String -  ${taskController.pickedDate.value.toIso8601String()}');
-            print(
-                'toUtc().toString() -  ${taskController.pickedDate.value.toUtc().toString()}');
-          }),
+      floatingActionButton: FloatingActionButton(onPressed: () async {
+        print('toUtc -  ${taskController.pickedDate.value.toUtc()}');
+        print(
+            'toIso8601String -  ${taskController.pickedDate.value.toIso8601String()}');
+        print(
+            'toUtc().toString() -  ${taskController.pickedDate.value.toUtc().toString()}');
+      }),
       title: 'New Task',
       resizeToAvoidBottomInset: false,
       showLeadingButton: true,
@@ -128,7 +114,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                   taskController: taskController,
                                 ),
                                 const PickTimeFieldWidget(),
-                                AddUserWidget(
+                                AddMemberWidget(
                                   taskController: taskController,
                                 ),
                                 ValueListenableBuilder<bool>(
