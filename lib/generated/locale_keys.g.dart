@@ -24,9 +24,9 @@ abstract class  LocaleKeys {
   static const validating = 'validating';
   static const work_list = 'work_list';
   static const today = 'today';
+  static const tomorrow = 'tomorrow';
   static const month = 'month';
   static const my_tasks = 'my_tasks';
-  static const new_task = 'new_task';
   static const menu = 'menu';
   static const quick = 'quick';
   static const profile = 'profile';
@@ -41,6 +41,7 @@ abstract class  LocaleKeys {
   static const delete_project = 'delete_project';
   static const update_project = 'update_project';
   static const add_project = 'add_project';
+  static const new_task = 'new_task';
   static const forr = 'forr';
   static const In = 'In';
   static const title = 'title';

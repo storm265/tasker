@@ -341,7 +341,7 @@ class AddTaskController extends ChangeNotifier {
 }
 
 final now = DateTime.now();
-final today = DateFormat('yyyy-MM-dd').format(now);
+final today = DateFormat('yyyy-MM-dd',).format(now);
 final tomorrow =
     DateFormat('yyyy-MM-dd').format(DateTime.utc(now.year, now.month, now.day+1));
 List<TaskModel> taskModel = [
