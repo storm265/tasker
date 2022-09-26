@@ -102,6 +102,7 @@ class SignUpController extends ChangeNotifier {
         email: email,
         password: password,
       );
+
       MessageService.displaySnackbar(
         context: context,
         message:
@@ -125,6 +126,7 @@ class SignUpController extends ChangeNotifier {
         type: StorageDataType.username,
         value: username,
       );
+      log('refresh token ${authModel.refreshToken}');
       await _storageSource.storageApi.saveUserData(
         type: StorageDataType.refreshToken,
         value: authModel.refreshToken,

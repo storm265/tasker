@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:todo2/database/data_source/auth_data_source.dart';
 import 'package:todo2/database/model/auth_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
@@ -67,7 +69,7 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<AuthModel> refreshToken() async {
     try {
       final response = await _authDataSource.refreshToken();
-
+      log('response Repository: ' + response.toString());
       return AuthModel.fromJson(json: response);
     } catch (e) {
       throw Failure(e.toString());

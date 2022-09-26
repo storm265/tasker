@@ -2,7 +2,8 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:todo2/database/database_scheme/env_scheme.dart';
-import 'package:todo2/services/network_service/update_token_service.dart';
+import 'package:todo2/database/repository/auth_repository.dart';
+import 'package:todo2/presentation/pages/auth/sign_in_up/controller/refresh_token_controller.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
 const _contentType = 'Content-Type';
@@ -10,7 +11,10 @@ const _authorization = 'Authorization';
 const _jsonApp = 'application/json';
 const _multipartForm = 'multipart/form-data';
 
-final _tokenService = UpdateTokenService();
+final _tokenService = RefreshTokenController(
+  authRepository: AuthRepositoryImpl(),
+  secureStorageService: SecureStorageSource(),
+);
 
 class NetworkSource {
   static final NetworkSource _instance = NetworkSource._internal();
@@ -30,15 +34,19 @@ class NetworkSource {
       InterceptorsWrapper(
         onResponse: (response, handler) async {
           if (response.statusCode == 401) {
+            log('response 1 ${response.requestOptions.headers}');
             await _tokenService.updateToken();
+            log('response 2 ${response.requestOptions.headers}');
             log('resolve');
-            return handler.resolve(await _retry(response.requestOptions));
+            handler.resolve(await _retry(response.requestOptions));
           }
-          //   log('next');
           return handler.next(response);
+          // log('next');
         },
         onError: (error, handler) async {
-          log('error: $error');
+          if (error.response?.statusCode == 401) {
+            log('onError 401');
+          }
         },
       ),
     );
