@@ -7,9 +7,9 @@ class TaskModel {
   final String title;
   final DateTime dueDate;
   final String description;
-  final int assignedTo;
+  final String assignedTo;
   final bool isCompleted;
-  final int projectId;
+  final String projectId;
   final String ownerId;
   final DateTime createdAt;
   final List<TaskAttachmentModel>? attachments;

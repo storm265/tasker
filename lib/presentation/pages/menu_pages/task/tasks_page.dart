@@ -112,16 +112,19 @@ class _TasksPageState extends State<TasksPage>
                         if (!snapshots.hasData || snapshots.data == null) {
                           return Center(
                             child: ProgressIndicatorWidget(
-                                text: LocaleKeys.no_data.tr()),
+                              text: LocaleKeys.no_data.tr(),
+                            ),
                           );
                         } else {
                           return Column(
                             children: [
                               ListWidget(
+                                taskController: taskController,
                                 modelList: data,
                                 isToday: true,
                               ),
                               ListWidget(
+                                taskController: taskController,
                                 modelList: data,
                                 isToday: false,
                               ),
@@ -155,10 +158,12 @@ class _TasksPageState extends State<TasksPage>
                             return Column(
                               children: [
                                 ListWidget(
+                                  taskController: taskController,
                                   modelList: data,
                                   isToday: true,
                                 ),
                                 ListWidget(
+                                  taskController: taskController,
                                   modelList: data,
                                   isToday: false,
                                 ),

@@ -40,6 +40,19 @@ class AddTaskController extends ChangeNotifier {
     controller.notifyListeners();
   }
 
+  // TaskModel pickedTask = TaskModel(
+  //   id: '',
+  //   title: '',
+  //   dueDate: DateTime.now(),
+  //   description: '',
+  //   assignedTo: '',
+  //   isCompleted: false,
+  //   projectId: '',
+  //   ownerId: '',
+  //   createdAt: DateTime.now(),
+  // );
+  final isSubmitButtonClicked = ValueNotifier<bool>(true);
+
   final fileController = FileController();
 
   final titleController = TextEditingController();
@@ -341,9 +354,11 @@ class AddTaskController extends ChangeNotifier {
 }
 
 final now = DateTime.now();
-final today = DateFormat('yyyy-MM-dd',).format(now);
-final tomorrow =
-    DateFormat('yyyy-MM-dd').format(DateTime.utc(now.year, now.month, now.day+1));
+final today = DateFormat(
+  'yyyy-MM-dd',
+).format(now);
+final tomorrow = DateFormat('yyyy-MM-dd')
+    .format(DateTime.utc(now.year, now.month, now.day + 1));
 List<TaskModel> taskModel = [
   // today
   TaskModel(
@@ -351,9 +366,9 @@ List<TaskModel> taskModel = [
     title: 'today',
     dueDate: DateTime.parse('${today}T14:39:02.394631'),
     description: 'description',
-    assignedTo: 1,
+    assignedTo: '1',
     isCompleted: false,
-    projectId: 2,
+    projectId: '2',
     ownerId: 'ownerId',
     createdAt: DateTime.now(),
     attachments: [],
@@ -363,9 +378,9 @@ List<TaskModel> taskModel = [
     title: 'today',
     dueDate: DateTime.parse('${today}T13:45:02.394631'),
     description: 'description',
-    assignedTo: 1,
+    assignedTo: '1',
     isCompleted: true,
-    projectId: 2,
+    projectId: '2',
     ownerId: 'ownerId',
     createdAt: DateTime.now(),
     attachments: [],
@@ -375,9 +390,9 @@ List<TaskModel> taskModel = [
     title: 'today',
     dueDate: DateTime.parse('${today}T16:30:02.394631'),
     description: 'description',
-    assignedTo: 1,
+    assignedTo: '1',
     isCompleted: true,
-    projectId: 2,
+    projectId: '2',
     ownerId: 'ownerId',
     createdAt: DateTime.now(),
     attachments: [],
@@ -389,9 +404,9 @@ List<TaskModel> taskModel = [
     title: 'tomorrow',
     dueDate: DateTime.parse('${tomorrow}T17:10:02.394631'),
     description: 'description',
-    assignedTo: 1,
+    assignedTo: '1',
     isCompleted: false,
-    projectId: 2,
+    projectId: '2',
     ownerId: 'ownerId',
     createdAt: DateTime.now(),
     attachments: [],
@@ -401,9 +416,9 @@ List<TaskModel> taskModel = [
     title: 'tomorrow',
     dueDate: DateTime.parse('${tomorrow}T22:56:02.394631'),
     description: 'description',
-    assignedTo: 1,
+    assignedTo: '1',
     isCompleted: false,
-    projectId: 2,
+    projectId: '2',
     ownerId: 'ownerId',
     createdAt: DateTime.now(),
     attachments: [],
@@ -413,9 +428,9 @@ List<TaskModel> taskModel = [
     title: 'tomorrow',
     dueDate: DateTime.parse('${tomorrow}T20:15:02.394631'),
     description: 'description',
-    assignedTo: 1,
+    assignedTo: '1',
     isCompleted: false,
-    projectId: 2,
+    projectId: '2',
     ownerId: 'ownerId',
     createdAt: DateTime.now(),
     attachments: [],

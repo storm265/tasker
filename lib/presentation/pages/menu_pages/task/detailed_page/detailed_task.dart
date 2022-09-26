@@ -1,8 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/auth/widgets/unfocus_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/confirm_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/detailed_page/atachment_message_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/detailed_page/widgets/comment_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/detailed_page/widgets/detailed_item_widget.dart';
@@ -11,7 +13,13 @@ import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 
 class DetailedTaskPage extends StatefulWidget {
-  const DetailedTaskPage({Key? key}) : super(key: key);
+  final TaskModel pickedTask;
+  final AddTaskController taskController;
+  const DetailedTaskPage({
+    Key? key,
+    required this.taskController,
+    required this.pickedTask,
+  }) : super(key: key);
   @override
   State<DetailedTaskPage> createState() => _DetailedTaskPageState();
 }
@@ -27,7 +35,6 @@ class _DetailedTaskPageState extends State<DetailedTaskPage> {
     super.dispose();
   }
 
-  final taskController = AddTaskController();
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -48,12 +55,18 @@ class _DetailedTaskPageState extends State<DetailedTaskPage> {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
                       children: [
-                        const Text(
-                          'Meeting according with design team in Central Park',
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.w400,
-                            fontStyle: FontStyle.italic,
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15),
+                          child: Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              widget.pickedTask.title,
+                              style: const TextStyle(
+                                overflow: TextOverflow.ellipsis,
+                                fontWeight: FontWeight.w200,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
                           ),
                         ),
                         ListView.separated(
@@ -61,42 +74,43 @@ class _DetailedTaskPageState extends State<DetailedTaskPage> {
                             separatorBuilder: (context, index) => Container(
                                   width: double.infinity,
                                   height: 2, //0.7
-                                  color: Colors.grey,
+                                  color: const Color(0xFFE4E4E4),
                                 ),
                             shrinkWrap: true,
                             itemCount: 5,
                             itemBuilder: (context, index) {
                               switch (index) {
                                 case 0:
-                                  return const DetailedItemWidget(
-                                    leading: CircleAvatar(
+                                  // TODO fetch user name
+                                  return DetailedItemWidget(
+                                    leading: const CircleAvatar(
                                       backgroundColor: Colors.red,
                                       radius: 20,
                                     ),
-                                    title: 'Assigned to',
+                                    title: LocaleKeys.assigned_to.tr(),
                                     subtitle: 'Stephen Chow',
                                   );
 
                                 case 1:
-                                  return const DetailedItemWidget(
+                                  return DetailedItemWidget(
                                     imageIcon: 'calendar',
-                                    title: 'Due Date',
-                                    subtitle: 'Aug 5,2018',
+                                    title: LocaleKeys.due_date.tr(),
+                                    subtitle:
+                                        '${widget.pickedTask.dueDate.year} ${widget.pickedTask.dueDate.day},${DateFormat('MMM').format(widget.pickedTask.dueDate)}', // widget.pickedTask.title,
                                   );
 
                                 case 2:
-                                  return const DetailedItemWidget(
+                                  return DetailedItemWidget(
                                     isBlackColor: true,
                                     imageIcon: 'description',
-                                    title: 'Decription',
-                                    subtitle:
-                                        'Lorem ipsum dolor sit amet, consectetur adipiscing.',
+                                    title: LocaleKeys.description.tr(),
+                                    subtitle: widget.pickedTask.description,
                                   );
 
                                 case 3:
                                   return DetailedItemWidget(
                                     imageIcon: 'members',
-                                    title: 'Members',
+                                    title: LocaleKeys.members.tr(),
                                     customSubtitle: Row(
                                       children: [
                                         SizedBox(
@@ -105,7 +119,12 @@ class _DetailedTaskPageState extends State<DetailedTaskPage> {
                                           child: ListView.builder(
                                             shrinkWrap: true,
                                             scrollDirection: Axis.horizontal,
-                                            itemCount: 5,
+                                            itemCount:
+                                                widget.pickedTask.members ==
+                                                        null
+                                                    ? widget.pickedTask.members
+                                                        ?.length
+                                                    : 0,
                                             itemBuilder: (context, index) {
                                               return index == 4
                                                   ? const Padding(
@@ -138,18 +157,16 @@ class _DetailedTaskPageState extends State<DetailedTaskPage> {
                                       ],
                                     ),
                                   );
-
+// TODo fetch
                                 case 4:
                                   return DetailedItemWidget(
                                     imageIcon: 'tag',
                                     title: LocaleKeys.tag.tr(),
                                     customSubtitle: Padding(
                                       padding: const EdgeInsets.only(
-                                        right: 160,
-                                        top: 5,
+                                        right: 150,
                                       ),
                                       child: Container(
-                                        width: 120,
                                         height: 30,
                                         decoration: BoxDecoration(
                                           borderRadius:
@@ -164,7 +181,8 @@ class _DetailedTaskPageState extends State<DetailedTaskPage> {
                                             'Personal',
                                             style: TextStyle(
                                               color: getAppColor(
-                                                  color: CategoryColor.blue),
+                                                color: CategoryColor.blue,
+                                              ),
                                               fontStyle: FontStyle.italic,
                                             ),
                                           ),
@@ -181,30 +199,21 @@ class _DetailedTaskPageState extends State<DetailedTaskPage> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  // ValueListenableBuilder<bool>(
-                  //   valueListenable: detailedController.isSubmitButtonClicked,
-                  //   builder: (_, isClicked, __) => ConfirmButtonWidget(
-                  //     color: getAppColor(color: CategoryColor.blue),
-                  //     title: 'Complete Task',
-                  //     onPressed: isClicked
-                  //         ? () async {
-                  //             detailedController.isSubmitButtonClicked.value =
-                  //                 false;
-                  //             await Future.delayed(const Duration(seconds: 2));
-                  //             detailedController.isSubmitButtonClicked.value =
-                  //                 true;
-                  //             // without then
-                  //             // .then((_) =>
-                  //             //     NavigationService
-                  //             //         .navigateTo(
-                  //             //       context,
-                  //             //       Pages.taskList,
-                  //             //     ));
-                  //           }
-                  //         : null,
-                  //   ),
-                  // ),
-                  AttachementWidget(taskController: taskController),
+                  ValueListenableBuilder<bool>(
+                    valueListenable:
+                        widget.taskController.isSubmitButtonClicked,
+                    builder: (_, isClicked, __) => ConfirmButtonWidget(
+                      color: getAppColor(color: CategoryColor.blue),
+                      title: LocaleKeys.complete_task.tr(),
+                      onPressed: isClicked
+                          ? () async {
+                              await Future.delayed(const Duration(seconds: 2));
+                            }
+                          : null,
+                    ),
+                  ),
+
+                  // AttachementWidget(taskController: widget.taskController),
                   CommentButton(onClickedCallback: () {})
                 ],
               ),
@@ -212,7 +221,6 @@ class _DetailedTaskPageState extends State<DetailedTaskPage> {
           ),
         ),
       ),
-      //),
     );
   }
 }

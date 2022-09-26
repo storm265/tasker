@@ -128,7 +128,10 @@ class _SignUpPageState extends State<SignUpPage> {
                               text: LocaleKeys.validating.tr(),
                             ),
                     ),
-                    SignInButtonWidget(buttonText: LocaleKeys.sign_in.tr()),
+                    SignButtonWidget(
+                      buttonText: LocaleKeys.sign_in.tr(),
+                      isSignInPage: true,
+                    ),
                   ],
                 ),
               ),

@@ -125,8 +125,9 @@ class _SignInPageState extends State<SignInPage> {
                             text: LocaleKeys.validating.tr(),
                           )),
                   ),
-                  SignInButtonWidget(
+                  SignButtonWidget(
                     buttonText: LocaleKeys.sign_up.tr(),
+                    isSignInPage: false,
                   ),
                 ],
               ),
