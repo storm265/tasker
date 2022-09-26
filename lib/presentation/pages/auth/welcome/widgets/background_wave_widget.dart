@@ -4,8 +4,11 @@ import 'painter/foreground_wave_painter.dart';
 
 class ForegroundWaveWidget extends StatelessWidget {
   final int pageIndex;
-  const ForegroundWaveWidget({Key? key, required this.pageIndex})
-      : super(key: key);
+
+  const ForegroundWaveWidget({
+    Key? key,
+    required this.pageIndex,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

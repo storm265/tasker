@@ -13,7 +13,6 @@ const _multipartForm = 'multipart/form-data';
 
 final _tokenService = RefreshTokenController(
   authRepository: AuthRepositoryImpl(),
-  secureStorageService: SecureStorageSource(),
 );
 
 class NetworkSource {
@@ -22,7 +21,6 @@ class NetworkSource {
   factory NetworkSource() {
     return _instance;
   }
-
   NetworkSource._internal();
 
   static final Dio _dio = Dio(BaseOptions(

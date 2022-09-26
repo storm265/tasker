@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
+import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/add_project_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/project_item_widget.dart';
@@ -20,9 +22,7 @@ class MenuPageState extends State<MenuPage> {
 
   @override
   void initState() {
-    _projectController = ProjectController(
-
-    );
+    _projectController = ProjectController();
     _projectController.fetchAllProjects();
     super.initState();
   }
@@ -41,7 +41,7 @@ class MenuPageState extends State<MenuPage> {
         projectController: _projectController,
       ),
       isWhite: false,
-      title: 'Projects',
+      title: LocaleKeys.projects.tr(),
       isRedAppBar: false,
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -50,7 +50,10 @@ class MenuPageState extends State<MenuPage> {
           child: ValueListenableBuilder<List<ProjectModel>>(
             valueListenable: _projectController.projects,
             builder: ((__, projectsList, _) => (projectsList.isEmpty)
-                ? const Center(child: ProgressIndicatorWidget(text: 'No data'))
+                ? Center(
+                    child: ProgressIndicatorWidget(
+                    text: LocaleKeys.no_data.tr(),
+                  ))
                 : GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),

@@ -77,9 +77,9 @@ class SignUpController extends ChangeNotifier {
           throw Failure('Form is not valid');
         }
       }
+
       MessageService.displaySnackbar(
           message: 'Sign up success!', context: context);
-
       // ignore: use_build_context_synchronously
       await NavigationService.navigateTo(context, Pages.navigationReplacement);
     } catch (e) {
@@ -102,7 +102,6 @@ class SignUpController extends ChangeNotifier {
         email: email,
         password: password,
       );
-
       MessageService.displaySnackbar(
         context: context,
         message:
@@ -126,7 +125,6 @@ class SignUpController extends ChangeNotifier {
         type: StorageDataType.username,
         value: username,
       );
-      log('refresh token ${authModel.refreshToken}');
       await _storageSource.storageApi.saveUserData(
         type: StorageDataType.refreshToken,
         value: authModel.refreshToken,

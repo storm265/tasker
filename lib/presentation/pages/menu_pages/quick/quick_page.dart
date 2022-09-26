@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/checklist_model.dart';
+import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/controller/quick_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/checkbox/checkbox_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/notes/note_card_widget.dart';
@@ -27,12 +29,12 @@ class _QuickPageState extends State<QuickPage> {
     final navigationController =
         NavigationInherited.of(context).navigationController;
     return AppbarWrapWidget(
-      title: 'Quick Notes',
+      title: LocaleKeys.quick_notes.tr(),
       isRedAppBar: false,
       child: ValueListenableBuilder<List<dynamic>>(
         valueListenable: quickController.linkedModels,
         builder: ((__, projectsList, _) => projectsList.isEmpty
-            ? const ProgressIndicatorWidget(text: 'No data')
+            ? ProgressIndicatorWidget(text: LocaleKeys.no_data.tr())
             : ListView.builder(
                 itemCount: projectsList.length,
                 itemBuilder: (_, i) => projectsList.isEmpty

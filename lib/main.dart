@@ -1,11 +1,12 @@
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http_proxy/http_proxy.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/sign_up_page.dart';
+import 'package:todo2/presentation/pages/auth/welcome/welcome_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/new_task.dart';
-import 'package:todo2/presentation/pages/menu_pages/menu/menu_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_page.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_navigator.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_status.dart';
@@ -17,6 +18,7 @@ import 'services/theme_service/theme_data_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
   await dotenv.load(fileName: '.env');
   await SystemChromeProvider.setSystemChrome();
   if (kReleaseMode) {
@@ -25,7 +27,14 @@ void main() async {
     httpProxy.port = "8888"; // replace with your server port
     HttpOverrides.global = httpProxy;
   }
-  runApp(const MyApp());
+  runApp(
+    EasyLocalization(
+      supportedLocales: const [Locale('en'), Locale('ru')],
+      path: 'assets/localization',
+      fallbackLocale: const Locale('en'),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -36,17 +45,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  late final ThemeDataService _themeDataController;
-  late final NavigationController _navigationController;
-  late final StatusBarController _statusBarController;
-
-  @override
-  void initState() {
-    _navigationController = NavigationController();
-    _statusBarController = StatusBarController();
-    _themeDataController = ThemeDataService();
-    super.initState();
-  }
+  final _themeDataController = ThemeDataService();
+  final _navigationController = NavigationController();
+  final _statusBarController = StatusBarController();
 
   @override
   void dispose() {
@@ -62,12 +63,15 @@ class _MyAppState extends State<MyApp> {
       child: NavigationInherited(
         navigationController: _navigationController,
         child: MaterialApp(
+          localizationsDelegates: context.localizationDelegates,
+          supportedLocales: context.supportedLocales,
+          locale: context.locale,
           debugShowCheckedModeBanner: false,
           title: 'Todo2',
           theme: _themeDataController.themeData,
           initialRoute: '/',
-         routes: routes,
-         // home: MenuPage(),
+          routes: routes,
+          // home: SignUpPage(),
         ),
       ),
     );

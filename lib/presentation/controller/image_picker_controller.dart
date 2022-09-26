@@ -22,10 +22,10 @@ class FileController extends ChangeNotifier {
     ),
   );
 
-  final _emptyImage =  PlatformFile(name: '', size: 0, path: '');
+  final _emptyImage = const PlatformFile(name: '', size: 0, path: '');
 
   var pickedFile =
-      ValueNotifier( PlatformFile(name: '', size: 0, path: ''));
+      ValueNotifier(const PlatformFile(name: '', size: 0, path: ''));
 
   bool isValidImageFormat(String image) {
     if (image.endsWith(_jpeg) || image.endsWith(_png) || image.endsWith(_jpg)) {
@@ -34,8 +34,6 @@ class FileController extends ChangeNotifier {
       return false;
     }
   }
-
- 
 
   final _maxImageSize = 5000 * 1024; // 5mb
   final _maxFileSize = 26000 * 1024; // 26mb
@@ -118,8 +116,9 @@ class FileController extends ChangeNotifier {
       if (isValidImageFormat(pickedFile.value.extension ?? '') &&
           pickedFile.value.name.isNotEmpty) {
         log('image is valid!');
-        await profileController.clearImage();
+
         await uploadAvatar().then((_) => Navigator.pop(context));
+        await profileController.clearImage();
       }
     } catch (e, t) {
       log('update img error : $e, $t');

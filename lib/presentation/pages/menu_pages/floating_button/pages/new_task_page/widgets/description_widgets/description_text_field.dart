@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
 
 class DescriptionTextField extends StatelessWidget {
@@ -18,7 +20,7 @@ class DescriptionTextField extends StatelessWidget {
       ),
       validator: (text) {
         if (text == null || text.isEmpty) {
-          return 'Please enter description text';
+          return LocaleKeys.please_enter_text.tr();
         }
         return null;
       },

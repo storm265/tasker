@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
+import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/controller/user_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/sign_in_controller.dart';
@@ -74,10 +76,13 @@ class _SignInPageState extends State<SignInPage> {
                     alignment: Alignment.topLeft,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        TitleTextWidget(text: 'Welcome back'),
-                        SizedBox(height: 6),
-                        SubTitleWidget(text: 'Sign in to continue'),
+                      children: [
+                        TitleTextWidget(
+                          text: LocaleKeys.welcome_back.tr(),
+                        ),
+                        const SizedBox(height: 6),
+                        SubTitleWidget(
+                            text: LocaleKeys.sign_in_to_continue.tr()),
                       ],
                     ),
                   ),
@@ -87,8 +92,8 @@ class _SignInPageState extends State<SignInPage> {
                         .validateEmail(email: text!),
                     isEmail: false,
                     textController: _emailController,
-                    labelText: 'Email',
-                    title: 'Email',
+                    labelText: LocaleKeys.email.tr(),
+                    title: LocaleKeys.email.tr(),
                   ),
                   TextFieldWidget(
                     validateCallback: (text) => _signInController
@@ -97,14 +102,14 @@ class _SignInPageState extends State<SignInPage> {
                     isEmail: false,
                     textController: _passwordController,
                     isObcecure: true,
-                    labelText: 'Enter your password',
-                    title: 'Password',
+                    labelText: LocaleKeys.enter_your_password.tr(),
+                    title: LocaleKeys.password.tr(),
                   ),
                   ValueListenableBuilder<bool>(
                     valueListenable: _signInController.isActiveSubmitButton,
                     builder: ((context, isClicked, _) => isClicked
                         ? SubmitUpButtonWidget(
-                            buttonText: 'Sign In',
+                            buttonText: LocaleKeys.sign_in.tr(),
                             onPressed: isClicked
                                 ? () async {
                                     _signInController.tryToSignIn(
@@ -116,9 +121,13 @@ class _SignInPageState extends State<SignInPage> {
                                   }
                                 : null,
                           )
-                        : const ProgressIndicatorWidget(text: 'Validating...')),
+                        : ProgressIndicatorWidget(
+                            text: LocaleKeys.validating.tr(),
+                          )),
                   ),
-                  const SignInButtonWidget(buttonText: 'Sign Up'),
+                  SignInButtonWidget(
+                    buttonText: LocaleKeys.sign_up.tr(),
+                  ),
                 ],
               ),
             ),

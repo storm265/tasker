@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/controller/check_list_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/widgets/add_item_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/widgets/check_box_widget.dart';
@@ -40,7 +42,7 @@ class _CheckListPageState extends State<CheckListPage> {
       resizeToAvoidBottomInset: false,
       navRoute: Pages.quick,
       isRedAppBar: true,
-      title: 'Add Check List',
+      title: LocaleKeys.add_check_list.tr(),
       showLeadingButton: true,
       isPopFromNavBar: true,
       child: Stack(
@@ -62,7 +64,7 @@ class _CheckListPageState extends State<CheckListPage> {
                         textInputType: TextInputType.multiline,
                         maxLength: 256,
                         textController: _checkListController.titleController,
-                        title: 'Title',
+                        title: LocaleKeys.title.tr(),
                         onEdiditionCompleteCallback: () =>
                             FocusScope.of(context).unfocus(),
                       ),
@@ -107,7 +109,9 @@ class _CheckListPageState extends State<CheckListPage> {
                           valueListenable: _checkListController.isClickedButton,
                           builder: (context, isClicked, _) => isClicked
                               ? ConfirmButtonWidget(
-                                  title: isEdit ? 'Update' : 'Done',
+                                  title: isEdit
+                                      ? LocaleKeys.update.tr()
+                                      : LocaleKeys.done.tr(),
                                   onPressed: isClicked
                                       ? () async {
                                           await _checkListController
@@ -119,8 +123,9 @@ class _CheckListPageState extends State<CheckListPage> {
                                         }
                                       : null,
                                 )
-                              : const ProgressIndicatorWidget(
-                                  text: 'Saving...'),
+                              : ProgressIndicatorWidget(
+                                  text: LocaleKeys.validating.tr(),
+                                ),
                         ),
                       ),
                     ],

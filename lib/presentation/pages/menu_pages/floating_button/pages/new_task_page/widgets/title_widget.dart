@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/common/grey_container.dart';
 
 class TaskTitleWidget extends StatelessWidget {
@@ -21,7 +23,7 @@ class TaskTitleWidget extends StatelessWidget {
           ),
           validator: (text) {
             if (text == null || text.isEmpty) {
-              return 'Please enter title';
+              return LocaleKeys.please_enter_title.tr();
             }
             return null;
           },
@@ -35,10 +37,10 @@ class TaskTitleWidget extends StatelessWidget {
                     )
                   : null,
           maxLength: 256,
-          decoration: const InputDecoration(
-            hintText: 'Title',
+          decoration: InputDecoration(
+            hintText: LocaleKeys.title.tr(),
             border: InputBorder.none,
-            hintStyle: TextStyle(
+            hintStyle: const TextStyle(
               fontSize: 18,
               fontStyle: FontStyle.italic,
             ),

@@ -15,10 +15,10 @@ class NavigationController extends ChangeNotifier {
 
 // add args
   final List<Widget> pages = [
-    const KeepAlivePageWidget(child: TasksPage()),
+    const TasksPage(),
     const KeepAlivePageWidget(child: MenuPage()),
     const KeepAlivePageWidget(child: QuickPage()),
-    const KeepAlivePageWidget(child: ProfilePage()),
+    const ProfilePage(),
     const AddTaskPage(),
     const AddQuickNote(),
     const CheckListPage(),

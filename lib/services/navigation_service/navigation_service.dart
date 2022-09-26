@@ -13,12 +13,6 @@ import 'package:todo2/presentation/pages/menu_pages/task/tasks_page.dart';
 import 'package:todo2/presentation/pages/navigation/navigation_page.dart';
 import 'package:todo2/presentation/pages/no_connection_page.dart';
 
-
-class sdsd{
-  static const ss= 'ss';
-}
-
-// VS
 enum Pages {
   welcome('welcome'),
   signUp('signUp'),
@@ -40,7 +34,7 @@ enum Pages {
 }
 
 Map<String, Widget Function(BuildContext)> routes = {
-  '/': (_) => const SplashPage(),
+  '/': (_) =>  SplashPage(),
   Pages.navigationReplacement.type: (_) => const NavigationPage(),
   Pages.noConnection.type: (_) => const NoConnectionPage(),
   Pages.welcome.type: (_) => const WelcomePage(),

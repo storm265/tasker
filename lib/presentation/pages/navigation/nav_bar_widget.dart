@@ -31,16 +31,18 @@ class NavBarItem extends StatelessWidget {
               children: [
                 const SizedBox(),
                 SvgPicture.asset(
-                  'assets/nav_bar_icons/$icon.svg',
+                  'assets/images/nav_bar_icons/$icon.svg',
                   color: iconColor,
                 ),
-                Text(
-                  label,
-                  style: TextStyle(
-                    color: iconColor,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w300,
-                    fontStyle: FontStyle.italic,
+                FittedBox(
+                  child: Text(
+                    label,
+                    style: TextStyle(
+                      color: iconColor,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w300,
+                      fontStyle: FontStyle.italic,
+                    ),
                   ),
                 )
               ],

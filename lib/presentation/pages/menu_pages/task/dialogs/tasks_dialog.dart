@@ -1,10 +1,12 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:todo2/generated/locale_keys.g.dart';
 
 void showTasksDialog(BuildContext context) {
   final List<String> items = [
-    'Incomplete Tasks',
-    'Completed Tasks',
-    'All Tasks'
+    LocaleKeys.incomplete_tasks.tr(),
+    LocaleKeys.completed_tasks.tr(),
+    LocaleKeys.all_tasks.tr(),
   ];
   final taskDialogController = TaskDialogController();
   showDialog(

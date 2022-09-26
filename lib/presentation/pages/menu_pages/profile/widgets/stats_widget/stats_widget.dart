@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:todo2/database/model/profile_models/stats_model.dart';
+import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/constants/stats_contstants.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/constants/stats_padding_constants.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
@@ -39,17 +41,17 @@ class StatsWidget extends StatelessWidget {
         height: 210,
         child: Column(
           children: [
-            const Align(
+            Align(
               alignment: Alignment.topLeft,
               child: Padding(
-                padding: EdgeInsets.only(
+                padding: const EdgeInsets.only(
                   left: 25,
                   top: 20,
                   bottom: 20,
                 ),
                 child: Text(
-                  'Statistic',
-                  style: TextStyle(
+                  LocaleKeys.statistic.tr(),
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w200,
                     fontStyle: FontStyle.italic,

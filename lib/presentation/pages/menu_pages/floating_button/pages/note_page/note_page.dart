@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/controller/new_note_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/confirm_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/red_app_bar.dart';
@@ -34,7 +36,7 @@ class _AddQuickNoteState extends State<AddQuickNote> {
     return AppbarWrapWidget(
       resizeToAvoidBottomInset: false,
       isRedAppBar: true,
-      title: 'Add Note',
+      title: LocaleKeys.add_note.tr(),
       showLeadingButton: true,
       isPopFromNavBar: true,
       navRoute: Pages.quick,
@@ -54,7 +56,7 @@ class _AddQuickNoteState extends State<AddQuickNote> {
                       maxLength: 512,
                       textController:
                           _addNoteController.descriptionTextController,
-                      title: 'Description',
+                      title: LocaleKeys.description.tr(),
                     ),
                     const SizedBox(height: 100),
                     Column(
@@ -70,19 +72,22 @@ class _AddQuickNoteState extends State<AddQuickNote> {
                             valueListenable: _addNoteController.isButtonClicked,
                             builder: (context, isClicked, _) => isClicked
                                 ? ConfirmButtonWidget(
-                                    title: isEdit ? 'Update' : 'Done',
+                                    title: isEdit
+                                        ? LocaleKeys.update.tr()
+                                        : LocaleKeys.done.tr(),
                                     onPressed: isClicked
-                                        ? () async =>                                   
-                                        _addNoteController.tryValidateNote(
-                                          context: context,
-                                          formKey: formKey,
-                                          navigationController:
-                                              navigationController,
-                                        )
+                                        ? () async =>
+                                            _addNoteController.tryValidateNote(
+                                              context: context,
+                                              formKey: formKey,
+                                              navigationController:
+                                                  navigationController,
+                                            )
                                         : null,
                                   )
-                                : const ProgressIndicatorWidget(
-                                    text: 'Adding note...'),
+                                : ProgressIndicatorWidget(
+                                    text: LocaleKeys.validating.tr(),
+                                  ),
                           ),
                         ),
                       ],

@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
@@ -46,8 +44,8 @@ class SignInController extends ChangeNotifier {
           context: context,
           email: emailController,
           password: passwordController,
-        );
-        NavigationService.navigateTo(context, Pages.navigationReplacement);
+        ).then((_) =>
+            NavigationService.navigateTo(context, Pages.navigationReplacement));
       } else {
         throw Failure('Form is not valid');
       }
@@ -70,12 +68,12 @@ class SignInController extends ChangeNotifier {
         email: email,
         password: password,
       );
-log('authModel ${authModel}');
+
       final userData = await _userController.fetchCurrentUser(
         accessToken: authModel.accessToken,
         id: authModel.userId,
       );
-log('userData ${userData}');
+
       // TODO: you can just save the whole User object
       await _storageSource.storageApi.saveUserData(
         type: StorageDataType.id,
@@ -93,7 +91,6 @@ log('userData ${userData}');
         type: StorageDataType.avatarUrl,
         value: userData.avatarUrl,
       );
-      log('refresh token ${authModel.refreshToken}');
       await _storageSource.storageApi.saveUserData(
         type: StorageDataType.refreshToken,
         value: authModel.refreshToken,
@@ -102,7 +99,6 @@ log('userData ${userData}');
         type: StorageDataType.accessToken,
         value: authModel.accessToken,
       );
-      log('saved');
     } catch (e, t) {
       log(' trace : $t');
       MessageService.displaySnackbar(

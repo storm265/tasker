@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/controller/image_picker_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/constants/profile_dialog_items.dart';
@@ -42,6 +43,7 @@ Future<void> showSettingsDialog({
                       );
                       break;
                     case 1:
+                      await profileController.changeLocalization(context);
                       break;
                     case 2:
                       await profileController.signOut(context: context);
@@ -52,10 +54,31 @@ Future<void> showSettingsDialog({
                   padding: const EdgeInsets.symmetric(vertical: 5),
                   child: Center(
                     child: ListTile(
-                      trailing: Icon(
-                        settingsIconsItems[i],
-                        color: Palette.red,
-                      ),
+                      trailing: i == 1
+                          ? SizedBox(
+                              width: 50,
+                              height: 30,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    context.locale.toString().substring(0, 2),
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontStyle: FontStyle.italic,
+                                    ),
+                                  ),
+                                  Icon(
+                                    settingsIconsItems[i],
+                                    color: Palette.red,
+                                  ),
+                                ],
+                              ),
+                            )
+                          : Icon(
+                              settingsIconsItems[i],
+                              color: Palette.red,
+                            ),
                       title: Text(
                         settingsTextItems[i],
                         style: const TextStyle(

@@ -95,19 +95,16 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<Map<String, dynamic>> refreshToken() async {
     try {
-      final refreshToken = await _secureStorageService.getUserData(
-        type: StorageDataType.refreshToken,
-      );
-      final response = await _networkSource.post(
+      Response response = await _networkSource.post(
         path: _refreshUrl,
         data: {
-          AuthScheme.refreshToken: refreshToken,
+          AuthScheme.refreshToken: await _secureStorageService.getUserData(
+              type: StorageDataType.refreshToken),
         },
         options: _networkSource.authOptions,
       );
       log('dataSource response ${response.data}');
-      log('dataSource response ${response.data[AuthScheme.accessToken]}');
-      log('dataSource response ${response.data[AuthScheme.refreshToken]}');
+
       return NetworkErrorService.isSuccessful(response)
           ? response.data[AuthScheme.data] as Map<String, dynamic>
           : throw Failure(

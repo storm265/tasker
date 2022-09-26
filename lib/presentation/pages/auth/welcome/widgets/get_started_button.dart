@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 const List<Color> _shadowColor = [
@@ -37,10 +39,10 @@ class GetStartedButton extends StatelessWidget {
                 ),
               ],
             ),
-            child: const Center(
+            child: Center(
               child: Text(
-                'Get Started',
-                style: TextStyle(
+                LocaleKeys.get_started.tr(),
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.w200,
                   fontStyle: FontStyle.italic,

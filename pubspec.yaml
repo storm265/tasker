@@ -17,6 +17,7 @@ dependencies:
   flutter_slidable:
   file_picker:
   dio:
+  easy_localization: ^3.0.1
   flutter_svg:
   flutter_dotenv:
   http_proxy:
@@ -52,12 +53,13 @@ flutter:
 
 
   assets:
-    - assets/splash_screen/
-    - assets/start_page/avatars/
-    - assets/nav_bar_icons/
-    - assets/tasks_list/
-    - assets/detailed_task/
-    - assets/profile/
+    - assets/images/splash_screen/
+    - assets/images/start_page/avatars/
+    - assets/images/nav_bar_icons/
+    - assets/images/tasks_list/
+    - assets/images/detailed_task/
+    - assets/images/profile/
+    - assets/localization/
     - .env
 
 

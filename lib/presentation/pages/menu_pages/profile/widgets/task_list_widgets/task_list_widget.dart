@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/profile_models/stats_model.dart';
+import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/constants/stats_contstants.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 
@@ -47,9 +49,9 @@ class TaskListWidget extends StatelessWidget {
                         color: Colors.white,
                       ),
                     ),
-                    subtitle: const Text(
-                      '999 Tasks',
-                      style: TextStyle(
+                    subtitle:  Text(
+                      '999 ${LocaleKeys.tasks.tr()}',
+                      style: const TextStyle(
                         fontSize: 14,
                         fontStyle: FontStyle.normal,
                         color: Colors.white,

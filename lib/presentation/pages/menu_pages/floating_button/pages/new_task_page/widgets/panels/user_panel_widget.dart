@@ -1,6 +1,8 @@
 import 'dart:developer';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
+import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 
@@ -16,8 +18,10 @@ class UserPanelPickerWidget extends StatelessWidget {
       builder: (context, AsyncSnapshot<List<UserProfileModel>> snapshot) {
         log('data  : ${snapshot.data}');
         return (!snapshot.hasData || snapshot.data == null)
-            ? const Center(
-                child: ProgressIndicatorWidget(text: 'Loading...'),
+            ? Center(
+                child: ProgressIndicatorWidget(
+                  text: LocaleKeys.loaing.tr(),
+                ),
               )
             : ListView.builder(
                 itemCount: snapshot.data!.length,

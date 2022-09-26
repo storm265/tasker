@@ -1,6 +1,8 @@
 import 'dart:developer';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/add_member_widget/add_member_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/description_widgets/description_field_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/for_in_field_widget.dart';
@@ -15,7 +17,6 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/whit
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
-import 'package:todo2/storage/secure_storage_service.dart';
 
 class AddTaskPage extends StatefulWidget {
   const AddTaskPage({Key? key}) : super(key: key);
@@ -51,7 +52,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
         print(
             'toUtc().toString() -  ${taskController.pickedDate.value.toUtc().toString()}');
       }),
-      title: 'New Task',
+      title: LocaleKeys.new_task.tr(),
       resizeToAvoidBottomInset: false,
       showLeadingButton: true,
       isPopFromNavBar: true,
@@ -85,7 +86,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                 () => setState(() {}));
                           },
                           titleController: taskController.userTextController,
-                          text: 'For',
+                          text: LocaleKeys.forr.tr(),
                         ),
                         EnterUserWidget(
                           taskController: taskController,
@@ -94,7 +95,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                               const Duration(seconds: 1),
                               () => setState(() {})),
                           titleController: taskController.projectTextController,
-                          text: 'In',
+                          text: LocaleKeys.In.tr(),
                         )
                       ],
                     ),
@@ -123,7 +124,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                       taskController.isClickedAddTask,
                                   builder: (_, isClicked, __) => isClicked
                                       ? ConfirmButtonWidget(
-                                          title: 'Add Task',
+                                          title: LocaleKeys.add_task.tr(),
                                           onPressed: isClicked
                                               ? () async {
                                                   await taskController
@@ -134,8 +135,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
                                                 }
                                               : null,
                                         )
-                                      : const ProgressIndicatorWidget(
-                                          text: 'Adding task ...'),
+                                      : ProgressIndicatorWidget(
+                                          text: LocaleKeys.validating.tr(),
+                                        ),
                                 ),
                               ],
                             );

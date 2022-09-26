@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:todo2/generated/locale_keys.g.dart';
 
 class AddItemButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -19,9 +21,9 @@ class AddItemButton extends StatelessWidget {
         ),
         child: GestureDetector(
           onTap: onPressed,
-          child: const Text(
-            '+ Add new item ',
-            style: TextStyle(
+          child: Text(
+            LocaleKeys.add_new_item.tr(),
+            style: const TextStyle(
               fontWeight: FontWeight.w200,
               fontSize: 16,
               fontStyle: FontStyle.italic,

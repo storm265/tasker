@@ -14,7 +14,6 @@ import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_cont
 import 'package:todo2/presentation/pages/menu_pages/task/widgets/calendar_lib/controller.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
-import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
@@ -347,7 +346,6 @@ final tomorrow =
     DateFormat('yyyy-MM-dd').format(DateTime.utc(now.year, now.month, now.day+1));
 List<TaskModel> taskModel = [
   // today
-
   TaskModel(
     id: '',
     title: 'today',

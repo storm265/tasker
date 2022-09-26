@@ -1,17 +1,19 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:todo2/generated/locale_keys.g.dart';
 
-const todayTab = Tab(
+final todayTab = Tab(
   child: Text(
-    '     Today     ',
-    style: TextStyle(
+    '     ${LocaleKeys.today.tr()}     ',
+    style: const TextStyle(
       fontSize: 18,
     ),
   ),
 );
-const monthTab = Tab(
+final monthTab = Tab(
   child: Text(
-    '     Month     ',
-    style: TextStyle(
+    '     ${LocaleKeys.month.tr()}     ',
+    style: const TextStyle(
       fontSize: 18,
     ),
   ),

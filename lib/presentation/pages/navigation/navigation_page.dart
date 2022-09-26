@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_navigator.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_status.dart';
 import 'package:todo2/presentation/pages/navigation/floating_button_widget.dart';
@@ -76,7 +78,7 @@ class NavigationPage extends StatelessWidget {
                           NavBarItem(
                             onTap: () async => await navigationController
                                 .moveToPage(Pages.tasks),
-                            label: 'My Tasks',
+                            label: LocaleKeys.my_tasks.tr(),
                             icon: 'tasks',
                             iconColor:
                                 pageIndex == 0 ? Colors.white : _greyColor,
@@ -84,7 +86,7 @@ class NavigationPage extends StatelessWidget {
                           NavBarItem(
                             onTap: () async => await navigationController
                                 .moveToPage(Pages.menu),
-                            label: 'Menu',
+                            label: LocaleKeys.menu.tr(),
                             icon: 'menu',
                             iconColor:
                                 pageIndex == 1 ? Colors.white : _greyColor,
@@ -93,7 +95,7 @@ class NavigationPage extends StatelessWidget {
                           NavBarItem(
                             onTap: () async => await navigationController
                                 .moveToPage(Pages.quick),
-                            label: 'Quick',
+                            label: LocaleKeys.quick.tr(),
                             icon: 'quick',
                             iconColor: pageIndex == 2 ||
                                     pageIndex == 6 ||
@@ -104,7 +106,7 @@ class NavigationPage extends StatelessWidget {
                           NavBarItem(
                             onTap: () async => await navigationController
                                 .moveToPage(Pages.profile),
-                            label: 'Profile',
+                            label: LocaleKeys.profile.tr(),
                             icon: 'profile',
                             iconColor:
                                 pageIndex == 3 ? Colors.white : _greyColor,

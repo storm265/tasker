@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/color_pallete_widget.dart';
 
@@ -12,11 +14,11 @@ Future<void> showAddEditProjectDialog({
     context: context,
     builder: (_) => AlertDialog(
       insetPadding: const EdgeInsets.all(0),
-      title: const Padding(
-        padding: EdgeInsets.only(left: 16),
+      title: Padding(
+        padding: const EdgeInsets.only(left: 16),
         child: Text(
-          'Title',
-          style: TextStyle(
+          LocaleKeys.title.tr(),
+          style: const TextStyle(
             fontWeight: FontWeight.w200,
             fontStyle: FontStyle.italic,
             fontSize: 18,
@@ -50,7 +52,7 @@ Future<void> showAddEditProjectDialog({
                   maxLength: 32,
                   validator: (value) {
                     if (value!.trim().isEmpty) {
-                      return 'Please enter title';
+                      return LocaleKeys.please_enter_title.tr();
                     } else {
                       return null;
                     }
@@ -79,7 +81,9 @@ Future<void> showAddEditProjectDialog({
                             Navigator.pop(context);
                           }
                         : null,
-                    child: const Text('Back'),
+                    child: Text(
+                      LocaleKeys.back.tr(),
+                    ),
                   ),
                   status == ProjectDialogStatus.add
                       ? const SizedBox()
@@ -91,7 +95,9 @@ Future<void> showAddEditProjectDialog({
                                       .then((_) => Navigator.pop(context));
                                 }
                               : null,
-                          child: const Text('Delete Project'),
+                          child: Text(
+                            LocaleKeys.delete_project.tr(),
+                          ),
                         ),
                   TextButton(
                     onPressed: isClicked
@@ -107,8 +113,8 @@ Future<void> showAddEditProjectDialog({
                         : null,
                     child: Text(
                       status == ProjectDialogStatus.add
-                          ? 'Add Project'
-                          : 'Update Project',
+                          ? LocaleKeys.add_project.tr()
+                          : LocaleKeys.update_project.tr(),
                     ),
                   ),
                 ],

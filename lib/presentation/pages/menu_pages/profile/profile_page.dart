@@ -1,7 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
+import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/controller/image_picker_controller.dart';
 import 'package:todo2/presentation/controller/user_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/constants/stats_padding_constants.dart';
@@ -57,7 +59,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return AppbarWrapWidget(
-      title: 'Profile',
+      title: LocaleKeys.profile.tr(),
       isRedAppBar: false,
       child: SingleChildScrollView(
         child: Flex(

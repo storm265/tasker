@@ -6,8 +6,17 @@ import 'package:todo2/utils/assets_path.dart';
 
 class AsseterWidget extends StatelessWidget {
   final Function(int index) onChange;
-  final List _assetList = [Walkthrough1(), Walkthrough2(), Walkthrough3()];
-  AsseterWidget({Key? key, required this.onChange}) : super(key: key);
+
+  final List _assetList = [
+    Walkthrough1(),
+    Walkthrough2(),
+    Walkthrough3(),
+  ];
+
+  AsseterWidget({
+    Key? key,
+    required this.onChange,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
