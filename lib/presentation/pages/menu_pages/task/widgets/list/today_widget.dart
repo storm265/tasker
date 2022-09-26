@@ -1,8 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
-
 import 'package:todo2/presentation/pages/menu_pages/task/detailed_page/detailed_task.dart';
 
 class ListDayWidget extends StatelessWidget {

@@ -23,7 +23,10 @@ class SplashPage extends StatelessWidget {
   Future<void> setDefaultLocale(BuildContext context) async {
     if (context.deviceLocale.toString().contains('ru')) {
       await context.setLocale(const Locale('ru'));
-      Intl.withLocale('ru', () => null);
+      Intl.defaultLocale = "ru_RU";
+    } else {
+      await context.setLocale(const Locale('en'));
+      Intl.defaultLocale = "en_US";
     }
   }
 

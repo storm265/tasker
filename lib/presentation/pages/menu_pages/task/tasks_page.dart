@@ -42,9 +42,9 @@ class _TasksPageState extends State<TasksPage>
     return WillPopWrap(
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
-         onPressed: ()async{
+          onPressed: () async {
             await context.setLocale(const Locale('en'));
-         }, 
+          },
         ),
         backgroundColor: const Color(0xffFDFDFD),
         appBar: AppBar(
@@ -100,6 +100,7 @@ class _TasksPageState extends State<TasksPage>
             physics: const NeverScrollableScrollPhysics(),
             controller: _tabController.value,
             children: [
+              // TODO remove 2 requests, 1 only
               // today
               SingleChildScrollView(
                 child: KeepAlivePageWidget(
