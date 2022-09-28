@@ -299,7 +299,7 @@ class AddTaskController extends ChangeNotifier {
         dueDate: (pickedDate.value.day == DateTime.now().day ||
                 pickedDate.value.day < DateTime.now().day)
             ? null
-            : pickedDate.value,
+            : DateFormat("yyyy-MM-ddThh:27:mm.ssssss").format(pickedDate.value),
         members: members,
       );
     } catch (e) {

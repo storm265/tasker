@@ -24,10 +24,10 @@ class NavBarItem extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: SizedBox(
-            width: 55,
-            height: 55,
+            width: 62,
+            height: 62,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 const SizedBox(),
                 SvgPicture.asset(
@@ -40,7 +40,7 @@ class NavBarItem extends StatelessWidget {
                     style: TextStyle(
                       color: iconColor,
                       fontSize: 12,
-                      fontWeight: FontWeight.w300,
+                      fontWeight: FontWeight.w200,
                       fontStyle: FontStyle.italic,
                     ),
                   ),

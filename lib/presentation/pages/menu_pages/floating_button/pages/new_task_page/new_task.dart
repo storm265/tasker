@@ -45,12 +45,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
   Widget build(BuildContext context) {
     return AppbarWrapWidget(
       floatingActionButton: FloatingActionButton(onPressed: () async {
-        print('classic -  ${taskController.pickedDate.value}');
-        print('toUtc -  ${taskController.pickedDate.value.toUtc()}');
         print(
-            'toIso8601String -  ${taskController.pickedDate.value.toIso8601String()}');
-        print(
-            'toUtc().toString() -  ${taskController.pickedDate.value.toUtc().toString()}');
+            '${DateFormat("yyyy-MM-ddThh:27:mm.ssssss").format(DateTime.now())}');
       }),
       title: LocaleKeys.new_task.tr(),
       resizeToAvoidBottomInset: false,

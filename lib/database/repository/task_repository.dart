@@ -31,7 +31,7 @@ class TaskRepositoryImpl implements TaskRepository {
     required String description,
     required String? assignedTo,
     required String projectId,
-    required DateTime? dueDate,
+    required String? dueDate,
     List<Map<String, dynamic>>? attachments,
     List<String>? members,
   }) async {

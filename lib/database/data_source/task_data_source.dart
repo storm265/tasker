@@ -13,7 +13,7 @@ abstract class TaskDataSource {
     required String description,
     required String? assignedTo,
     required String projectId,
-    required DateTime? dueDate,
+    required String? dueDate,
     List<Map<String, dynamic>>? attachments,
     List<String>? members,
   });
@@ -99,7 +99,7 @@ class TaskDataSourceImpl implements TaskDataSource {
     required String description,
     required String? assignedTo,
     required String projectId,
-    required DateTime? dueDate,
+    required String? dueDate,
     List<Map<String, dynamic>>? attachments,
     List<String>? members,
   }) async {
@@ -111,7 +111,7 @@ class TaskDataSourceImpl implements TaskDataSource {
         path: _tasks,
         data: {
           TaskScheme.title: title,
-          TaskScheme.dueDate: dueDate?.toIso8601String(),
+          TaskScheme.dueDate: dueDate,
           TaskScheme.description: description,
           TaskScheme.assignedTo: assignedTo,
           TaskScheme.isCompleted: false,
@@ -122,7 +122,6 @@ class TaskDataSourceImpl implements TaskDataSource {
         },
         options: await _network.getLocalRequestOptions(useContentType: true),
       );
-      log('createTask  data : ${response.data}');
       log('createTask ${response.statusMessage}');
       log('createTask ${response.statusCode}');
       return NetworkErrorService.isSuccessful(response)
@@ -135,7 +134,7 @@ class TaskDataSourceImpl implements TaskDataSource {
     }
   }
   // "YYYY-MM-dd'T'hh:mm:ss.ssssss" -- srs
-  // '2022-09-29T12:00:00.000Z' --my 
+  // '2022-09-29T12:00:00.000Z' --my
 
   @override
   Future<Map<String, dynamic>> updateTask({
@@ -460,7 +459,8 @@ class TaskDataSourceImpl implements TaskDataSource {
                   }
                 ],
                 "created_at": "2022-07-13T09:17:11.400401"
-              }, {
+              },
+              {
                 "id": "94f11b2f-c183-48f2-b4c4-ef8321890cf6",
                 "title": "task 1.1.1.1",
                 "due_date": "2025-06-21T23:56:02.394631",
@@ -514,7 +514,8 @@ class TaskDataSourceImpl implements TaskDataSource {
                   }
                 ],
                 "created_at": "2022-07-13T09:17:11.400401"
-              }, {
+              },
+              {
                 "id": "94f11b2f-c183-48f2-b4c4-ef8321890cf6",
                 "title": "task 1.1.1.1",
                 "due_date": "2025-06-21T23:56:02.394631",
