@@ -39,6 +39,7 @@ Future<void> showAddDialog({required BuildContext context}) async {
                       Navigator.pop(context);
                       await NavigationService.navigateTo(
                           context, Pages.addTask);
+                              
 
                       break;
                     case 1:

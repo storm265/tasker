@@ -55,7 +55,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
       title: LocaleKeys.new_task.tr(),
       resizeToAvoidBottomInset: false,
       showLeadingButton: true,
-      isPopFromNavBar: true,
       navRoute: Pages.tasks,
       child: Stack(
         children: [
@@ -69,7 +68,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                 taskController.changePanelStatus(
                     newStatus: InputFieldStatus.hide);
               },
-              height: 660,
+              height: 700,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [

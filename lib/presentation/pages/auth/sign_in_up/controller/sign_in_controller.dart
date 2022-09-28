@@ -109,8 +109,6 @@ class SignInController extends ChangeNotifier {
         type: StorageDataType.accessToken,
         value: authModel.accessToken,
       );
-      MessageService.displaySnackbar(
-          context: context, message: 'Sign in success');
     } catch (e, t) {
       log(' trace : $t');
       MessageService.displaySnackbar(

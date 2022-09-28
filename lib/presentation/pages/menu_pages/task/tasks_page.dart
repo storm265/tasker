@@ -82,7 +82,7 @@ class _TasksPageState extends State<TasksPage>
             //   type: StorageDataType.refreshToken,
             //   value: model.refreshToken,
             // );
-            await taskController.fetchTasks();
+            // await taskController.fetchTasks();
           },
         ),
         backgroundColor: const Color(0xffFDFDFD),
@@ -142,19 +142,18 @@ class _TasksPageState extends State<TasksPage>
               // today
               SingleChildScrollView(
                 child: KeepAlivePageWidget(
-                  child: ListView(
-                    shrinkWrap: true,
+                  child: Column(
                     children: [
-                      ListWidget(
-                        taskController: taskController,
-                        modelList: taskController.tasks,
-                        isToday: true,
-                      ),
-                      ListWidget(
-                        taskController: taskController,
-                        modelList: taskController.tasks,
-                        isToday: false,
-                      ),
+                      // ListWidget(
+                      //   taskController: taskController,
+                      //   modelList: taskController.tasks,
+                      //   isToday: true,
+                      // ),
+                      // ListWidget(
+                      //   taskController: taskController,
+                      //   modelList: taskController.tasks,
+                      //   isToday: false,
+                      // ),
                     ],
                   ),
                 ),
