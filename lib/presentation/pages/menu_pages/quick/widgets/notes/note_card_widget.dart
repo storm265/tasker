@@ -74,8 +74,10 @@ class NoteCardWidget extends StatelessWidget {
             children: [
               ColorLineWidget(color: notesModel.color),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 6,
+                ),
                 child: TitleWidget(
                   title: notesModel.description,
                   textDecoration: notesModel.isCompleted

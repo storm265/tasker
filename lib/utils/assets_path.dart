@@ -12,4 +12,5 @@ class AssetsPath {
   static const doubleArrowIconPath = '$_detailedPath/double_arrow.svg';
   static const membersIconPath = '$_detailedPath/members.svg';
   static const tagIconIconPath = '$_detailedPath/tag.svg';
+  static const fileAttachmentIconPath = '$_detailedPath/file_attachment.svg';
 }

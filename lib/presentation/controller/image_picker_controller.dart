@@ -1,9 +1,11 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/repository/user_repository.dart';
+import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
@@ -22,10 +24,17 @@ class FileController extends ChangeNotifier {
     ),
   );
 
-  final _emptyImage = const PlatformFile(name: '', size: 0, path: '');
+  final _emptyImage = PlatformFile(
+    name: '',
+    size: 0,
+    path: '',
+  );
 
-  var pickedFile =
-      ValueNotifier(const PlatformFile(name: '', size: 0, path: ''));
+  var pickedFile = ValueNotifier(PlatformFile(
+    name: '',
+    size: 0,
+    path: '',
+  ));
 
   bool isValidImageFormat(String image) {
     if (image.endsWith(_jpeg) || image.endsWith(_png) || image.endsWith(_jpg)) {
@@ -65,7 +74,7 @@ class FileController extends ChangeNotifier {
         result.files.clear();
         pickedFile.notifyListeners();
         throw MessageService.displaySnackbar(
-          message: 'You cant put huge file',
+          message: LocaleKeys.file_size_is_too_huge.tr(),
           context: context,
         );
       } else if (isValidImageFormat(pickedFile.value.extension ?? '')) {
@@ -77,7 +86,8 @@ class FileController extends ChangeNotifier {
         result.files.clear();
         pickedFile.notifyListeners();
         throw MessageService.displaySnackbar(
-          message: 'Wrong image, supported formats: .$_jpeg, .$_jpg, .$_png.',
+          message:
+              '${LocaleKeys.wrong_image_supported_formats.tr()} .$_jpeg, .$_jpg, .$_png.',
           context: context,
         );
       }
@@ -93,7 +103,7 @@ class FileController extends ChangeNotifier {
       if (result!.files.first.size >= _maxFileSize) {
         result.files.clear();
         throw MessageService.displaySnackbar(
-          message: 'You cant put huge file',
+          message: LocaleKeys.file_size_is_too_huge.tr(),
           context: context,
         );
       } else {
@@ -117,10 +127,20 @@ class FileController extends ChangeNotifier {
           pickedFile.value.name.isNotEmpty) {
         log('image is valid!');
 
-        await uploadAvatar().then((_) => Navigator.pop(context));
+        await uploadAvatar().then((_) {
+          MessageService.displaySnackbar(
+            context: context,
+            message: LocaleKeys.avatar_updated.tr(),
+          );
+          Navigator.pop(context);
+        });
         await profileController.clearImage();
       }
     } catch (e, t) {
+      MessageService.displaySnackbar(
+        context: context,
+        message: LocaleKeys.avatar_not_updated.tr(),
+      );
       log('update img error : $e, $t');
       throw Failure(e.toString());
     }

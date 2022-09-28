@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/detailed_page/detailed_task.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/widgets/circle_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/circle_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/view_task/view_task.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
+
+final timeNow = DateTime.now();
 
 class TaskCardWidget extends StatelessWidget {
   final int index;
@@ -17,15 +20,27 @@ class TaskCardWidget extends StatelessWidget {
     required this.taskController,
   }) : super(key: key);
 
+  bool _isSoonExpire(DateTime deadLineTime) {
+    if (DateFormat('yyyy-MM-dd').format(deadLineTime) ==
+            DateFormat('yyyy-MM-dd')
+                .format(DateTime.utc(timeNow.year, timeNow.month, timeNow.day)) &&
+        timeNow.hour + 2 <= deadLineTime.hour) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final date = data[index].dueDate;
     String isAm = (date.hour > 12) ? 'pm' : 'am';
+
     return GestureDetector(
       onTap: () async {
         await showDialog(
           context: context,
-          builder: (_) => DetailedTaskPage(
+          builder: (_) => ViewTask(
             taskController: taskController,
             pickedTask: data[index],
           ),
@@ -35,7 +50,9 @@ class TaskCardWidget extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: _isSoonExpire(data[index].dueDate)
+                ? const Color(0xFFFFFFEF).withOpacity(0.7)
+                : Colors.white,
             boxShadow: [
               BoxShadow(
                 color: const Color(0xFFE0E0E0).withOpacity(0.5),

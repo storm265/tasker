@@ -10,13 +10,19 @@ abstract class  LocaleKeys {
   static const task_and_assign_them_to_colleagues = 'task_and_assign_them_to_colleagues';
   static const welcome = 'welcome';
   static const sign_up_to_continue = 'sign_up_to_continue';
+  static const sign_in_to_continue = 'sign_in_to_continue';
   static const username = 'username';
   static const password = 'password';
   static const email = 'email';
   static const welcome_back = 'welcome_back';
-  static const sign_in_to_continue = 'sign_in_to_continue';
   static const sign_up = 'sign_up';
   static const sign_in = 'sign_in';
+  static const sign_up_success = 'sign_up_success';
+  static const sign_in_success = 'sign_in_success';
+  static const avatar_updated = 'avatar_updated';
+  static const file_size_is_too_huge = 'file_size_is_too_huge';
+  static const wrong_image_supported_formats = 'wrong_image_supported_formats';
+  static const avatar_not_updated = 'avatar_not_updated';
   static const no_data = 'no_data';
   static const enter_your_password = 'enter_your_password';
   static const validating = 'validating';
@@ -45,6 +51,7 @@ abstract class  LocaleKeys {
   static const title = 'title';
   static const description = 'description';
   static const please_enter_text = 'please_enter_text';
+  static const please_pick_color = 'please_pick_color';
   static const due_date = 'due_date';
   static const anytime = 'anytime';
   static const add_member = 'add_member';
@@ -53,6 +60,7 @@ abstract class  LocaleKeys {
   static const assigned_to = 'assigned_to';
   static const members = 'members';
   static const tag = 'tag';
+  static const comments = 'comments';
   static const complete_task = 'complete_task';
   static const comment = 'comment';
   static const write_a_comment = 'write_a_comment';
@@ -78,5 +86,6 @@ abstract class  LocaleKeys {
   static const loaing = 'loaing';
   static const add_note = 'add_note';
   static const please_restart_app = 'please_restart_app';
+  static const form_is_not_valid = 'form_is_not_valid';
 
 }

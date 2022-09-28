@@ -43,7 +43,9 @@ Future<void> showSettingsDialog({
                       );
                       break;
                     case 1:
-                      await profileController.changeLocalization(context);
+                      await profileController.changeLocalization(context).then(
+                            (_) => Navigator.pop(context),
+                          );
                       break;
                     case 2:
                       await profileController.signOut(context: context);

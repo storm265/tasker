@@ -77,7 +77,7 @@ class StatsWidget extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(horizontal: 15),
                             child: CircularPercentIndicator(
                               animation: true,
-                              radius: 40.0,
+                              radius: 36.0,
                               lineWidth: 2.3,
                               percent:
                                   double.parse(stats[i].removeLastElement()) /
@@ -96,10 +96,12 @@ class StatsWidget extends StatelessWidget {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(top: 20),
+                            padding: const EdgeInsets.only(top: 15),
                             child: Text(
+                              softWrap: true,
                               labels[i],
                               style: const TextStyle(
+                                overflow: TextOverflow.ellipsis,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                               ),

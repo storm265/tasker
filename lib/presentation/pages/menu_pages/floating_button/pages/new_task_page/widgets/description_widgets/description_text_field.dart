@@ -5,44 +5,55 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_ta
 
 class DescriptionTextField extends StatelessWidget {
   final AddTaskController taskController;
+  final String? hintText;
   const DescriptionTextField({
     super.key,
     required this.taskController,
+    this.hintText,
   });
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      style: const TextStyle(
-        fontSize: 18,
-        fontStyle: FontStyle.italic,
-        fontWeight: FontWeight.w300,
-      ),
-      validator: (text) {
-        if (text == null || text.isEmpty) {
-          return LocaleKeys.please_enter_text.tr();
-        }
-        return null;
-      },
-      controller: taskController.descriptionController,
-      onEditingComplete: () => FocusScope.of(context).unfocus(),
-      maxLength: 512,
-      buildCounter: (
-        context, {
-        required currentLength,
-        required isFocused,
-        maxLength,
-      }) =>
-          maxLength == currentLength
-              ? Text(
-                  '$maxLength/$maxLength',
-                  style: const TextStyle(color: Colors.red),
-                )
-              : null,
-      keyboardType: TextInputType.multiline,
-      maxLines: null,
-      decoration: const InputDecoration(
-        border: InputBorder.none,
+    return Padding(
+      padding: const EdgeInsets.only(left: 12),
+      child: TextFormField(
+        style: const TextStyle(
+          fontSize: 18,
+          fontStyle: FontStyle.italic,
+          fontWeight: FontWeight.w200,
+        ),
+        validator: (text) {
+          if (text == null || text.isEmpty) {
+            return LocaleKeys.please_enter_text.tr();
+          }
+          return null;
+        },
+        controller: taskController.descriptionController,
+        onEditingComplete: () => FocusScope.of(context).unfocus(),
+        maxLength: 512,
+        buildCounter: (
+          context, {
+          required currentLength,
+          required isFocused,
+          maxLength,
+        }) =>
+            maxLength == currentLength
+                ? Text(
+                    '$maxLength/$maxLength',
+                    style: const TextStyle(color: Colors.red),
+                  )
+                : null,
+        keyboardType: TextInputType.multiline,
+        maxLines: null,
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          hintText: hintText,
+          hintStyle: const TextStyle(
+            color: Color(0xFFD8D8D8),
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
       ),
     );
   }

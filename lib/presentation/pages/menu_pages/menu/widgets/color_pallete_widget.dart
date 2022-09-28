@@ -28,7 +28,7 @@ class ColorPalleteWidget extends StatelessWidget {
                 right: 15,
               ),
               child: Text(
-                LocaleKeys.please_enter_title.tr(),
+                LocaleKeys.choose_color.tr(),
                 style: const TextStyle(
                   fontWeight: FontWeight.w200,
                   fontStyle: FontStyle.italic,
@@ -45,20 +45,20 @@ class ColorPalleteWidget extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 itemCount: colors.length,
                 shrinkWrap: true,
-                itemBuilder: ((_, index) {
+                itemBuilder: ((_, i) {
                   return Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 6),
                       child: GestureDetector(
-                        onTap: () => colorController.changeSelectedIndex(index),
+                        onTap: () => colorController.changeSelectedIndex(i),
                         child: Container(
                           width: 48,
                           height: 48,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(5),
-                            color: colors[index],
+                            color: colors[i],
                           ),
                           child: Icon(
-                            (selectedIndex == index) ? Icons.done : null,
+                            (selectedIndex == i) ? Icons.done : null,
                             color: Colors.white,
                           ),
                         ),

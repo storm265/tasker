@@ -64,6 +64,7 @@ class CheckListController extends ChangeNotifier {
     checkBoxItems.value.clear();
     colorPalleteController.changeSelectedIndex(99);
     titleController.clear();
+    changeEditValueStatus(false);
   }
 
   void pickModel({required CheckListModel checklistModel}) =>

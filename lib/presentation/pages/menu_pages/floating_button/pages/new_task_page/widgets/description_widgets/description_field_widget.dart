@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/description_widgets/desciption_text.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/description_widgets/description_text_field.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/description_widgets/description_box_widget.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 
 class DescriptionFieldWidget extends StatelessWidget {
@@ -26,57 +26,7 @@ class DescriptionFieldWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           desciptionTextWidget,
-          Container(
-            width: 290,
-            height: 110,
-            decoration: BoxDecoration(
-              border: Border.all(
-                color: const Color(0xFFEAEAEA),
-                width: 1,
-              ),
-              borderRadius: BorderRadius.circular(5),
-              color: Colors.white,
-            ),
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  DescriptionTextField(taskController: taskController),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 23),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            color: const Color(0xFFEAEAEA), width: 1),
-                        borderRadius: const BorderRadius.horizontal(
-                            right: Radius.circular(5),
-                            left: Radius.circular(5)),
-                        color: const Color(0xFFF8F8F8),
-                      ),
-                      width: double.infinity,
-                      height: 40,
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Transform.rotate(
-                          angle: 43.2,
-                          child: IconButton(
-                              icon: const Icon(
-                                Icons.attachment_outlined,
-                                color: Colors.grey,
-                              ),
-                              onPressed: () async {
-                                final file = await taskController.fileController
-                                    .pickFile(context: context);
-                                taskController.addAttachment(attachment: file);
-                              }),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+        DescriptionBoxWidget(taskController: taskController),
           //   const AttachementWidget(),
           ValueListenableBuilder<List<PlatformFile>>(
               valueListenable: taskController.attachments,

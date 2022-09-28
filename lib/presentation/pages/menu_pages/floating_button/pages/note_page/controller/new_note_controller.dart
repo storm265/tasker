@@ -62,6 +62,7 @@ class NewNoteController extends ChangeNotifier {
   void clearData() {
     descriptionTextController.clear();
     colorPalleteController.changeSelectedIndex(99);
+    changeEditValueStatus(false);
   }
 
   void pickEditData({required NotesModel notesModel}) {

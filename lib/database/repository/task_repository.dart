@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:todo2/database/data_source/task_data_source.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
@@ -6,7 +7,6 @@ import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
-
 
 abstract class TaskRepository<T> {
   // Future fetchTaskId({required String title});
@@ -102,37 +102,32 @@ class TaskRepositoryImpl implements TaskRepository {
     }
   }
 
-  Future<TaskModel> fetchUserTasks({required String projectId}) async {
+  Future<List<TaskModel>> fetchUserTasks() async {
     try {
-      final response =
-          await _taskDataSource.fetchUserTasks(projectId: projectId);
-      final listModel =
-          response.map((json) => TaskModel.fromJson(json)).toList();
-      return listModel[0];
+      final response = await _taskDataSource.fetchUserTasks();
+
+      return response.map((json) => TaskModel.fromJson(json)).toList();
+    } catch (e, t) {
+      log('repo $t');
+      throw Failure(e.toString());
+    }
+  }
+
+  Future<List<TaskModel>> fetchAssignedToTasks() async {
+    try {
+      final response = await _taskDataSource.fetchAssignedToTasks();
+      return response.map((json) => TaskModel.fromJson(json)).toList();
     } catch (e) {
       throw Failure(e.toString());
     }
   }
 
-  Future<TaskModel> fetchAssignedToTasks({required String projectId}) async {
+  Future<List<TaskModel>> fetchParticipateInTasks() async {
     try {
-      final response =
-          await _taskDataSource.fetchAssignedToTasks(projectId: projectId);
-      final listModel =
-          response.map((json) => TaskModel.fromJson(json)).toList();
-      return listModel[0];
-    } catch (e) {
-      throw Failure(e.toString());
-    }
-  }
+      final response = await _taskDataSource.fetchParticipateInTasks();
 
-  Future<TaskModel> fetchParticipateInTasks({required String projectId}) async {
-    try {
-      final response =
-          await _taskDataSource.fetchParticipateInTasks(projectId: projectId);
-      final listModel =
-          response.map((json) => TaskModel.fromJson(json)).toList();
-      return listModel[0];
+      return response.map((json) => TaskModel.fromJson(json)).toList();
+      ;
     } catch (e) {
       throw Failure(e.toString());
     }

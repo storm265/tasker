@@ -71,7 +71,8 @@ class _SignUpPageState extends State<SignUpPage> {
                           TitleTextWidget(text: LocaleKeys.welcome.tr()),
                           const SizedBox(height: 6),
                           SubTitleWidget(
-                              text: LocaleKeys.sign_up_to_continue.tr()),
+                            text: LocaleKeys.sign_up_to_continue.tr(),
+                          ),
                         ],
                       ),
                     ),

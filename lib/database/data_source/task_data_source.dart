@@ -33,11 +33,11 @@ abstract class TaskDataSource {
 
   Future<List<dynamic>> fetchProjectTasks({required String projectId});
 
-  Future<List<dynamic>> fetchUserTasks({required String projectId});
+  Future<List<dynamic>> fetchUserTasks();
 
-  Future<List<dynamic>> fetchAssignedToTasks({required String projectId});
+  Future<List<dynamic>> fetchAssignedToTasks();
 
-  Future<List<dynamic>> fetchParticipateInTasks({required String projectId});
+  Future<List<dynamic>> fetchParticipateInTasks();
 
   Future<void> uploadTaskAttachment({
     required String name,
@@ -226,31 +226,159 @@ class TaskDataSourceImpl implements TaskDataSource {
   }
 
   @override
-  Future<List<dynamic>> fetchUserTasks({required String projectId}) async {
+  Future<List<dynamic>> fetchUserTasks() async {
     try {
-      final response = await _network.get(
-        path: '$_userTasks/$projectId',
-        options: await _network.getLocalRequestOptions(),
-      );
+      final ownerId =
+          await _secureStorage.getUserData(type: StorageDataType.id);
+      // final response = await _network.get(
+      //   path: '$_userTasks/$ownerId',
+      //   options: await _network.getLocalRequestOptions(),
+      // );
+      final response = Response(
+          requestOptions: RequestOptions(path: ''),
+          statusCode: 200,
+          data: {
+            "data": [
+              {
+                "id": "94f11b2f-c183-48f2-b4c4-ef8321890cf6",
+                "title": "task 1.1.1.1",
+                "due_date": "2025-06-21T23:56:02.394631",
+                "description": "task1 description",
+                "assigned_to": "d96e5ab4-dc94-4388-8fb4-b9c6153714dd",
+                "is_completed": true,
+                "project_id": "eda45acd-22d1-4dc6-9f75-0c0e7b172d0f",
+                "owner_id": "76d2fab4-fd06-4909-bf8e-875c6b55c1f7",
+                "attachments": [
+                  {
+                    "id": "a27f5ba2-6309-4549-b777-1d07b5363aab",
+                    "url":
+                        "https://todolist.dev2.cogniteq.com/api/v1/tasks-attachments/a27f5ba2-6309-4549-b777-1d07b5363aab",
+                    "type": "FILE",
+                    "task_id": "94f11b2f-c183-48f2-b4c4-ef8321890cf6",
+                    "created_at": "2022-07-13T09:27:34.041691"
+                  },
+                  {
+                    "id": "9aefe999-5358-4ee2-a463-e72bfff4dc0a",
+                    "url":
+                        "https://todolist.dev2.cogniteq.com/api/v1/tasks-attachments/9aefe999-5358-4ee2-a463-e72bfff4dc0a",
+                    "type": "IMAGE",
+                    "task_id": "94f11b2f-c183-48f2-b4c4-ef8321890cf6",
+                    "created_at": "2022-07-13T09:28:00.235821"
+                  }
+                ],
+                "members": [
+                  {
+                    "id": "d0712893-00b7-4658-8227-2957ef11cad0",
+                    "email": "andrei.kastsiuk2@cogniteq.com",
+                    "username": "andreikastsiuk",
+                    "avatar_url":
+                        "https://todolist.dev2.cogniteq.com/api/v1/users-avatar/d0712893-00b7-4658-8227-2957ef11cad0",
+                    "created_at": "2022-07-13T09:16:30.841251"
+                  },
+                  {
+                    "id": "d96e5ab4-dc94-4388-8fb4-b9c6153714dd",
+                    "email": "andrei.kastsiuk3@cogniteq.com",
+                    "username": "andreikastsiuk",
+                    "avatar_url":
+                        "https://todolist.dev2.cogniteq.com/api/v1/users-avatar/d96e5ab4-dc94-4388-8fb4-b9c6153714dd",
+                    "created_at": "2022-07-13T09:16:33.113941"
+                  },
+                  {
+                    "id": "4a6af995-3111-4dc6-ab09-a1abc02e7892",
+                    "email": "andrei.kastsiuk5@cogniteq.com",
+                    "username": "andreikastsiuk",
+                    "avatar_url":
+                        "https://todolist.dev2.cogniteq.com/api/v1/users-avatar/4a6af995-3111-4dc6-ab09-a1abc02e7892",
+                    "created_at": "2022-07-13T09:16:35.924425"
+                  }
+                ],
+                "created_at": "2022-07-13T09:17:11.400401"
+              }
+            ]
+          });
 
       log('fetchUserTasks ${response.statusMessage}');
       log('fetchUserTasks ${response.statusCode}');
       return NetworkErrorService.isSuccessful(response)
           ? (response.data![TaskScheme.data] as List<dynamic>)
           : throw Failure('Error: Get fetchUserTasks error');
-    } catch (e) {
+    } catch (e, t) {
+      log('datasource $t');
       throw Failure(e.toString());
     }
   }
 
   @override
-  Future<List<dynamic>> fetchAssignedToTasks(
-      {required String projectId}) async {
+  Future<List<dynamic>> fetchAssignedToTasks() async {
     try {
-      final response = await _network.get(
-        path: '$_assignedToTasks/$projectId',
-        options: await _network.getLocalRequestOptions(),
-      );
+      final ownerId =
+          await _secureStorage.getUserData(type: StorageDataType.id);
+      // final response = await _network.get(
+      //   path: '$_assignedToTasks/$ownerId',
+      //   options: await _network.getLocalRequestOptions(),
+      // );
+      final response = Response(
+          requestOptions: RequestOptions(path: ''),
+          statusCode: 200,
+          data: {
+            "data": [
+              {
+                "id": "94f11b2f-c183-48f2-b4c4-ef8321890cf6",
+                "title": "task 1.1.1.1",
+                "due_date": "2025-06-21T23:56:02.394631",
+                "description": "task1 description",
+                "assigned_to": "d96e5ab4-dc94-4388-8fb4-b9c6153714dd",
+                "is_completed": true,
+                "project_id": "eda45acd-22d1-4dc6-9f75-0c0e7b172d0f",
+                "owner_id": "76d2fab4-fd06-4909-bf8e-875c6b55c1f7",
+                "attachments": [
+                  {
+                    "id": "a27f5ba2-6309-4549-b777-1d07b5363aab",
+                    "url":
+                        "https://todolist.dev2.cogniteq.com/api/v1/tasks-attachments/a27f5ba2-6309-4549-b777-1d07b5363aab",
+                    "type": "FILE",
+                    "task_id": "94f11b2f-c183-48f2-b4c4-ef8321890cf6",
+                    "created_at": "2022-07-13T09:27:34.041691"
+                  },
+                  {
+                    "id": "9aefe999-5358-4ee2-a463-e72bfff4dc0a",
+                    "url":
+                        "https://todolist.dev2.cogniteq.com/api/v1/tasks-attachments/9aefe999-5358-4ee2-a463-e72bfff4dc0a",
+                    "type": "IMAGE",
+                    "task_id": "94f11b2f-c183-48f2-b4c4-ef8321890cf6",
+                    "created_at": "2022-07-13T09:28:00.235821"
+                  }
+                ],
+                "members": [
+                  {
+                    "id": "d0712893-00b7-4658-8227-2957ef11cad0",
+                    "email": "andrei.kastsiuk2@cogniteq.com",
+                    "username": "andreikastsiuk",
+                    "avatar_url":
+                        "https://todolist.dev2.cogniteq.com/api/v1/users-avatar/d0712893-00b7-4658-8227-2957ef11cad0",
+                    "created_at": "2022-07-13T09:16:30.841251"
+                  },
+                  {
+                    "id": "d96e5ab4-dc94-4388-8fb4-b9c6153714dd",
+                    "email": "andrei.kastsiuk3@cogniteq.com",
+                    "username": "andreikastsiuk",
+                    "avatar_url":
+                        "https://todolist.dev2.cogniteq.com/api/v1/users-avatar/d96e5ab4-dc94-4388-8fb4-b9c6153714dd",
+                    "created_at": "2022-07-13T09:16:33.113941"
+                  },
+                  {
+                    "id": "4a6af995-3111-4dc6-ab09-a1abc02e7892",
+                    "email": "andrei.kastsiuk5@cogniteq.com",
+                    "username": "andreikastsiuk",
+                    "avatar_url":
+                        "https://todolist.dev2.cogniteq.com/api/v1/users-avatar/4a6af995-3111-4dc6-ab09-a1abc02e7892",
+                    "created_at": "2022-07-13T09:16:35.924425"
+                  }
+                ],
+                "created_at": "2022-07-13T09:17:11.400401"
+              }
+            ]
+          });
 
       log('fetchAssignedToTasks ${response.statusMessage}');
       log('fetchAssignedToTasks ${response.statusCode}');
@@ -263,14 +391,184 @@ class TaskDataSourceImpl implements TaskDataSource {
   }
 
   @override
-  Future<List<dynamic>> fetchParticipateInTasks(
-      {required String projectId}) async {
+  Future<List<dynamic>> fetchParticipateInTasks() async {
+    final ownerId = await _secureStorage.getUserData(type: StorageDataType.id);
     try {
-      final response = await _network.get(
-        path: '$_participateInTasks/$projectId',
-        options: await _network.getLocalRequestOptions(),
-      );
+      // final response = await _network.get(
+      //   path: '$_participateInTasks/$ownerId',
+      //   options: await _network.getLocalRequestOptions(),
+      // );
 
+      final response = Response(
+          requestOptions: RequestOptions(path: ''),
+          statusCode: 200,
+          data: {
+            "data": [
+              {
+                "id": "94f11b2f-c183-48f2-b4c4-ef8321890cf6",
+                "title": "task 1.1.1.1",
+                "due_date": "2025-06-21T23:56:02.394631",
+                "description": "task1 description",
+                "assigned_to": "d96e5ab4-dc94-4388-8fb4-b9c6153714dd",
+                "is_completed": true,
+                "project_id": "eda45acd-22d1-4dc6-9f75-0c0e7b172d0f",
+                "owner_id": "76d2fab4-fd06-4909-bf8e-875c6b55c1f7",
+                "attachments": [
+                  {
+                    "id": "a27f5ba2-6309-4549-b777-1d07b5363aab",
+                    "url":
+                        "https://todolist.dev2.cogniteq.com/api/v1/tasks-attachments/a27f5ba2-6309-4549-b777-1d07b5363aab",
+                    "type": "FILE",
+                    "task_id": "94f11b2f-c183-48f2-b4c4-ef8321890cf6",
+                    "created_at": "2022-07-13T09:27:34.041691"
+                  },
+                  {
+                    "id": "9aefe999-5358-4ee2-a463-e72bfff4dc0a",
+                    "url":
+                        "https://todolist.dev2.cogniteq.com/api/v1/tasks-attachments/9aefe999-5358-4ee2-a463-e72bfff4dc0a",
+                    "type": "IMAGE",
+                    "task_id": "94f11b2f-c183-48f2-b4c4-ef8321890cf6",
+                    "created_at": "2022-07-13T09:28:00.235821"
+                  }
+                ],
+                "members": [
+                  {
+                    "id": "d0712893-00b7-4658-8227-2957ef11cad0",
+                    "email": "andrei.kastsiuk2@cogniteq.com",
+                    "username": "andreikastsiuk",
+                    "avatar_url":
+                        "https://todolist.dev2.cogniteq.com/api/v1/users-avatar/d0712893-00b7-4658-8227-2957ef11cad0",
+                    "created_at": "2022-07-13T09:16:30.841251"
+                  },
+                  {
+                    "id": "d96e5ab4-dc94-4388-8fb4-b9c6153714dd",
+                    "email": "andrei.kastsiuk3@cogniteq.com",
+                    "username": "andreikastsiuk",
+                    "avatar_url":
+                        "https://todolist.dev2.cogniteq.com/api/v1/users-avatar/d96e5ab4-dc94-4388-8fb4-b9c6153714dd",
+                    "created_at": "2022-07-13T09:16:33.113941"
+                  },
+                  {
+                    "id": "4a6af995-3111-4dc6-ab09-a1abc02e7892",
+                    "email": "andrei.kastsiuk5@cogniteq.com",
+                    "username": "andreikastsiuk",
+                    "avatar_url":
+                        "https://todolist.dev2.cogniteq.com/api/v1/users-avatar/4a6af995-3111-4dc6-ab09-a1abc02e7892",
+                    "created_at": "2022-07-13T09:16:35.924425"
+                  }
+                ],
+                "created_at": "2022-07-13T09:17:11.400401"
+              }, {
+                "id": "94f11b2f-c183-48f2-b4c4-ef8321890cf6",
+                "title": "task 1.1.1.1",
+                "due_date": "2025-06-21T23:56:02.394631",
+                "description": "task1 description",
+                "assigned_to": "d96e5ab4-dc94-4388-8fb4-b9c6153714dd",
+                "is_completed": true,
+                "project_id": "eda45acd-22d1-4dc6-9f75-0c0e7b172d0f",
+                "owner_id": "76d2fab4-fd06-4909-bf8e-875c6b55c1f7",
+                "attachments": [
+                  {
+                    "id": "a27f5ba2-6309-4549-b777-1d07b5363aab",
+                    "url":
+                        "https://todolist.dev2.cogniteq.com/api/v1/tasks-attachments/a27f5ba2-6309-4549-b777-1d07b5363aab",
+                    "type": "FILE",
+                    "task_id": "94f11b2f-c183-48f2-b4c4-ef8321890cf6",
+                    "created_at": "2022-07-13T09:27:34.041691"
+                  },
+                  {
+                    "id": "9aefe999-5358-4ee2-a463-e72bfff4dc0a",
+                    "url":
+                        "https://todolist.dev2.cogniteq.com/api/v1/tasks-attachments/9aefe999-5358-4ee2-a463-e72bfff4dc0a",
+                    "type": "IMAGE",
+                    "task_id": "94f11b2f-c183-48f2-b4c4-ef8321890cf6",
+                    "created_at": "2022-07-13T09:28:00.235821"
+                  }
+                ],
+                "members": [
+                  {
+                    "id": "d0712893-00b7-4658-8227-2957ef11cad0",
+                    "email": "andrei.kastsiuk2@cogniteq.com",
+                    "username": "andreikastsiuk",
+                    "avatar_url":
+                        "https://todolist.dev2.cogniteq.com/api/v1/users-avatar/d0712893-00b7-4658-8227-2957ef11cad0",
+                    "created_at": "2022-07-13T09:16:30.841251"
+                  },
+                  {
+                    "id": "d96e5ab4-dc94-4388-8fb4-b9c6153714dd",
+                    "email": "andrei.kastsiuk3@cogniteq.com",
+                    "username": "andreikastsiuk",
+                    "avatar_url":
+                        "https://todolist.dev2.cogniteq.com/api/v1/users-avatar/d96e5ab4-dc94-4388-8fb4-b9c6153714dd",
+                    "created_at": "2022-07-13T09:16:33.113941"
+                  },
+                  {
+                    "id": "4a6af995-3111-4dc6-ab09-a1abc02e7892",
+                    "email": "andrei.kastsiuk5@cogniteq.com",
+                    "username": "andreikastsiuk",
+                    "avatar_url":
+                        "https://todolist.dev2.cogniteq.com/api/v1/users-avatar/4a6af995-3111-4dc6-ab09-a1abc02e7892",
+                    "created_at": "2022-07-13T09:16:35.924425"
+                  }
+                ],
+                "created_at": "2022-07-13T09:17:11.400401"
+              }, {
+                "id": "94f11b2f-c183-48f2-b4c4-ef8321890cf6",
+                "title": "task 1.1.1.1",
+                "due_date": "2025-06-21T23:56:02.394631",
+                "description": "task1 description",
+                "assigned_to": "d96e5ab4-dc94-4388-8fb4-b9c6153714dd",
+                "is_completed": true,
+                "project_id": "eda45acd-22d1-4dc6-9f75-0c0e7b172d0f",
+                "owner_id": "76d2fab4-fd06-4909-bf8e-875c6b55c1f7",
+                "attachments": [
+                  {
+                    "id": "a27f5ba2-6309-4549-b777-1d07b5363aab",
+                    "url":
+                        "https://todolist.dev2.cogniteq.com/api/v1/tasks-attachments/a27f5ba2-6309-4549-b777-1d07b5363aab",
+                    "type": "FILE",
+                    "task_id": "94f11b2f-c183-48f2-b4c4-ef8321890cf6",
+                    "created_at": "2022-07-13T09:27:34.041691"
+                  },
+                  {
+                    "id": "9aefe999-5358-4ee2-a463-e72bfff4dc0a",
+                    "url":
+                        "https://todolist.dev2.cogniteq.com/api/v1/tasks-attachments/9aefe999-5358-4ee2-a463-e72bfff4dc0a",
+                    "type": "IMAGE",
+                    "task_id": "94f11b2f-c183-48f2-b4c4-ef8321890cf6",
+                    "created_at": "2022-07-13T09:28:00.235821"
+                  }
+                ],
+                "members": [
+                  {
+                    "id": "d0712893-00b7-4658-8227-2957ef11cad0",
+                    "email": "andrei.kastsiuk2@cogniteq.com",
+                    "username": "andreikastsiuk",
+                    "avatar_url":
+                        "https://todolist.dev2.cogniteq.com/api/v1/users-avatar/d0712893-00b7-4658-8227-2957ef11cad0",
+                    "created_at": "2022-07-13T09:16:30.841251"
+                  },
+                  {
+                    "id": "d96e5ab4-dc94-4388-8fb4-b9c6153714dd",
+                    "email": "andrei.kastsiuk3@cogniteq.com",
+                    "username": "andreikastsiuk",
+                    "avatar_url":
+                        "https://todolist.dev2.cogniteq.com/api/v1/users-avatar/d96e5ab4-dc94-4388-8fb4-b9c6153714dd",
+                    "created_at": "2022-07-13T09:16:33.113941"
+                  },
+                  {
+                    "id": "4a6af995-3111-4dc6-ab09-a1abc02e7892",
+                    "email": "andrei.kastsiuk5@cogniteq.com",
+                    "username": "andreikastsiuk",
+                    "avatar_url":
+                        "https://todolist.dev2.cogniteq.com/api/v1/users-avatar/4a6af995-3111-4dc6-ab09-a1abc02e7892",
+                    "created_at": "2022-07-13T09:16:35.924425"
+                  }
+                ],
+                "created_at": "2022-07-13T09:17:11.400401"
+              },
+            ]
+          });
       log('fetchParticipateInTasks ${response.statusMessage}');
       log('fetchParticipateInTasks ${response.statusCode}');
       return NetworkErrorService.isSuccessful(response)

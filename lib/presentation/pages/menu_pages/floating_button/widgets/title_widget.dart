@@ -42,7 +42,7 @@ class TitleWidget extends StatelessWidget {
             textInputType: textInputType,
             maxLength: maxLength,
             maxLines: maxLines,
-            hintText: 'Enter $title:',
+            //  hintText: title,
             titleController: textController,
             onEdiditionCompleteCallback: onEdiditionCompleteCallback,
           ),

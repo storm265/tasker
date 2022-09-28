@@ -20,7 +20,7 @@ class CommentButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              LocaleKeys.comment.tr(),
+              LocaleKeys.comments.tr(),
               style: const TextStyle(
                 fontStyle: FontStyle.italic,
                 fontWeight: FontWeight.w200,

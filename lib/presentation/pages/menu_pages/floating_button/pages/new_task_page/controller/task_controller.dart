@@ -6,12 +6,13 @@ import 'package:intl/intl.dart';
 import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
+import 'package:todo2/database/model/task_models/task_attachments_model.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/controller/image_picker_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/widgets/calendar_lib/controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/calendar_lib/controller.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/network_service/network_config.dart';
@@ -32,6 +33,17 @@ class AddTaskController extends ChangeNotifier {
 
   AddTaskController._internal();
 
+  final _taskRepository = TaskRepositoryImpl();
+  final userProfileRepository = UserProfileRepositoryImpl(
+    userProfileDataSource: UserProfileDataSourceImpl(
+      secureStorageService: SecureStorageSource(),
+      network: NetworkSource(),
+    ),
+  );
+
+  final projectController = ProjectController();
+  final fileController = FileController();
+
   void changeTabIndexValue(
     int index,
     ValueNotifier<TabController> controller,
@@ -40,20 +52,7 @@ class AddTaskController extends ChangeNotifier {
     controller.notifyListeners();
   }
 
-  // TaskModel pickedTask = TaskModel(
-  //   id: '',
-  //   title: '',
-  //   dueDate: DateTime.now(),
-  //   description: '',
-  //   assignedTo: '',
-  //   isCompleted: false,
-  //   projectId: '',
-  //   ownerId: '',
-  //   createdAt: DateTime.now(),
-  // );
   final isSubmitButtonClicked = ValueNotifier<bool>(true);
-
-  final fileController = FileController();
 
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
@@ -69,16 +68,6 @@ class AddTaskController extends ChangeNotifier {
     }
     return list;
   }
-
-  final _taskRepository = TaskRepositoryImpl();
-  final userProfileRepository = UserProfileRepositoryImpl(
-    userProfileDataSource: UserProfileDataSourceImpl(
-      secureStorageService: SecureStorageSource(),
-      network: NetworkSource(),
-    ),
-  );
-
-  final projectController = ProjectController();
 
   final pickedDate = AdvancedCalendarController.today();
   final calendarController = AdvancedCalendarController.today();
@@ -117,6 +106,18 @@ class AddTaskController extends ChangeNotifier {
     DateTime.utc(2022, 09, 23, 12),
   ];
 
+  void clearData() {
+    taskMembers.value.clear();
+    taskMembers.notifyListeners();
+    titleController.clear();
+    descriptionController.clear();
+    userTextController.clear();
+    projectTextController.clear();
+    attachments.value.clear();
+  }
+
+// MEMBERS
+
   final taskMembers = ValueNotifier<Set<UserProfileModel>>({});
 
   void addMember({required UserProfileModel userModel}) {
@@ -137,6 +138,8 @@ class AddTaskController extends ChangeNotifier {
   final userTextController = TextEditingController(text: 'Assignee');
   final projectTextController = TextEditingController(text: 'Project');
 
+// ATTachments
+
   final attachments = ValueNotifier<List<PlatformFile>>([]);
 
   void addAttachment({required PlatformFile attachment}) {
@@ -152,7 +155,7 @@ class AddTaskController extends ChangeNotifier {
   final pickedUser = ValueNotifier<UserProfileModel>(
     UserProfileModel(
       avatarUrl: '',
-      createdAt: '',
+      createdAt: DateTime.now(),
       username: '',
       id: '',
       email: '',
@@ -244,8 +247,8 @@ class AddTaskController extends ChangeNotifier {
           }
           log('is edit $isEdit');
           if (isEdit) {
-          } else {
             print('update task');
+          } else {
             final model = await createTask();
             log('model : $model');
             taskId = model.id;
@@ -277,7 +280,7 @@ class AddTaskController extends ChangeNotifier {
     }
   }
 
-// Main operations
+// Core operations
 
   Future<TaskModel> createTask() async {
     try {
@@ -347,92 +350,45 @@ class AddTaskController extends ChangeNotifier {
     }
   }
 
-  Future<List<TaskModel>> fetchTasks() async {
-    print('fetch tasks');
-    return taskModel;
+// FAKE
+  List<TaskModel> tasks = [];
+  Future<void> fetchTasks() async {
+    final list1 = await fetchUserTasks();
+    final list2 = await fetchAssignedToTasks();
+    final list3 = await fetchParticipateInTasks();
+    for (var i = 0; i < list1.length; i++) {
+      tasks.add(list1[i]);
+    }
+    for (var i = 0; i < list2.length; i++) {
+      tasks.add(list2[i]);
+    }
+    for (var i = 0; i < list2.length; i++) {
+      tasks.add(list3[i]);
+    }
+    log('task model ${tasks.length}');
+  }
+
+  Future<List<TaskModel>> fetchUserTasks() async {
+    try {
+      return await _taskRepository.fetchUserTasks();
+    } catch (e) {
+      throw Failure(e.toString());
+    }
+  }
+
+  Future<List<TaskModel>> fetchAssignedToTasks() async {
+    try {
+      return await _taskRepository.fetchAssignedToTasks();
+    } catch (e) {
+      throw Failure(e.toString());
+    }
+  }
+
+  Future<List<TaskModel>> fetchParticipateInTasks() async {
+    try {
+      return await _taskRepository.fetchParticipateInTasks();
+    } catch (e) {
+      throw Failure(e.toString());
+    }
   }
 }
-
-final now = DateTime.now();
-final today = DateFormat(
-  'yyyy-MM-dd',
-).format(now);
-final tomorrow = DateFormat('yyyy-MM-dd')
-    .format(DateTime.utc(now.year, now.month, now.day + 1));
-List<TaskModel> taskModel = [
-  // today
-  TaskModel(
-    id: '',
-    title: 'today',
-    dueDate: DateTime.parse('${today}T14:39:02.394631'),
-    description: 'description',
-    assignedTo: '1',
-    isCompleted: false,
-    projectId: '2',
-    ownerId: 'ownerId',
-    createdAt: DateTime.now(),
-    attachments: [],
-  ),
-  TaskModel(
-    id: '',
-    title: 'today',
-    dueDate: DateTime.parse('${today}T13:45:02.394631'),
-    description: 'description',
-    assignedTo: '1',
-    isCompleted: true,
-    projectId: '2',
-    ownerId: 'ownerId',
-    createdAt: DateTime.now(),
-    attachments: [],
-  ),
-  TaskModel(
-    id: '',
-    title: 'today',
-    dueDate: DateTime.parse('${today}T16:30:02.394631'),
-    description: 'description',
-    assignedTo: '1',
-    isCompleted: true,
-    projectId: '2',
-    ownerId: 'ownerId',
-    createdAt: DateTime.now(),
-    attachments: [],
-  ),
-
-// tomorrow
-  TaskModel(
-    id: '',
-    title: 'tomorrow',
-    dueDate: DateTime.parse('${tomorrow}T17:10:02.394631'),
-    description: 'description',
-    assignedTo: '1',
-    isCompleted: false,
-    projectId: '2',
-    ownerId: 'ownerId',
-    createdAt: DateTime.now(),
-    attachments: [],
-  ),
-  TaskModel(
-    id: '',
-    title: 'tomorrow',
-    dueDate: DateTime.parse('${tomorrow}T22:56:02.394631'),
-    description: 'description',
-    assignedTo: '1',
-    isCompleted: false,
-    projectId: '2',
-    ownerId: 'ownerId',
-    createdAt: DateTime.now(),
-    attachments: [],
-  ),
-  TaskModel(
-    id: '',
-    title: 'tomorrow',
-    dueDate: DateTime.parse('${tomorrow}T20:15:02.394631'),
-    description: 'description',
-    assignedTo: '1',
-    isCompleted: false,
-    projectId: '2',
-    ownerId: 'ownerId',
-    createdAt: DateTime.now(),
-    attachments: [],
-  ),
-];

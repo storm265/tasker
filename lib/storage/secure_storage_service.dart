@@ -56,7 +56,7 @@ class SecureStorageSource {
     return data;
   }
 
-  Future<void> saveUserData({
+  Future<void> saveData({
     required StorageDataType type,
     required String value,
   }) async {

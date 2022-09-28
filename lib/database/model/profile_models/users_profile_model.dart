@@ -5,7 +5,7 @@ class UserProfileModel {
   final String username;
   final String email;
   final String avatarUrl;
-  final String createdAt;
+  final DateTime createdAt;
 
   UserProfileModel({
     required this.id,
@@ -19,8 +19,8 @@ class UserProfileModel {
       UserProfileModel(
         id: json[UserDataScheme.id],
         avatarUrl: json[UserDataScheme.avatarUrl],
-          email: json[UserDataScheme.email],
+        email: json[UserDataScheme.email],
         username: json[UserDataScheme.username],
-        createdAt: json[UserDataScheme.createdAt],
+        createdAt: DateTime.parse(json[UserDataScheme.createdAt]),
       );
 }

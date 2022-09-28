@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/confirm_button.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/widgets/calendar_lib/widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/calendar_lib/widget.dart';
 
 Future<void> showCalendarDatePicker({
   required BuildContext context,
@@ -29,15 +28,6 @@ Future<void> showCalendarDatePicker({
                   innerDot: false,
                   controller: taskController.pickedDate,
                 ),
-                // TextButton(
-                //     onPressed: () async {
-                //       await pickTime(
-                //         context: context,
-                //         taskController: addTaskController,
-                //       );
-                //       addTaskController.formatTime();
-                //     },
-                //     child: const Text('Pick time')),
                 ConfirmButtonWidget(
                   width: 170,
                   onPressed: () => Navigator.pop(context),

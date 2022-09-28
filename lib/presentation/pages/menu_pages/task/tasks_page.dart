@@ -1,20 +1,23 @@
 import 'dart:developer';
 
+import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:todo2/database/model/task_models/task_model.dart';
+import 'package:todo2/database/database_scheme/auth_scheme.dart';
+import 'package:todo2/database/model/auth_model.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/dialogs/tasks_dialog.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/widgets/calendar_lib/widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/widgets/list/list_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/widgets/tabs/bottom_tabs.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/dialogs/tasks_filter_dialog.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/calendar_lib/widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/list/list_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/tabs/bottom_tabs.dart';
 import 'package:todo2/presentation/pages/navigation/widgets/keep_page_alive.dart';
-import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapp.dart';
+import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
+import 'package:todo2/storage/secure_storage_service.dart';
 import 'package:todo2/utils/assets_path.dart';
 
 class TasksPage extends StatefulWidget {
@@ -28,14 +31,21 @@ class _TasksPageState extends State<TasksPage>
   late final _tabController =
       ValueNotifier<TabController>(TabController(length: 2, vsync: this));
 
+  final taskController = AddTaskController();
+  @override
+  void initState() {
+    taskController.fetchTasks();
+    super.initState();
+  }
+
   @override
   void dispose() {
     _tabController.dispose();
     super.dispose();
   }
 
-  final taskController = AddTaskController();
-
+  final ss = SecureStorageSource();
+  final netwokr = NetworkSource();
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -43,7 +53,36 @@ class _TasksPageState extends State<TasksPage>
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
-            await context.setLocale(const Locale('en'));
+            // final refreshToken =
+            //     await ss.getUserData(type: StorageDataType.refreshToken);
+            // log('token $refreshToken');
+            // Response response = await netwokr.post(
+            //   path: '/refresh-token',
+            //   data: {
+            //     "refresh_token": refreshToken,
+            //   },
+            //   //     options: netwokr.authOptions,
+            //   options: Options(
+            //     headers: {'Content-Type': 'application/json'},
+            //   ),
+            // );
+
+            // log('refresh response ${response.statusCode}');
+            // log('refresh response ${response.statusMessage}');
+            // log('refresh response ${response.data}');
+
+            // final map = response.data[AuthScheme.data] as Map<String, dynamic>;
+            // final model = AuthModel.fromJson(json: map);
+            // log('model ${model.refreshToken}');
+            // await ss.saveData(
+            //   type: StorageDataType.accessToken,
+            //   value: model.accessToken,
+            // );
+            // await ss.saveData(
+            //   type: StorageDataType.refreshToken,
+            //   value: model.refreshToken,
+            // );
+            await taskController.fetchTasks();
           },
         ),
         backgroundColor: const Color(0xffFDFDFD),
@@ -73,7 +112,7 @@ class _TasksPageState extends State<TasksPage>
                       padding: const EdgeInsets.all(8.0),
                       child: GestureDetector(
                         child: SvgPicture.asset(AssetsPath.tuneIconPath),
-                        onTap: () => showTasksDialog(context),
+                        onTap: () => showTasksFilterDialog(context),
                       ),
                     )
                   : const SizedBox(),
@@ -100,38 +139,24 @@ class _TasksPageState extends State<TasksPage>
             physics: const NeverScrollableScrollPhysics(),
             controller: _tabController.value,
             children: [
-              // TODO remove 2 requests, 1 only
               // today
               SingleChildScrollView(
                 child: KeepAlivePageWidget(
-                  child: FutureBuilder(
-                      initialData: const <TaskModel>[],
-                      future: taskController.fetchTasks(),
-                      builder: (_, AsyncSnapshot<List<TaskModel>> snapshots) {
-                        final data = snapshots.data!;
-                        if (!snapshots.hasData || snapshots.data == null) {
-                          return Center(
-                            child: ProgressIndicatorWidget(
-                              text: LocaleKeys.no_data.tr(),
-                            ),
-                          );
-                        } else {
-                          return Column(
-                            children: [
-                              ListWidget(
-                                taskController: taskController,
-                                modelList: data,
-                                isToday: true,
-                              ),
-                              ListWidget(
-                                taskController: taskController,
-                                modelList: data,
-                                isToday: false,
-                              ),
-                            ],
-                          );
-                        }
-                      }),
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: [
+                      ListWidget(
+                        taskController: taskController,
+                        modelList: taskController.tasks,
+                        isToday: true,
+                      ),
+                      ListWidget(
+                        taskController: taskController,
+                        modelList: taskController.tasks,
+                        isToday: false,
+                      ),
+                    ],
+                  ),
                 ),
               ),
 
@@ -143,34 +168,20 @@ class _TasksPageState extends State<TasksPage>
                       controller: taskController.calendarController,
                       events: taskController.events,
                     ),
-                    FutureBuilder(
-                        initialData: const <TaskModel>[],
-                        future: taskController.fetchTasks(),
-                        builder: (_, AsyncSnapshot<List<TaskModel>> snapshots) {
-                          final data = snapshots.data!;
-                          if (!snapshots.hasData || snapshots.data == null) {
-                            return Center(
-                              child: ProgressIndicatorWidget(
-                                text: LocaleKeys.no_data.tr(),
-                              ),
-                            );
-                          } else {
-                            return Column(
-                              children: [
-                                ListWidget(
-                                  taskController: taskController,
-                                  modelList: data,
-                                  isToday: true,
-                                ),
-                                ListWidget(
-                                  taskController: taskController,
-                                  modelList: data,
-                                  isToday: false,
-                                ),
-                              ],
-                            );
-                          }
-                        }),
+                    Column(
+                      children: [
+                        // ListWidget(
+                        //   taskController: taskController,
+                        //   modelList: taskController.tasks,
+                        //   isToday: true,
+                        // ),
+                        // ListWidget(
+                        //   taskController: taskController,
+                        //   modelList: taskController.tasks,
+                        //   isToday: false,
+                        // ),
+                      ],
+                    ),
                   ]),
                 ),
               )

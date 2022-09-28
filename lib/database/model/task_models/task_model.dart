@@ -39,11 +39,15 @@ class TaskModel {
         projectId: json[TaskScheme.projectId],
         ownerId: json[TaskScheme.ownerId],
         createdAt: DateTime.parse(json[TaskScheme.createdAt]),
-        attachments: (json[TaskScheme.attachments] as List<dynamic>)
-            .map((e) => TaskAttachmentModel.fromJson(e))
-            .toList(),
-        members: (json[TaskScheme.members] as List<dynamic>)
-            .map((e) => UserProfileModel.fromJson(e))
-            .toList(),
+        attachments: json[TaskScheme.attachments] == null
+            ? []
+            : (json[TaskScheme.attachments] as List<dynamic>)
+                .map((e) => TaskAttachmentModel.fromJson(e))
+                .toList(),
+        members: json[TaskScheme.members] == null
+            ? []
+            : (json[TaskScheme.members] as List<dynamic>)
+                .map((e) => UserProfileModel.fromJson(e))
+                .toList(),
       );
 }

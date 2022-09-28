@@ -56,6 +56,9 @@ class AuthDataSourceImpl implements AuthDataSource {
         },
         options: _networkSource.authOptions,
       );
+      log('signIn ${response.statusMessage}');
+      log('signIn ${response.statusCode}');
+
       if (NetworkErrorService.isSuccessful(response)) {
         return response.data[AuthScheme.data] as Map<String, dynamic>;
       } else {
@@ -95,15 +98,17 @@ class AuthDataSourceImpl implements AuthDataSource {
   @override
   Future<Map<String, dynamic>> refreshToken() async {
     try {
+      final refreshToken = await _secureStorageService.getUserData(
+        type: StorageDataType.refreshToken,
+      );
       Response response = await _networkSource.post(
         path: _refreshUrl,
         data: {
-          AuthScheme.refreshToken: await _secureStorageService.getUserData(
-              type: StorageDataType.refreshToken),
+          AuthScheme.refreshToken: refreshToken,
         },
         options: _networkSource.authOptions,
       );
-      log('dataSource response ${response.data}');
+      log('dataSource refreshToken response ${response.data}');
 
       return NetworkErrorService.isSuccessful(response)
           ? response.data[AuthScheme.data] as Map<String, dynamic>

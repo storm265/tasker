@@ -16,7 +16,6 @@ import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/system_service/system_chrome.dart';
 import 'services/theme_service/theme_data_controller.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
@@ -28,12 +27,13 @@ void main() async {
     httpProxy.port = "8888"; // replace with your server port
     HttpOverrides.global = httpProxy;
   }
- 
+
   runApp(
     EasyLocalization(
       supportedLocales: const [Locale('en'), Locale('ru')],
       path: 'assets/localization',
       fallbackLocale: const Locale('en'),
+      startLocale: const Locale('en'),
       child: const MyApp(),
     ),
   );
@@ -73,7 +73,7 @@ class _MyAppState extends State<MyApp> {
           theme: _themeDataController.themeData,
           initialRoute: '/',
           routes: routes,
-          // home: SignUpPage(),
+          //  home: SignUpPage(),
         ),
       ),
     );

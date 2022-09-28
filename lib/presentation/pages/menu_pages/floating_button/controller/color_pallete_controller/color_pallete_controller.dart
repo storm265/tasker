@@ -1,10 +1,12 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:todo2/generated/locale_keys.g.dart';
 
-int defaultColorIndex = 99;
+int _defaultColorIndex = 99;
 
 class ColorPalleteController extends ChangeNotifier {
-  String isNotPicked = 'Please, pick color!';
-  final selectedIndex = ValueNotifier<int>(defaultColorIndex);
+  String isNotPicked = LocaleKeys.please_pick_color.tr();
+  final selectedIndex = ValueNotifier<int>(_defaultColorIndex);
 
   bool get isNotPickerColor => selectedIndex.value == 99;
   void changeSelectedIndex(int index) {
