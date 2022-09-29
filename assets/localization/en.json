@@ -81,5 +81,6 @@
     "loaing": "Loading...",
     "add_note": "Add Note",
     "please_restart_app": "Please, restart app.",
-    "form_is_not_valid": "Form is not valid."
+    "form_is_not_valid": "Form is not valid.",
+    "enter_field": "Please, fill field 😐 "
 }

@@ -8,6 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/database/model/auth_model.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
+import 'package:todo2/presentation/pages/auth/splash_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/dialogs/tasks_filter_dialog.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/calendar_lib/widget.dart';
@@ -28,8 +29,7 @@ class TasksPage extends StatefulWidget {
 
 class _TasksPageState extends State<TasksPage>
     with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
-  late final _tabController =
-      ValueNotifier<TabController>(TabController(length: 2, vsync: this));
+  late final _tabController = TabController(length: 2, vsync: this);
 
   final taskController = AddTaskController();
   @override
@@ -53,8 +53,8 @@ class _TasksPageState extends State<TasksPage>
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
-            // "YYYY-MM-dd'T'hh:mm:ss.ssssss" -- srs
-            // '2022-09-29T12:00:00.000Z' --my
+            log('ss ${DateFormat('EEE', 'en').format(DateTime.now())}');
+
             // final refreshToken =
             //     await ss.getUserData(type: StorageDataType.refreshToken);
             // log('token $refreshToken');
@@ -107,9 +107,9 @@ class _TasksPageState extends State<TasksPage>
             ),
           ),
           actions: [
-            ValueListenableBuilder<TabController>(
-              valueListenable: _tabController,
-              builder: (_, tabController, __) => tabController.index == 0
+            ValueListenableBuilder(
+              valueListenable: taskController.isTuneIconActive,
+              builder: (_, isActive, __) => isActive
                   ? Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: GestureDetector(
@@ -121,12 +121,11 @@ class _TasksPageState extends State<TasksPage>
             ),
           ],
           bottom: TabBar(
-            onTap: (value) =>
-                taskController.changeTabIndexValue(value, _tabController),
+            onTap: (value) => _tabController.index = value,
             splashFactory: NoSplash.splashFactory,
             indicatorColor: Colors.white,
             indicatorSize: TabBarIndicatorSize.label,
-            controller: _tabController.value,
+            controller: _tabController,
             tabs: [todayTab, monthTab],
             labelStyle: const TextStyle(
               fontSize: 18,
@@ -139,25 +138,23 @@ class _TasksPageState extends State<TasksPage>
           bottom: false,
           child: TabBarView(
             physics: const NeverScrollableScrollPhysics(),
-            controller: _tabController.value,
+            controller: _tabController,
             children: [
               // today
-              SingleChildScrollView(
-                child: KeepAlivePageWidget(
-                  child: Column(
-                    children: [
-                      ListWidget(
-                        taskController: taskController,
-                        modelList: taskController.tasks,
-                        isToday: true,
-                      ),
-                      ListWidget(
-                        taskController: taskController,
-                        modelList: taskController.tasks,
-                        isToday: false,
-                      ),
-                    ],
-                  ),
+              KeepAlivePageWidget(
+                child: Column(
+                  children: [
+                    ListWidget(
+                      taskController: taskController,
+                      modelList: taskController.tasks,
+                      isToday: true,
+                    ),
+                    ListWidget(
+                      taskController: taskController,
+                      modelList: taskController.tasks,
+                      isToday: false,
+                    ),
+                  ],
                 ),
               ),
 
@@ -168,6 +165,7 @@ class _TasksPageState extends State<TasksPage>
                     AdvancedCalendar(
                       controller: taskController.calendarController,
                       events: taskController.events,
+                      taskController: taskController,
                     ),
                     Column(
                       children: [

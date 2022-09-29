@@ -1,7 +1,5 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
-// ignore_for_file: constant_identifier_names
-
 abstract class  LocaleKeys {
   static const get_started = 'get_started';
   static const welcome_to_todoList = 'welcome_to_todoList';
@@ -19,8 +17,6 @@ abstract class  LocaleKeys {
   static const welcome_back = 'welcome_back';
   static const sign_up = 'sign_up';
   static const sign_in = 'sign_in';
-  static const sign_up_success = 'sign_up_success';
-  static const sign_in_success = 'sign_in_success';
   static const avatar_updated = 'avatar_updated';
   static const file_size_is_too_huge = 'file_size_is_too_huge';
   static const wrong_image_supported_formats = 'wrong_image_supported_formats';
@@ -89,5 +85,6 @@ abstract class  LocaleKeys {
   static const add_note = 'add_note';
   static const please_restart_app = 'please_restart_app';
   static const form_is_not_valid = 'form_is_not_valid';
+  static const enter_field = 'enter_field';
 
 }

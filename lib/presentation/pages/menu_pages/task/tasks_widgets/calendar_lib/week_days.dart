@@ -4,7 +4,7 @@ part of 'widget.dart';
 class WeekDays extends StatelessWidget {
   const WeekDays({
     Key? key,
-    this.weekNames = const <String>['S', 'M', 'T', 'W', 'T', 'F', 'S'],
+   required this.weekNames,
   })  : assert(weekNames.length == 7, '`weekNames` must have length 7'),
         super(key: key);
 

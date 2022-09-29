@@ -31,8 +31,6 @@ class CodegenLoader extends AssetLoader{
   "welcome_back": "Добро пожаловать",
   "sign_up": "Зарегистрироваться",
   "sign_in": "Войти",
-  "sign_up_success": "Успешная регистрация!",
-  "sign_in_success": "Успешный вход!",
   "avatar_updated": "Аватар обновлен!",
   "file_size_is_too_huge": "Слишком большой файл.",
   "wrong_image_supported_formats": "Неверный формат, поддерживаемые форматы:",
@@ -93,14 +91,15 @@ class CodegenLoader extends AssetLoader{
   "choose_color": "Выбери цвет",
   "add_new_item": "+ Добавить новый элемент",
   "list_item": "Элемент",
-  "update_avatar": "Update avatar",
-  "language": "Language",
+  "update_avatar": "Обновить аватар",
+  "language": "Язык",
   "update": "Обновить",
-  "sign_out": "Sign out",
+  "sign_out": "Выйти",
   "loaing": "Загружаю...",
   "add_note": "Добавить заметку",
   "please_restart_app": "Пожалуйста,перезапусти приложение.",
-  "form_is_not_valid": "Неверная форма."
+  "form_is_not_valid": "Неверная форма.",
+  "enter_field": "Пожалуйста, заполни поле 😐"
 };
 static const Map<String,dynamic> en = {
   "get_started": "Get Started",
@@ -119,8 +118,6 @@ static const Map<String,dynamic> en = {
   "welcome_back": "Welcome back",
   "sign_up": "Sign Up",
   "sign_in": "Sign In",
-  "sign_up_success": "Sign up success!",
-  "sign_in_success": "Sign in success!",
   "avatar_updated": "Avatar updated!",
   "file_size_is_too_huge": "File size is too huge.",
   "wrong_image_supported_formats": "Wrong image, supported formats:",
@@ -187,7 +184,8 @@ static const Map<String,dynamic> en = {
   "loaing": "Loading...",
   "add_note": "Add Note",
   "please_restart_app": "Please, restart app.",
-  "form_is_not_valid": "Form is not valid."
+  "form_is_not_valid": "Form is not valid.",
+  "enter_field": "Please, fill field 😐 "
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ru": ru, "en": en};
 }

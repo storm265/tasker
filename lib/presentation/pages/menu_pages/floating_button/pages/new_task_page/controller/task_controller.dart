@@ -44,13 +44,11 @@ class AddTaskController extends ChangeNotifier {
   final projectController = ProjectController();
   final fileController = FileController();
 
-  void changeTabIndexValue(
-    int index,
-    ValueNotifier<TabController> controller,
-  ) {
-    controller.value.index = index;
-    controller.notifyListeners();
-  }
+ final isTuneIconActive =ValueNotifier(true);
+ void changeTuneIconStatus(bool  isMonthMode){
+  isTuneIconActive.value = isMonthMode;
+  isTuneIconActive.notifyListeners();
+ }
 
   final isSubmitButtonClicked = ValueNotifier<bool>(true);
 

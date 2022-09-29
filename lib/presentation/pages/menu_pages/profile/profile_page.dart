@@ -82,7 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 TaskListWidget(model: userController.stats),
                 StatsWidget(statsModel: userController.stats),
               ],
-            )
+            ),
           ],
         ),
       ),

@@ -38,7 +38,6 @@ class StatsWidget extends StatelessWidget {
           ],
           color: const Color(0xFFFFFFFF),
         ),
-        height: 210,
         child: Column(
           children: [
             Align(
@@ -60,22 +59,20 @@ class StatsWidget extends StatelessWidget {
               ),
             ),
             SizedBox(
-              width: double.infinity,
-              height: 120,
-              child: Center(
-                child: DisabledGlowWidget(
+              height: 130,
+              child: DisabledGlowWidget(
+                child: Center(
                   child: ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     scrollDirection: Axis.horizontal,
                     itemCount: 3,
                     shrinkWrap: true,
                     itemBuilder: (_, i) {
-                      return Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 15),
-                            child: CircularPercentIndicator(
+                      return SizedBox(
+                        width: 120,
+                        child: Column(
+                          children: [
+                            CircularPercentIndicator(
                               animation: true,
                               radius: 36.0,
                               lineWidth: 2.3,
@@ -94,20 +91,21 @@ class StatsWidget extends StatelessWidget {
                               ),
                               progressColor: statsColors[i],
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 15),
-                            child: Text(
-                              softWrap: true,
-                              labels[i],
-                              style: const TextStyle(
-                                overflow: TextOverflow.ellipsis,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
+                            Padding(
+                              padding: const EdgeInsets.only(top: 15),
+                              child: Text(
+                                maxLines: 2,
+                                textAlign: TextAlign.center,
+                                labels[i],
+                                style: const TextStyle(
+                                  overflow: TextOverflow.ellipsis,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       );
                     },
                   ),

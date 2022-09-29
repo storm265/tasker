@@ -22,7 +22,7 @@ void main() async {
   await EasyLocalization.ensureInitialized();
   await dotenv.load(fileName: '.env');
   await SystemChromeProvider.setSystemChrome();
-  if (kReleaseMode) {
+  if (kDebugMode) {
     HttpProxy httpProxy = await HttpProxy.createHttpProxy();
     httpProxy.host = "10.101.4.108";
     httpProxy.port = "8888";
@@ -72,9 +72,9 @@ class _MyAppState extends State<MyApp> {
           debugShowCheckedModeBanner: false,
           title: 'Todo2',
           theme: _themeDataController.themeData,
-           initialRoute: '/',
-           routes: routes,
-        // home: SignInPage(),
+          initialRoute: '/',
+          routes: routes,
+          //  home: TasksPage(),
         ),
       ),
     );

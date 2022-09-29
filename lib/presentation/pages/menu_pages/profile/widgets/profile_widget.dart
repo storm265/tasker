@@ -61,7 +61,6 @@ class _ProfileWidgetState extends State<ProfileWidget>
               alignment: Alignment.topRight,
               child: IconButton(
                 splashRadius: 20,
-                tooltip: 'Settings',
                 onPressed: () => showSettingsDialog(
                   context: context,
                   profileController: widget.profileController,
@@ -83,7 +82,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
                   username: widget.profileController.username,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     TasksTextWidget(
                       title: '${widget.createdTask}',

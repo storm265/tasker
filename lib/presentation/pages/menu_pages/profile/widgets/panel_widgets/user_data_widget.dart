@@ -16,39 +16,43 @@ class UserDataWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        const SizedBox(width: 30),
-        CachedAvatarWidget(
-          profileController: profileController,
-        ),
-        const SizedBox(width: 15),
-        Flexible(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                username,
-                style: const TextStyle(
-                  fontSize: 18,
-                  overflow: TextOverflow.ellipsis,
-                  fontWeight: FontWeight.w200,
-                  fontStyle: FontStyle.italic,
-                ),
-              ),
-              Text(
-                email,
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ],
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(width: 30),
+          CachedAvatarWidget(
+            profileController: profileController,
           ),
-        ),
-      ],
+          const SizedBox(width: 15),
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  username,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    overflow: TextOverflow.ellipsis,
+                    fontWeight: FontWeight.w200,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+                Text(
+                  email,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

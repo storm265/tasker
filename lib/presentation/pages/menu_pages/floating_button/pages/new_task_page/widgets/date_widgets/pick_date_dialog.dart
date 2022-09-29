@@ -12,7 +12,10 @@ Future<void> showCalendarDatePicker({
     builder: (_) {
       return AlertDialog(
         shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(5.0))),
+          borderRadius: BorderRadius.all(
+            Radius.circular(5.0),
+          ),
+        ),
         content: SizedBox(
           height: 350,
           width: 300, //350

@@ -1,5 +1,10 @@
+import 'dart:developer';
+
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:todo2/presentation/pages/auth/splash_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'controller.dart';
 import 'datetime_util.dart';
@@ -14,6 +19,7 @@ class AdvancedCalendar extends StatefulWidget {
   const AdvancedCalendar({
     Key? key,
     this.controller,
+    this.taskController,
     this.startWeekDay = 1,
     this.events,
     this.weekLineHeight = 32.0,
@@ -28,8 +34,13 @@ class AdvancedCalendar extends StatefulWidget {
     this.useShadow = true,
     this.canExtend = true,
   }) : super(key: key);
+
+  final AddTaskController? taskController;
+
   final bool canExtend;
+
   final bool isMonth;
+
   final bool useShadow;
 
   /// Calendar selection date controller.
@@ -88,6 +99,7 @@ class _AdvancedCalendarState extends State<AdvancedCalendar>
   @override
   void initState() {
     super.initState();
+
     isMonthMode = widget.isMonth;
 
     final monthPageIndex = widget.preloadMonthViewAmount ~/ 2;
@@ -147,12 +159,42 @@ class _AdvancedCalendarState extends State<AdvancedCalendar>
         8,
         (index) => time.add(Duration(days: index * 1)),
       ).toList();
-      _weekNames = List<String>.generate(7, (index) {
-        return DateFormat("EEEE").format(list[index]).split('').first;
-      });
+      _weekNames = locale == 'ru'
+          ? List<String>.generate(7, (index) {
+              return DateFormat(
+                "EEE",
+                locale,
+              ).format(list[index]).toUpperCase();
+            })
+          : List<String>.generate(7, (index) {
+              return DateFormat(
+                "EEEE",
+                locale,
+              ).format(list[index]).split('').first.toUpperCase();
+            });
     }
   }
 
+/*
+for ru
+
+List<String>.generate(7, (index) {
+        return DateFormat(
+          "EEE",
+          locale,
+        ).format(list[index]).toUpperCase();
+      });
+
+
+for eng
+
+List<String>.generate(7, (index) {
+              return DateFormat(
+                "EEEE",
+                locale,
+              ).format(list[index]).split('').first.toUpperCase();
+            });
+*/
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -178,9 +220,13 @@ class _AdvancedCalendarState extends State<AdvancedCalendar>
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      DateFormat()
+                      DateFormat(
+                        null,
+                        locale,
+                      )
                           .add_yMMMM()
-                          .format(_monthRangeList[value].firstDay),
+                          .format(_monthRangeList[value].firstDay)
+                          .toUpperCase(),
                       style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w200,
@@ -201,7 +247,10 @@ class _AdvancedCalendarState extends State<AdvancedCalendar>
                               onTap: () async {
                                 setState(() {
                                   isMonthMode = !isMonthMode;
+                                  widget.taskController
+                                      ?.changeTuneIconStatus(!isMonthMode);
                                 });
+
                                 if (isMonthMode) {
                                   await _animationController.forward();
                                   _animationValue = 1.0;
