@@ -25,6 +25,7 @@ abstract class TaskDataSource {
     required String description,
     required String assignedTo,
     required String projectId,
+    required String taskId,
     required DateTime dueDate,
     List<String>? members,
   });
@@ -133,8 +134,6 @@ class TaskDataSourceImpl implements TaskDataSource {
       throw Failure(e.toString());
     }
   }
-  // "YYYY-MM-dd'T'hh:mm:ss.ssssss" -- srs
-  // '2022-09-29T12:00:00.000Z' --my
 
   @override
   Future<Map<String, dynamic>> updateTask({
@@ -142,6 +141,7 @@ class TaskDataSourceImpl implements TaskDataSource {
     required String description,
     required String assignedTo,
     required String projectId,
+    required String taskId,
     required DateTime dueDate,
     List<String>? members,
   }) async {
@@ -149,14 +149,14 @@ class TaskDataSourceImpl implements TaskDataSource {
       final ownerId =
           await _secureStorage.getUserData(type: StorageDataType.id);
       final response = await _network.put(
-        path: '$_tasks/$projectId',
+        path: '$_tasks/$taskId',
         data: {
           TaskScheme.title: title,
           TaskScheme.dueDate: dueDate,
           TaskScheme.description: description,
           TaskScheme.assignedTo: assignedTo,
           TaskScheme.isCompleted: false,
-          TaskScheme.projectId: projectId, // id of project (menu)
+          TaskScheme.projectId: projectId,
           TaskScheme.ownerId: ownerId,
           TaskScheme.members: members,
           TaskScheme.attachments: null,

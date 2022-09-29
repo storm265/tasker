@@ -40,7 +40,6 @@ class SignInController extends ChangeNotifier {
     required BuildContext context,
   }) async {
     try {
-
       if (formKey.currentState!.validate()) {
         changeSubmitButtonStatus(isActive: false);
         await _signIn(
@@ -49,14 +48,13 @@ class SignInController extends ChangeNotifier {
           password: passwordController,
         );
 
-        MessageService.displaySnackbar(
-          message: LocaleKeys.sign_in_success.tr(),
-          context: context,
+        await Future.delayed(
+          Duration.zero,
+          () => NavigationService.navigateTo(
+            context,
+            Pages.navigationReplacement,
+          ),
         );
-
-        // ignore: use_build_context_synchronously
-        await NavigationService.navigateTo(
-            context, Pages.navigationReplacement);
       } else {
         throw MessageService.displaySnackbar(
           message: LocaleKeys.form_is_not_valid.tr(),
@@ -64,7 +62,10 @@ class SignInController extends ChangeNotifier {
         );
       }
     } catch (e) {
-      throw Failure(e.toString());
+      throw MessageService.displaySnackbar(
+        message: e.toString(),
+        context: context,
+      );
     } finally {
       changeSubmitButtonStatus(isActive: true);
     }
@@ -112,10 +113,6 @@ class SignInController extends ChangeNotifier {
       );
     } catch (e, t) {
       log(' trace : $t');
-      MessageService.displaySnackbar(
-        message: e.toString(),
-        context: context,
-      );
       throw Failure(e.toString());
     }
   }

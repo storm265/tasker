@@ -64,11 +64,13 @@ class TaskRepositoryImpl implements TaskRepository {
     required String description,
     required String assignedTo,
     required String projectId,
+    required String taskId,
     required DateTime dueDate,
     List<String>? members,
   }) async {
     try {
       final response = await _taskDataSource.updateTask(
+        taskId: taskId,
         title: title,
         description: description,
         assignedTo: assignedTo,

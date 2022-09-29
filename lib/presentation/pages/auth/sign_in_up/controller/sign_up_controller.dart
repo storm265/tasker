@@ -42,55 +42,43 @@ class SignUpController extends ChangeNotifier {
     try {
       changeSubmitButtonValue(isActive: false);
 
+      if (formKey.currentState!.validate()) {
+        await _signUp(
+          context: context,
+          username: userName,
+          email: email,
+          password: password,
+        );
+      } else {
+        throw MessageService.displaySnackbar(
+          message: LocaleKeys.form_is_not_valid.tr(),
+          context: context,
+        );
+      }
       if (fileController.shouldUploadAvatar()) {
         if (fileController
             .isValidImageFormat(fileController.pickedFile.value.extension!)) {
-          if (formKey.currentState!.validate()) {
-            await _signUp(
-              context: context,
-              username: userName,
-              email: email,
-              password: password,
-            );
-            final imageResponse = await fileController.uploadAvatar();
-            log('avatar respose $imageResponse');
-            await _storageSource.storageApi.saveData(
-              type: StorageDataType.avatarUrl,
-              value: imageResponse,
-            );
-          } else {
-            throw MessageService.displaySnackbar(
-              message: LocaleKeys.form_is_not_valid.tr(),
-              context: context,
-            );
-          }
-        }
-      } else {
-        if (formKey.currentState!.validate()) {
-          await _signUp(
-            context: context,
-            username: userName,
-            email: email,
-            password: password,
-          );
-        } else {
-          throw MessageService.displaySnackbar(
-            message: LocaleKeys.form_is_not_valid.tr(),
-            context: context,
+          final imageResponse = await fileController.uploadAvatar();
+          log('avatar respose $imageResponse');
+          await _storageSource.storageApi.saveData(
+            type: StorageDataType.avatarUrl,
+            value: imageResponse,
           );
         }
       }
 
-      MessageService.displaySnackbar(
-        message: LocaleKeys.sign_up_success.tr(),
+      await Future.delayed(
+        Duration.zero,
+        () => NavigationService.navigateTo(
+          context,
+          Pages.navigationReplacement,
+        ),
+      );
+    } catch (e) {
+      throw MessageService.displaySnackbar(
+        message: e.toString(),
         context: context,
       );
-
-      // ignore: use_build_context_synchronously
-      await NavigationService.navigateTo(context, Pages.navigationReplacement);
-    } catch (e) {
-      MessageService.displaySnackbar(message: e.toString(), context: context);
-      throw Failure(e.toString());
     } finally {
       changeSubmitButtonValue(isActive: true);
     }

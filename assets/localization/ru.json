@@ -15,8 +15,6 @@
     "welcome_back": "Добро пожаловать",
     "sign_up": "Зарегистрироваться",
     "sign_in": "Войти",
-    "sign_up_success": "Успешная регистрация!",
-    "sign_in_success": "Успешный вход!",
     "avatar_updated": "Аватар обновлен!",
     "file_size_is_too_huge": "Слишком большой файл.",
     "wrong_image_supported_formats": "Неверный формат, поддерживаемые форматы:",

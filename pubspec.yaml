@@ -1,7 +1,7 @@
 name: todo2
-description: A new Flutter project.
+description: Trainee app.
 publish_to: 'none' 
-version: 3.8.3+2
+version: 3.8.4+1
 environment:
   sdk: ">=2.18.0-0 <3.0.0"
 
@@ -21,10 +21,8 @@ dependencies:
   flutter_svg:
   flutter_dotenv:
   http_proxy:
-  # animations
   shimmer:
   
-
 
 
 dev_dependencies:
@@ -64,6 +62,5 @@ flutter:
 
 
    
-
 
 

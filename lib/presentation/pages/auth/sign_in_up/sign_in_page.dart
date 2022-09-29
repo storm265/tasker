@@ -82,7 +82,8 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                         const SizedBox(height: 6),
                         SubTitleWidget(
-                            text: LocaleKeys.sign_in_to_continue.tr()),
+                          text: LocaleKeys.sign_in_to_continue.tr(),
+                        ),
                       ],
                     ),
                   ),

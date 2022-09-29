@@ -318,10 +318,12 @@ class AddTaskController extends ChangeNotifier {
   Future<void> updateTask({
     required String assignedTo,
     required String projectId,
+    required String taskId,
     List<String>? members,
   }) async {
     try {
       await _taskRepository.updateTask(
+        taskId: taskId,
         title: titleController.text,
         description: descriptionController.text,
         assignedTo: assignedTo,

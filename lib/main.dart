@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http_proxy/http_proxy.dart';
+import 'package:todo2/presentation/pages/auth/sign_in_up/sign_in_page.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/sign_up_page.dart';
 import 'package:todo2/presentation/pages/auth/welcome/welcome_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/new_task.dart';
@@ -23,8 +24,8 @@ void main() async {
   await SystemChromeProvider.setSystemChrome();
   if (kReleaseMode) {
     HttpProxy httpProxy = await HttpProxy.createHttpProxy();
-    httpProxy.host = "10.101.4.108"; // replace with your server ip
-    httpProxy.port = "8888"; // replace with your server port
+    httpProxy.host = "10.101.4.108";
+    httpProxy.port = "8888";
     HttpOverrides.global = httpProxy;
   }
 
@@ -71,9 +72,9 @@ class _MyAppState extends State<MyApp> {
           debugShowCheckedModeBanner: false,
           title: 'Todo2',
           theme: _themeDataController.themeData,
-          initialRoute: '/',
-          routes: routes,
-          //  home: SignUpPage(),
+           initialRoute: '/',
+           routes: routes,
+        // home: SignInPage(),
         ),
       ),
     );

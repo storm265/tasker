@@ -15,8 +15,6 @@
     "welcome_back": "Welcome back",
     "sign_up": "Sign Up",
     "sign_in": "Sign In",
-    "sign_up_success": "Sign up success!",
-    "sign_in_success": "Sign in success!",
     "avatar_updated": "Avatar updated!",
     "file_size_is_too_huge": "File size is too huge.",
     "wrong_image_supported_formats": "Wrong image, supported formats:",
