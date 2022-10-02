@@ -1,0 +1,66 @@
+name: todo2
+description: Trainee app.
+publish_to: 'none' 
+version: 3.8.4+1
+environment:
+  sdk: ">=2.18.0-0 <3.0.0"
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_secure_storage: 
+  internet_connection_checker:
+  intl:
+  cached_network_image: 
+  percent_indicator:
+  flutter_slidable:
+  file_picker:
+  dio:
+  easy_localization: ^3.0.1
+  flutter_svg:
+  flutter_dotenv:
+  http_proxy:
+  shimmer:
+  
+
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints:
+  flutter_native_splash:
+
+flutter:
+  uses-material-design: true
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto/Roboto-ThinItalic.ttf
+        - asset: assets/fonts/Roboto/Roboto-Thin.ttf
+        - asset: assets/fonts/Roboto/Roboto-Regular.ttf
+        - asset: assets/fonts/Roboto/Roboto-MediumItalic.ttf
+        - asset: assets/fonts/Roboto/Roboto-Medium.ttf
+        - asset: assets/fonts/Roboto/Roboto-LightItalic.ttf
+        - asset: assets/fonts/Roboto/Roboto-Light.ttf
+        - asset: assets/fonts/Roboto/Roboto-Italic.ttf
+        - asset: assets/fonts/Roboto/Roboto-BoldItalic.ttf
+        - asset: assets/fonts/Roboto/Roboto-Bold.ttf
+        - asset: assets/fonts/Roboto/Roboto-BlackItalic.ttf
+        - asset: assets/fonts/Roboto/Roboto-Black.ttf
+
+
+  assets:
+    - assets/images/splash_screen/
+    - assets/images/start_page/avatars/
+    - assets/images/nav_bar_icons/
+    - assets/images/tasks_list/
+    - assets/images/detailed_task/
+    - assets/images/profile/
+    - assets/localization/
+    - .env
+
+
+   
+
+
