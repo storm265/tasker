@@ -15,13 +15,13 @@ dependencies:
   cached_network_image: 
   percent_indicator:
   flutter_slidable:
-  file_picker:
+  file_picker: ^5.2.0
   dio:
   easy_localization: ^3.0.1
   flutter_svg:
   flutter_dotenv:
-  http_proxy:
   shimmer:
+  # http_proxy:
   
 
 

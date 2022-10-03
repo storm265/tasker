@@ -1,9 +1,9 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:http_proxy/http_proxy.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/sign_in_page.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/sign_up_page.dart';
 import 'package:todo2/presentation/pages/auth/welcome/welcome_page.dart';
@@ -22,12 +22,12 @@ void main() async {
   await EasyLocalization.ensureInitialized();
   await dotenv.load(fileName: '.env');
   await SystemChromeProvider.setSystemChrome();
-  if (kReleaseMode) {
-    HttpProxy httpProxy = await HttpProxy.createHttpProxy();
-    httpProxy.host = "10.101.4.108";
-    httpProxy.port = "8888";
-    HttpOverrides.global = httpProxy;
-  }
+  // if (kReleaseMode) {
+  //   HttpProxy httpProxy = await HttpProxy.createHttpProxy();
+  //   httpProxy.host = "10.101.4.108";
+  //   httpProxy.port = "8888";
+  //   HttpOverrides.global = httpProxy;
+  // }
 
   runApp(
     EasyLocalization(
@@ -74,7 +74,7 @@ class _MyAppState extends State<MyApp> {
           theme: _themeDataController.themeData,
           initialRoute: '/',
           routes: routes,
-         //  home: TasksPage(),
+          //  home: TasksPage(),
         ),
       ),
     );
