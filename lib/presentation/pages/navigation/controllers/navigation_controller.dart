@@ -16,7 +16,6 @@ class NavigationController extends ChangeNotifier {
     keepPage: false,
   );
 
-// add args
   final List<Widget> pages = [
     const TasksPage(),
     const KeepAlivePageWidget(child: MenuPage()),
@@ -27,7 +26,7 @@ class NavigationController extends ChangeNotifier {
     const CheckListPage(),
   ];
 
-  Future<void> moveToPage(Pages? page) async {
+  Future<void> moveToPage(Pages page) async {
     switch (page) {
       case Pages.tasks:
         pageIndex.value = 0;

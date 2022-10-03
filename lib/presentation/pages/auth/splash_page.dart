@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
@@ -26,6 +28,7 @@ class SplashPage extends StatelessWidget {
 
   Future<void> setLocale(BuildContext context) async {
     locale = context.locale.languageCode;
+    log('locale $locale');
     Intl.withLocale(locale, () => null);
   }
 

@@ -39,9 +39,7 @@ class ProfileController extends ChangeNotifier {
   Future<void> clearImage() async {
     final url = await _secureStorageService.getUserData(
             type: StorageDataType.avatarUrl) ??
-        '';
-        // TODO test update
-        
+        '';        
     await CachedNetworkImage.evictFromCache(url);
     imageCache.clearLiveImages();
     imageCache.clear();

@@ -34,36 +34,37 @@ class NavigationPage extends StatelessWidget {
                 maintainBottomViewPadding: true,
                 bottom: false,
                 child: PageView.builder(
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: navigationController.pages.length,
-                    controller: navigationController.pageController,
-                    onPageChanged: (index) {
-                      navigationController.pages[index];
-                      switch (index) {
-                        case 0:
-                          statusBarController.setRedStatusMode(true);
-                          break;
-                        case 1:
-                          statusBarController.setRedStatusMode(false);
-                          break;
-                        case 2:
-                          statusBarController.setRedStatusMode(false);
-                          break;
-                        case 3:
-                          statusBarController.setRedStatusMode(false);
-                          break;
-                        case 4:
-                          statusBarController.setRedStatusMode(true);
-                          break;
-                        case 5:
-                          statusBarController.setRedStatusMode(true);
-                          break;
-                        case 6:
-                          statusBarController.setRedStatusMode(true);
-                          break;
-                      }
-                    },
-                    itemBuilder: (_, i) => navigationController.pages[i]),
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: navigationController.pages.length,
+                  controller: navigationController.pageController,
+                  itemBuilder: (_, i) => navigationController.pages[i],
+                  onPageChanged: (index) {
+                    navigationController.pages[index];
+                    switch (index) {
+                      case 0:
+                        statusBarController.setRedStatusMode(true);
+                        break;
+                      case 1:
+                        statusBarController.setRedStatusMode(false);
+                        break;
+                      case 2:
+                        statusBarController.setRedStatusMode(false);
+                        break;
+                      case 3:
+                        statusBarController.setRedStatusMode(false);
+                        break;
+                      case 4:
+                        statusBarController.setRedStatusMode(true);
+                        break;
+                      case 5:
+                        statusBarController.setRedStatusMode(true);
+                        break;
+                      case 6:
+                        statusBarController.setRedStatusMode(true);
+                        break;
+                    }
+                  },
+                ),
               ),
               bottomNavigationBar: ValueListenableBuilder<int>(
                   valueListenable: navigationController.pageIndex,

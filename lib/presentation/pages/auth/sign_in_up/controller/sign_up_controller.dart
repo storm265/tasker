@@ -49,6 +49,7 @@ class SignUpController extends ChangeNotifier {
           email: email,
           password: password,
         );
+        // await Future.delayed(Duration(seconds: 2));
       } else {
         throw MessageService.displaySnackbar(
           message: LocaleKeys.form_is_not_valid.tr(),
@@ -66,7 +67,7 @@ class SignUpController extends ChangeNotifier {
           );
         }
       }
-
+// await Future.delayed(Duration(seconds: 2));
       await Future.delayed(
         Duration.zero,
         () => NavigationService.navigateTo(
