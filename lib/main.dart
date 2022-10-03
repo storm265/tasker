@@ -4,6 +4,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http_proxy/http_proxy.dart';
+import 'package:network_info_plus/network_info_plus.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/sign_in_page.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/sign_up_page.dart';
 import 'package:todo2/presentation/pages/auth/welcome/welcome_page.dart';
@@ -17,18 +19,29 @@ import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/system_service/system_chrome.dart';
 import 'services/theme_service/theme_data_controller.dart';
 
+Future<void> setNetwork() async {
+  final info = NetworkInfo();
+
+  var wifiName = await info.getWifiName(); 
+  log('wifiName $wifiName');
+  if (kReleaseMode) {
+    if (wifiName == "COGNITEQ") {
+      HttpProxy httpProxy = await HttpProxy.createHttpProxy();
+      httpProxy.host = "10.101.4.108";
+      httpProxy.port = "8888";
+      HttpOverrides.global = httpProxy;
+    } else {
+      // TODO home network
+    }
+  }
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await dotenv.load(fileName: '.env');
   await SystemChromeProvider.setSystemChrome();
-  // if (kReleaseMode) {
-  //   HttpProxy httpProxy = await HttpProxy.createHttpProxy();
-  //   httpProxy.host = "10.101.4.108";
-  //   httpProxy.port = "8888";
-  //   HttpOverrides.global = httpProxy;
-  // }
-
+  await setNetwork();
   runApp(
     EasyLocalization(
       supportedLocales: const [Locale('en'), Locale('ru')],

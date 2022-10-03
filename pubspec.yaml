@@ -21,7 +21,9 @@ dependencies:
   flutter_svg:
   flutter_dotenv:
   shimmer:
-  # http_proxy:
+  # network
+  http_proxy:
+  network_info_plus:
   
 
 

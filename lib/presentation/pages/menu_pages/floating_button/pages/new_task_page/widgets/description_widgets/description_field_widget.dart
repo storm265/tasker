@@ -26,7 +26,11 @@ class DescriptionFieldWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           desciptionTextWidget,
-        DescriptionBoxWidget(taskController: taskController),
+          DescriptionBoxWidget(
+            taskController: taskController,
+            hintText: hintText,
+            // LocaleKeys.write_a_comment.tr(),
+          ),
           //   const AttachementWidget(),
           ValueListenableBuilder<List<PlatformFile>>(
               valueListenable: taskController.attachments,

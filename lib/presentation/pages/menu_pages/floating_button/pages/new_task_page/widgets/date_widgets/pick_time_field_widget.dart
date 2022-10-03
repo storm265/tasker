@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/common/grey_container.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/date_widgets/pick_date_dialog.dart';
@@ -20,14 +22,16 @@ class _PickTimeFieldWidgetState extends State<PickTimeFieldWidget> {
         alignment: Alignment.centerLeft,
         child: Row(
           children: [
-            const Padding(
-              padding: EdgeInsets.only(left: 30),
-              child: Text('Due Date'),
+            Padding(
+              padding: const EdgeInsets.only(left: 40),
+              child: Text(
+                LocaleKeys.due_date.tr(),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 10),
               child: SizedBox(
-                width: 100,
+                width: 110,
                 height: 35,
                 child: ValueListenableBuilder<DateTime>(
                     valueListenable: taskController.pickedDate,
@@ -41,6 +45,7 @@ class _PickTimeFieldWidgetState extends State<PickTimeFieldWidget> {
                           taskController: taskController,
                         ).then((_) => setState(() {})),
                         child: Text(
+                          maxLines: null,
                           taskController.isValidPickedDate(
                                     taskController.pickedDate.value,
                                     context,
@@ -48,7 +53,7 @@ class _PickTimeFieldWidgetState extends State<PickTimeFieldWidget> {
                                   ) ==
                                   true
                               ? '${time.day}/${time.month}/${time.year}'
-                              : 'Anytime',
+                              : LocaleKeys.anytime.tr(),
                         ),
                       );
                     }),

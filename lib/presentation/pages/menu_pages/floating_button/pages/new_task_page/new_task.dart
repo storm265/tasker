@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
@@ -28,13 +26,6 @@ class AddTaskPage extends StatefulWidget {
 class _AddTaskPageState extends State<AddTaskPage> {
   final formKey = GlobalKey<FormState>();
   final taskController = AddTaskController();
-  @override
-  void initState() {
-    taskController.getAccessHeader();
-    log('imageHeader: ${taskController.imageHeader}');
-    super.initState();
-  }
-
   // @override
   // void dispose() {
   //   titleController.dispose();
@@ -44,10 +35,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
   @override
   Widget build(BuildContext context) {
     return AppbarWrapWidget(
-      floatingActionButton: FloatingActionButton(onPressed: () async {
-        print(
-            '${DateFormat("yyyy-MM-ddThh:27:mm.ssssss").format(DateTime.now())}');
-      }),
       title: LocaleKeys.new_task.tr(),
       resizeToAvoidBottomInset: false,
       showLeadingButton: true,
@@ -62,7 +49,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
               onClick: () {
                 FocusScope.of(context).unfocus();
                 taskController.changePanelStatus(
-                    newStatus: InputFieldStatus.hide);
+                  newStatus: InputFieldStatus.hide,
+                );
               },
               height: 700,
               child: Column(

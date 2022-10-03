@@ -34,6 +34,7 @@ class _TasksPageState extends State<TasksPage>
   final taskController = AddTaskController();
   @override
   void initState() {
+    log('initState tasks');
     taskController.fetchTasks();
     super.initState();
   }
@@ -41,6 +42,7 @@ class _TasksPageState extends State<TasksPage>
   @override
   void dispose() {
     _tabController.dispose();
+    log('dispose tasks');
     super.dispose();
   }
 

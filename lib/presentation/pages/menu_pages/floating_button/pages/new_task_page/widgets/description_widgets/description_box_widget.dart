@@ -10,9 +10,11 @@ import 'package:todo2/utils/assets_path.dart';
 class DescriptionBoxWidget extends StatelessWidget {
   final AddTaskController taskController;
   final bool withImageIcon;
+  final String? hintText;
   const DescriptionBoxWidget({
     super.key,
     this.withImageIcon = false,
+    this.hintText,
     required this.taskController,
   });
 
@@ -35,7 +37,7 @@ class DescriptionBoxWidget extends StatelessWidget {
           children: [
             DescriptionTextField(
               taskController: taskController,
-              hintText: LocaleKeys.write_a_comment.tr(),
+              hintText: hintText,
             ),
             Padding(
               padding: const EdgeInsets.only(top: 23),
