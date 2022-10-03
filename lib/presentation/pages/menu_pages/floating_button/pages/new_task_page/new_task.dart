@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
@@ -35,6 +37,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   @override
   Widget build(BuildContext context) {
     return AppbarWrapWidget(
+     
       title: LocaleKeys.new_task.tr(),
       resizeToAvoidBottomInset: false,
       showLeadingButton: true,
@@ -66,7 +69,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           isForFieldActive: true,
                           onChanged: (_) async {
                             await Future.delayed(const Duration(seconds: 1),
-                                () => setState(() {}));
+                                () => setState(() {},),);
                           },
                           titleController: taskController.userTextController,
                           text: LocaleKeys.forr.tr(),
@@ -76,7 +79,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           isForFieldActive: false,
                           onChanged: (_) async => await Future.delayed(
                               const Duration(seconds: 1),
-                              () => setState(() {})),
+                              () => setState(() {},),),
                           titleController: taskController.projectTextController,
                           text: LocaleKeys.In.tr(),
                         )
@@ -87,7 +90,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     valueListenable: taskController.panelStatus,
                     builder: (_, value, __) {
                       return (value != InputFieldStatus.hide)
-                          // not updating if const
                           ? SelectPanelWidget()
                           : Column(
                               children: [

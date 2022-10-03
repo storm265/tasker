@@ -51,9 +51,9 @@ class TaskRepositoryImpl implements TaskRepository {
     }
   }
 
-  Future<void> deleteTask({required String projectId}) async {
+  Future<void> deleteTask({required String taskId}) async {
     try {
-      await _taskDataSource.deleteTask(projectId: projectId);
+      await _taskDataSource.deleteTask(projectId: taskId);
     } catch (e) {
       throw Failure(e.toString());
     }

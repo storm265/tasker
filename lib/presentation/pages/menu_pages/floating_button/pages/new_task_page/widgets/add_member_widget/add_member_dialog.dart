@@ -18,11 +18,12 @@ class AddUserDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final taskController = AddTaskController();
-
     return AlertDialog(
       shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(5.0))),
+        borderRadius: BorderRadius.all(
+          Radius.circular(5.0),
+        ),
+      ),
       contentPadding: const EdgeInsets.symmetric(vertical: 10),
       content: SizedBox(
         height: 400,

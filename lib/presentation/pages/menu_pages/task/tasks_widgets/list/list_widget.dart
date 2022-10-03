@@ -60,7 +60,8 @@ class ListWidget extends StatelessWidget {
                       const GreySlidableWidget(),
                       EndPageWidget(
                         iconPath: AssetsPath.deleteIconPath,
-                        onClick: () {},
+                        onClick: () async => await taskController.deleteTask(
+                            taskId: modelList[i].projectId),
                       ),
                     ],
                   ),

@@ -15,6 +15,7 @@ import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_cont
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/calendar_lib/controller.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
+import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
@@ -44,11 +45,11 @@ class AddTaskController extends ChangeNotifier {
   final projectController = ProjectController();
   final fileController = FileController();
 
- final isTuneIconActive =ValueNotifier(true);
- void changeTuneIconStatus(bool  isMonthMode){
-  isTuneIconActive.value = isMonthMode;
-  isTuneIconActive.notifyListeners();
- }
+  final isTuneIconActive = ValueNotifier(true);
+  void changeTuneIconStatus(bool isMonthMode) {
+    isTuneIconActive.value = isMonthMode;
+    isTuneIconActive.notifyListeners();
+  }
 
   final isSubmitButtonClicked = ValueNotifier<bool>(true);
 
@@ -213,6 +214,17 @@ class AddTaskController extends ChangeNotifier {
     panelStatus.notifyListeners();
   }
 
+  Future<void> findPersonalProject() async {
+    final projects = await projectController.fetchAllProjects();
+    log('projects ${projects.length}');
+    for (var i = 0; i < projects.length; i++) {
+      if (projects[i].title == 'Personal') {
+        _assignedTo = projects[i].ownerId;
+        _projectId = projects[i].id;
+        break;
+      }
+    }
+  }
 // validation
 
   bool isEdit = false;
@@ -223,55 +235,45 @@ class AddTaskController extends ChangeNotifier {
     required GlobalKey<FormState> formKey,
   }) async {
     try {
-      log('tryValidate');
       String taskId = '';
       if (formKey.currentState!.validate()) {
-        log('is Valid');
         FocusScope.of(context).unfocus();
         changeIsClickedStatus(false);
+
         if (_assignedTo == null) {
-          if (pickedProject.value.id.isEmpty) {
-            final projects = await projectController.fetchAllProjects();
-            log('projects ${projects.length}');
-            for (var i = 0; i < projects.length; i++) {
-              if (projects[i].title == 'Personal') {
-                _assignedTo = projects[i].ownerId;
-                _projectId = projects[i].id;
-                break;
-              }
-            }
-          } else {
-            _assignedTo = pickedProject.value.ownerId;
-          }
-          log('is edit $isEdit');
+          pickedProject.value.id.isEmpty
+              ? findPersonalProject()
+              : _assignedTo = pickedProject.value.ownerId;
+
           if (isEdit) {
-            print('update task');
+            // TODO edit
           } else {
             final model = await createTask();
-            log('model : $model');
             taskId = model.id;
           }
 
           hasAttachments() ? uploadTaskAttachment(taskId: taskId) : null;
         } else {
-          log('is assigned');
           if (isEdit) {
+            // TODO edit
           } else {
             final model = await createTask();
-
             taskId = model.id;
           }
 
           hasAttachments() ? uploadTaskAttachment(taskId: taskId) : null;
         }
-
-        // NavigationService.navigateTo(
-        //   context,
-        //   Pages.tasks,
-        // );
-
+        clearData();
+        Future.delayed(
+          Duration.zero,
+          () => NavigationService.navigateTo(
+            context,
+            Pages.tasks,
+          ),
+        );
       }
-    } catch (e) {
+    } catch (e, t) {
+      log('trace $t');
       throw Failure(e.toString());
     } finally {
       changeIsClickedStatus(true);
@@ -297,7 +299,7 @@ class AddTaskController extends ChangeNotifier {
         dueDate: (pickedDate.value.day == DateTime.now().day ||
                 pickedDate.value.day < DateTime.now().day)
             ? null
-            : DateFormat("yyyy-MM-ddThh:27:mm.ssssss").format(pickedDate.value),
+            : DateFormat("yyyy-MM-ddThh:mm:ss.ssssss").format(pickedDate.value),
         members: members,
       );
     } catch (e) {
@@ -305,9 +307,9 @@ class AddTaskController extends ChangeNotifier {
     }
   }
 
-  Future<void> deleteTask({required String projectId}) async {
+  Future<void> deleteTask({required String taskId}) async {
     try {
-      await _taskRepository.deleteTask(projectId: projectId);
+      await _taskRepository.deleteTask(taskId: taskId);
     } catch (e) {
       throw Failure(e.toString());
     }
