@@ -20,24 +20,21 @@ import 'package:todo2/services/system_service/system_chrome.dart';
 import 'services/theme_service/theme_data_controller.dart';
 
 Future<void> setNetwork() async {
-  // final info = NetworkInfo();
+  final info = NetworkInfo();
 
-  // var wifiName = await info.getWifiName();
-  // log('wifiName $wifiName');
-  // if (kReleaseMode) {
-  //   if (wifiName == "COGNITEQ") {
-  //     HttpProxy httpProxy = await HttpProxy.createHttpProxy();
-  //     httpProxy.host = "10.101.4.108";
-  //     httpProxy.port = "8888";
-  //     HttpOverrides.global = httpProxy;
-  //   } else {
-  //     // TODO home network
-  //   }
-  // }
-  HttpProxy httpProxy = await HttpProxy.createHttpProxy();
-  httpProxy.host = "10.101.4.108";
-  httpProxy.port = "8888";
-  HttpOverrides.global = httpProxy;
+  var wifiName = await info.getWifiName();
+  log('wifiName $wifiName');
+  if (kReleaseMode) {
+    if (wifiName == "COGNITEQ") {
+      HttpProxy httpProxy = await HttpProxy.createHttpProxy();
+      httpProxy.host = "10.101.4.108";
+      httpProxy.port = "8888";
+      HttpOverrides.global = httpProxy;
+    } else {
+      // TODO home network
+
+    }
+  }
 }
 
 void main() async {
@@ -91,7 +88,7 @@ class _MyAppState extends State<MyApp> {
           theme: _themeDataController.themeData,
           initialRoute: '/',
           routes: routes,
-          //  home: TasksPage(),
+        // home: SignUpPage(),
         ),
       ),
     );

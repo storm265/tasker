@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/user_data_source.dart';
@@ -45,12 +47,14 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   void initState() {
+    log('_ProfilePageState initState');
     userController.fetchStats().then((_) => setState(() {}));
     super.initState();
   }
 
   @override
   void dispose() {
+    log('_ProfilePageState dis');
     fileController.pickedFile.dispose();
     fileController.dispose();
     super.dispose();

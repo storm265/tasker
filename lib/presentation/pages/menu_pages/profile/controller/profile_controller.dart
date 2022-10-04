@@ -31,15 +31,12 @@ class ProfileController extends ChangeNotifier {
   late String email = '';
   late AnimationController iconAnimationController;
 
-
- final imageCachedKey = ValueNotifier<String>('0');
- 
-
+  final imageCachedKey = ValueNotifier<String>('0');
 
   Future<void> clearImage() async {
     final url = await _secureStorageService.getUserData(
             type: StorageDataType.avatarUrl) ??
-        '';        
+        '';
     await CachedNetworkImage.evictFromCache(url);
     imageCache.clearLiveImages();
     imageCache.clear();
@@ -52,9 +49,7 @@ class ProfileController extends ChangeNotifier {
       imageUrl.value =
           '${dotenv.env[EnvScheme.apiUrl]}/users-avatar/${await getAvatarLink()}';
       imageUrl.notifyListeners();
-      log('img url ${imageUrl.value}');
       imageHeader = await getAvatarHeader();
-      log('img imageHeader $imageHeader');
 
       email = await _secureStorageService.getUserData(
               type: StorageDataType.email) ??

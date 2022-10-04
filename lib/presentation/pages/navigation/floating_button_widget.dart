@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/add_dialog.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/add_dialog.dart';
 
 class FloatingButtonWidget extends StatelessWidget {
   const FloatingButtonWidget({Key? key}) : super(key: key);

@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
@@ -23,12 +22,13 @@ class UserItemWidget extends StatefulWidget {
 class _UserItemWidgetState extends State<UserItemWidget> {
   bool isSelected = false;
   final taskController = AddTaskController();
-  
+
   @override
   Widget build(BuildContext context) {
     log('header ${taskController.imageHeader}');
     return ListTile(
       leading: CircleAvatar(
+        backgroundColor: Colors.grey,
         backgroundImage: NetworkImage(
           widget.data.avatarUrl,
           headers: taskController.imageHeader,

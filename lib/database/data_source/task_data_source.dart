@@ -123,6 +123,7 @@ class TaskDataSourceImpl implements TaskDataSource {
         },
         options: await _network.getLocalRequestOptions(useContentType: true),
       );
+      log('data ${response.data}');
       log('createTask ${response.statusMessage}');
       log('createTask ${response.statusCode}');
       return NetworkErrorService.isSuccessful(response)

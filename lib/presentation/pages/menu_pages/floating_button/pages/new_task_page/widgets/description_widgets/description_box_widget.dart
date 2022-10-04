@@ -77,19 +77,17 @@ class DescriptionBoxWidget extends StatelessWidget {
                             SvgPicture.asset(AssetsPath.fileAttachmentIconPath),
                       ),
                     ),
+                    const Spacer(),
                     withImageIcon
-                        ? Padding(
-                            padding: const EdgeInsets.only(left: 130),
-                            child: TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                'Send',
-                                style: TextStyle(
-                                  fontSize: 17,
-                                  fontStyle: FontStyle.italic,
-                                  fontWeight: FontWeight.w200,
-                                  color: getAppColor(color: CategoryColor.blue),
-                                ),
+                        ? TextButton(
+                            onPressed: () {},
+                            child: Text(
+                              LocaleKeys.send.tr(),
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.w200,
+                                color: getAppColor(color: CategoryColor.blue),
                               ),
                             ),
                           )

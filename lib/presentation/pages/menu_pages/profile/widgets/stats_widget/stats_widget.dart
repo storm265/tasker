@@ -39,6 +39,7 @@ class StatsWidget extends StatelessWidget {
           color: const Color(0xFFFFFFFF),
         ),
         child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Align(
               alignment: Alignment.topLeft,
@@ -58,53 +59,55 @@ class StatsWidget extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
-              height: 130,
-              child: DisabledGlowWidget(
-                child: Center(
+            FittedBox(
+              child: SizedBox(
+                height: 130,
+                child: DisabledGlowWidget(
                   child: ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     scrollDirection: Axis.horizontal,
                     itemCount: 3,
                     shrinkWrap: true,
                     itemBuilder: (_, i) {
-                      return SizedBox(
-                        width: 120,
-                        child: Column(
-                          children: [
-                            CircularPercentIndicator(
-                              animation: true,
-                              radius: 36.0,
-                              lineWidth: 2.3,
-                              percent:
-                                  double.parse(stats[i].removeLastElement()) /
-                                      100,
-                              center: Center(
+                      return Center(
+                        child: SizedBox(
+                          width: 120,
+                          child: Column(
+                            children: [
+                              CircularPercentIndicator(
+                                animation: true,
+                                radius: 36.0,
+                                lineWidth: 2.3,
+                                percent:
+                                    double.parse(stats[i].removeLastElement()) /
+                                        100,
+                                center: Center(
+                                  child: Text(
+                                    stats[i],
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w200,
+                                      fontStyle: FontStyle.italic,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ),
+                                progressColor: statsColors[i],
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 15),
                                 child: Text(
-                                  stats[i],
+                                  maxLines: 2,
+                                  textAlign: TextAlign.center,
+                                  labels[i],
                                   style: const TextStyle(
-                                    fontWeight: FontWeight.w200,
-                                    fontStyle: FontStyle.italic,
-                                    fontSize: 18,
+                                    overflow: TextOverflow.ellipsis,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
                               ),
-                              progressColor: statsColors[i],
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 15),
-                              child: Text(
-                                maxLines: 2,
-                                textAlign: TextAlign.center,
-                                labels[i],
-                                style: const TextStyle(
-                                  overflow: TextOverflow.ellipsis,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       );
                     },

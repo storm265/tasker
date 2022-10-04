@@ -1,6 +1,6 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
-// ignore_for_file: prefer_single_quotes, avoid_renaming_method_parameters
+// ignore_for_file: prefer_single_quotes
 
 import 'dart:ui';
 
@@ -101,7 +101,8 @@ class CodegenLoader extends AssetLoader{
   "enter_field": "Please, fill field 😐 ",
   "updated": "Updated 😀",
   "deleted": "Deleted 😉",
-  "created": "Created 😄"
+  "created": "Created 😄",
+  "send": "Send"
 };
 static const Map<String,dynamic> ru = {
   "get_started": "Начать",
@@ -165,7 +166,7 @@ static const Map<String,dynamic> ru = {
   "complete_task": "Выполнить задачу",
   "comment": "Комментарии",
   "write_a_comment": "Напиши комментарий",
-  "days_ago": "дней назал назад",
+  "days_ago": "дней назад",
   "day_ago": "день назад",
   "edit_task": "Редактировать задачу",
   "delete_task": "Удалить задачу",
@@ -191,7 +192,8 @@ static const Map<String,dynamic> ru = {
   "enter_field": "Пожалуйста, заполни поле 😐",
   "updated": "Обновлено 😀",
   "deleted": "Удалено 😉",
-  "created": "Создано 😄"
+  "created": "Создано 😄",
+  "send": "Отправить"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"en": en, "ru": ru};
 }

@@ -245,21 +245,14 @@ class AddTaskController extends ChangeNotifier {
               ? findPersonalProject()
               : _assignedTo = pickedProject.value.ownerId;
 
-          if (isEdit) {
-            // TODO edit
-          } else {
-            final model = await createTask();
-            taskId = model.id;
-          }
+          final model = await createTask();
+          taskId = model.id;
 
           hasAttachments() ? uploadTaskAttachment(taskId: taskId) : null;
         } else {
-          if (isEdit) {
-            // TODO edit
-          } else {
-            final model = await createTask();
-            taskId = model.id;
-          }
+          _projectId = pickedProject.value.id;
+          final model = await createTask();
+          taskId = model.id;
 
           hasAttachments() ? uploadTaskAttachment(taskId: taskId) : null;
         }
@@ -290,7 +283,8 @@ class AddTaskController extends ChangeNotifier {
           members.add(element.id);
         }
       }
-
+      log('ass to $_assignedTo');
+      log('projectId $_projectId');
       return await _taskRepository.createTask(
         title: titleController.text,
         description: descriptionController.text,

@@ -88,12 +88,14 @@ class _AddMemberWidgetState extends State<AddMemberWidget> {
                     children: [
                       InkWell(
                         onLongPress: () {
-                          widget.taskController
-                              .removeMember(model: userList[i]);
+                          widget.taskController.removeMember(
+                            model: userList[i],
+                          );
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 3),
                           child: CircleAvatar(
+                            backgroundColor: Colors.grey,
                             radius: 17,
                             backgroundImage: NetworkImage(userList[i].avatarUrl,
                                 headers: widget.taskController.imageHeader),
