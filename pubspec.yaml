@@ -21,9 +21,10 @@ dependencies:
   flutter_svg:
   flutter_dotenv:
   shimmer:
-  # network
+  # For charles
   http_proxy:
   network_info_plus:
+  permission_handler:
   
 
 

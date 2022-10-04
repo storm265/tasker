@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http_proxy/http_proxy.dart';
 import 'package:network_info_plus/network_info_plus.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/sign_in_page.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/sign_up_page.dart';
 import 'package:todo2/presentation/pages/auth/welcome/welcome_page.dart';
@@ -20,19 +21,36 @@ import 'package:todo2/services/system_service/system_chrome.dart';
 import 'services/theme_service/theme_data_controller.dart';
 
 Future<void> setNetwork() async {
-  final info = NetworkInfo();
+  if (kDebugMode) {
+    final info = NetworkInfo();
+    var locationStatus = await Permission.location.status;
+    if (locationStatus.isDenied) {
+      await Permission.locationWhenInUse.request();
+    }
+    if (await Permission.location.isRestricted) {
+      openAppSettings();
+    }
 
-  var wifiName = await info.getWifiName();
-  log('wifiName $wifiName');
-  if (kReleaseMode) {
-    if (wifiName == "COGNITEQ") {
-      HttpProxy httpProxy = await HttpProxy.createHttpProxy();
-      httpProxy.host = "10.101.4.108";
-      httpProxy.port = "8888";
-      HttpOverrides.global = httpProxy;
-    } else {
-      // TODO home network
+    if (await Permission.location.isGranted) {
+      log('gra ${await Permission.location.isGranted}');
+      var wifiName = await info.getWifiName();
+      log('wifiName $wifiName');
 
+      switch (wifiName) {
+        case 'COGNITEQ':
+          HttpProxy httpProxy = await HttpProxy.createHttpProxy();
+          httpProxy.host = "10.101.4.108";
+          httpProxy.port = "8888";
+          HttpOverrides.global = httpProxy;
+          break;
+        case 'Nastya':
+          HttpProxy httpProxy = await HttpProxy.createHttpProxy();
+          httpProxy.host = "10.101.4.108";
+          httpProxy.port = "8888";
+          HttpOverrides.global = httpProxy;
+          break;
+        default:
+      }
     }
   }
 }
@@ -88,7 +106,7 @@ class _MyAppState extends State<MyApp> {
           theme: _themeDataController.themeData,
           initialRoute: '/',
           routes: routes,
-        // home: SignUpPage(),
+          // home: SignUpPage(),
         ),
       ),
     );
