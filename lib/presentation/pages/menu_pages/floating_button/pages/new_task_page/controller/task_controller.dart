@@ -214,48 +214,36 @@ class AddTaskController extends ChangeNotifier {
     panelStatus.notifyListeners();
   }
 
-  Future<void> findPersonalProject() async {
-    final projects = await projectController.fetchAllProjects();
-    log('projects ${projects.length}');
-    for (var i = 0; i < projects.length; i++) {
-      if (projects[i].title == 'Personal') {
-        _assignedTo = projects[i].ownerId;
-        _projectId = projects[i].id;
-        break;
-      }
-    }
-  }
 // validation
 
   bool isEdit = false;
   bool hasAttachments() => attachments.value.isEmpty ? false : true;
+
+  bool isPickedProject(BuildContext context) {
+    return pickedProject.value.id != ''
+        ? true
+        : throw MessageService.displaySnackbar(
+            context: context,
+            message: 'Project is not picked',
+          );
+  }
 
   Future<void> tryValidate({
     required BuildContext context,
     required GlobalKey<FormState> formKey,
   }) async {
     try {
+      log('is picked project $isPickedProject');
       String taskId = '';
+      isPickedProject(context);
       if (formKey.currentState!.validate()) {
         FocusScope.of(context).unfocus();
         changeIsClickedStatus(false);
 
-        if (_assignedTo == null) {
-          pickedProject.value.id.isEmpty
-              ? findPersonalProject()
-              : _assignedTo = pickedProject.value.ownerId;
+        final model = await createTask();
+        taskId = model.id;
 
-          final model = await createTask();
-          taskId = model.id;
-
-          hasAttachments() ? uploadTaskAttachment(taskId: taskId) : null;
-        } else {
-          _projectId = pickedProject.value.id;
-          final model = await createTask();
-          taskId = model.id;
-
-          hasAttachments() ? uploadTaskAttachment(taskId: taskId) : null;
-        }
+        hasAttachments() ? uploadTaskAttachment(taskId: taskId) : null;
         clearData();
         Future.delayed(
           Duration.zero,
@@ -288,8 +276,8 @@ class AddTaskController extends ChangeNotifier {
       return await _taskRepository.createTask(
         title: titleController.text,
         description: descriptionController.text,
-        assignedTo: _assignedTo,
-        projectId: _projectId ?? '',
+        assignedTo: pickedUser.value.id.isEmpty ? null : pickedUser.value.id,
+        projectId: pickedProject.value.id,
         dueDate: (pickedDate.value.day == DateTime.now().day ||
                 pickedDate.value.day < DateTime.now().day)
             ? null
@@ -310,7 +298,7 @@ class AddTaskController extends ChangeNotifier {
   }
 
   Future<void> updateTask({
-    required String assignedTo,
+    required String? assignedTo,
     required String projectId,
     required String taskId,
     List<String>? members,
@@ -320,9 +308,12 @@ class AddTaskController extends ChangeNotifier {
         taskId: taskId,
         title: titleController.text,
         description: descriptionController.text,
-        assignedTo: assignedTo,
+        assignedTo: pickedUser.value.id.isEmpty ? null : pickedUser.value.id,
         projectId: projectId,
-        dueDate: pickedDate.value,
+        dueDate: (pickedDate.value.day == DateTime.now().day ||
+                pickedDate.value.day < DateTime.now().day)
+            ? null
+            : DateFormat("yyyy-MM-ddThh:mm:ss.ssssss").format(pickedDate.value),
       );
     } catch (e) {
       throw Failure(e.toString());

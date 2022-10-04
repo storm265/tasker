@@ -26,7 +26,7 @@ abstract class TaskDataSource {
     required String assignedTo,
     required String projectId,
     required String taskId,
-    required DateTime dueDate,
+    required String?  dueDate,
     List<String>? members,
   });
 
@@ -140,10 +140,10 @@ class TaskDataSourceImpl implements TaskDataSource {
   Future<Map<String, dynamic>> updateTask({
     required String title,
     required String description,
-    required String assignedTo,
+    required String? assignedTo,
     required String projectId,
     required String taskId,
-    required DateTime dueDate,
+    required String?  dueDate,
     List<String>? members,
   }) async {
     try {

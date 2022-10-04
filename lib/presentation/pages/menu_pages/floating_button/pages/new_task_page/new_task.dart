@@ -34,11 +34,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
   //   descriptionController.dispose();
   //   super.dispose();
   // }
-  
+
   @override
   Widget build(BuildContext context) {
     return AppbarWrapWidget(
-     
       title: LocaleKeys.new_task.tr(),
       resizeToAvoidBottomInset: false,
       showLeadingButton: true,
@@ -69,8 +68,12 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           taskController: taskController,
                           isForFieldActive: true,
                           onChanged: (_) async {
-                            await Future.delayed(const Duration(seconds: 1),
-                                () => setState(() {},),);
+                            await Future.delayed(
+                              const Duration(seconds: 1),
+                              () => setState(
+                                () {},
+                              ),
+                            );
                           },
                           titleController: taskController.userTextController,
                           text: LocaleKeys.forr.tr(),
@@ -79,8 +82,11 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           taskController: taskController,
                           isForFieldActive: false,
                           onChanged: (_) async => await Future.delayed(
-                              const Duration(seconds: 1),
-                              () => setState(() {},),),
+                            const Duration(seconds: 1),
+                            () => setState(
+                              () {},
+                            ),
+                          ),
                           titleController: taskController.projectTextController,
                           text: LocaleKeys.In.tr(),
                         )
