@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
@@ -24,8 +26,8 @@ class TaskCardWidget extends StatelessWidget {
     if (DateFormat('yyyy-MM-dd').format(deadLineTime) ==
             DateFormat('yyyy-MM-dd').format(
                 DateTime.utc(timeNow.year, timeNow.month, timeNow.day)) &&
-        timeNow.difference(deadLineTime).inHours <= 0 &&
-        timeNow.difference(deadLineTime).inHours >= -1) {
+        deadLineTime.difference(timeNow).inHours >= 1 &&
+        deadLineTime.difference(timeNow).inHours <= 2) {
       return true;
     } else {
       return false;
@@ -36,6 +38,7 @@ class TaskCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final date = data[index].dueDate;
     String isAm = (date.hour > 12) ? 'pm' : 'am';
+    log('s ${date.difference(timeNow).inHours}');
     return GestureDetector(
       onTap: () async {
         await showDialog(
@@ -50,7 +53,7 @@ class TaskCardWidget extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: Container(
           decoration: BoxDecoration(
-            color: _isSoonExpire(data[index].dueDate)
+            color: _isSoonExpire(date)
                 ? const Color(0xFFFFFFEF).withOpacity(0.7)
                 : Colors.white,
             boxShadow: [

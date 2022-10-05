@@ -43,6 +43,7 @@ class ListWidget extends StatelessWidget {
         .toList();
     tomorrowList.sort((a, b) => a.dueDate.compareTo(b.dueDate));
     log('today len ${todayList.length}');
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
