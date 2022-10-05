@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
@@ -38,7 +36,6 @@ class TaskCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final date = data[index].dueDate;
     String isAm = (date.hour > 12) ? 'pm' : 'am';
-    log('diffference ${timeNow.difference(date).inHours}');
     return GestureDetector(
       onTap: () async {
         await showDialog(
