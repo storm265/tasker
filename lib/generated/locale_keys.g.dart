@@ -1,4 +1,5 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
+// ignore_for_file: constant_identifier_names
 
 abstract class  LocaleKeys {
   static const get_started = 'get_started';
@@ -29,6 +30,7 @@ abstract class  LocaleKeys {
   static const tomorrow = 'tomorrow';
   static const month = 'month';
   static const my_tasks = 'my_tasks';
+  static const new_task = 'new_task';
   static const menu = 'menu';
   static const quick = 'quick';
   static const profile = 'profile';
@@ -43,7 +45,6 @@ abstract class  LocaleKeys {
   static const delete_project = 'delete_project';
   static const update_project = 'update_project';
   static const add_project = 'add_project';
-  static const new_task = 'new_task';
   static const forr = 'forr';
   static const In = 'In';
   static const title = 'title';
@@ -58,9 +59,8 @@ abstract class  LocaleKeys {
   static const assigned_to = 'assigned_to';
   static const members = 'members';
   static const tag = 'tag';
-  static const comments = 'comments';
   static const complete_task = 'complete_task';
-  static const comment = 'comment';
+  static const comments = 'comments';
   static const write_a_comment = 'write_a_comment';
   static const days_ago = 'days_ago';
   static const day_ago = 'day_ago';
@@ -86,5 +86,9 @@ abstract class  LocaleKeys {
   static const please_restart_app = 'please_restart_app';
   static const form_is_not_valid = 'form_is_not_valid';
   static const enter_field = 'enter_field';
+  static const updated = 'updated';
+  static const deleted = 'deleted';
+  static const created = 'created';
+  static const send = 'send';
 
 }

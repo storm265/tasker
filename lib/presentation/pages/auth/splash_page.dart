@@ -28,6 +28,7 @@ class SplashPage extends StatelessWidget {
 
   Future<void> setLocale(BuildContext context) async {
     locale = context.locale.languageCode;
+    log('locale $locale');
     Intl.withLocale(locale, () => null);
   }
 

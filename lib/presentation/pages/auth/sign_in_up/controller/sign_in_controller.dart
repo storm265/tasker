@@ -27,11 +27,11 @@ class SignInController extends ChangeNotifier {
 
   final formKey = GlobalKey<FormState>();
 
-  final isActiveSubmitButton = ValueNotifier(true);
+  final isActiveSignInButton = ValueNotifier(true);
 
-  void changeSubmitButtonStatus({required bool isActive}) {
-    isActiveSubmitButton.value = isActive;
-    isActiveSubmitButton.notifyListeners();
+  void changeSignInButtonStatus({required bool isActive}) {
+    isActiveSignInButton.value = isActive;
+    isActiveSignInButton.notifyListeners();
   }
 
   Future<void> tryToSignIn({
@@ -41,19 +41,11 @@ class SignInController extends ChangeNotifier {
   }) async {
     try {
       if (formKey.currentState!.validate()) {
-        changeSubmitButtonStatus(isActive: false);
+        changeSignInButtonStatus(isActive: false);
         await _signIn(
           context: context,
           email: emailController,
           password: passwordController,
-        );
-
-        await Future.delayed(
-          Duration.zero,
-          () => NavigationService.navigateTo(
-            context,
-            Pages.navigationReplacement,
-          ),
         );
       } else {
         throw MessageService.displaySnackbar(
@@ -61,13 +53,23 @@ class SignInController extends ChangeNotifier {
           context: context,
         );
       }
-    } catch (e) {
-      throw MessageService.displaySnackbar(
-        message: e.toString(),
-        context: context,
+
+      await Future.delayed(
+        Duration.zero,
+        () => NavigationService.navigateTo(
+          context,
+          Pages.navigationReplacement,
+        ),
       );
+    } catch (e) {
+      if (!e.toString().contains('Scaffold')) {
+        throw MessageService.displaySnackbar(
+          message: e.toString(),
+          context: context,
+        );
+      }
     } finally {
-      changeSubmitButtonStatus(isActive: true);
+      changeSignInButtonStatus(isActive: true);
     }
   }
 
@@ -85,8 +87,6 @@ class SignInController extends ChangeNotifier {
         accessToken: authModel.accessToken,
         id: authModel.userId,
       );
-
-      // TODO: you can just save the whole User object
       await _storageSource.storageApi.saveData(
         type: StorageDataType.id,
         value: authModel.userId,

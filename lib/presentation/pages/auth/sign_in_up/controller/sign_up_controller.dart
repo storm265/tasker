@@ -26,11 +26,11 @@ class SignUpController extends ChangeNotifier {
 
   final formKey = GlobalKey<FormState>();
 
-  final isActiveSubmitButton = ValueNotifier<bool>(true);
+  final isActiveSignUpButton = ValueNotifier<bool>(true);
 
-  void changeSubmitButtonValue({required bool isActive}) {
-    isActiveSubmitButton.value = isActive;
-    isActiveSubmitButton.notifyListeners();
+  void changeSignUpButtonValue({required bool isActive}) {
+    isActiveSignUpButton.value = isActive;
+    isActiveSignUpButton.notifyListeners();
   }
 
   Future<void> trySignUp({
@@ -40,7 +40,7 @@ class SignUpController extends ChangeNotifier {
     required String password,
   }) async {
     try {
-      changeSubmitButtonValue(isActive: false);
+      changeSignUpButtonValue(isActive: false);
 
       if (formKey.currentState!.validate()) {
         await _signUp(
@@ -49,6 +49,7 @@ class SignUpController extends ChangeNotifier {
           email: email,
           password: password,
         );
+        // await Future.delayed(Duration(seconds: 2));
       } else {
         throw MessageService.displaySnackbar(
           message: LocaleKeys.form_is_not_valid.tr(),
@@ -66,7 +67,7 @@ class SignUpController extends ChangeNotifier {
           );
         }
       }
-
+// await Future.delayed(Duration(seconds: 2));
       await Future.delayed(
         Duration.zero,
         () => NavigationService.navigateTo(
@@ -75,12 +76,14 @@ class SignUpController extends ChangeNotifier {
         ),
       );
     } catch (e) {
-      throw MessageService.displaySnackbar(
-        message: e.toString(),
-        context: context,
-      );
+      if (!e.toString().contains('Scaffold')) {
+        throw MessageService.displaySnackbar(
+          message: e.toString(),
+          context: context,
+        );
+      }
     } finally {
-      changeSubmitButtonValue(isActive: true);
+      changeSignUpButtonValue(isActive: true);
     }
   }
 

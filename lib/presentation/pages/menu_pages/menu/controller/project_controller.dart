@@ -1,11 +1,14 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/projects_data_source.dart';
 import 'package:todo2/database/model/project_models/project_stats_model.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
+import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/error_service/error_service.dart';
+import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
@@ -60,6 +63,7 @@ class ProjectController extends ChangeNotifier {
 
   Future<void> tryValidateProject({
     required bool isEdit,
+    required BuildContext context,
   }) async {
     try {
       if (formKey.currentState!.validate() &&
@@ -67,11 +71,20 @@ class ProjectController extends ChangeNotifier {
         setClickedValue(false);
         if (isEdit) {
           await updateProject(projectModel: selectedModel.value);
+          MessageService.displaySnackbar(
+            context: context,
+            message: LocaleKeys.updated.tr(),
+          );
         } else {
           await createProject();
+          MessageService.displaySnackbar(
+            context: context,
+            message: LocaleKeys.created.tr(),
+          );
         }
         clearProjects();
         setClickedValue(true);
+        await Future.delayed(Duration.zero, () => Navigator.pop(context));
       }
     } catch (e) {
       throw Failure(e.toString());
@@ -133,7 +146,7 @@ class ProjectController extends ChangeNotifier {
     }
   }
 
-  Future<void> deleteProject() async {
+  Future<void> deleteProject({required BuildContext context}) async {
     try {
       setClickedValue(false);
       await _projectsRepository.deleteProject(
@@ -141,8 +154,13 @@ class ProjectController extends ChangeNotifier {
       projects.value
           .removeWhere((element) => selectedModel.value.id == element.id);
       projects.notifyListeners();
+      MessageService.displaySnackbar(
+        context: context,
+        message: LocaleKeys.deleted.tr(),
+      );
       clearProjects();
       setClickedValue(true);
+      await Future.delayed(Duration.zero, () => Navigator.pop(context));
     } catch (e) {
       throw Failure(e.toString());
     }

@@ -7,7 +7,7 @@ import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/auth/widgets/unfocus_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/description_widgets/description_box_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/confirm_button.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/confirm_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/atachment_message_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/comment_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/detailed_title_widget.dart';
@@ -64,7 +64,10 @@ class _ViewTaskState extends State<ViewTask> {
                     child: Column(
                       children: [
                         DetailedTitleWidget(title: widget.pickedTask.title),
-                        ItemsWidget(pickedTask: widget.pickedTask),
+                        ItemsWidget(
+                          pickedTask: widget.pickedTask,
+                          taskController: widget.taskController,
+                        ),
                       ],
                     ),
                   ),

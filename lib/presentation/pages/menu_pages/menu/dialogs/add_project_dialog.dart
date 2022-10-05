@@ -90,9 +90,8 @@ Future<void> showAddEditProjectDialog({
                       : TextButton(
                           onPressed: isClicked
                               ? () async {
-                                  await projectController
-                                      .deleteProject()
-                                      .then((_) => Navigator.pop(context));
+                                  await projectController.deleteProject(
+                                      context: context);
                                 }
                               : null,
                           child: Text(
@@ -102,13 +101,12 @@ Future<void> showAddEditProjectDialog({
                   TextButton(
                     onPressed: isClicked
                         ? () async {
-                            await projectController
-                                .tryValidateProject(
-                                  isEdit: status == ProjectDialogStatus.add
-                                      ? false
-                                      : true,
-                                )
-                                .then((_) => Navigator.pop(context));
+                            await projectController.tryValidateProject(
+                              context: context,
+                              isEdit: status == ProjectDialogStatus.add
+                                  ? false
+                                  : true,
+                            );
                           }
                         : null,
                     child: Text(

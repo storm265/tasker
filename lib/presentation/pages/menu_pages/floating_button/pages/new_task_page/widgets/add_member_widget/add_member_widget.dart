@@ -1,5 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
+import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/add_member_widget/add_member_dialog.dart';
 
@@ -29,7 +31,11 @@ class _AddMemberWidgetState extends State<AddMemberWidget> {
       valueListenable: widget.taskController.taskMembers,
       builder: (_, users, __) => (users.isEmpty)
           ? Padding(
-              padding: const EdgeInsets.only(left: 15, bottom: 20, top: 20),
+              padding: const EdgeInsets.only(
+                left: 40,
+                bottom: 20,
+                top: 20,
+              ),
               child: Row(
                 children: [
                   SizedBox(
@@ -44,9 +50,9 @@ class _AddMemberWidgetState extends State<AddMemberWidget> {
                         ),
                       ),
                       onPressed: () {},
-                      child: const Text(
-                        'Anyone',
-                        style: TextStyle(color: Colors.black),
+                      child: Text(
+                        LocaleKeys.anyone.tr(),
+                        style: const TextStyle(color: Colors.black),
                       ),
                     ),
                   ),
@@ -82,12 +88,14 @@ class _AddMemberWidgetState extends State<AddMemberWidget> {
                     children: [
                       InkWell(
                         onLongPress: () {
-                          widget.taskController
-                              .removeMember(model: userList[i]);
+                          widget.taskController.removeMember(
+                            model: userList[i],
+                          );
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 3),
                           child: CircleAvatar(
+                            backgroundColor: Colors.grey,
                             radius: 17,
                             backgroundImage: NetworkImage(userList[i].avatarUrl,
                                 headers: widget.taskController.imageHeader),

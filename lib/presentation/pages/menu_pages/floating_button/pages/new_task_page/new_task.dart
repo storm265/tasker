@@ -11,9 +11,9 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_ta
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/common/fake_nav_bar.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/date_widgets/pick_time_field_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/panels/selected_panel_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/confirm_button.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/red_app_bar.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/white_box_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/confirm_button.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/red_app_bar.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/white_box_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
@@ -28,26 +28,16 @@ class AddTaskPage extends StatefulWidget {
 class _AddTaskPageState extends State<AddTaskPage> {
   final formKey = GlobalKey<FormState>();
   final taskController = AddTaskController();
-  @override
-  void initState() {
-    taskController.getAccessHeader();
-    log('imageHeader: ${taskController.imageHeader}');
-    super.initState();
-  }
-
   // @override
   // void dispose() {
   //   titleController.dispose();
   //   descriptionController.dispose();
   //   super.dispose();
   // }
+
   @override
   Widget build(BuildContext context) {
     return AppbarWrapWidget(
-      floatingActionButton: FloatingActionButton(onPressed: () async {
-        print(
-            '${DateFormat("yyyy-MM-ddThh:27:mm.ssssss").format(DateTime.now())}');
-      }),
       title: LocaleKeys.new_task.tr(),
       resizeToAvoidBottomInset: false,
       showLeadingButton: true,
@@ -62,7 +52,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
               onClick: () {
                 FocusScope.of(context).unfocus();
                 taskController.changePanelStatus(
-                    newStatus: InputFieldStatus.hide);
+                  newStatus: InputFieldStatus.hide,
+                );
               },
               height: 700,
               child: Column(
@@ -77,8 +68,12 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           taskController: taskController,
                           isForFieldActive: true,
                           onChanged: (_) async {
-                            await Future.delayed(const Duration(seconds: 1),
-                                () => setState(() {}));
+                            await Future.delayed(
+                              const Duration(seconds: 1),
+                              () => setState(
+                                () {},
+                              ),
+                            );
                           },
                           titleController: taskController.userTextController,
                           text: LocaleKeys.forr.tr(),
@@ -87,8 +82,11 @@ class _AddTaskPageState extends State<AddTaskPage> {
                           taskController: taskController,
                           isForFieldActive: false,
                           onChanged: (_) async => await Future.delayed(
-                              const Duration(seconds: 1),
-                              () => setState(() {})),
+                            const Duration(seconds: 1),
+                            () => setState(
+                              () {},
+                            ),
+                          ),
                           titleController: taskController.projectTextController,
                           text: LocaleKeys.In.tr(),
                         )
@@ -99,7 +97,6 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     valueListenable: taskController.panelStatus,
                     builder: (_, value, __) {
                       return (value != InputFieldStatus.hide)
-                          // not updating if const
                           ? SelectPanelWidget()
                           : Column(
                               children: [

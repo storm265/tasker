@@ -47,7 +47,9 @@ class CheckboxWidget extends StatelessWidget {
             iconPath: AssetsPath.deleteIconPath,
             onClick: () async {
               await checkListController.deleteChecklist(
-                  checkListModel: checklistModel);
+                context: context,
+                checkListModel: checklistModel,
+              );
             },
           ),
         ],

@@ -10,9 +10,11 @@ import 'package:todo2/utils/assets_path.dart';
 class DescriptionBoxWidget extends StatelessWidget {
   final AddTaskController taskController;
   final bool withImageIcon;
+  final String? hintText;
   const DescriptionBoxWidget({
     super.key,
     this.withImageIcon = false,
+    this.hintText,
     required this.taskController,
   });
 
@@ -35,7 +37,7 @@ class DescriptionBoxWidget extends StatelessWidget {
           children: [
             DescriptionTextField(
               taskController: taskController,
-              hintText: LocaleKeys.write_a_comment.tr(),
+              hintText: hintText,
             ),
             Padding(
               padding: const EdgeInsets.only(top: 23),
@@ -75,19 +77,17 @@ class DescriptionBoxWidget extends StatelessWidget {
                             SvgPicture.asset(AssetsPath.fileAttachmentIconPath),
                       ),
                     ),
+                    const Spacer(),
                     withImageIcon
-                        ? Padding(
-                            padding: const EdgeInsets.only(left: 130),
-                            child: TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                'Send',
-                                style: TextStyle(
-                                  fontSize: 17,
-                                  fontStyle: FontStyle.italic,
-                                  fontWeight: FontWeight.w200,
-                                  color: getAppColor(color: CategoryColor.blue),
-                                ),
+                        ? TextButton(
+                            onPressed: () {},
+                            child: Text(
+                              LocaleKeys.send.tr(),
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontStyle: FontStyle.italic,
+                                fontWeight: FontWeight.w200,
+                                color: getAppColor(color: CategoryColor.blue),
                               ),
                             ),
                           )

@@ -107,7 +107,7 @@ class _SignInPageState extends State<SignInPage> {
                     title: LocaleKeys.password.tr(),
                   ),
                   ValueListenableBuilder<bool>(
-                    valueListenable: _signInController.isActiveSubmitButton,
+                    valueListenable: _signInController.isActiveSignInButton,
                     builder: ((context, isClicked, _) => isClicked
                         ? SubmitUpButtonWidget(
                             buttonText: LocaleKeys.sign_in.tr(),

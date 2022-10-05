@@ -23,7 +23,10 @@ class MessageService {
                   color: Colors.black.withOpacity(0.8),
                 ),
                 child: Center(
-                  child: Text(message),
+                  child: Text(
+                    message,
+                    maxLines: null,
+                  ),
                 ),
               ),
               duration: Duration(milliseconds: milliseconds),

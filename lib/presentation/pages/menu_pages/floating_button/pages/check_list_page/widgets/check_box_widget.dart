@@ -63,9 +63,6 @@ class _CheckBoxWidgetState extends State<CheckBoxWidget> {
             width: 170,
             height: 40,
             child: TextField(
-              onTap: () => !widget.checkBoxController.isEditStatus.value
-                  ? textController.clear()
-                  : null,
               style: const TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: 16,

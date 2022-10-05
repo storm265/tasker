@@ -33,10 +33,7 @@ class NoteCardWidget extends StatelessWidget {
               ? EndPageWidget(
                   icon: Icons.done,
                   color: Colors.grey,
-                  onClick: () async {
-                    noteController.pickEditData(notesModel: notesModel);
-                    await navigationController.moveToPage(Pages.addCheckList);
-                  },
+                  onClick: () {},
                 )
               : EndPageWidget(
                   icon: Icons.done,
@@ -60,7 +57,10 @@ class NoteCardWidget extends StatelessWidget {
           EndPageWidget(
             iconPath: AssetsPath.deleteIconPath,
             onClick: () async {
-              await noteController.deleteNote(notesModel: notesModel);
+              await noteController.deleteNote(
+                notesModel: notesModel,
+                context: context,
+              );
             },
           ),
         ],

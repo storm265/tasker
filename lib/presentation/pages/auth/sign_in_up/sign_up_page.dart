@@ -112,7 +112,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       title: LocaleKeys.username.tr(),
                     ),
                     ValueListenableBuilder<bool>(
-                      valueListenable: _signUpController.isActiveSubmitButton,
+                      valueListenable: _signUpController.isActiveSignUpButton,
                       builder: (context, isClicked, _) => isClicked
                           ? SubmitUpButtonWidget(
                               buttonText: LocaleKeys.sign_up.tr(),

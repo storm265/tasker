@@ -24,7 +24,6 @@ class CachedAvatarWidget extends StatelessWidget {
                 child: addPhotoWidget,
               )
             : CachedNetworkImage(
-                //cacheKey: '0',
                 imageUrl: url,
                 httpHeaders: profileController.imageHeader,
                 imageBuilder: (_, imageProvider) {

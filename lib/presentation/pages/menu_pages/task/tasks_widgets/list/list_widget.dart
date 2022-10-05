@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
@@ -21,7 +23,6 @@ class ListWidget extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-
     final todayList = modelList
         .where((element) =>
             DateFormat('yyyy-MM-dd').format(element.dueDate) ==
@@ -36,7 +37,7 @@ class ListWidget extends StatelessWidget {
                 DateTime.utc(timeNow.year, timeNow.month, timeNow.day + 1)))
         .toList();
     tomorrowList.sort((a, b) => a.dueDate.compareTo(b.dueDate));
-
+    log('today ${todayList.length}');
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -59,7 +60,8 @@ class ListWidget extends StatelessWidget {
                       const GreySlidableWidget(),
                       EndPageWidget(
                         iconPath: AssetsPath.deleteIconPath,
-                        onClick: () {},
+                        onClick: () async => await taskController.deleteTask(
+                            taskId: modelList[i].projectId),
                       ),
                     ],
                   ),

@@ -1,4 +1,6 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:todo2/generated/locale_keys.g.dart';
 
 class AddTextFieldWidget extends StatelessWidget {
   final String? hintText;
@@ -39,7 +41,7 @@ class AddTextFieldWidget extends StatelessWidget {
       maxLength: maxLength,
       validator: (text) {
         if (text!.trim().isEmpty) {
-          return 'Please enter text';
+          return LocaleKeys.please_enter_text.tr();
         } else {
           return null;
         }

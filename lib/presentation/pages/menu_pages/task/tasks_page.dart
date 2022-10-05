@@ -34,13 +34,16 @@ class _TasksPageState extends State<TasksPage>
   final taskController = AddTaskController();
   @override
   void initState() {
-    taskController.fetchTasks();
+    log('initState tasks');
+    taskController.getAccessHeader();
+    taskController.fetchTasks().then((_) => setState(() {}));
     super.initState();
   }
 
   @override
   void dispose() {
     _tabController.dispose();
+    log('dispose tasks');
     super.dispose();
   }
 
@@ -53,38 +56,36 @@ class _TasksPageState extends State<TasksPage>
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
-            log('ss ${DateFormat('EEE', 'en').format(DateTime.now())}');
 
-            // final refreshToken =
-            //     await ss.getUserData(type: StorageDataType.refreshToken);
-            // log('token $refreshToken');
-            // Response response = await netwokr.post(
-            //   path: '/refresh-token',
-            //   data: {
-            //     "refresh_token": refreshToken,
-            //   },
-            //   //     options: netwokr.authOptions,
-            //   options: Options(
-            //     headers: {'Content-Type': 'application/json'},
-            //   ),
-            // );
+            final refreshToken =
+                await ss.getUserData(type: StorageDataType.refreshToken);
+            log('token $refreshToken');
+            Response response = await netwokr.post(
+              path: '/refresh-token',
+              data: {
+                "refresh_token": refreshToken,
+              },
+              options: Options(
+                headers: {'Content-Type': 'application/json'},
+              ),
+            );
 
-            // log('refresh response ${response.statusCode}');
-            // log('refresh response ${response.statusMessage}');
-            // log('refresh response ${response.data}');
+            log('refresh response ${response.statusCode}');
+            log('refresh response ${response.statusMessage}');
+            log('refresh response ${response.data}');
 
-            // final map = response.data[AuthScheme.data] as Map<String, dynamic>;
-            // final model = AuthModel.fromJson(json: map);
-            // log('model ${model.refreshToken}');
-            // await ss.saveData(
-            //   type: StorageDataType.accessToken,
-            //   value: model.accessToken,
-            // );
-            // await ss.saveData(
-            //   type: StorageDataType.refreshToken,
-            //   value: model.refreshToken,
-            // );
-            // await taskController.fetchTasks();
+            final map = response.data[AuthScheme.data] as Map<String, dynamic>;
+            final model = AuthModel.fromJson(json: map);
+            log('model ${model.refreshToken}');
+            await ss.saveData(
+              type: StorageDataType.accessToken,
+              value: model.accessToken,
+            );
+            await ss.saveData(
+              type: StorageDataType.refreshToken,
+              value: model.refreshToken,
+            );
+           
           },
         ),
         backgroundColor: const Color(0xffFDFDFD),
@@ -121,9 +122,12 @@ class _TasksPageState extends State<TasksPage>
             ),
           ],
           bottom: TabBar(
+            indicatorWeight: 3,
             onTap: (value) => _tabController.index = value,
             splashFactory: NoSplash.splashFactory,
             indicatorColor: Colors.white,
+            //  indicatorPadding: EdgeInsets.only(top: 10),
+            //   padding: EdgeInsets.only(top: 10),
             indicatorSize: TabBarIndicatorSize.label,
             controller: _tabController,
             tabs: [todayTab, monthTab],

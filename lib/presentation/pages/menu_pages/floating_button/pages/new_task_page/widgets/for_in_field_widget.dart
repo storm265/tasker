@@ -55,9 +55,11 @@ class EnterUserWidget extends StatelessWidget {
                                 padding: const EdgeInsets.all(2.0),
                                 child: CircleAvatar(
                                   radius: 17,
+                                  backgroundColor: Colors.grey,
                                   backgroundImage: NetworkImage(
-                                      taskController.pickedUser.value.avatarUrl,
-                                      headers: taskController.imageHeader),
+                                    taskController.pickedUser.value.avatarUrl,
+                                    headers: taskController.imageHeader,
+                                  ),
                                 ),
                               ),
                         SizedBox(

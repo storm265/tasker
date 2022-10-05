@@ -4,10 +4,10 @@ import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/controller/check_list_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/widgets/add_item_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/widgets/check_box_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/confirm_button.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/red_app_bar.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/title_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/white_box_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/confirm_button.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/red_app_bar.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/title_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/white_box_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/color_pallete_widget.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_navigator.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
@@ -69,21 +69,19 @@ class _CheckListPageState extends State<CheckListPage> {
                             FocusScope.of(context).unfocus(),
                       ),
                     ),
-                    subtitle: SingleChildScrollView(
-                      child: ValueListenableBuilder<List<Map<String, dynamic>>>(
-                        valueListenable: _checkListController.checkBoxItems,
-                        builder: (_, items, __) => ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: items.length,
-                          itemBuilder: (_, i) {
-                            index = i;
-                            return CheckBoxWidget(
-                              checkBoxController: _checkListController,
-                              index: i,
-                            );
-                          },
-                        ),
+                    subtitle: ValueListenableBuilder<List<Map<String, dynamic>>>(
+                      valueListenable: _checkListController.checkBoxItems,
+                      builder: (_, items, __) => ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: items.length,
+                        itemBuilder: (_, i) {
+                          index = i;
+                          return CheckBoxWidget(
+                            checkBoxController: _checkListController,
+                            index: i,
+                          );
+                        },
                       ),
                     ),
                   ),

@@ -113,7 +113,8 @@ class AuthDataSourceImpl implements AuthDataSource {
       return NetworkErrorService.isSuccessful(response)
           ? response.data[AuthScheme.data] as Map<String, dynamic>
           : throw Failure(
-              'Error: ${response.data[AuthScheme.data][AuthScheme.message]}');
+              'Error: ${response.data[AuthScheme.data][AuthScheme.message]}',
+            );
     } catch (e) {
       throw Failure(e.toString());
     }

@@ -78,9 +78,13 @@
     "language": "Language",
     "update": "Update",
     "sign_out": "Sign out",
-    "loaing": "Loading...",
+    "loaing": "Loading... 🕵️",
     "add_note": "Add Note",
     "please_restart_app": "Please, restart app.",
-    "form_is_not_valid": "Form is not valid.",
-    "enter_field": "Please, fill field 😐 "
+    "form_is_not_valid": "Form is not valid ☠️",
+    "enter_field": "Please, fill field 😐 ",
+    "updated": "Updated 😀",
+    "deleted": "Deleted 😉",
+    "created": "Created 😄",
+    "send": "Send"
 }

@@ -1,7 +1,7 @@
 name: todo2
 description: Trainee app.
 publish_to: 'none' 
-version: 3.8.4+1
+version: 3.8.6+1
 environment:
   sdk: ">=2.18.0-0 <3.0.0"
 
@@ -15,13 +15,16 @@ dependencies:
   cached_network_image: 
   percent_indicator:
   flutter_slidable:
-  file_picker:
+  file_picker: ^5.2.0
   dio:
   easy_localization: ^3.0.1
   flutter_svg:
   flutter_dotenv:
-  http_proxy:
   shimmer:
+  # For charles
+  http_proxy:
+  network_info_plus:
+  permission_handler:
   
 
 

@@ -1,13 +1,16 @@
 import 'dart:developer';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/notes_data_source.dart';
 import 'package:todo2/database/model/notes_model.dart';
 import 'package:todo2/database/repository/notes_repository.dart';
+import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/controller/quick_controller.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/error_service/error_service.dart';
+import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
@@ -89,7 +92,20 @@ class NewNoteController extends ChangeNotifier {
         FocusScope.of(context).unfocus();
         changeClickedButtonValueStatus(newValue: false);
         log('isEdit $isEdit');
-        isEdit.value ? await updateNote() : await createNote();
+
+        if (isEdit.value) {
+          await updateNote();
+          MessageService.displaySnackbar(
+            context: context,
+            message: LocaleKeys.updated.tr(),
+          );
+        } else {
+          await createNote();
+          MessageService.displaySnackbar(
+            context: context,
+            message: LocaleKeys.created.tr(),
+          );
+        }
         clearData();
         quickController.fetchNotesLocally();
 
@@ -125,10 +141,21 @@ class NewNoteController extends ChangeNotifier {
     }
   }
 
-  Future<void> deleteNote({required NotesModel notesModel}) async {
-    await _addNoteRepository.deleteNote(projectId: notesModel.id);
-    userNotesList.removeWhere((element) => element.id == notesModel.id);
-    quickController.fetchNotesLocally();
+  Future<void> deleteNote({
+    required NotesModel notesModel,
+    required BuildContext context,
+  }) async {
+    try {
+      await _addNoteRepository.deleteNote(projectId: notesModel.id);
+      userNotesList.removeWhere((element) => element.id == notesModel.id);
+      quickController.fetchNotesLocally();
+      MessageService.displaySnackbar(
+        context: context,
+        message: LocaleKeys.deleted.tr(),
+      );
+    } catch (e) {
+      throw Failure(e.toString());
+    }
   }
 
   Future<void> updateNote() async {

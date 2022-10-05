@@ -1,12 +1,14 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_navigator.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 Future<void> showAddDialog({required BuildContext context}) async {
   final List<String> items = [
-    'Add Task',
-    'Add Quick Note',
-    'Add Check List',
+    LocaleKeys.add_task.tr(),
+    LocaleKeys.add_quick_note.tr(),
+    LocaleKeys.add_check_list.tr(),
   ];
   await showDialog(
     context: context,
@@ -39,7 +41,6 @@ Future<void> showAddDialog({required BuildContext context}) async {
                       Navigator.pop(context);
                       await NavigationService.navigateTo(
                           context, Pages.addTask);
-                              
 
                       break;
                     case 1:

@@ -51,9 +51,9 @@ class TaskRepositoryImpl implements TaskRepository {
     }
   }
 
-  Future<void> deleteTask({required String projectId}) async {
+  Future<void> deleteTask({required String taskId}) async {
     try {
-      await _taskDataSource.deleteTask(projectId: projectId);
+      await _taskDataSource.deleteTask(projectId: taskId);
     } catch (e) {
       throw Failure(e.toString());
     }
@@ -62,10 +62,10 @@ class TaskRepositoryImpl implements TaskRepository {
   Future<TaskModel> updateTask({
     required String title,
     required String description,
-    required String assignedTo,
+    required String? assignedTo,
     required String projectId,
     required String taskId,
-    required DateTime dueDate,
+    required String? dueDate,
     List<String>? members,
   }) async {
     try {

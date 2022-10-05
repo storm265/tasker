@@ -11,6 +11,11 @@ const _authorization = 'Authorization';
 const _jsonApp = 'application/json';
 const _multipartForm = 'multipart/form-data';
 
+final _refreshToken = RefreshTokenController(
+  authRepository: AuthRepositoryImpl(),
+  secureStorageSource: SecureStorageSource(),
+);
+
 class NetworkSource {
   static final NetworkSource _instance = NetworkSource._internal();
 
@@ -27,21 +32,18 @@ class NetworkSource {
     ..interceptors.add(
       InterceptorsWrapper(
         onResponse: (response, handler) async {
-          // log('onResponse status code ${response.statusCode}');
-          // log('onResponse status statusMessage ${response.statusMessage}');
+          log('onResponse status code ${response.statusCode}');
+          log('onResponse status statusMessage ${response.statusMessage}');
 
-          // if (response.statusCode == 401) {
-          //   await _tokenService.updateToken(
-          //       callback: () async =>
-          //           handler.resolve(await _retry(response.requestOptions)));
-          // }
+          if (response.statusCode == 401) {
+            await _refreshToken.updateToken(
+              callback: () async => handler.resolve(
+                await _retry(response.requestOptions),
+              ),
+            );
+          }
           log('next');
           return handler.next(response);
-        },
-        onError: (error, handler) async {
-          if (error.response?.statusCode == 401) {
-            log('onError 401: ${error.response?.data}');
-          }
         },
       ),
     );

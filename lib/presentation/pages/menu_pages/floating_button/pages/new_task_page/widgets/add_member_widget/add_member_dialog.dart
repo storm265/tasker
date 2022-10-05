@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/add_member_widget/member_item_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/widgets/confirm_button.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/confirm_button.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
@@ -18,11 +18,12 @@ class AddUserDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final taskController = AddTaskController();
-
     return AlertDialog(
       shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(5.0))),
+        borderRadius: BorderRadius.all(
+          Radius.circular(5.0),
+        ),
+      ),
       contentPadding: const EdgeInsets.symmetric(vertical: 10),
       content: SizedBox(
         height: 400,
@@ -35,7 +36,6 @@ class AddUserDialog extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: SizedBox(
                   width: double.infinity,
-                  height: 35,
                   child: TextField(
                     onChanged: (_) async => Future.delayed(
                         const Duration(milliseconds: 600),
@@ -52,20 +52,6 @@ class AddUserDialog extends StatelessWidget {
                       prefixIcon: const Icon(
                         Icons.search,
                         color: Palette.red,
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                          color: Palette.red,
-                          width: 2,
-                        ),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        borderSide: const BorderSide(
-                          color: Palette.red,
-                          width: 2,
-                        ),
                       ),
                     ),
                   ),
