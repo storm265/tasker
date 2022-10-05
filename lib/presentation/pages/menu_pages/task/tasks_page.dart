@@ -26,9 +26,8 @@ class TasksPage extends StatefulWidget {
 }
 
 class _TasksPageState extends State<TasksPage>
-    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+    with SingleTickerProviderStateMixin {
 
-      
   late final _tabController = TabController(length: 2, vsync: this);
 
   final taskController = AddTaskController();
@@ -51,12 +50,10 @@ class _TasksPageState extends State<TasksPage>
   final netwokr = NetworkSource();
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return WillPopWrap(
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
-
             final refreshToken =
                 await ss.getUserData(type: StorageDataType.refreshToken);
             log('token $refreshToken');
@@ -161,7 +158,6 @@ class _TasksPageState extends State<TasksPage>
                   ],
                 ),
               ),
-
               // month
               SingleChildScrollView(
                 child: KeepAlivePageWidget(

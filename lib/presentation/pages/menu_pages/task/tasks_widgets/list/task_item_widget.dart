@@ -27,7 +27,7 @@ class TaskCardWidget extends StatelessWidget {
             DateFormat('yyyy-MM-dd').format(
                 DateTime.utc(timeNow.year, timeNow.month, timeNow.day)) &&
         timeNow.difference(deadLineTime).inHours <= 0 &&
-        timeNow.difference(deadLineTime).inHours >= -2) {
+        timeNow.difference(deadLineTime).inHours >= -1) {
       return true;
     } else {
       return false;
@@ -38,8 +38,7 @@ class TaskCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final date = data[index].dueDate;
     String isAm = (date.hour > 12) ? 'pm' : 'am';
-    log('difference in hour ${timeNow.difference(date).inHours}');
-    log('in 2 hours expires ${timeNow.difference(date).inHours >= 0 && timeNow.difference(date).inHours < -2}');
+    log('diffference ${timeNow.difference(date).inHours}');
     return GestureDetector(
       onTap: () async {
         await showDialog(
