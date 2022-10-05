@@ -26,6 +26,7 @@ enum InputFieldStatus {
 }
 
 class AddTaskController extends ChangeNotifier {
+  // REMOVE
   static final AddTaskController _instance = AddTaskController._internal();
 
   factory AddTaskController() {
@@ -51,13 +52,10 @@ class AddTaskController extends ChangeNotifier {
     isTuneIconActive.notifyListeners();
   }
 
-  final isSubmitButtonClicked = ValueNotifier<bool>(true);
+  final isSubmitButtonActive = ValueNotifier<bool>(true);
 
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
-
-  String? _assignedTo;
-  String? _projectId;
 
   Future<List<UserProfileModel>> taskMemberSearch(
       {required String nickname}) async {
@@ -167,8 +165,6 @@ class AddTaskController extends ChangeNotifier {
   }) {
     pickedUser.value = newUser;
     userTextController.text = pickedUser.value.username;
-    _assignedTo = pickedUser.value.id;
-
     pickedUser.notifyListeners();
     FocusScope.of(context).unfocus();
     changePanelStatus(newStatus: InputFieldStatus.hide);
@@ -271,8 +267,6 @@ class AddTaskController extends ChangeNotifier {
           members.add(element.id);
         }
       }
-      log('ass to $_assignedTo');
-      log('projectId $_projectId');
       return await _taskRepository.createTask(
         title: titleController.text,
         description: descriptionController.text,

@@ -21,8 +21,6 @@ class DescriptionBoxWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 290,
-      height: 110,
       decoration: BoxDecoration(
         border: Border.all(
           color: const Color(0xFFEAEAEA),
@@ -31,73 +29,75 @@ class DescriptionBoxWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
         color: Colors.white,
       ),
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            DescriptionTextField(
-              taskController: taskController,
-              hintText: hintText,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 23),
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: const Color(0xFFEAEAEA), width: 1),
-                  borderRadius: const BorderRadius.horizontal(
-                    right: Radius.circular(5),
-                    left: Radius.circular(5),
-                  ),
-                  color: const Color(0xFFF8F8F8),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          DescriptionTextField(
+            taskController: taskController,
+            hintText: hintText,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 23),
+            child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: const Color(0xFFEAEAEA), width: 1),
+                borderRadius: const BorderRadius.horizontal(
+                  right: Radius.circular(5),
+                  left: Radius.circular(5),
                 ),
-                width: double.infinity,
-                height: 40,
-                child: Row(
-                  children: [
-                    withImageIcon
-                        ? Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            child: GestureDetector(
-                              onTap: () async {},
-                              child: SvgPicture.asset(
-                                AssetsPath.imageIconIconPath,
-                              ),
+                color: const Color(0xFFF8F8F8),
+              ),
+              width: double.infinity,
+              height: 40,
+              child: Row(
+                children: [
+                  withImageIcon
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: GestureDetector(
+                            onTap: () async {
+                              final image = await taskController.fileController
+                                  .pickAvatar(context: context);
+                              taskController.addAttachment(attachment: image);
+                            },
+                            child: SvgPicture.asset(
+                              AssetsPath.imageIconIconPath,
                             ),
-                          )
-                        : const SizedBox(),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: GestureDetector(
-                        onTap: () async {
-                          final file = await taskController.fileController
-                              .pickFile(context: context);
-                          taskController.addAttachment(attachment: file);
-                        },
-                        child:
-                            SvgPicture.asset(AssetsPath.fileAttachmentIconPath),
-                      ),
+                          ),
+                        )
+                      : const SizedBox(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: GestureDetector(
+                      onTap: () async {
+                        final file = await taskController.fileController
+                            .pickFile(context: context);
+                        taskController.addAttachment(attachment: file);
+                      },
+                      child:
+                          SvgPicture.asset(AssetsPath.fileAttachmentIconPath),
                     ),
-                    const Spacer(),
-                    withImageIcon
-                        ? TextButton(
-                            onPressed: () {},
-                            child: Text(
-                              LocaleKeys.send.tr(),
-                              style: TextStyle(
-                                fontSize: 17,
-                                fontStyle: FontStyle.italic,
-                                fontWeight: FontWeight.w200,
-                                color: getAppColor(color: CategoryColor.blue),
-                              ),
+                  ),
+                  const Spacer(),
+                  withImageIcon
+                      ? TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            LocaleKeys.send.tr(),
+                            style: TextStyle(
+                              fontSize: 17,
+                              fontStyle: FontStyle.italic,
+                              fontWeight: FontWeight.w200,
+                              color: getAppColor(color: CategoryColor.blue),
                             ),
-                          )
-                        : const SizedBox(),
-                  ],
-                ),
+                          ),
+                        )
+                      : const SizedBox(),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

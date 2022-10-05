@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:dio/dio.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +7,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/database/model/auth_model.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
-import 'package:todo2/presentation/pages/auth/splash_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/dialogs/tasks_filter_dialog.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/calendar_lib/widget.dart';
@@ -27,9 +25,13 @@ class TasksPage extends StatefulWidget {
   State<TasksPage> createState() => _TasksPageState();
 }
 
-class _TasksPageState extends State<TasksPage>
-    with SingleTickerProviderStateMixin, AutomaticKeepAliveClientMixin {
+class _TasksPageState extends State<TasksPage> 
+    with SingleTickerProviderStateMixin {
   late final _tabController = TabController(length: 2, vsync: this);
+// implements TasksPageStateUpdateListener 
+  // void refreshState() {
+  //   setState({});
+  // }
 
   final taskController = AddTaskController();
   @override
@@ -51,44 +53,40 @@ class _TasksPageState extends State<TasksPage>
   final netwokr = NetworkSource();
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return WillPopWrap(
       child: Scaffold(
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: () async {
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            final refreshToken =
+                await ss.getUserData(type: StorageDataType.refreshToken);
+            log('token $refreshToken');
+            Response response = await netwokr.post(
+              path: '/refresh-token',
+              data: {
+                "refresh_token": refreshToken,
+              },
+              options: Options(
+                headers: {'Content-Type': 'application/json'},
+              ),
+            );
 
-        //     final refreshToken =
-        //         await ss.getUserData(type: StorageDataType.refreshToken);
-        //     log('token $refreshToken');
-        //     Response response = await netwokr.post(
-        //       path: '/refresh-token',
-        //       data: {
-        //         "refresh_token": refreshToken,
-        //       },
-        //       //     options: netwokr.authOptions,
-        //       options: Options(
-        //         headers: {'Content-Type': 'application/json'},
-        //       ),
-        //     );
+            log('refresh response ${response.statusCode}');
+            log('refresh response ${response.statusMessage}');
+            log('refresh response ${response.data}');
 
-        //     log('refresh response ${response.statusCode}');
-        //     log('refresh response ${response.statusMessage}');
-        //     log('refresh response ${response.data}');
-
-        //     final map = response.data[AuthScheme.data] as Map<String, dynamic>;
-        //     final model = AuthModel.fromJson(json: map);
-        //     log('model ${model.refreshToken}');
-        //     await ss.saveData(
-        //       type: StorageDataType.accessToken,
-        //       value: model.accessToken,
-        //     );
-        //     await ss.saveData(
-        //       type: StorageDataType.refreshToken,
-        //       value: model.refreshToken,
-        //     );
-        //     await taskController.fetchTasks();
-        //   },
-        // ),
+            final map = response.data[AuthScheme.data] as Map<String, dynamic>;
+            final model = AuthModel.fromJson(json: map);
+            log('model ${model.refreshToken}');
+            await ss.saveData(
+              type: StorageDataType.accessToken,
+              value: model.accessToken,
+            );
+            await ss.saveData(
+              type: StorageDataType.refreshToken,
+              value: model.refreshToken,
+            );
+          },
+        ),
         backgroundColor: const Color(0xffFDFDFD),
         appBar: AppBar(
           systemOverlayStyle: const SystemUiOverlayStyle(
@@ -127,8 +125,9 @@ class _TasksPageState extends State<TasksPage>
             onTap: (value) => _tabController.index = value,
             splashFactory: NoSplash.splashFactory,
             indicatorColor: Colors.white,
+
             //  indicatorPadding: EdgeInsets.only(top: 10),
-            //   padding: EdgeInsets.only(top: 10),
+            //    padding: EdgeInsets.only(top: -10),
             indicatorSize: TabBarIndicatorSize.label,
             controller: _tabController,
             tabs: [todayTab, monthTab],
@@ -146,23 +145,26 @@ class _TasksPageState extends State<TasksPage>
             controller: _tabController,
             children: [
               // today
-              KeepAlivePageWidget(
-                child: Column(
-                  children: [
-                    ListWidget(
-                      taskController: taskController,
-                      modelList: taskController.tasks,
-                      isToday: true,
+              taskController.tasks.isEmpty
+                  ? const Center(
+                      child: Text('No tasks'),
+                    )
+                  : KeepAlivePageWidget(
+                      child: Column(
+                        children: [
+                          ListWidget(
+                            taskController: taskController,
+                            modelList: taskController.tasks,
+                            isToday: true,
+                          ),
+                          ListWidget(
+                            taskController: taskController,
+                            modelList: taskController.tasks,
+                            isToday: false,
+                          ),
+                        ],
+                      ),
                     ),
-                    ListWidget(
-                      taskController: taskController,
-                      modelList: taskController.tasks,
-                      isToday: false,
-                    ),
-                  ],
-                ),
-              ),
-
               // month
               SingleChildScrollView(
                 child: KeepAlivePageWidget(
@@ -172,20 +174,24 @@ class _TasksPageState extends State<TasksPage>
                       events: taskController.events,
                       taskController: taskController,
                     ),
-                    Column(
-                      children: [
-                        // ListWidget(
-                        //   taskController: taskController,
-                        //   modelList: taskController.tasks,
-                        //   isToday: true,
-                        // ),
-                        // ListWidget(
-                        //   taskController: taskController,
-                        //   modelList: taskController.tasks,
-                        //   isToday: false,
-                        // ),
-                      ],
-                    ),
+                    taskController.tasks.isEmpty
+                        ? const Center(
+                            child: Text('No tasks'),
+                          )
+                        : Column(
+                            children: [
+                              // ListWidget(
+                              //   taskController: taskController,
+                              //   modelList: taskController.tasks,
+                              //   isToday: true,
+                              // ),
+                              // ListWidget(
+                              //   taskController: taskController,
+                              //   modelList: taskController.tasks,
+                              //   isToday: false,
+                              // ),
+                            ],
+                          ),
                   ]),
                 ),
               )

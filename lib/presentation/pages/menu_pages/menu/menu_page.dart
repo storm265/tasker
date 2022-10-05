@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:todo2/database/model/project_models/project_stats_model.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_controller.dart';
@@ -17,12 +18,11 @@ class MenuPage extends StatefulWidget {
 }
 
 class MenuPageState extends State<MenuPage> {
-  final formKey = GlobalKey<FormState>();
-  late ProjectController _projectController;
+  final _projectController = ProjectController();
 
   @override
   void initState() {
-    _projectController = ProjectController();
+    _projectController.fetchProjectStats();
     _projectController.fetchAllProjects();
     super.initState();
   }
@@ -52,8 +52,9 @@ class MenuPageState extends State<MenuPage> {
             builder: ((__, projectsList, _) => (projectsList.isEmpty)
                 ? Center(
                     child: ProgressIndicatorWidget(
-                    text: LocaleKeys.no_data.tr(),
-                  ))
+                      text: LocaleKeys.no_data.tr(),
+                    ),
+                  )
                 : GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
@@ -67,12 +68,14 @@ class MenuPageState extends State<MenuPage> {
                     itemBuilder: (_, i) {
                       return projectsList.isEmpty
                           ? ShimmerProjectItem()
-                          : ProjectItemWidget(
-                              projectController: _projectController,
-                              model: projectsList[i],
-                              // taskLength: snapshot
-                              //     .data![i].tasksNumber,
-                              taskLength: 0,
+                          : ValueListenableBuilder<List<ProjectStatsModel>>(
+                              valueListenable: _projectController.projectStats,
+                              builder: (_, tasksNumber, __) =>
+                                  ProjectItemWidget(
+                                projectController: _projectController,
+                                model: projectsList[i],
+                                taskLength: tasksNumber[i].tasksNumber,
+                              ),
                             );
                     })),
           ),

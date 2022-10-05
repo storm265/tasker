@@ -30,7 +30,7 @@ Future<void> setCharlesSupportNetwork() async {
           break;
         case 'Nastya':
           HttpProxy httpProxy = await HttpProxy.createHttpProxy();
-          httpProxy.host = "10.101.4.108";
+          httpProxy.host = "192.168.100.3";
           httpProxy.port = "8888";
           HttpOverrides.global = httpProxy;
           break;

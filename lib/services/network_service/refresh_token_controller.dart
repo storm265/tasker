@@ -8,23 +8,20 @@ import 'package:todo2/storage/secure_storage_service.dart';
 
 class RefreshTokenController {
   final _navigatorKey = GlobalKey<NavigatorState>();
-  final ProfileController _profileController;
   final AuthRepositoryImpl _authRepository;
   final SecureStorageSource _secureStorageSource;
 
   RefreshTokenController(
       {required AuthRepositoryImpl authRepository,
-      required SecureStorageSource secureStorageSource,
-      required ProfileController profileController})
+      required SecureStorageSource secureStorageSource,})
       : _authRepository = authRepository,
-        _secureStorageSource = secureStorageSource,
-        _profileController = profileController;
+        _secureStorageSource = secureStorageSource;
+
 
   Future<void> updateToken({required VoidCallback callback}) async {
     try {
       final accessToken = await _secureStorageSource.getUserData(
           type: StorageDataType.accessToken);
-      log('accessToken token $accessToken');
 
       if (accessToken != null) {
         final model = await _authRepository.refreshToken();

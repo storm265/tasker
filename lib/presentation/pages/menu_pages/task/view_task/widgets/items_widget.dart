@@ -2,16 +2,19 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
+import 'package:todo2/presentation/pages/auth/splash_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/detailed_item_widget.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 class ItemsWidget extends StatelessWidget {
-  final TaskModel pickedTask;  final AddTaskController taskController;
+  final TaskModel pickedTask;
+  final AddTaskController taskController;
   const ItemsWidget({
     super.key,
-    required this.pickedTask,  required this.taskController,
+    required this.pickedTask,
+    required this.taskController,
   });
 
   @override
@@ -32,7 +35,7 @@ class ItemsWidget extends StatelessWidget {
               return DetailedItemWidget(
                 leading: const CircleAvatar(
                   backgroundColor: Colors.grey,
-                  radius: 23,
+                  radius: 20,
                 ),
                 title: LocaleKeys.assigned_to.tr(),
                 subtitle: 'Stephen Chow',
@@ -43,7 +46,7 @@ class ItemsWidget extends StatelessWidget {
                 imageIcon: 'calendar',
                 title: LocaleKeys.due_date.tr(),
                 subtitle:
-                    '${pickedTask.dueDate.year} ${pickedTask.dueDate.day},${DateFormat('MMM').format(pickedTask.dueDate)}', // widget.pickedTask.title,
+                    '${pickedTask.dueDate.year} ${pickedTask.dueDate.day},${DateFormat('MMM', locale).format(pickedTask.dueDate)}', // widget.pickedTask.title,
               );
 
             case 2:
@@ -90,7 +93,8 @@ class ItemsWidget extends StatelessWidget {
                                     right: 1.25,
                                   ),
                                   child: CircleAvatar(
-                                    radius: 16,  backgroundColor: Colors.grey,
+                                    radius: 16,
+                                    backgroundColor: Colors.grey,
                                     backgroundImage: NetworkImage(
                                       pickedTask.members![index].avatarUrl,
                                       headers: taskController.imageHeader,

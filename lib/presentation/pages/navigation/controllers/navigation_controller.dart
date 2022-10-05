@@ -11,6 +11,7 @@ import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 class NavigationController extends ChangeNotifier {
   final pageIndex = ValueNotifier<int>(0);
+
   final pageController = PageController(
     initialPage: 0,
     keepPage: false,
@@ -56,4 +57,8 @@ class NavigationController extends ChangeNotifier {
     pageIndex.notifyListeners();
     pageController.jumpToPage(pageIndex.value);
   }
+}
+
+abstract class TasksPageStateUpdateListener {
+  void refreshState();
 }

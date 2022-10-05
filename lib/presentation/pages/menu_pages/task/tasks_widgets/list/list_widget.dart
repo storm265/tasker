@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
@@ -24,20 +23,27 @@ class ListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final todayList = modelList
-        .where((element) =>
-            DateFormat('yyyy-MM-dd').format(element.dueDate) ==
-            DateFormat('yyyy-MM-dd')
-                .format(DateTime.utc(timeNow.year, timeNow.month, timeNow.day)))
+        .where(
+          (element) =>
+              DateFormat('yyyy-MM-dd').format(element.dueDate) ==
+              DateFormat('yyyy-MM-dd').format(
+                DateTime.utc(timeNow.year, timeNow.month, timeNow.day),
+              ),
+        )
         .toList();
     todayList.sort((a, b) => a.dueDate.compareTo(b.dueDate));
     final tomorrowList = modelList
-        .where((element) =>
-            DateFormat('yyyy-MM-dd').format(element.dueDate) ==
-            DateFormat('yyyy-MM-dd').format(
-                DateTime.utc(timeNow.year, timeNow.month, timeNow.day + 1)))
+        .where(
+          (element) =>
+              DateFormat('yyyy-MM-dd').format(element.dueDate) ==
+              DateFormat('yyyy-MM-dd').format(
+                DateTime.utc(timeNow.year, timeNow.month, timeNow.day + 1),
+              ),
+        )
         .toList();
     tomorrowList.sort((a, b) => a.dueDate.compareTo(b.dueDate));
-    log('today ${todayList.length}');
+    log('today len ${todayList.length}');
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -55,7 +61,9 @@ class ListWidget extends StatelessWidget {
                     children: [
                       EndPageWidget(
                         iconPath: AssetsPath.editIconPath,
-                        onClick: () {},
+                        onClick: () {
+                          // TODO implement edit function
+                        },
                       ),
                       const GreySlidableWidget(),
                       EndPageWidget(

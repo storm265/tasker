@@ -16,9 +16,7 @@ class IconPanelWidget extends StatelessWidget {
           icon: const Icon(Icons.close),
         ),
         IconButton(
-          onPressed: () async {
-            showDetailedOptions(context);
-          },
+          onPressed: () async => await showDetailedOptions(context),
           icon: SvgPicture.asset(AssetsPath.settingsIconPath),
         ),
       ],

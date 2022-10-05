@@ -69,7 +69,7 @@ Future<void> showAddEditProjectDialog({
       ),
       actions: <Widget>[
         ValueListenableBuilder<bool>(
-            valueListenable: projectController.isClickedSubmitButton,
+            valueListenable: projectController.isActiveSubmitButton,
             builder: (__, isClicked, _) {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,

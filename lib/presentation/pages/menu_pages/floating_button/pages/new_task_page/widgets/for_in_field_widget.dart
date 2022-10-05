@@ -66,7 +66,7 @@ class EnterUserWidget extends StatelessWidget {
                           width: 55,
                           child: TextFormField(
                             style: const TextStyle(
-                              fontSize: 14,
+                      
                               fontWeight: FontWeight.w500,
                               color: Colors.black,
                               overflow: TextOverflow.ellipsis,
@@ -93,7 +93,7 @@ class EnterUserWidget extends StatelessWidget {
                             decoration: const InputDecoration(
                               border: InputBorder.none,
                               labelStyle: TextStyle(
-                                fontSize: 14,
+                        
                               ),
                             ),
                           ),
@@ -105,7 +105,7 @@ class EnterUserWidget extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 30),
                     child: TextFormField(
                       style: const TextStyle(
-                        fontSize: 14,
+                
                         fontWeight: FontWeight.w500,
                         color: Colors.black,
                         overflow: TextOverflow.ellipsis,
@@ -130,9 +130,7 @@ class EnterUserWidget extends StatelessWidget {
                       },
                       decoration: const InputDecoration(
                         border: InputBorder.none,
-                        labelStyle: TextStyle(
-                          fontSize: 14,
-                        ),
+                      
                       ),
                     ),
                   ),

@@ -11,6 +11,7 @@ class ProjectItemWidget extends StatelessWidget {
   final ProjectModel model;
   final int taskLength;
   final ProjectController projectController;
+  
   const ProjectItemWidget({
     Key? key,
     required this.model,

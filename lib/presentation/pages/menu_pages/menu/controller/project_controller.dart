@@ -20,45 +20,48 @@ enum ProjectDialogStatus {
 
 class ProjectController extends ChangeNotifier {
   final _projectsRepository = ProjectRepositoryImpl(
-      projectDataSource: ProjectUserDataImpl(
-    secureStorageService: SecureStorageSource(),
-    network: NetworkSource(),
-  ));
+    projectDataSource: ProjectUserDataImpl(
+      secureStorageService: SecureStorageSource(),
+      network: NetworkSource(),
+    ),
+  );
 
   final colorPalleteController = ColorPalleteController();
 
   final formKey = GlobalKey<FormState>();
 
-  final isClickedSubmitButton = ValueNotifier(true);
+  final isActiveSubmitButton = ValueNotifier(true);
 
   final titleController = TextEditingController();
 
   final projects = ValueNotifier<List<ProjectModel>>([]);
+  final projectStats = ValueNotifier<List<ProjectStatsModel>>([]);
 
-  final selectedModel = ValueNotifier(
-    ProjectModel(
-      id: '',
-      color: Colors.red,
-      createdAt: DateTime.now(),
-      title: '',
-      ownerId: '',
-    ),
-  );
+  ProjectModel? selectedModel;
 
   void pickProject({required ProjectModel pickedModel}) {
-    selectedModel.value = pickedModel;
+    selectedModel = pickedModel;
     titleController.text = pickedModel.title;
-    selectedModel.notifyListeners();
   }
 
   void setClickedValue(bool newValue) {
-    isClickedSubmitButton.value = newValue;
-    isClickedSubmitButton.notifyListeners();
+    isActiveSubmitButton.value = newValue;
+    isActiveSubmitButton.notifyListeners();
   }
 
   void clearProjects() {
     titleController.clear();
     colorPalleteController.changeSelectedIndex(99);
+  }
+
+  void findEditColor({required ProjectModel model}) {
+    pickProject(pickedModel: model);
+    for (int i = 0; i < colors.length; i++) {
+      if (colors[i] == model.color) {
+        colorPalleteController.changeSelectedIndex(i);
+        break;
+      }
+    }
   }
 
   Future<void> tryValidateProject({
@@ -70,7 +73,7 @@ class ProjectController extends ChangeNotifier {
           !colorPalleteController.isNotPickerColor) {
         setClickedValue(false);
         if (isEdit) {
-          await updateProject(projectModel: selectedModel.value);
+          await updateProject(projectModel: selectedModel!);
           MessageService.displaySnackbar(
             context: context,
             message: LocaleKeys.updated.tr(),
@@ -91,6 +94,15 @@ class ProjectController extends ChangeNotifier {
     }
   }
 
+  Future<void> fetchProjectStats() async {
+    try {
+      projectStats.value = await _projectsRepository.fetchProjectStats();
+      projectStats.notifyListeners();
+    } catch (e) {
+      throw Failure(e.toString());
+    }
+  }
+
   Future<List<ProjectModel>> fetchAllProjects() async {
     try {
       final list = await _projectsRepository.fetchAllProjects();
@@ -102,21 +114,13 @@ class ProjectController extends ChangeNotifier {
     }
   }
 
-  Future<List<ProjectStatsModel>> fetchProjectStats() async {
-    try {
-      final response = await _projectsRepository.fetchProjectStats();
-      return response;
-    } catch (e) {
-      throw Failure(e.toString());
-    }
-  }
-
   Future<void> createProject() async {
     try {
       final model = await _projectsRepository.createProject(
         color: colors[colorPalleteController.selectedIndex.value],
         title: titleController.text,
       );
+      await fetchProjectStats();
       projects.value.add(model);
       projects.notifyListeners();
     } catch (e) {
@@ -150,29 +154,22 @@ class ProjectController extends ChangeNotifier {
     try {
       setClickedValue(false);
       await _projectsRepository.deleteProject(
-          projectModel: selectedModel.value);
-      projects.value
-          .removeWhere((element) => selectedModel.value.id == element.id);
+        projectModel: selectedModel!,
+      );
+      await fetchProjectStats();
+      projects.value.removeWhere((element) => selectedModel!.id == element.id);
       projects.notifyListeners();
+
       MessageService.displaySnackbar(
         context: context,
         message: LocaleKeys.deleted.tr(),
       );
       clearProjects();
-      setClickedValue(true);
       await Future.delayed(Duration.zero, () => Navigator.pop(context));
     } catch (e) {
       throw Failure(e.toString());
-    }
-  }
-
-  void findEditColor({required ProjectModel model}) {
-    pickProject(pickedModel: model);
-    for (int i = 0; i < colors.length; i++) {
-      if (colors[i] == model.color) {
-        colorPalleteController.changeSelectedIndex(i);
-        break;
-      }
+    } finally {
+      setClickedValue(true);
     }
   }
 }
