@@ -250,7 +250,7 @@ class TaskDataSourceImpl implements TaskDataSource {
                 "id": "94f11b2f-c183-48f2-b4c4-ef8321890cf6",
                 "title":
                     "zfdsughdvhgd78vhnd7ghdruhghrhgrhguhrhgruhruhguhdhguhirghidr5tyvdnvg",
-                "due_date": "${now}T23:56:02.394631",
+                "due_date": "${now}T14:56:02.394631",
                 "description": "task1 description",
                 "assigned_to": "d96e5ab4-dc94-4388-8fb4-b9c6153714dd",
                 "is_completed": false,
@@ -329,7 +329,7 @@ class TaskDataSourceImpl implements TaskDataSource {
               {
                 "id": "94f11b2f-c183-48f2-b4c4-ef8321890cf6",
                 "title": "task 1.1.1.1",
-                "due_date": "${now}T23:56:02.394631",
+                "due_date": "${now}T16:56:02.394631",
                 "description": "task1 description",
                 "assigned_to": "d96e5ab4-dc94-4388-8fb4-b9c6153714dd",
                 "is_completed": true,

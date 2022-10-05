@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
@@ -22,9 +24,10 @@ class TaskCardWidget extends StatelessWidget {
 
   bool _isSoonExpire(DateTime deadLineTime) {
     if (DateFormat('yyyy-MM-dd').format(deadLineTime) ==
-            DateFormat('yyyy-MM-dd')
-                .format(DateTime.utc(timeNow.year, timeNow.month, timeNow.day)) &&
-        timeNow.hour + 2 <= deadLineTime.hour) {
+            DateFormat('yyyy-MM-dd').format(
+                DateTime.utc(timeNow.year, timeNow.month, timeNow.day)) &&
+        timeNow.difference(deadLineTime).inHours <= 0 &&
+        timeNow.difference(deadLineTime).inHours >= -2) {
       return true;
     } else {
       return false;
@@ -35,7 +38,8 @@ class TaskCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final date = data[index].dueDate;
     String isAm = (date.hour > 12) ? 'pm' : 'am';
-
+    log('difference in hour ${timeNow.difference(date).inHours}');
+    log('in 2 hours expires ${timeNow.difference(date).inHours >= 0 && timeNow.difference(date).inHours < -2}');
     return GestureDetector(
       onTap: () async {
         await showDialog(
