@@ -86,8 +86,7 @@ class _ViewTaskState extends State<ViewTask> {
                     ),
                   ),
                   ValueListenableBuilder<bool>(
-                    valueListenable:
-                        widget.taskController.isSubmitButtonClicked,
+                    valueListenable: widget.taskController.isSubmitButtonActive,
                     builder: (_, isClicked, __) => Padding(
                       padding: isShowComments
                           ? const EdgeInsets.symmetric(vertical: 36)
