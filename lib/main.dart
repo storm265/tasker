@@ -10,8 +10,6 @@ import 'package:todo2/services/network_service/set_charles_network_support.dart'
 import 'package:todo2/services/system_service/system_chrome.dart';
 import 'services/theme_service/theme_data_controller.dart';
 
-
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();

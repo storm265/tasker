@@ -17,7 +17,6 @@ Future<void> setCharlesSupportNetwork() async {
     }
 
     if (await Permission.location.isGranted) {
-      log('gra ${await Permission.location.isGranted}');
       var wifiName = await info.getWifiName();
       log('wifiName $wifiName');
 

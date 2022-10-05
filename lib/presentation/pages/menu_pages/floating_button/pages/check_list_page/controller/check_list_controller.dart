@@ -26,10 +26,11 @@ class CheckListController extends ChangeNotifier {
   CheckListController._internal();
 
   final _checkListRepository = CheckListRepositoryImpl(
-      checkListsDataSource: CheckListsDataSourceImpl(
-    network: NetworkSource(),
-    secureStorage: SecureStorageSource(),
-  ));
+    checkListsDataSource: CheckListsDataSourceImpl(
+      network: NetworkSource(),
+      secureStorage: SecureStorageSource(),
+    ),
+  );
 
   final TextEditingController titleController = TextEditingController();
 
@@ -171,7 +172,6 @@ class CheckListController extends ChangeNotifier {
     try {
       final lists = await _checkListRepository.fetchAllCheckLists();
       checklist = lists;
-
       return lists;
     } catch (e) {
       throw Failure(e.toString());

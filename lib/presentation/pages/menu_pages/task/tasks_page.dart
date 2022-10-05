@@ -25,10 +25,10 @@ class TasksPage extends StatefulWidget {
   State<TasksPage> createState() => _TasksPageState();
 }
 
-class _TasksPageState extends State<TasksPage> 
+class _TasksPageState extends State<TasksPage>
     with SingleTickerProviderStateMixin {
   late final _tabController = TabController(length: 2, vsync: this);
-// implements TasksPageStateUpdateListener 
+// implements TasksPageStateUpdateListener
   // void refreshState() {
   //   setState({});
   // }
@@ -125,9 +125,6 @@ class _TasksPageState extends State<TasksPage>
             onTap: (value) => _tabController.index = value,
             splashFactory: NoSplash.splashFactory,
             indicatorColor: Colors.white,
-
-            //  indicatorPadding: EdgeInsets.only(top: 10),
-            //    padding: EdgeInsets.only(top: -10),
             indicatorSize: TabBarIndicatorSize.label,
             controller: _tabController,
             tabs: [todayTab, monthTab],

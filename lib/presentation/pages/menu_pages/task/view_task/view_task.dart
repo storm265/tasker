@@ -55,7 +55,9 @@ class _ViewTaskState extends State<ViewTask> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  const IconPanelWidget(),
+                  IconPanelWidget(
+                    selectedTask: widget.pickedTask,
+                  ),
                   Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 20,
