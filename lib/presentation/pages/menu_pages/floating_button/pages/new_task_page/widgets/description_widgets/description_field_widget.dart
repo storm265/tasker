@@ -29,7 +29,7 @@ class DescriptionFieldWidget extends StatelessWidget {
           DescriptionBoxWidget(
             taskController: taskController,
             hintText: hintText,
-            // LocaleKeys.write_a_comment.tr(),
+         
           ),
           //   const AttachementWidget(),
           ValueListenableBuilder<List<PlatformFile>>(

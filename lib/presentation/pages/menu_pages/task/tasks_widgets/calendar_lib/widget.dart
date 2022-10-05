@@ -228,7 +228,6 @@ List<String>.generate(7, (index) {
                           .format(_monthRangeList[value].firstDay)
                           .toUpperCase(),
                       style: const TextStyle(
-                        fontSize: 14,
                         fontWeight: FontWeight.w200,
                         fontStyle: FontStyle.italic,
                       ),

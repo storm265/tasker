@@ -44,9 +44,9 @@ class _ViewTaskState extends State<ViewTask> {
   Widget build(BuildContext context) {
     log('picked Task ${widget.pickedTask.members?.length}');
     return AlertDialog(
-      titlePadding: const EdgeInsets.all(0),
-      insetPadding: const EdgeInsets.all(25),
-      contentPadding: const EdgeInsets.all(0),
+      titlePadding: EdgeInsets.zero,
+      insetPadding: EdgeInsets.zero,
+      contentPadding: EdgeInsets.zero,
       content: UnfocusWidget(
         child: SizedBox(
           width: 360,
@@ -68,33 +68,41 @@ class _ViewTaskState extends State<ViewTask> {
                           pickedTask: widget.pickedTask,
                           taskController: widget.taskController,
                         ),
+                        const SizedBox(height: 20),
+                        isShowComments
+                            ? DescriptionBoxWidget(
+                                withImageIcon: true,
+                                taskController: widget.taskController,
+                                hintText: LocaleKeys.write_a_comment.tr(),
+                              )
+                            : const SizedBox(),
+                        isShowComments
+                            ? AttachementWidget(
+                                pickedModel: widget.pickedTask,
+                                taskController: widget.taskController,
+                              )
+                            : const SizedBox(),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 20),
-                  isShowComments
-                      ? DescriptionBoxWidget(
-                          withImageIcon: true,
-                          taskController: widget.taskController,
-                        )
-                      : const SizedBox(),
-                  isShowComments
-                      ? AttachementWidget(
-                          pickedModel: widget.pickedTask,
-                          taskController: widget.taskController,
-                        )
-                      : const SizedBox(),
                   ValueListenableBuilder<bool>(
                     valueListenable:
                         widget.taskController.isSubmitButtonClicked,
-                    builder: (_, isClicked, __) => ConfirmButtonWidget(
-                      color: getAppColor(color: CategoryColor.blue),
-                      title: LocaleKeys.complete_task.tr(),
-                      onPressed: isClicked
-                          ? () async {
-                              await Future.delayed(const Duration(seconds: 2));
-                            }
-                          : null,
+                    builder: (_, isClicked, __) => Padding(
+                      padding: isShowComments
+                          ? const EdgeInsets.symmetric(vertical: 36)
+                          : const EdgeInsets.all(0),
+                      child: ConfirmButtonWidget(
+                        width: 320,
+                        color: getAppColor(color: CategoryColor.blue),
+                        title: LocaleKeys.complete_task.tr(),
+                        onPressed: isClicked
+                            ? () async {
+                                await Future.delayed(
+                                    const Duration(seconds: 2));
+                              }
+                            : null,
+                      ),
                     ),
                   ),
                   !isShowComments

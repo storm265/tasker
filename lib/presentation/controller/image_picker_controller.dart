@@ -100,14 +100,14 @@ class FileController extends ChangeNotifier {
     try {
       FilePickerResult? result = await FilePicker.platform.pickFiles();
 
-      if (result!.files.first.size >= _maxFileSize) {
+      if (result != null && result.files.first.size >= _maxFileSize) {
         result.files.clear();
         throw MessageService.displaySnackbar(
           message: LocaleKeys.file_size_is_too_huge.tr(),
           context: context,
         );
       } else {
-        PlatformFile file = result.files.first;
+        PlatformFile file = result!.files.first;
         return file;
       }
     } catch (e) {

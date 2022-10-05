@@ -56,7 +56,6 @@ class UserPanelPickerWidget extends StatelessWidget {
                     subtitle: Text(
                       data.email,
                       style: const TextStyle(
-                        fontSize: 14,
                         fontWeight: FontWeight.w500,
                         color: Colors.black,
                       ),

@@ -49,10 +49,9 @@ class TaskListWidget extends StatelessWidget {
                         color: Colors.white,
                       ),
                     ),
-                    subtitle:  Text(
+                    subtitle: Text(
                       '999 ${LocaleKeys.tasks.tr()}',
                       style: const TextStyle(
-                        fontSize: 14,
                         fontStyle: FontStyle.normal,
                         color: Colors.white,
                         fontWeight: FontWeight.w500,
