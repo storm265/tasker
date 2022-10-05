@@ -26,6 +26,7 @@ enum InputFieldStatus {
 }
 
 class AddTaskController extends ChangeNotifier {
+  // REMOVE
   static final AddTaskController _instance = AddTaskController._internal();
 
   factory AddTaskController() {

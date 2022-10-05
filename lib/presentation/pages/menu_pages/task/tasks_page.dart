@@ -25,10 +25,13 @@ class TasksPage extends StatefulWidget {
   State<TasksPage> createState() => _TasksPageState();
 }
 
-class _TasksPageState extends State<TasksPage>
+class _TasksPageState extends State<TasksPage> 
     with SingleTickerProviderStateMixin {
-
   late final _tabController = TabController(length: 2, vsync: this);
+// implements TasksPageStateUpdateListener 
+  // void refreshState() {
+  //   setState({});
+  // }
 
   final taskController = AddTaskController();
   @override
@@ -82,7 +85,6 @@ class _TasksPageState extends State<TasksPage>
               type: StorageDataType.refreshToken,
               value: model.refreshToken,
             );
-           
           },
         ),
         backgroundColor: const Color(0xffFDFDFD),
@@ -123,8 +125,9 @@ class _TasksPageState extends State<TasksPage>
             onTap: (value) => _tabController.index = value,
             splashFactory: NoSplash.splashFactory,
             indicatorColor: Colors.white,
+
             //  indicatorPadding: EdgeInsets.only(top: 10),
-            //   padding: EdgeInsets.only(top: 10),
+            //    padding: EdgeInsets.only(top: -10),
             indicatorSize: TabBarIndicatorSize.label,
             controller: _tabController,
             tabs: [todayTab, monthTab],
@@ -142,22 +145,26 @@ class _TasksPageState extends State<TasksPage>
             controller: _tabController,
             children: [
               // today
-              KeepAlivePageWidget(
-                child: Column(
-                  children: [
-                    ListWidget(
-                      taskController: taskController,
-                      modelList: taskController.tasks,
-                      isToday: true,
+              taskController.tasks.isEmpty
+                  ? const Center(
+                      child: Text('No tasks'),
+                    )
+                  : KeepAlivePageWidget(
+                      child: Column(
+                        children: [
+                          ListWidget(
+                            taskController: taskController,
+                            modelList: taskController.tasks,
+                            isToday: true,
+                          ),
+                          ListWidget(
+                            taskController: taskController,
+                            modelList: taskController.tasks,
+                            isToday: false,
+                          ),
+                        ],
+                      ),
                     ),
-                    ListWidget(
-                      taskController: taskController,
-                      modelList: taskController.tasks,
-                      isToday: false,
-                    ),
-                  ],
-                ),
-              ),
               // month
               SingleChildScrollView(
                 child: KeepAlivePageWidget(
@@ -167,20 +174,24 @@ class _TasksPageState extends State<TasksPage>
                       events: taskController.events,
                       taskController: taskController,
                     ),
-                    Column(
-                      children: [
-                        // ListWidget(
-                        //   taskController: taskController,
-                        //   modelList: taskController.tasks,
-                        //   isToday: true,
-                        // ),
-                        // ListWidget(
-                        //   taskController: taskController,
-                        //   modelList: taskController.tasks,
-                        //   isToday: false,
-                        // ),
-                      ],
-                    ),
+                    taskController.tasks.isEmpty
+                        ? const Center(
+                            child: Text('No tasks'),
+                          )
+                        : Column(
+                            children: [
+                              // ListWidget(
+                              //   taskController: taskController,
+                              //   modelList: taskController.tasks,
+                              //   isToday: true,
+                              // ),
+                              // ListWidget(
+                              //   taskController: taskController,
+                              //   modelList: taskController.tasks,
+                              //   isToday: false,
+                              // ),
+                            ],
+                          ),
                   ]),
                 ),
               )
