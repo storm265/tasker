@@ -1,11 +1,9 @@
-import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/controller/user_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
-import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
@@ -40,8 +38,8 @@ class SignInController extends ChangeNotifier {
     required BuildContext context,
   }) async {
     try {
+      changeSignInButtonStatus(isActive: false);
       if (formKey.currentState!.validate()) {
-        changeSignInButtonStatus(isActive: false);
         await _signIn(
           context: context,
           email: emailController,
@@ -78,42 +76,37 @@ class SignInController extends ChangeNotifier {
     required String email,
     required String password,
   }) async {
-    try {
-      final authModel = await _authRepository.signIn(
-        email: email,
-        password: password,
-      );
-      final userData = await _userController.fetchCurrentUser(
-        accessToken: authModel.accessToken,
-        id: authModel.userId,
-      );
-      await _storageSource.storageApi.saveData(
-        type: StorageDataType.id,
-        value: authModel.userId,
-      );
-      await _storageSource.storageApi.saveData(
-        type: StorageDataType.email,
-        value: email,
-      );
-      await _storageSource.storageApi.saveData(
-        type: StorageDataType.username,
-        value: userData.username,
-      );
-      await _storageSource.storageApi.saveData(
-        type: StorageDataType.avatarUrl,
-        value: userData.avatarUrl,
-      );
-      await _storageSource.storageApi.saveData(
-        type: StorageDataType.refreshToken,
-        value: authModel.refreshToken,
-      );
-      await _storageSource.storageApi.saveData(
-        type: StorageDataType.accessToken,
-        value: authModel.accessToken,
-      );
-    } catch (e, t) {
-      log(' trace : $t');
-      throw Failure(e.toString());
-    }
+    final authModel = await _authRepository.signIn(
+      email: email,
+      password: password,
+    );
+    final userData = await _userController.fetchCurrentUser(
+      accessToken: authModel.accessToken,
+      id: authModel.userId,
+    );
+    await _storageSource.storageApi.saveData(
+      type: StorageDataType.id,
+      value: authModel.userId,
+    );
+    await _storageSource.storageApi.saveData(
+      type: StorageDataType.email,
+      value: email,
+    );
+    await _storageSource.storageApi.saveData(
+      type: StorageDataType.username,
+      value: userData.username,
+    );
+    await _storageSource.storageApi.saveData(
+      type: StorageDataType.avatarUrl,
+      value: userData.avatarUrl,
+    );
+    await _storageSource.storageApi.saveData(
+      type: StorageDataType.refreshToken,
+      value: authModel.refreshToken,
+    );
+    await _storageSource.storageApi.saveData(
+      type: StorageDataType.accessToken,
+      value: authModel.accessToken,
+    );
   }
 }

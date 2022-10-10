@@ -2,14 +2,14 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/add_member_widget/add_member_dialog.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/base_tasks_controller.dart';
 
 class AddMemberWidget extends StatefulWidget {
-  final AddTaskController taskController;
+  final BaseTasksController addEditTaskController;
   const AddMemberWidget({
     Key? key,
-    required this.taskController,
+    required this.addEditTaskController,
   }) : super(key: key);
 
   @override
@@ -28,7 +28,7 @@ class _AddMemberWidgetState extends State<AddMemberWidget> {
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<Set<UserProfileModel>>(
-      valueListenable: widget.taskController.taskMembers,
+      valueListenable: widget.addEditTaskController.memberProvider.taskMembers,
       builder: (_, users, __) => (users.isEmpty)
           ? Padding(
               padding: const EdgeInsets.only(
@@ -61,7 +61,7 @@ class _AddMemberWidgetState extends State<AddMemberWidget> {
                     onPressed: () => showDialog(
                       context: context,
                       builder: (_) => AddUserDialog(
-                        taskController: widget.taskController,
+                        taskController: widget.addEditTaskController,
                       ),
                     ),
                     fillColor: Colors.grey.withOpacity(0.5),
@@ -88,7 +88,8 @@ class _AddMemberWidgetState extends State<AddMemberWidget> {
                     children: [
                       InkWell(
                         onLongPress: () {
-                          widget.taskController.removeMember(
+                          widget.addEditTaskController.memberProvider
+                              .removeMember(
                             model: userList[i],
                           );
                         },
@@ -98,7 +99,8 @@ class _AddMemberWidgetState extends State<AddMemberWidget> {
                             backgroundColor: Colors.grey,
                             radius: 17,
                             backgroundImage: NetworkImage(userList[i].avatarUrl,
-                                headers: widget.taskController.imageHeader),
+                                headers:
+                                    widget.addEditTaskController.imageHeader),
                           ),
                         ),
                       ),
@@ -107,7 +109,8 @@ class _AddMemberWidgetState extends State<AddMemberWidget> {
                               onPressed: () => showDialog(
                                   context: context,
                                   builder: (_) => AddUserDialog(
-                                        taskController: widget.taskController,
+                                        taskController:
+                                            widget.addEditTaskController,
                                       )),
                               fillColor: Colors.grey.withOpacity(0.5),
                               shape: const CircleBorder(),

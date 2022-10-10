@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +6,7 @@ import 'package:todo2/database/database_scheme/env_scheme.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
+import 'package:todo2/presentation/controller/file_provider.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
@@ -15,11 +14,12 @@ import 'package:todo2/storage/secure_storage_service.dart';
 
 class ProfileController extends ChangeNotifier {
   final SecureStorageSource _secureStorageService;
-
+  final FileProvider fileController;
   final UserProfileRepositoryImpl userProfileRepository;
   final AuthRepositoryImpl authRepository;
 
   ProfileController({
+    required this.fileController,
     required SecureStorageSource secureStorageService,
     required this.userProfileRepository,
     required this.authRepository,

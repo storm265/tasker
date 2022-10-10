@@ -5,7 +5,7 @@ import 'package:todo2/presentation/pages/auth/splash_page.dart';
 import 'package:todo2/presentation/pages/auth/welcome/welcome_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/checklist_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/note_page.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/new_task.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/add_task_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/menu_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/profile_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
@@ -34,7 +34,7 @@ enum Pages {
 }
 
 Map<String, Widget Function(BuildContext)> routes = {
-  '/': (_) =>  SplashPage(),
+  '/': (_) => SplashPage(),
   Pages.navigationReplacement.type: (_) => const NavigationPage(),
   Pages.noConnection.type: (_) => const NoConnectionPage(),
   Pages.welcome.type: (_) => const WelcomePage(),

@@ -6,6 +6,7 @@ import 'package:todo2/presentation/pages/navigation/controllers/inherited_status
 import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/status_bar_controller.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
+import 'package:todo2/services/network_service/refresh_token_controller.dart';
 import 'package:todo2/services/network_service/set_charles_network_support.dart';
 import 'package:todo2/services/system_service/system_chrome.dart';
 import 'services/theme_service/theme_data_controller.dart';
@@ -53,6 +54,7 @@ class _MyAppState extends State<MyApp> {
       child: NavigationInherited(
         navigationController: _navigationController,
         child: MaterialApp(
+          navigatorKey: navigatorKey,
           localizationsDelegates: context.localizationDelegates,
           supportedLocales: context.supportedLocales,
           locale: context.locale,

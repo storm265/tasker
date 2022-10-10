@@ -4,8 +4,8 @@ import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 
 class UserController {
-  final UserProfileRepositoryImpl _userProfileRepository;
-  UserController({required UserProfileRepositoryImpl userProfileRepository})
+  final UserProfileRepository _userProfileRepository;
+  UserController({required UserProfileRepository userProfileRepository})
       : _userProfileRepository = userProfileRepository;
 
   StatsModel stats = StatsModel(

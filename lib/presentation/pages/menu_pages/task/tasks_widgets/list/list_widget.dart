@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/tasks_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/list/task_item_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/list/today_widget.dart';
 import 'package:todo2/presentation/widgets/common/slidable_widgets/endpane_widget.dart';
@@ -13,7 +13,7 @@ import 'package:todo2/utils/assets_path.dart';
 class ListWidget extends StatelessWidget {
   final List<TaskModel> modelList;
   final bool isToday;
-  final AddTaskController taskController;
+  final TaskListController taskController;
   const ListWidget({
     Key? key,
     required this.modelList,

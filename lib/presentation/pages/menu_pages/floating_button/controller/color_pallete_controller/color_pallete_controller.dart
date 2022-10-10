@@ -14,7 +14,4 @@ class ColorPalleteController extends ChangeNotifier {
     selectedIndex.notifyListeners();
   }
 
-  void disposeValues() {
-    selectedIndex.dispose();
-  }
 }

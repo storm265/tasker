@@ -2,19 +2,19 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/description_widgets/desciption_text.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/description_widgets/description_box_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/base_tasks_controller.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 
 class DescriptionFieldWidget extends StatelessWidget {
   final String? hintText;
   final int maxLength;
-  final AddTaskController taskController;
+  final BaseTasksController addEditTaskController;
   const DescriptionFieldWidget({
     Key? key,
     this.hintText,
-    required this.taskController,
+    required this.addEditTaskController,
     this.maxLength = 512,
   }) : super(key: key);
 
@@ -27,19 +27,21 @@ class DescriptionFieldWidget extends StatelessWidget {
         children: [
           desciptionTextWidget,
           DescriptionBoxWidget(
-            taskController: taskController,
+            attachmentsProvider: addEditTaskController.attachmentsProvider,
+            descriptionController:
+                addEditTaskController.descriptionTextController,
             hintText: hintText,
-         
           ),
           //   const AttachementWidget(),
           ValueListenableBuilder<List<PlatformFile>>(
-              valueListenable: taskController.attachments,
+              valueListenable:
+                  addEditTaskController.attachmentsProvider.attachments,
               builder: (_, imgList, __) {
                 if (imgList.isEmpty) {
                   return const SizedBox();
                 } else {
                   return ListView.builder(
-                    itemCount: taskController.attachments.value.length,
+                    itemCount: imgList.length,
                     shrinkWrap: true,
                     itemBuilder: (_, i) {
                       return Wrap(
@@ -51,8 +53,9 @@ class DescriptionFieldWidget extends StatelessWidget {
                               motion: const ScrollMotion(),
                               children: [
                                 SlidableAction(
-                                  onPressed: (_) =>
-                                      taskController.removeAttachment(i),
+                                  onPressed: (_) => addEditTaskController
+                                      .attachmentsProvider
+                                      .removeAttachment(i),
                                   icon: Icons.delete,
                                   backgroundColor: Colors.red,
                                 ),
@@ -61,7 +64,8 @@ class DescriptionFieldWidget extends StatelessWidget {
                             child: Row(
                               children: [
                                 Chip(
-                                  avatar: taskController.fileController
+                                  avatar: addEditTaskController
+                                          .attachmentsProvider.fileProvider
                                           .isValidImageFormat(
                                               imgList[i].path ?? '')
                                       ? CircleAvatar(

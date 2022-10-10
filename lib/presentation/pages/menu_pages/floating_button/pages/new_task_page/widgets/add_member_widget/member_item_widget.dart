@@ -1,18 +1,17 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/base_tasks_controller.dart';
 
 class UserItemWidget extends StatefulWidget {
-  final AddTaskController taskController;
+  final BaseTasksController addEditTaskController;
   final int index;
-  final UserProfileModel data;
+  final UserProfileModel userModel;
 
   const UserItemWidget({
     Key? key,
-    required this.data,
+    required this.userModel,
     required this.index,
-    required this.taskController,
+    required this.addEditTaskController,
   }) : super(key: key);
 
   @override
@@ -21,22 +20,20 @@ class UserItemWidget extends StatefulWidget {
 
 class _UserItemWidgetState extends State<UserItemWidget> {
   bool isSelected = false;
-  final taskController = AddTaskController();
 
   @override
   Widget build(BuildContext context) {
-    log('header ${taskController.imageHeader}');
     return ListTile(
       leading: CircleAvatar(
         backgroundColor: Colors.grey,
         backgroundImage: NetworkImage(
-          widget.data.avatarUrl,
-          headers: taskController.imageHeader,
+          widget.userModel.avatarUrl,
+          headers: widget.addEditTaskController.imageHeader,
         ),
       ),
-      title: Text(widget.data.username),
+      title: Text(widget.userModel.username),
       subtitle: Text(
-        widget.data.email,
+        widget.userModel.email,
         overflow: TextOverflow.ellipsis,
       ),
       trailing: InkWell(
@@ -48,9 +45,11 @@ class _UserItemWidgetState extends State<UserItemWidget> {
           setState(() {
             isSelected = !isSelected;
             if (isSelected) {
-              taskController.addMember(userModel: widget.data);
+              widget.addEditTaskController.memberProvider
+                  .addMember(userModel: widget.userModel);
             } else {
-              taskController.removeMember(model: widget.data);
+              widget.addEditTaskController.memberProvider
+                  .removeMember(model: widget.userModel);
             }
           });
         },

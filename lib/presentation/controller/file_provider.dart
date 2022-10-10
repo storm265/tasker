@@ -16,7 +16,7 @@ const _jpeg = 'jpeg';
 const _png = 'png';
 const _jpg = 'jpg';
 
-class FileController extends ChangeNotifier {
+class FileProvider extends ChangeNotifier {
   final UserProfileRepositoryImpl _userRepository = UserProfileRepositoryImpl(
     userProfileDataSource: UserProfileDataSourceImpl(
       secureStorageService: SecureStorageSource(),
@@ -30,11 +30,13 @@ class FileController extends ChangeNotifier {
     path: '',
   );
 
-  var pickedFile = ValueNotifier(PlatformFile(
-    name: '',
-    size: 0,
-    path: '',
-  ));
+  var pickedFile = ValueNotifier(
+    PlatformFile(
+      name: '',
+      size: 0,
+      path: '',
+    ),
+  );
 
   bool isValidImageFormat(String image) {
     if (image.endsWith(_jpeg) || image.endsWith(_png) || image.endsWith(_jpg)) {
@@ -63,11 +65,6 @@ class FileController extends ChangeNotifier {
           const FilePickerResult([]);
       pickedFile.value = result.files.last;
       pickedFile.notifyListeners();
-
-      debugPrint('picker image path : ${pickedFile.value.path}');
-      debugPrint('picker extension : ${pickedFile.value.extension}');
-      debugPrint(
-          'wrongFormat: ${isValidImageFormat(pickedFile.value.extension ?? '')}');
 
       if (result.files.last.size >= _maxImageSize) {
         pickedFile.value = _emptyImage;
@@ -120,6 +117,7 @@ class FileController extends ChangeNotifier {
   Future<void> updateAvatar({
     required BuildContext context,
     required ProfileController profileController,
+    required VoidCallback callback,
   }) async {
     try {
       await pickAvatar(context: context);
@@ -135,6 +133,7 @@ class FileController extends ChangeNotifier {
           Navigator.pop(context);
         });
         await profileController.clearImage();
+        callback();
       }
     } catch (e, t) {
       MessageService.displaySnackbar(
@@ -146,15 +145,8 @@ class FileController extends ChangeNotifier {
     }
   }
 
-  Future<String> uploadAvatar() async {
-    try {
-      final image = await _userRepository.uploadAvatar(
+  Future<String> uploadAvatar() async => await _userRepository.uploadAvatar(
         name: pickedFile.value.name,
         file: File(pickedFile.value.path ?? ''),
       );
-      return image;
-    } catch (e) {
-      throw Failure(e.toString());
-    }
-  }
 }

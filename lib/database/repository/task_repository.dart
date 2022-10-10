@@ -9,15 +9,57 @@ import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
 abstract class TaskRepository<T> {
-  // Future fetchTaskId({required String title});
-  // Future fetchTask();
-  // Future postTask({
-  //   required String title,
-  //   required String description,
-  //   required int assignedTo,
-  //   required int projectId,
-  //   required DateTime dueDate,
-  // });
+  Future<TaskModel> createTask({
+    required String title,
+    required String description,
+    required String? assignedTo,
+    required String projectId,
+    required String? dueDate,
+    List<Map<String, dynamic>>? attachments,
+    List<String>? members,
+  });
+
+  Future<void> deleteTask({required String taskId});
+
+  Future<TaskModel> updateTask({
+    required String title,
+    required String description,
+    required String? assignedTo,
+    required String projectId,
+    required String taskId,
+    required String? dueDate,
+    List<String>? members,
+  });
+
+  Future<TaskModel> fetchOneTask({required String projectId});
+
+  Future<TaskModel> fetchProjectTasks({required String projectId});
+
+  Future<List<TaskModel>> fetchUserTasks();
+
+  Future<List<TaskModel>> fetchAssignedToTasks();
+
+  Future<List<TaskModel>> fetchParticipateInTasks();
+
+  Future<void> createTaskComment({
+    required String content,
+    required String taskId,
+  });
+
+  Future<void> uploadTaskAttachment({
+    required String name,
+    required File file,
+    required String taskId,
+    required bool isFile,
+  });
+  Future<List<CommentModel>> fetchTaskComments({
+    required String taskId,
+    required String content,
+  });
+
+  Future<List<UserProfileModel>> taskMemberSearch({required String nickname});
+
+  Future<void> deleteTaskComment({required String taskId});
 }
 
 class TaskRepositoryImpl implements TaskRepository {
@@ -26,6 +68,7 @@ class TaskRepositoryImpl implements TaskRepository {
     secureStorage: SecureStorageSource(),
   );
 
+  @override
   Future<TaskModel> createTask({
     required String title,
     required String description,
@@ -51,6 +94,7 @@ class TaskRepositoryImpl implements TaskRepository {
     }
   }
 
+  @override
   Future<void> deleteTask({required String taskId}) async {
     try {
       await _taskDataSource.deleteTask(projectId: taskId);
@@ -59,6 +103,7 @@ class TaskRepositoryImpl implements TaskRepository {
     }
   }
 
+  @override
   Future<TaskModel> updateTask({
     required String title,
     required String description,
@@ -83,6 +128,7 @@ class TaskRepositoryImpl implements TaskRepository {
     }
   }
 
+  @override
   Future<TaskModel> fetchOneTask({required String projectId}) async {
     try {
       final response = await _taskDataSource.fetchOneTask(projectId: projectId);
@@ -92,6 +138,7 @@ class TaskRepositoryImpl implements TaskRepository {
     }
   }
 
+  @override
   Future<TaskModel> fetchProjectTasks({required String projectId}) async {
     try {
       final response =
@@ -104,6 +151,7 @@ class TaskRepositoryImpl implements TaskRepository {
     }
   }
 
+  @override
   Future<List<TaskModel>> fetchUserTasks() async {
     try {
       final response = await _taskDataSource.fetchUserTasks();
@@ -115,6 +163,7 @@ class TaskRepositoryImpl implements TaskRepository {
     }
   }
 
+  @override
   Future<List<TaskModel>> fetchAssignedToTasks() async {
     try {
       final response = await _taskDataSource.fetchAssignedToTasks();
@@ -124,17 +173,17 @@ class TaskRepositoryImpl implements TaskRepository {
     }
   }
 
+  @override
   Future<List<TaskModel>> fetchParticipateInTasks() async {
     try {
       final response = await _taskDataSource.fetchParticipateInTasks();
-
       return response.map((json) => TaskModel.fromJson(json)).toList();
-      ;
     } catch (e) {
       throw Failure(e.toString());
     }
   }
 
+  @override
   Future<void> uploadTaskAttachment({
     required String name,
     required File file,
@@ -153,6 +202,7 @@ class TaskRepositoryImpl implements TaskRepository {
     }
   }
 
+  @override
   Future<void> createTaskComment({
     required String content,
     required String taskId,
@@ -167,6 +217,7 @@ class TaskRepositoryImpl implements TaskRepository {
     }
   }
 
+  @override
   Future<List<CommentModel>> fetchTaskComments({
     required String taskId,
     required String content,
@@ -185,6 +236,7 @@ class TaskRepositoryImpl implements TaskRepository {
     }
   }
 
+  @override
   Future<List<UserProfileModel>> taskMemberSearch(
       {required String nickname}) async {
     try {
@@ -200,6 +252,7 @@ class TaskRepositoryImpl implements TaskRepository {
     }
   }
 
+  @override
   Future<void> deleteTaskComment({required String taskId}) async {
     try {
       await _taskDataSource.deleteTaskComment(taskId: taskId);

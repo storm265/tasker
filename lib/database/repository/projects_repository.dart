@@ -9,14 +9,14 @@ abstract class ProjectRepository {
 
   Future<List<ProjectModel>> fetchAllProjects();
 
-  Future<void> createProject({
+  Future<ProjectModel> createProject({
     required Color color,
     required String title,
   });
 
   Future<void> deleteProject({required ProjectModel projectModel});
 
-  Future<void> updateProject({
+  Future<ProjectModel> updateProject({
     required ProjectModel projectModel,
     required String title,
     required Color color,

@@ -3,19 +3,30 @@ import 'package:flutter/material.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/auth/splash_page.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/view_task/controller/view_task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/detailed_item_widget.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
-class ItemsWidget extends StatelessWidget {
+class ItemsWidget extends StatefulWidget {
   final TaskModel pickedTask;
-  final AddTaskController taskController;
+  final ViewTaskController viewTaskController;
   const ItemsWidget({
     super.key,
     required this.pickedTask,
-    required this.taskController,
+    required this.viewTaskController,
   });
+
+  @override
+  State<ItemsWidget> createState() => _ItemsWidgetState();
+}
+
+class _ItemsWidgetState extends State<ItemsWidget> {
+  @override
+  void initState() {
+    widget.viewTaskController.getAccessHeader();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +57,7 @@ class ItemsWidget extends StatelessWidget {
                 imageIcon: 'calendar',
                 title: LocaleKeys.due_date.tr(),
                 subtitle:
-                    '${pickedTask.dueDate.year} ${pickedTask.dueDate.day},${DateFormat('MMM', locale).format(pickedTask.dueDate)}', // widget.pickedTask.title,
+                    '${widget.pickedTask.dueDate.year} ${widget.pickedTask.dueDate.day},${DateFormat('MMM', locale).format(widget.pickedTask.dueDate)}', // widget.pickedTask.title,
               );
 
             case 2:
@@ -54,7 +65,7 @@ class ItemsWidget extends StatelessWidget {
                 isBlackTextColor: true,
                 imageIcon: 'description',
                 title: LocaleKeys.description.tr(),
-                subtitle: pickedTask.description,
+                subtitle: widget.pickedTask.description,
               );
 
             case 3:
@@ -69,11 +80,11 @@ class ItemsWidget extends StatelessWidget {
                       child: ListView.builder(
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
-                        itemCount: pickedTask.members == null
+                        itemCount: widget.pickedTask.members == null
                             ? 0
-                            : (pickedTask.members!.length > 5)
+                            : (widget.pickedTask.members!.length > 5)
                                 ? 5
-                                : pickedTask.members?.length,
+                                : widget.pickedTask.members?.length,
                         itemBuilder: (context, index) {
                           return index == 4
                               ? const Padding(
@@ -96,8 +107,10 @@ class ItemsWidget extends StatelessWidget {
                                     radius: 16,
                                     backgroundColor: Colors.grey,
                                     backgroundImage: NetworkImage(
-                                      pickedTask.members![index].avatarUrl,
-                                      headers: taskController.imageHeader,
+                                      widget
+                                          .pickedTask.members![index].avatarUrl,
+                                      headers:
+                                          widget.viewTaskController.imageHeader,
                                     ),
                                   ),
                                 );

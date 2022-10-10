@@ -2,20 +2,22 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/attachments_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/description_widgets/description_text_field.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/utils/assets_path.dart';
 
 class DescriptionBoxWidget extends StatelessWidget {
-  final AddTaskController taskController;
+  final TextEditingController descriptionController;
   final bool withImageIcon;
   final String? hintText;
+  final AttachmentsProvider attachmentsProvider;
   const DescriptionBoxWidget({
     super.key,
     this.withImageIcon = false,
+    required this.attachmentsProvider,
     this.hintText,
-    required this.taskController,
+    required this.descriptionController,
   });
 
   @override
@@ -33,7 +35,7 @@ class DescriptionBoxWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           DescriptionTextField(
-            taskController: taskController,
+            descriptionTextController: descriptionController,
             hintText: hintText,
           ),
           Padding(
@@ -56,9 +58,11 @@ class DescriptionBoxWidget extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 12),
                           child: GestureDetector(
                             onTap: () async {
-                              final image = await taskController.fileController
+                              final image = await attachmentsProvider
+                                  .fileProvider
                                   .pickAvatar(context: context);
-                              taskController.addAttachment(attachment: image);
+                              attachmentsProvider.addAttachment(
+                                  attachment: image);
                             },
                             child: SvgPicture.asset(
                               AssetsPath.imageIconIconPath,
@@ -70,9 +74,9 @@ class DescriptionBoxWidget extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: GestureDetector(
                       onTap: () async {
-                        final file = await taskController.fileController
+                        final file = await attachmentsProvider.fileProvider
                             .pickFile(context: context);
-                        taskController.addAttachment(attachment: file);
+                        attachmentsProvider.addAttachment(attachment: file);
                       },
                       child:
                           SvgPicture.asset(AssetsPath.fileAttachmentIconPath),

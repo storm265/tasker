@@ -75,6 +75,7 @@ class StatsWidget extends StatelessWidget {
                           child: Column(
                             children: [
                               CircularPercentIndicator(
+                                addAutomaticKeepAlive: false,
                                 animation: true,
                                 radius: 36.0,
                                 lineWidth: 2.3,

@@ -1,16 +1,19 @@
-import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
-import 'package:todo2/presentation/controller/image_picker_controller.dart';
+import 'package:todo2/presentation/controller/file_provider.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
-import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
 class SignUpController extends ChangeNotifier {
+  final AuthRepositoryImpl _authRepository;
+  final FormValidatorController formValidatorController;
+  final FileProvider fileController;
+  final SecureStorageSource _storageSource;
+
   SignUpController({
     required AuthRepositoryImpl authRepository,
     required this.formValidatorController,
@@ -18,11 +21,6 @@ class SignUpController extends ChangeNotifier {
     required SecureStorageSource storageSource,
   })  : _authRepository = authRepository,
         _storageSource = storageSource;
-
-  final AuthRepositoryImpl _authRepository;
-  final FormValidatorController formValidatorController;
-  final FileController fileController;
-  final SecureStorageSource _storageSource;
 
   final formKey = GlobalKey<FormState>();
 
@@ -49,7 +47,6 @@ class SignUpController extends ChangeNotifier {
           email: email,
           password: password,
         );
-        // await Future.delayed(Duration(seconds: 2));
       } else {
         throw MessageService.displaySnackbar(
           message: LocaleKeys.form_is_not_valid.tr(),
@@ -60,14 +57,13 @@ class SignUpController extends ChangeNotifier {
         if (fileController
             .isValidImageFormat(fileController.pickedFile.value.extension!)) {
           final imageResponse = await fileController.uploadAvatar();
-          log('avatar respose $imageResponse');
           await _storageSource.storageApi.saveData(
             type: StorageDataType.avatarUrl,
             value: imageResponse,
           );
         }
       }
-// await Future.delayed(Duration(seconds: 2));
+
       await Future.delayed(
         Duration.zero,
         () => NavigationService.navigateTo(
@@ -93,39 +89,34 @@ class SignUpController extends ChangeNotifier {
     required String username,
     required BuildContext context,
   }) async {
-    try {
-      final authModel = await _authRepository.signUp(
-        nickname: username,
-        email: email,
-        password: password,
-      );
-      await _storageSource.storageApi.saveData(
-        type: StorageDataType.id,
-        value: authModel.id,
-      );
-      await _storageSource.storageApi.saveData(
-        type: StorageDataType.email,
-        value: email,
-      );
-      await _storageSource.storageApi.saveData(
-        type: StorageDataType.password,
-        value: password,
-      );
-      await _storageSource.storageApi.saveData(
-        type: StorageDataType.username,
-        value: username,
-      );
-      await _storageSource.storageApi.saveData(
-        type: StorageDataType.refreshToken,
-        value: authModel.refreshToken,
-      );
-      await _storageSource.storageApi.saveData(
-        type: StorageDataType.accessToken,
-        value: authModel.accessToken,
-      );
-    } catch (e, t) {
-      debugPrint(' error: $e, trace: $t');
-      throw Failure('Sign up failed');
-    }
+    final authModel = await _authRepository.signUp(
+      nickname: username,
+      email: email,
+      password: password,
+    );
+    await _storageSource.storageApi.saveData(
+      type: StorageDataType.id,
+      value: authModel.id,
+    );
+    await _storageSource.storageApi.saveData(
+      type: StorageDataType.email,
+      value: email,
+    );
+    await _storageSource.storageApi.saveData(
+      type: StorageDataType.password,
+      value: password,
+    );
+    await _storageSource.storageApi.saveData(
+      type: StorageDataType.username,
+      value: username,
+    );
+    await _storageSource.storageApi.saveData(
+      type: StorageDataType.refreshToken,
+      value: authModel.refreshToken,
+    );
+    await _storageSource.storageApi.saveData(
+      type: StorageDataType.accessToken,
+      value: authModel.accessToken,
+    );
   }
 }

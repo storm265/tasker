@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/panel_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/panels/project_panel_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/panels/user_panel_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/base_tasks_controller.dart';
 
 class SelectPanelWidget extends StatelessWidget {
-  SelectPanelWidget({Key? key}) : super(key: key);
-  final taskController = AddTaskController();
+  final BaseTasksController addEditTaskController;
+  const SelectPanelWidget({
+    Key? key,
+    required this.addEditTaskController,
+  }) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -15,18 +20,20 @@ class SelectPanelWidget extends StatelessWidget {
       ),
       height: 500,
       width: 365,
-      child: ValueListenableBuilder<InputFieldStatus>(
-        valueListenable: taskController.panelStatus,
+      child: ValueListenableBuilder<PanelStatus>(
+        valueListenable: addEditTaskController.panelProvider.panelStatus,
         builder: (context, status, _) {
           switch (status) {
-            case InputFieldStatus.hide:
+            case PanelStatus.hide:
               return const SizedBox();
-            case InputFieldStatus.showUserPanel:
-              // TODO not updating if const
-              return UserPanelPickerWidget();
-            case InputFieldStatus.showProjectPanel:
-              // TODO not updating if const
-              return ProjectPanelPickerWidget();
+            case PanelStatus.showUserPanel:
+              return UserPanelPickerWidget(
+                addEditTaskController: addEditTaskController,
+              );
+            case PanelStatus.showProjectPanel:
+              return ProjectPanelPickerWidget(
+                addEditTaskController: addEditTaskController,
+              );
           }
         },
       ),

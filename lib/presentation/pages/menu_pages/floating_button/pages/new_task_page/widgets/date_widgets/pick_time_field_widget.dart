@@ -2,20 +2,23 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/auth/widgets/unfocus_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/common/grey_container.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/date_widgets/pick_date_dialog.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/base_tasks_controller.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 
 class PickTimeFieldWidget extends StatefulWidget {
-  const PickTimeFieldWidget({Key? key}) : super(key: key);
+  final BaseTasksController addEditTaskController;
+  const PickTimeFieldWidget({
+    Key? key,
+    required this.addEditTaskController,
+  }) : super(key: key);
 
   @override
   State<PickTimeFieldWidget> createState() => _PickTimeFieldWidgetState();
 }
 
 class _PickTimeFieldWidgetState extends State<PickTimeFieldWidget> {
-  final taskController = AddTaskController();
   @override
   Widget build(BuildContext context) {
     return UnfocusWidget(
@@ -36,7 +39,7 @@ class _PickTimeFieldWidgetState extends State<PickTimeFieldWidget> {
                   width: 110,
                   height: 35,
                   child: ValueListenableBuilder<DateTime>(
-                      valueListenable: taskController.pickedDate,
+                      valueListenable: widget.addEditTaskController.pickedDate,
                       builder: (context, time, _) {
                         return ElevatedButton(
                           style: ElevatedButton.styleFrom(
@@ -44,12 +47,14 @@ class _PickTimeFieldWidgetState extends State<PickTimeFieldWidget> {
                                   getAppColor(color: CategoryColor.blue)),
                           onPressed: () async => await showCalendarDatePicker(
                             context: context,
-                            taskController: taskController,
+                            taskController: widget.addEditTaskController,
                           ).then((_) => setState(() {})),
                           child: Text(
                             maxLines: null,
-                            taskController.isValidPickedDate(
-                                      taskController.pickedDate.value,
+                            widget.addEditTaskController.taskValidator
+                                        .isValidPickedDate(
+                                      widget.addEditTaskController.pickedDate
+                                          .value,
                                       context,
                                       false,
                                     ) ==

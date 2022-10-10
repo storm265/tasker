@@ -1,9 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/tasks_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/circle_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/view_task.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
@@ -14,7 +12,7 @@ final timeNow = DateTime.now();
 class TaskCardWidget extends StatelessWidget {
   final int index;
   final List<TaskModel> data;
-  final AddTaskController taskController;
+  final TaskListController taskController;
   const TaskCardWidget({
     Key? key,
     required this.data,
@@ -38,13 +36,11 @@ class TaskCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final date = data[index].dueDate;
     String isAm = (date.hour > 12) ? 'pm' : 'am';
-    log('s ${date.difference(timeNow).inHours}');
     return GestureDetector(
       onTap: () async {
         await showDialog(
           context: context,
           builder: (_) => ViewTask(
-            taskController: taskController,
             pickedTask: data[index],
           ),
         );

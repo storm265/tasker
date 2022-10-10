@@ -1,20 +1,33 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
+import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/add_member_widget/member_item_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/confirm_button.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/base_tasks_controller.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
-class AddUserDialog extends StatelessWidget {
-  final AddTaskController taskController;
-  AddUserDialog({
+class AddUserDialog extends StatefulWidget {
+  final BaseTasksController taskController;
+  const AddUserDialog({
     Key? key,
     required this.taskController,
   }) : super(key: key);
 
+  @override
+  State<AddUserDialog> createState() => _AddUserDialogState();
+}
+
+class _AddUserDialogState extends State<AddUserDialog> {
   final userTextController = TextEditingController();
+
+  @override
+  void dispose() {
+    userTextController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +42,7 @@ class AddUserDialog extends StatelessWidget {
         height: 400,
         width: 200,
         child: StatefulBuilder(
-          builder: (context, setState) => Column(
+          builder: (_, setState) => Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
@@ -38,7 +51,7 @@ class AddUserDialog extends StatelessWidget {
                   width: double.infinity,
                   child: TextField(
                     onChanged: (_) async => Future.delayed(
-                        const Duration(milliseconds: 600),
+                        const Duration(seconds: 1),
                         () => setState(() {})),
                     controller: userTextController,
                     decoration: InputDecoration(
@@ -61,8 +74,7 @@ class AddUserDialog extends StatelessWidget {
                 child: DisabledGlowWidget(
                   child: FutureBuilder<List<UserProfileModel>>(
                     initialData: const [],
-                    future: taskController.taskMemberSearch(
-                        nickname: userTextController.text),
+                    future: widget.taskController.taskMemberSearch(userName: userTextController.text),
                     builder: (context,
                         AsyncSnapshot<List<UserProfileModel>> snapshot) {
                       return (snapshot.hasError || !snapshot.hasData)
@@ -73,8 +85,8 @@ class AddUserDialog extends StatelessWidget {
                               itemCount: snapshot.data!.length,
                               itemBuilder: (_, i) {
                                 return UserItemWidget(
-                                  taskController: taskController,
-                                  data: snapshot.data![i],
+                                  addEditTaskController: widget.taskController,
+                                  userModel: snapshot.data![i],
                                   index: i,
                                 );
                               },
@@ -86,7 +98,7 @@ class AddUserDialog extends StatelessWidget {
               ConfirmButtonWidget(
                 width: 180,
                 onPressed: () => Navigator.pop(context),
-                title: 'Done',
+                title: LocaleKeys.done.tr(),
               ),
             ],
           ),

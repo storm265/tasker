@@ -1,12 +1,12 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/controller/image_picker_controller.dart';
+import 'package:todo2/presentation/controller/file_provider.dart';
 import 'package:todo2/presentation/widgets/common/add_photo_widget.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 class AvatarWidget extends StatelessWidget {
-  final FileController imgController;
+  final FileProvider imgController;
   const AvatarWidget({
     Key? key,
     required this.imgController,

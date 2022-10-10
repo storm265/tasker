@@ -1,12 +1,10 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
-import 'package:todo2/presentation/controller/image_picker_controller.dart';
+import 'package:todo2/presentation/controller/file_provider.dart';
 import 'package:todo2/presentation/controller/user_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/constants/stats_padding_constants.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
@@ -25,7 +23,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final fileController = FileController();
   final userController = UserController(
     userProfileRepository: UserProfileRepositoryImpl(
       userProfileDataSource: UserProfileDataSourceImpl(
@@ -35,6 +32,7 @@ class _ProfilePageState extends State<ProfilePage> {
     ),
   );
   final profileController = ProfileController(
+    fileController: FileProvider(),
     secureStorageService: SecureStorageSource(),
     userProfileRepository: UserProfileRepositoryImpl(
       userProfileDataSource: UserProfileDataSourceImpl(
@@ -47,16 +45,14 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   void initState() {
-    log('_ProfilePageState initState');
     userController.fetchStats().then((_) => setState(() {}));
     super.initState();
   }
 
   @override
   void dispose() {
-    log('_ProfilePageState dis');
-    fileController.pickedFile.dispose();
-    fileController.dispose();
+    profileController.fileController.pickedFile.dispose();
+    profileController.fileController.dispose();
     super.dispose();
   }
 
@@ -76,7 +72,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               child: ProfileWidget(
                 profileController: profileController,
-                imageController: fileController,
+                imageController: profileController.fileController,
                 completedTasks: userController.stats.completedTasks,
                 createdTask: userController.stats.createdTasks,
               ),

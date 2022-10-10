@@ -1,14 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/controller/image_picker_controller.dart';
+import 'package:todo2/presentation/controller/file_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/constants/profile_dialog_items.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 Future<void> showSettingsDialog({
   required BuildContext context,
-  required FileController imageController,
+  required FileProvider imageController,
   required ProfileController profileController,
+  required VoidCallback callback,
 }) async {
   await showDialog(
     context: context,
@@ -38,6 +39,7 @@ Future<void> showSettingsDialog({
                   switch (i) {
                     case 0:
                       await imageController.updateAvatar(
+                        callback: () => callback(),
                         context: context,
                         profileController: profileController,
                       );

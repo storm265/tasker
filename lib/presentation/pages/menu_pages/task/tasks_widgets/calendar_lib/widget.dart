@@ -1,10 +1,8 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo2/presentation/pages/auth/splash_page.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/tasks_controller.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'controller.dart';
 import 'datetime_util.dart';
@@ -35,7 +33,7 @@ class AdvancedCalendar extends StatefulWidget {
     this.canExtend = true,
   }) : super(key: key);
 
-  final AddTaskController? taskController;
+  final TaskListController? taskController;
 
   final bool canExtend;
 
@@ -85,6 +83,7 @@ class _AdvancedCalendarState extends State<AdvancedCalendar>
   late ValueNotifier<int> _monthViewCurrentPage;
   late AnimationController _animationController;
   late AdvancedCalendarController _controller;
+  // ignore: unused_field
   late double _animationValue;
   late List<ViewRange> _monthRangeList;
   late List<List<DateTime>> _weekRangeList;

@@ -1,22 +1,25 @@
 import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/panel_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/circle_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/base_tasks_controller.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 
 class ProjectPanelPickerWidget extends StatelessWidget {
-  ProjectPanelPickerWidget({Key? key}) : super(key: key);
-  final taskController = AddTaskController();
+  final BaseTasksController addEditTaskController;
+  const ProjectPanelPickerWidget({
+    Key? key,
+    required this.addEditTaskController,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<ProjectModel>>(
       initialData: const [],
-      future: taskController.projectController
-          .searchProject(title: taskController.projectTextController.text),
+      future: addEditTaskController.projectController.searchProject(
+          title: addEditTaskController.projectTextController.text),
       builder: (context, AsyncSnapshot<List<ProjectModel>> snapshot) {
         log('snapshot.data ${snapshot.data}');
         return (!snapshot.hasData || snapshot.data == null)
@@ -32,11 +35,11 @@ class ProjectPanelPickerWidget extends StatelessWidget {
                   return InkWell(
                     onTap: () {
                       FocusScope.of(context).unfocus();
-                      taskController.changePanelStatus(
-                          newStatus: InputFieldStatus.hide);
+                      addEditTaskController.panelProvider
+                          .changePanelStatus(newStatus: PanelStatus.hide);
                     },
                     child: ListTile(
-                      onTap: () => taskController.pickProject(
+                      onTap: () => addEditTaskController.pickProject(
                         newProject: data,
                         context: context,
                       ),
