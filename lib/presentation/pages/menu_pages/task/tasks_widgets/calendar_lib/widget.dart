@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -215,6 +217,7 @@ List<String>.generate(7, (index) {
             child: ValueListenableBuilder<int>(
               valueListenable: _monthViewCurrentPage,
               builder: (_, value, __) {
+                log('ss ${_monthRangeList[value].firstDay}');
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -359,6 +362,7 @@ List<String>.generate(7, (index) {
                                             _monthRangeList[pageIndex].firstDay,
                                           );
                                         }
+
                                         _monthViewCurrentPage.value = pageIndex;
                                       },
                                       controller: _weekPageController,

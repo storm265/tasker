@@ -133,19 +133,14 @@ class _TasksPageState extends State<TasksPage>
                           // TRANSLATE
                           child: Text('No tasks'),
                         )
-                      : Column(
-                          children: [
-                            // ListWidget(
-                            //   taskController: taskController,
-                            //   modelList: taskController.tasks,
-                            //   isToday: true,
-                            // ),
-                            // ListWidget(
-                            //   taskController: taskController,
-                            //   modelList: taskController.tasks,
-                            //   isToday: false,
-                            // ),
-                          ],
+                      : ListView.builder(
+                          itemCount: 5,
+                          shrinkWrap: true,
+                          itemBuilder: (_, i) => ListWidget(
+                            taskController: taskController,
+                            modelList: taskController.tasks,
+                            isToday: true,
+                          ),
                         ),
                 ]),
               )

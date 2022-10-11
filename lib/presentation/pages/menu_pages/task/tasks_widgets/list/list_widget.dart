@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
@@ -42,7 +41,6 @@ class ListWidget extends StatelessWidget {
         )
         .toList();
     tomorrowList.sort((a, b) => a.dueDate.compareTo(b.dueDate));
-    log('today len ${todayList.length}');
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -69,7 +67,8 @@ class ListWidget extends StatelessWidget {
                       EndPageWidget(
                         iconPath: AssetsPath.deleteIconPath,
                         onClick: () async => await taskController.deleteTask(
-                            taskId: modelList[i].projectId),
+                          taskId: modelList[i].projectId,
+                        ),
                       ),
                     ],
                   ),

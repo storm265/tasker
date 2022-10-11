@@ -230,6 +230,8 @@ class TaskDataSourceImpl implements TaskDataSource {
 
 //FAKE data
   final now = DateFormat('yyyy-MM-dd').format(DateTime.now());
+  final tomorrow = DateFormat('yyyy-MM-dd').format(DateTime.utc(
+      DateTime.now().year, DateTime.now().month, DateTime.now().day + 1));
   final url = 'https://images7.alphacoders.com/522/thumb-1920-522305.jpg';
   @override
   Future<List<dynamic>> fetchUserTasks() async {
@@ -296,6 +298,29 @@ class TaskDataSourceImpl implements TaskDataSource {
                     "created_at": "2022-07-13T09:16:35.924425"
                   }
                 ],
+                "created_at": "2022-07-13T09:17:11.400401"
+              },
+              {
+                "id": "94f11b2f-c183-48f2-b4c4-ef8321890cf6",
+                "title":
+                    "zfdsughdvhgd78vhnd7ghdruhghrhgrhguhrhgruhruhguhdhguhirghidr5tyvdnvg",
+                "due_date": "${tomorrow}T14:56:02.394631",
+                "description": "task1 description",
+                "assigned_to": "d96e5ab4-dc94-4388-8fb4-b9c6153714dd",
+                "is_completed": false,
+                "project_id": "60f937bd-6165-4d23-b7eb-6953de7482f9",
+                "owner_id": "fbd1792c-dfa4-4507-b3ff-5ea561c416e1",
+                "created_at": "2022-07-13T09:17:11.400401"
+              },
+              {
+                "id": "94f11b2f-c183-48f2-b4c4-ef8321890cf6",
+                "title": "shishdhasudhuasd",
+                "due_date": "${tomorrow}T14:56:02.394631",
+                "description": "task1 description",
+                "assigned_to": "d96e5ab4-dc94-4388-8fb4-b9c6153714dd",
+                "is_completed": true,
+                "project_id": "60f937bd-6165-4d23-b7eb-6953de7482f9",
+                "owner_id": "fbd1792c-dfa4-4507-b3ff-5ea561c416e1",
                 "created_at": "2022-07-13T09:17:11.400401"
               }
             ]
