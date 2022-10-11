@@ -23,7 +23,6 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widge
 import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/red_app_bar.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/white_box_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/controller/base_tasks_controller.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
@@ -38,31 +37,31 @@ class AddTaskPage extends StatefulWidget {
 }
 
 class _AddTaskPageState extends State<AddTaskPage> {
-  late BaseTasksController baseTasksController;
-  @override
-  void initState() {
-    // TODO: implement edit mode
-    baseTasksController = AddEditTaskController(
-      taskRepository: TaskRepositoryImpl(),
-      memberProvider: MemberProvider(),
-      projectController: ProjectController(
-        colorPalleteController: ColorPalleteController(),
-        projectsRepository: ProjectRepositoryImpl(
-          projectDataSource: ProjectUserDataImpl(
-            secureStorageService: SecureStorageSource(),
-            network: NetworkSource(),
-          ),
+  final addEditTaskController = AddEditTaskController(
+    taskRepository: TaskRepositoryImpl(),
+    memberProvider: MemberProvider(),
+    projectController: ProjectController(
+      colorPalleteController: ColorPalleteController(),
+      projectsRepository: ProjectRepositoryImpl(
+        projectDataSource: ProjectUserDataImpl(
+          secureStorageService: SecureStorageSource(),
+          network: NetworkSource(),
         ),
       ),
-      panelProvider: PanelProvider(),
-      taskValidator: TaskValidator(),
-      attachmentsProvider: AttachmentsProvider(
-        fileProvider: FileProvider(),
-        taskRepository: TaskRepositoryImpl(),
-      ),
-      secureStorage: SecureStorageSource(),
-    );
-    baseTasksController.getAccessToken();
+    ),
+    panelProvider: PanelProvider(),
+    taskValidator: TaskValidator(),
+    attachmentsProvider: AttachmentsProvider(
+      fileProvider: FileProvider(),
+      taskRepository: TaskRepositoryImpl(),
+    ),
+    secureStorage: SecureStorageSource(),
+  );
+
+
+  @override
+  void initState() {
+    addEditTaskController.getAccessToken();
     super.initState();
   }
 
@@ -78,11 +77,11 @@ class _AddTaskPageState extends State<AddTaskPage> {
           const FakeAppBar(),
           const FakeNavBarWidget(),
           Form(
-            key: baseTasksController.formKey,
+            key: addEditTaskController.formKey,
             child: WhiteBoxWidget(
               onClick: () {
                 FocusScope.of(context).unfocus();
-                baseTasksController.panelProvider.changePanelStatus(
+                addEditTaskController.panelProvider.changePanelStatus(
                   newStatus: PanelStatus.hide,
                 );
               },
@@ -102,10 +101,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
                               () {},
                             ),
                           ),
-                          addEditTaskController: baseTasksController,
+                          addEditTaskController: addEditTaskController,
                         ),
                         InFieldWidget(
-                          addEditTaskController: baseTasksController,
+                          addEditTaskController: addEditTaskController,
                           callback: () async => await Future.delayed(
                             const Duration(seconds: 1),
                             () => setState(
@@ -118,39 +117,37 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   ),
                   ValueListenableBuilder<PanelStatus>(
                     valueListenable:
-                        baseTasksController.panelProvider.panelStatus,
+                        addEditTaskController.panelProvider.panelStatus,
                     builder: (_, value, __) {
                       return (value != PanelStatus.hide)
                           ? SelectPanelWidget(
-                              addEditTaskController: baseTasksController,
+                              addEditTaskController: addEditTaskController,
                             )
                           : Column(
                               children: [
                                 TaskTitleWidget(
                                   titleController:
-                                      baseTasksController.titleTextController,
+                                      addEditTaskController.titleTextController,
                                 ),
                                 DescriptionFieldWidget(
-                                  addEditTaskController: baseTasksController,
+                                  addEditTaskController: addEditTaskController,
                                 ),
                                 PickTimeFieldWidget(
-                                  addEditTaskController: baseTasksController,
+                                  addEditTaskController: addEditTaskController,
                                 ),
                                 AddMemberWidget(
-                                  addEditTaskController: baseTasksController,
+                                  addEditTaskController: addEditTaskController,
                                 ),
                                 ValueListenableBuilder<bool>(
                                   valueListenable:
-                                      baseTasksController.isActiveSubmitButton,
+                                      addEditTaskController.isActiveSubmitButton,
                                   builder: (_, isClicked, __) => isClicked
                                       ? ConfirmButtonWidget(
                                           title: LocaleKeys.add_task.tr(),
                                           onPressed: isClicked
                                               ? () async {
-                                                  // await taskValidator
-                                                  //     .tryValidate(
-                                                  //   context: context,
-                                                  // );
+                                                  await addEditTaskController
+                                                      .createTask(context);
                                                 }
                                               : null,
                                         )

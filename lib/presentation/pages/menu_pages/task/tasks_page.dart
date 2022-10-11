@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/tasks_controller.dart';
@@ -134,9 +135,11 @@ class _TasksPageState extends State<TasksPage>
                           child: Text('No tasks'),
                         )
                       : ListView.builder(
-                          itemCount: 5,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: getDaysLenInMonth(),
                           shrinkWrap: true,
                           itemBuilder: (_, i) => ListWidget(
+                            
                             taskController: taskController,
                             modelList: taskController.tasks,
                             isToday: true,
@@ -150,4 +153,26 @@ class _TasksPageState extends State<TasksPage>
       ),
     );
   }
+}
+
+int getDaysLenInMonth() {
+  final now = DateTime.now();
+  DateTime x1 = now.toUtc();
+  return DateTime(now.year, now.month + 1, 0).toUtc().difference(x1).inDays;
+}
+
+enum TaskCategory {
+  today,
+  tomorrow,
+  next,
+}
+
+class Task {
+  TaskModel model;
+  TaskCategory category;
+
+  Task(
+    this.category,
+    this.model,
+  );
 }

@@ -3,18 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 
 final todayTab = Tab(
-  child: Text(
-    '     ${LocaleKeys.today.tr()}     ',
-    style: const TextStyle(
-      fontSize: 18,
+  child: Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 20),
+    child: Text(
+      LocaleKeys.today.tr(),
+      style: const TextStyle(
+        fontSize: 18,
+      ),
     ),
   ),
 );
 final monthTab = Tab(
-  child: Text(
-    '     ${LocaleKeys.month.tr()}     ',
-    style: const TextStyle(
-      fontSize: 18,
+  child: Padding(
+    padding: const EdgeInsets.symmetric(horizontal: 20),
+    child: Text(
+      LocaleKeys.month.tr(),
+      style: const TextStyle(
+        fontSize: 18,
+      ),
     ),
   ),
 );

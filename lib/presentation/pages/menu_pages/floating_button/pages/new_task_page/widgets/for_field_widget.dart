@@ -30,6 +30,7 @@ class ForTextFieldWidget extends StatelessWidget {
           ),
         ),
         Container(
+          width: 100,
           height: 45,
           decoration: BoxDecoration(
             color: const Color(0xFFF4F4F4),
@@ -53,8 +54,7 @@ class ForTextFieldWidget extends StatelessWidget {
                         ),
                       ),
               ),
-              SizedBox(
-                width: 60,
+              Expanded(
                 child: TextFormField(
                   textAlign: TextAlign.center,
                   style: const TextStyle(
@@ -65,7 +65,6 @@ class ForTextFieldWidget extends StatelessWidget {
                   onChanged: (_) async => callback(),
                   onTap: () {
                     addEditTaskController.userTextController.clear();
-
                     addEditTaskController.panelProvider.changePanelStatus(
                       newStatus: PanelStatus.showUserPanel,
                     );
