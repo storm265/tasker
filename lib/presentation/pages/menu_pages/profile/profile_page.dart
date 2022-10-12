@@ -1,11 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:todo2/database/data_source/notes_data_source.dart';
 import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
+import 'package:todo2/database/repository/notes_repository.dart';
+import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/controller/file_provider.dart';
-import 'package:todo2/presentation/controller/user_controller.dart';
+import 'package:todo2/presentation/controller/user_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/constants/stats_padding_constants.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/widgets/stats_widget/stats_widget.dart';
@@ -23,7 +26,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final userController = UserController(
+  final userController = UserProvider(
     userProfileRepository: UserProfileRepositoryImpl(
       userProfileDataSource: UserProfileDataSourceImpl(
         network: NetworkSource(),
@@ -32,6 +35,13 @@ class _ProfilePageState extends State<ProfilePage> {
     ),
   );
   final profileController = ProfileController(
+    taskRepository: TaskRepositoryImpl(),
+    notesRepository: NoteRepositoryImpl(
+      noteDataSource: NotesDataSourceImpl(
+        network: NetworkSource(),
+        secureStorage: SecureStorageSource(),
+      ),
+    ),
     fileController: FileProvider(),
     secureStorageService: SecureStorageSource(),
     userProfileRepository: UserProfileRepositoryImpl(
@@ -45,14 +55,17 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   void initState() {
-    userController.fetchStats().then((_) => setState(() {}));
+    Future.wait([
+      userController.fetchStats(),
+      profileController.fetchCardsData(),
+    ]).then((_) => setState(() {}));
+
     super.initState();
   }
 
   @override
   void dispose() {
-    profileController.fileController.pickedFile.dispose();
-    profileController.fileController.dispose();
+    profileController.dispose();
     super.dispose();
   }
 
@@ -79,7 +92,10 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             Column(
               children: [
-                TaskListWidget(model: userController.stats),
+                TaskListWidget(
+                  model: userController.stats,
+                  cardLength: profileController.cardLength,
+                ),
                 StatsWidget(statsModel: userController.stats),
               ],
             ),

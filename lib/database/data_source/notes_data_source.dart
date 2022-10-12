@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:todo2/database/database_scheme/notes_scheme.dart';
 import 'package:todo2/database/model/notes_model.dart';
@@ -89,9 +87,6 @@ final _userNotes = '/user-notes';
         },
         options: await _network.getLocalRequestOptions(useContentType: true),
       );
-      log('notes ${response.data}');
-          log('notes ${response.statusCode}');
-              log('notes ${response.statusMessage}');
       return NetworkErrorService.isSuccessful(response)
           ? (response.data![NotesScheme.data] as List<dynamic>)
           : throw Failure('Error: Get project error');

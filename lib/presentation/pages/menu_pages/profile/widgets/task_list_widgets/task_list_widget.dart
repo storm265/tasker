@@ -6,9 +6,11 @@ import 'package:todo2/presentation/pages/menu_pages/profile/constants/stats_cont
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 
 class TaskListWidget extends StatelessWidget {
+  final List<int> cardLength;
   final StatsModel model;
   const TaskListWidget({
     Key? key,
+    required this.cardLength,
     required this.model,
   }) : super(key: key);
 
@@ -50,7 +52,7 @@ class TaskListWidget extends StatelessWidget {
                       ),
                     ),
                     subtitle: Text(
-                      '999 ${LocaleKeys.tasks.tr()}',
+                      '${cardLength[i]}  ${cardLength[i] > 4 ? LocaleKeys.task.tr() : LocaleKeys.tasks.tr()}',
                       style: const TextStyle(
                         fontStyle: FontStyle.normal,
                         color: Colors.white,

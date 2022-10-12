@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
-import 'package:todo2/presentation/controller/user_controller.dart';
+import 'package:todo2/presentation/controller/user_provider.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
@@ -12,12 +12,12 @@ class SignInController extends ChangeNotifier {
   final AuthRepositoryImpl _authRepository;
   final FormValidatorController formValidatorController;
   final SecureStorageSource _storageSource;
-  final UserController _userController;
+  final UserProvider _userController;
 
   SignInController({
     required AuthRepositoryImpl authRepository,
     required SecureStorageSource storageSource,
-    required UserController userController,
+    required UserProvider userController,
     required this.formValidatorController,
   })  : _storageSource = storageSource,
         _authRepository = authRepository,
