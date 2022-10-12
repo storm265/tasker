@@ -23,74 +23,92 @@ class TaskListWidget extends StatefulWidget {
   State<TaskListWidget> createState() => _TaskListWidgetState();
 }
 
-class _TaskListWidgetState extends State<TaskListWidget> {
+class _TaskListWidgetState extends State<TaskListWidget>
+    with SingleTickerProviderStateMixin {
+  late final Animation<double> _animation =
+      Tween<double>(begin: 0, end: 1.0).animate(_controller);
+  late final AnimationController _controller = AnimationController(
+    duration: const Duration(milliseconds: 1650),
+    vsync: this,
+  );
   @override
   void initState() {
     widget.taskSortController.generateHeader();
+    _controller.forward();
     super.initState();
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return widget.taskController.tasks.isEmpty
-        ? const Center(
-            // TRANSLATE
-            child: Text('No tasks'),
-          )
-        : ValueListenableBuilder(
-            valueListenable: widget.taskController.tuneIconStatus,
-            builder: (_, sortMode, __) => ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: widget.taskSortController
-                  .getDaysLength(isTodayMode: widget.isTodayMode),
-              shrinkWrap: true,
-              itemBuilder: (_, i) {
-                final sortedList = widget.taskSortController.sorter(
-                  tasks: widget.taskController.tasks,
-                  index: i,
-                  taskSortMode: sortMode,
-                );
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      HeaderWidget(text: widget.taskSortController.headers[i]),
-                      ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: sortedList.length,
-                        itemBuilder: (_, index) => Slidable(
-                          key: const ValueKey(0),
-                          endActionPane: ActionPane(
-                            motion: const ScrollMotion(),
-                            children: [
-                              EndPageWidget(
-                                iconPath: AssetsPath.editIconPath,
-                                onClick: () {
-                                  // TODO implement edit function
-                                },
-                              ),
-                              const GreySlidableWidget(),
-                              EndPageWidget(
-                                iconPath: AssetsPath.deleteIconPath,
-                                onClick: () async =>
-                                    await widget.taskController.deleteTask(
-                                  taskId: sortedList[index].projectId,
+    return FadeTransition(
+      opacity: _animation,
+      child: widget.taskController.tasks.isEmpty
+          ? const Center(
+              // TRANSLATE
+              child: Text('No tasks'),
+            )
+          : ValueListenableBuilder(
+              valueListenable: widget.taskController.tuneIconStatus,
+              builder: (_, sortMode, __) => ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: widget.taskSortController
+                    .getDaysLength(isTodayMode: widget.isTodayMode),
+                shrinkWrap: true,
+                itemBuilder: (_, i) {
+                  final sortedList = widget.taskSortController.sorter(
+                    tasks: widget.taskController.tasks,
+                    index: i,
+                    taskSortMode: sortMode,
+                  );
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        HeaderWidget(
+                            text: widget.taskSortController.headers[i]),
+                        ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: sortedList.length,
+                          itemBuilder: (_, index) => Slidable(
+                            key: const ValueKey(0),
+                            endActionPane: ActionPane(
+                              motion: const ScrollMotion(),
+                              children: [
+                                EndPageWidget(
+                                  iconPath: AssetsPath.editIconPath,
+                                  onClick: () {
+                                    // TODO implement edit function
+                                  },
                                 ),
-                              ),
-                            ],
-                          ),
-                          child: TaskCardWidget(
-                            taskController: widget.taskController,
-                            model: sortedList[index],
+                                const GreySlidableWidget(),
+                                EndPageWidget(
+                                  iconPath: AssetsPath.deleteIconPath,
+                                  onClick: () async =>
+                                      await widget.taskController.deleteTask(
+                                    taskId: sortedList[index].projectId,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            child: TaskCardWidget(
+                              taskController: widget.taskController,
+                              model: sortedList[index],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                );
-              },
+                      ],
+                    ),
+                  );
+                },
+              ),
             ),
-          );
+    );
   }
 }

@@ -114,17 +114,19 @@ class _TasksPageState extends State<TasksPage>
               ),
               // month
               SingleChildScrollView(
-                child: Column(children: [
-                  AdvancedCalendar(
-                    controller: taskController.calendarController,
-                    events: taskController.events,
-                    taskController: taskController,
-                  ),
-                  TaskListWidget(
-                    taskSortController: taskSortControllerMonth,
-                    taskController: taskController,
-                  ),
-                ]),
+                child: Column(
+                  children: [
+                    AdvancedCalendar(
+                      controller: taskController.calendarController,
+                      events: taskController.events,
+                      taskController: taskController,
+                    ),
+                    TaskListWidget(
+                      taskSortController: taskSortControllerMonth,
+                      taskController: taskController,
+                    ),
+                  ],
+                ),
               )
             ],
           ),
