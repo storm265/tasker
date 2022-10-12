@@ -52,7 +52,7 @@ class TaskListWidget extends StatelessWidget {
                       ),
                     ),
                     subtitle: Text(
-                      '${cardLength[i]}  ${cardLength[i] > 4 ? LocaleKeys.task.tr() : LocaleKeys.tasks.tr()}',
+                      '${cardLength[i]} ${cardLength[i] > 1 ? LocaleKeys.tasks.tr() : LocaleKeys.task.tr()}',
                       style: const TextStyle(
                         fontStyle: FontStyle.normal,
                         color: Colors.white,

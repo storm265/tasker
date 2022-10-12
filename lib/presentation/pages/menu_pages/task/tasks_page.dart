@@ -34,6 +34,7 @@ class _TasksPageState extends State<TasksPage>
   @override
   void initState() {
     taskController.getAccessHeader();
+    taskController.getUserId();
     taskController.generateCalendarEvents();
     taskController.fetchTasks().then((_) => setState(() {}));
     super.initState();
@@ -106,28 +107,24 @@ class _TasksPageState extends State<TasksPage>
             physics: const NeverScrollableScrollPhysics(),
             controller: _tabController,
             children: [
-              // today
               TaskListWidget(
                 taskSortController: taskSortControllerToday,
                 taskController: taskController,
                 isTodayMode: true,
               ),
-              // month
-              SingleChildScrollView(
-                child: Column(
-                  children: [
-                    AdvancedCalendar(
-                      controller: taskController.calendarController,
-                      events: taskController.events,
-                      taskController: taskController,
-                    ),
-                    TaskListWidget(
-                      taskSortController: taskSortControllerMonth,
-                      taskController: taskController,
-                    ),
-                  ],
-                ),
-              )
+              ListView(
+                children: [
+                  AdvancedCalendar(
+                    controller: taskController.calendarController,
+                    events: taskController.events,
+                    taskController: taskController,
+                  ),
+                  TaskListWidget(
+                    taskSortController: taskSortControllerMonth,
+                    taskController: taskController,
+                  ),
+                ],
+              ),
             ],
           ),
         ),

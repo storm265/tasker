@@ -5,6 +5,7 @@ import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/access_token_mixin.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/delete_task_mixin.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/calendar_lib/controller.dart';
+import 'package:todo2/storage/secure_storage_service.dart';
 
 enum TaskSortMode {
   incomplete,
@@ -14,13 +15,14 @@ enum TaskSortMode {
 
 class TaskListController extends ChangeNotifier
     with AccessTokenMixin, DeleteTaskMixin {
-  final TaskRepository _taskRepository;
+  final TaskRepositoryImpl taskRepository;
+  final secureStorage = SecureStorageSource();
+  TaskListController({
+    required this.taskRepository,
+  });
+  String userId = '';
 
   final calendarController = AdvancedCalendarController.today();
-
-  TaskListController({
-    required TaskRepository taskRepository,
-  }) : _taskRepository = taskRepository;
 
   final isTuneIconActive = ValueNotifier(true);
 
@@ -45,6 +47,10 @@ class TaskListController extends ChangeNotifier
   void changeTuneIconStatus(bool isMonthMode) {
     isTuneIconActive.value = isMonthMode;
     isTuneIconActive.notifyListeners();
+  }
+
+  void getUserId() async {
+    userId = await secureStorage.getUserData(type: StorageDataType.id) ?? '';
   }
 
   void generateCalendarEvents() {
@@ -73,11 +79,11 @@ class TaskListController extends ChangeNotifier
   }
 
   Future<List<TaskModel>> fetchUserTasks() async =>
-      await _taskRepository.fetchUserTasks();
+      await taskRepository.fetchUserTasks();
 
   Future<List<TaskModel>> fetchAssignedToTasks() async =>
-      await _taskRepository.fetchAssignedToTasks();
+      await taskRepository.fetchAssignedToTasks();
 
   Future<List<TaskModel>> fetchParticipateInTasks() async =>
-      await _taskRepository.fetchParticipateInTasks();
+      await taskRepository.fetchParticipateInTasks();
 }
