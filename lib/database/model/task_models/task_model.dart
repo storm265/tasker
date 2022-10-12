@@ -50,4 +50,31 @@ class TaskModel {
                 .map((e) => UserProfileModel.fromJson(e))
                 .toList(),
       );
+
+  TaskModel copyWith({
+    String? id,
+    String? title,
+    DateTime? dueDate,
+    String? description,
+    String? assignedTo,
+    bool? isCompleted,
+    String? projectId,
+    String? ownerId,
+    DateTime? createdAt,
+    List<TaskAttachmentModel>? attachments,
+    List<UserProfileModel>? members,
+  }) =>
+      TaskModel(
+        id: id ?? this.id,
+        title: title ?? this.title,
+        dueDate: dueDate ?? this.dueDate,
+        description: description ?? this.description,
+        assignedTo: assignedTo ?? this.assignedTo,
+        isCompleted: isCompleted ?? this.isCompleted,
+        projectId: projectId ?? this.projectId,
+        ownerId: ownerId ?? this.ownerId,
+        createdAt: createdAt ?? this.createdAt,
+        attachments: attachments ?? this.attachments,
+        members: members ?? this.members,
+      );
 }

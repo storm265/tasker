@@ -1,14 +1,17 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/tasks_controller.dart';
 
-void showTasksFilterDialog(BuildContext context) async {
+void showTasksFilterDialog({
+  required BuildContext context,
+  required TaskListController taskController,
+}) async {
   final List<String> items = [
     LocaleKeys.incomplete_tasks.tr(),
     LocaleKeys.completed_tasks.tr(),
     LocaleKeys.all_tasks.tr(),
   ];
-  int selectedIndex = 99;
   await showDialog(
       barrierColor: Colors.black26,
       context: context,
@@ -28,8 +31,9 @@ void showTasksFilterDialog(BuildContext context) async {
             content: SizedBox(
               width: 230,
               height: 130,
-              child: StatefulBuilder(
-                builder: (context, setState) => ListView.builder(
+              child: ValueListenableBuilder<TaskSortMode>(
+                valueListenable: taskController.tuneIconStatus,
+                builder: (_, value, __) => ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   scrollDirection: Axis.vertical,
                   itemCount: 3,
@@ -37,7 +41,9 @@ void showTasksFilterDialog(BuildContext context) async {
                   itemBuilder: ((_, index) {
                     return GestureDetector(
                       onTap: () async {
-                        setState(() => selectedIndex = index);
+                        // setState(() => selectedIndex = index);
+                        taskController.changeTuneIconValue(index);
+
                         await Future.delayed(const Duration(milliseconds: 500))
                             .then((_) => Navigator.pop(context));
                       },
@@ -60,7 +66,7 @@ void showTasksFilterDialog(BuildContext context) async {
                           const SizedBox(width: 20),
                           Icon(
                             Icons.done,
-                            color: selectedIndex == index
+                            color: value.index == index
                                 ? Colors.green
                                 : Colors.transparent,
                           ),
