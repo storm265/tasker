@@ -10,13 +10,11 @@ import 'package:todo2/services/theme_service/theme_data_controller.dart';
 final timeNow = DateTime.now();
 
 class TaskCardWidget extends StatelessWidget {
-  final int index;
-  final List<TaskModel> data;
+  final TaskModel model;
   final TaskListController taskController;
   const TaskCardWidget({
     Key? key,
-    required this.data,
-    required this.index,
+    required this.model,
     required this.taskController,
   }) : super(key: key);
 
@@ -34,14 +32,14 @@ class TaskCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final date = data[index].dueDate;
+    final date = model.dueDate;
     String isAm = (date.hour > 12) ? 'pm' : 'am';
     return GestureDetector(
       onTap: () async {
         await showDialog(
           context: context,
           builder: (_) => ViewTask(
-            pickedTask: data[index],
+            pickedTask: model,
           ),
         );
       },
@@ -69,14 +67,14 @@ class TaskCardWidget extends StatelessWidget {
                   width: 4,
                   height: 25,
                   child: ColoredBox(
-                    color: data[index].isCompleted
+                    color: model.isCompleted
                         ? Colors.red
                         : getAppColor(color: CategoryColor.blue),
                   ),
                 ),
               ),
               ListTile(
-                leading: data[index].isCompleted
+                leading: model.isCompleted
                     ? const Padding(
                         padding: EdgeInsets.all(8.0),
                         child: Icon(Icons.check_circle, color: Palette.red),
@@ -93,15 +91,14 @@ class TaskCardWidget extends StatelessWidget {
                 title: Padding(
                   padding: const EdgeInsets.only(right: 20),
                   child: Text(
-                    data[index].title,
+                    model.title,
                     style: TextStyle(
                       overflow: TextOverflow.ellipsis,
-                      decoration: data[index].isCompleted
-                          ? TextDecoration.lineThrough
-                          : null,
+                      decoration:
+                          model.isCompleted ? TextDecoration.lineThrough : null,
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
-                      color: data[index].isCompleted ? Colors.grey : null,
+                      color: model.isCompleted ? Colors.grey : null,
                     ),
                   ),
                 ),
@@ -109,9 +106,8 @@ class TaskCardWidget extends StatelessWidget {
                   '${date.hour}:${date.minute} $isAm',
                   style: TextStyle(
                     overflow: TextOverflow.ellipsis,
-                    decoration: data[index].isCompleted
-                        ? TextDecoration.lineThrough
-                        : null,
+                    decoration:
+                        model.isCompleted ? TextDecoration.lineThrough : null,
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                     color: Colors.grey,

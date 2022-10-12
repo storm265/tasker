@@ -5,3 +5,4 @@ mixin DeleteTaskMixin {
   Future<void> deleteTask({required String taskId}) async =>
       await taskRepository.deleteTask(taskId: taskId);
 }
+

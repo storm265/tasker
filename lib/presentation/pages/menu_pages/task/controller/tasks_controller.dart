@@ -21,12 +21,14 @@ class TaskListController extends ChangeNotifier
     isTuneIconActive.notifyListeners();
   }
 
+  void generateCalendarEvents() {
+    for (var element in tasks) {
+      events.add(element.dueDate);
+    }
+  }
+
   final List<DateTime> events = [
-    DateTime.utc(2022, 09, 19, 12),
-    DateTime.utc(2022, 09, 20, 12),
-    DateTime.utc(2022, 09, 21, 12),
-    DateTime.utc(2022, 09, 22, 12),
-    DateTime.utc(2022, 09, 23, 12),
+ 
   ];
 
   List<TaskModel> tasks = [];
@@ -54,4 +56,8 @@ class TaskListController extends ChangeNotifier
 
   Future<List<TaskModel>> fetchParticipateInTasks() async =>
       await _taskRepository.fetchParticipateInTasks();
+
+
+
+      
 }

@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/database/repository/task_repository.dart';
@@ -9,8 +10,12 @@ import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/tasks_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/dialogs/tasks_filter_dialog.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/calendar_lib/widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/list/list_widget.dart';
+
+import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/list/task_item_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/list/today_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/tabs/bottom_tabs.dart';
+import 'package:todo2/presentation/widgets/common/slidable_widgets/endpane_widget.dart';
+import 'package:todo2/presentation/widgets/common/slidable_widgets/grey_slidable_widget.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapp.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 import 'package:todo2/utils/assets_path.dart';
@@ -32,6 +37,7 @@ class _TasksPageState extends State<TasksPage>
   void initState() {
     log('initState tasks');
     taskController.getAccessHeader();
+    taskController.generateCalendarEvents();
     taskController.fetchTasks().then((_) => setState(() {}));
     super.initState();
   }
@@ -45,6 +51,8 @@ class _TasksPageState extends State<TasksPage>
 
   @override
   Widget build(BuildContext context) {
+    generateHeader();
+
     return WillPopWrap(
       child: Scaffold(
         backgroundColor: const Color(0xffFDFDFD),
@@ -107,19 +115,52 @@ class _TasksPageState extends State<TasksPage>
                       // TRANSLATE
                       child: Text('No tasks'),
                     )
-                  : Column(
-                      children: [
-                        ListWidget(
-                          taskController: taskController,
-                          modelList: taskController.tasks,
-                          isToday: true,
-                        ),
-                        ListWidget(
-                          taskController: taskController,
-                          modelList: taskController.tasks,
-                          isToday: false,
-                        ),
-                      ],
+                  : ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: getDaysLength(isTodayMode: true),
+                      shrinkWrap: true,
+                      itemBuilder: (_, i) {
+                        final sortedList = sorter(taskController.tasks, i);
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              HeaderWidget(text: headers[i]),
+                              ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: sortedList.length,
+                                itemBuilder: (_, index) => Slidable(
+                                  key: const ValueKey(0),
+                                  endActionPane: ActionPane(
+                                    motion: const ScrollMotion(),
+                                    children: [
+                                      EndPageWidget(
+                                        iconPath: AssetsPath.editIconPath,
+                                        onClick: () {
+                                          // TODO implement edit function
+                                        },
+                                      ),
+                                      const GreySlidableWidget(),
+                                      EndPageWidget(
+                                        iconPath: AssetsPath.deleteIconPath,
+                                        onClick: () async =>
+                                            await taskController.deleteTask(
+                                          taskId: sortedList[index].projectId,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  child: TaskCardWidget(
+                                    taskController: taskController,
+                                    model: sortedList[index],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
                     ),
               // month
               SingleChildScrollView(
@@ -136,14 +177,52 @@ class _TasksPageState extends State<TasksPage>
                         )
                       : ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),
-                          itemCount: getDaysLenInMonth(),
+                          itemCount: getDaysLength(isTodayMode: false),
                           shrinkWrap: true,
-                          itemBuilder: (_, i) => ListWidget(
-                            
-                            taskController: taskController,
-                            modelList: taskController.tasks,
-                            isToday: true,
-                          ),
+                          itemBuilder: (_, i) {
+                            final sortedList = sorter(taskController.tasks, i);
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
+                                  HeaderWidget(text: headers[i]),
+                                  ListView.builder(
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: sortedList.length,
+                                    itemBuilder: (_, index) => Slidable(
+                                      key: const ValueKey(0),
+                                      endActionPane: ActionPane(
+                                        motion: const ScrollMotion(),
+                                        children: [
+                                          EndPageWidget(
+                                            iconPath: AssetsPath.editIconPath,
+                                            onClick: () {
+                                              // TODO implement edit function
+                                            },
+                                          ),
+                                          const GreySlidableWidget(),
+                                          EndPageWidget(
+                                            iconPath: AssetsPath.deleteIconPath,
+                                            onClick: () async =>
+                                                await taskController.deleteTask(
+                                              taskId:
+                                                  sortedList[index].projectId,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      child: TaskCardWidget(
+                                        taskController: taskController,
+                                        model: sortedList[index],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
                         ),
                 ]),
               )
@@ -155,24 +234,76 @@ class _TasksPageState extends State<TasksPage>
   }
 }
 
-int getDaysLenInMonth() {
-  final now = DateTime.now();
-  DateTime x1 = now.toUtc();
-  return DateTime(now.year, now.month + 1, 0).toUtc().difference(x1).inDays;
+final now = DateTime.now();
+final formatter = DateFormat('yyyy-MM-dd');
+
+List<TaskModel> sorter(List<TaskModel> tasks, int index) {
+  List<TaskModel> sortedList = [];
+  if (index == 0) {
+    sortedList = tasks
+        .where(
+          (element) =>
+              formatter.format(element.dueDate) ==
+              formatter.format(
+                DateTime.utc(now.year, now.month, now.day),
+              ),
+        )
+        .toList();
+    sortedList.sort((a, b) => a.dueDate.compareTo(b.dueDate));
+  }
+  if (index == 1) {
+    sortedList = tasks
+        .where(
+          (element) =>
+              formatter.format(element.dueDate) ==
+              formatter.format(
+                DateTime.utc(now.year, now.month, now.day + 1),
+              ),
+        )
+        .toList();
+    sortedList.sort((a, b) => a.dueDate.compareTo(b.dueDate));
+  } else {
+    sortedList = tasks
+        .where(
+          (element) =>
+              formatter.format(element.dueDate) ==
+              formatter.format(
+                DateTime.utc(now.year, now.month, now.day + index),
+              ),
+        )
+        .toList();
+    sortedList.sort((a, b) => a.dueDate.compareTo(b.dueDate));
+  }
+  return sortedList;
 }
 
-enum TaskCategory {
-  today,
-  tomorrow,
-  next,
+// header generator
+
+List<String> headers = [];
+void generateHeader({bool isTodayMode = false}) {
+  for (var i = 0; i < getDaysLength(isTodayMode: isTodayMode); i++) {
+    if (i == 0) {
+      headers.add(
+          '${LocaleKeys.today.tr()} ${DateFormat('MMM').format(now)} ${now.day}/${now.year}');
+    }
+    if (i == 1) {
+      headers.add(
+          '${LocaleKeys.tomorrow.tr()}  ${DateFormat('MMM').format(now)} ${now.day + 1}/${now.year}');
+    }
+    if (i > 1) {
+      headers
+          .add('${DateFormat('MMM').format(now)} ${now.day + i}/${now.year}');
+    }
+  }
 }
 
-class Task {
-  TaskModel model;
-  TaskCategory category;
-
-  Task(
-    this.category,
-    this.model,
-  );
+int getDaysLength({bool isTodayMode = false}) {
+  if (isTodayMode) {
+    return 2;
+  } else {
+    final now = DateTime.now();
+    DateTime x1 = now.toUtc();
+    return DateTime(now.year, now.month + 1, 0).toUtc().difference(x1).inDays +
+        2;
+  }
 }
