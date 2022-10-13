@@ -9,7 +9,7 @@ class TaskSortController {
   List<TaskModel> sortedList = [];
   List<String> headers = [];
 
-  void generateHeader({bool isTodayMode = false}) {
+  void generateCalendarHeader({bool isTodayMode = false}) {
     for (var i = 0; i < getDaysLength(isTodayMode: isTodayMode); i++) {
       if (i == 0) {
         headers.add(

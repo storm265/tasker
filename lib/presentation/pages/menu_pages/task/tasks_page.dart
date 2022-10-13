@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -50,6 +52,11 @@ class _TasksPageState extends State<TasksPage>
   Widget build(BuildContext context) {
     return WillPopWrap(
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            await taskController.fetchAssignedToTasks();
+          },
+        ),
         backgroundColor: const Color(0xffFDFDFD),
         appBar: AppBar(
           systemOverlayStyle: const SystemUiOverlayStyle(

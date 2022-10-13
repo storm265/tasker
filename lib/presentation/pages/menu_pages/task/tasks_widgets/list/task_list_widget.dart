@@ -9,6 +9,7 @@ import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/list/toda
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 import 'package:todo2/presentation/widgets/common/slidable_widgets/endpane_widget.dart';
 import 'package:todo2/presentation/widgets/common/slidable_widgets/grey_slidable_widget.dart';
+import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/utils/assets_path.dart';
 
 class TaskListWidget extends StatefulWidget {
@@ -29,7 +30,7 @@ class TaskListWidget extends StatefulWidget {
 class _TaskListWidgetState extends State<TaskListWidget> {
   @override
   void initState() {
-    widget.taskSortController.generateHeader();
+    widget.taskSortController.generateCalendarHeader();
     super.initState();
   }
 
@@ -57,51 +58,60 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                   index: i,
                   taskSortMode: sortMode,
                 );
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      HeaderWidget(text: widget.taskSortController.headers[i]),
-                      ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: sortedList.length,
-                        itemBuilder: (_, index) => Slidable(
-                          key: const ValueKey(0),
-                          endActionPane: ActionPane(
-                            motion: const ScrollMotion(),
-                            children: sortedList[index].ownerId ==
-                                    widget.taskController.userId
-                                ? [
-                                    EndPageWidget(
-                                      iconPath: AssetsPath.editIconPath,
-                                      onClick: () {
-                                        // TODO implement edit function
-                                      },
-                                    ),
-                                    const GreySlidableWidget(),
-                                    EndPageWidget(
-                                      iconPath: AssetsPath.deleteIconPath,
-                                      onClick: () async => await widget
-                                          .taskController
-                                          .deleteTask(
-                                        taskRepository: widget
-                                            .taskController.taskRepository,
-                                        taskId: sortedList[index].projectId,
-                                      ),
-                                    ),
-                                  ]
-                                : [],
-                          ),
-                          child: TaskCardWidget(
-                            taskController: widget.taskController,
-                            model: sortedList[index],
-                          ),
+                return sortedList.isEmpty
+                    ? const SizedBox()
+                    : Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            HeaderWidget(
+                                text: widget.taskSortController.headers[i]),
+                            ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: sortedList.length,
+                              itemBuilder: (_, index) => Slidable(
+                                key: const ValueKey(0),
+                                endActionPane: ActionPane(
+                                  motion: const ScrollMotion(),
+                                  children: sortedList[index].ownerId ==
+                                          widget.taskController.userId
+                                      ? [
+                                          EndPageWidget(
+                                            iconPath: AssetsPath.editIconPath,
+                                            onClick: () async =>
+                                                Navigator.pushNamed(
+                                              context,
+                                              Pages.addTask.type,
+                                              arguments:
+                                                  sortedList[index].toMap(),
+                                            ),
+                                          ),
+                                          const GreySlidableWidget(),
+                                          EndPageWidget(
+                                            iconPath: AssetsPath.deleteIconPath,
+                                            onClick: () async => await widget
+                                                .taskController
+                                                .deleteTask(
+                                              taskRepository: widget
+                                                  .taskController
+                                                  .taskRepository,
+                                              taskId:
+                                                  sortedList[index].projectId,
+                                            ),
+                                          ),
+                                        ]
+                                      : [],
+                                ),
+                                child: TaskCardWidget(
+                                  taskController: widget.taskController,
+                                  model: sortedList[index],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
-                  ),
-                );
+                      );
               },
             ),
           );

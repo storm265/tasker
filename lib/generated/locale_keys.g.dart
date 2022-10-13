@@ -31,7 +31,6 @@ abstract class  LocaleKeys {
   static const tomorrow = 'tomorrow';
   static const month = 'month';
   static const my_tasks = 'my_tasks';
-  static const new_task = 'new_task';
   static const menu = 'menu';
   static const quick = 'quick';
   static const profile = 'profile';
@@ -46,6 +45,8 @@ abstract class  LocaleKeys {
   static const delete_project = 'delete_project';
   static const update_project = 'update_project';
   static const add_project = 'add_project';
+  static const new_task = 'new_task';
+  static const update_task = 'update_task';
   static const forr = 'forr';
   static const In = 'In';
   static const title = 'title';
@@ -60,8 +61,9 @@ abstract class  LocaleKeys {
   static const assigned_to = 'assigned_to';
   static const members = 'members';
   static const tag = 'tag';
-  static const complete_task = 'complete_task';
   static const comments = 'comments';
+  static const complete_task = 'complete_task';
+  static const comment = 'comment';
   static const write_a_comment = 'write_a_comment';
   static const days_ago = 'days_ago';
   static const day_ago = 'day_ago';

@@ -52,10 +52,7 @@ abstract class TaskRepository<T> {
     required String taskId,
     required bool isFile,
   });
-  Future<List<CommentModel>> fetchTaskComments({
-    required String taskId,
-    required String content,
-  });
+  Future<List<CommentModel>> fetchTaskComments({required String taskId});
 
   Future<List<UserProfileModel>> taskMemberSearch({required String nickname});
 
@@ -155,8 +152,11 @@ class TaskRepositoryImpl implements TaskRepository {
   Future<List<TaskModel>> fetchUserTasks() async {
     try {
       final response = await _taskDataSource.fetchUserTasks();
-
-      return response.map((json) => TaskModel.fromJson(json)).toList();
+      if (response.isEmpty) {
+        return [];
+      } else {
+        return response.map((json) => TaskModel.fromJson(json)).toList();
+      }
     } catch (e, t) {
       log('repo $t');
       throw Failure(e.toString());
@@ -167,7 +167,12 @@ class TaskRepositoryImpl implements TaskRepository {
   Future<List<TaskModel>> fetchAssignedToTasks() async {
     try {
       final response = await _taskDataSource.fetchAssignedToTasks();
-      return response.map((json) => TaskModel.fromJson(json)).toList();
+      log('is empty ${response.isEmpty}');
+      if (response.isEmpty) {
+        return [];
+      } else {
+        return response.map((json) => TaskModel.fromJson(json)).toList();
+      }
     } catch (e) {
       throw Failure(e.toString());
     }
@@ -177,7 +182,11 @@ class TaskRepositoryImpl implements TaskRepository {
   Future<List<TaskModel>> fetchParticipateInTasks() async {
     try {
       final response = await _taskDataSource.fetchParticipateInTasks();
-      return response.map((json) => TaskModel.fromJson(json)).toList();
+      if (response.isEmpty) {
+        return [];
+      } else {
+        return response.map((json) => TaskModel.fromJson(json)).toList();
+      }
     } catch (e) {
       throw Failure(e.toString());
     }
@@ -218,10 +227,7 @@ class TaskRepositoryImpl implements TaskRepository {
   }
 
   @override
-  Future<List<CommentModel>> fetchTaskComments({
-    required String taskId,
-    required String content,
-  }) async {
+  Future<List<CommentModel>> fetchTaskComments({required String taskId}) async {
     try {
       final response = await _taskDataSource.fetchTaskComments(
         taskId: taskId,

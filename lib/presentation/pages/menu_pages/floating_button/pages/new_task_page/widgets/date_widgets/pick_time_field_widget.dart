@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
@@ -19,6 +21,7 @@ class PickTimeFieldWidget extends StatefulWidget {
 }
 
 class _PickTimeFieldWidgetState extends State<PickTimeFieldWidget> {
+  final dueDateFormatter = DateFormat('dd/MM/yyyy');
   @override
   Widget build(BuildContext context) {
     return UnfocusWidget(
@@ -39,28 +42,26 @@ class _PickTimeFieldWidgetState extends State<PickTimeFieldWidget> {
                   width: 110,
                   height: 35,
                   child: ValueListenableBuilder<DateTime>(
-                      valueListenable: widget.addEditTaskController.pickedDate,
-                      builder: (context, time, _) {
+                      valueListenable:
+                          widget.addEditTaskController.calendarController,
+                      builder: (__, time, _) {
+                        log('time picked $time');
                         return ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               backgroundColor:
                                   getAppColor(color: CategoryColor.blue)),
-                          onPressed: () async => await showCalendarDatePicker(
-                            context: context,
-                            taskController: widget.addEditTaskController,
-                          ).then((_) => setState(() {})),
+                          onPressed: () async {
+                            await showCalendarDatePicker(
+                              context: context,
+                              taskController: widget.addEditTaskController,
+                            );
+                          },
                           child: Text(
                             maxLines: null,
-                            widget.addEditTaskController.taskValidator
-                                        .isValidPickedDate(
-                                      widget.addEditTaskController.pickedDate
-                                          .value,
-                                      context,
-                                      false,
-                                    ) ==
-                                    true
-                                ? '${time.day}/${time.month}/${time.year}'
-                                : LocaleKeys.anytime.tr(),
+                            dueDateFormatter.format(time) ==
+                                    dueDateFormatter.format(DateTime.now())
+                                ? LocaleKeys.anytime.tr()
+                                : dueDateFormatter.format(time),
                           ),
                         );
                       }),

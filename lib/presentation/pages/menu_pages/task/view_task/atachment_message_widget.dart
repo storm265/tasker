@@ -23,11 +23,12 @@ class _AttachementWidgetState extends State<AttachementWidget> {
           : widget.pickedModel.attachments?.length,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
-      itemBuilder: (context, index) {
+      itemBuilder: (_, index) {
         int daysAgo = DateTime.now()
             .difference(widget.pickedModel.attachments![index].createdAt)
             .inDays;
         return Column(
+          // TODO fetch some shit
           children: [
             ListTile(
               contentPadding: EdgeInsets.zero,

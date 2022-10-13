@@ -27,8 +27,8 @@ abstract class ProjectUserData {
   });
 
   Future<List<dynamic>> searchProject({required String title});
-
-  // Future<Map<String, dynamic>> fetchOneProject();
+  
+  Future<Map<String, dynamic>> fetchOneProject({required String projectId});
 
   Future<List<dynamic>> fetchAllProjects();
 
@@ -175,22 +175,20 @@ class ProjectUserDataImpl implements ProjectUserData {
     }
   }
 
-  // @override
-  // Future<Map<String, dynamic>> fetchOneProject() async {
-  //   try {
-  //     final id =
-  //         await _secureStorageService.getUserData(type: StorageDataType.id);
-  //     final response = await _network.dio.get(
-  //       '$_projects/$id',
-  //       options: await _network.getLocalRequestOptions(),
-  //     );
-  //     return NetworkErrorService.isSuccessful(response)
-  //         ? (response.data[ProjectDataScheme.data] as Map<String, dynamic>)
-  //         : throw Failure(
-  //             'Error: ${response.data[ProjectDataScheme.data][ProjectDataScheme.message]}');
-  //   } catch (e) {
-  //     debugPrint('fetchOneProject datasource  $e');
-  //     throw Failure(e.toString());
-  //   }
-  // }
+  @override
+  Future<Map<String, dynamic>> fetchOneProject(
+      {required String projectId}) async {
+    try {
+      final response = await _network.get(
+        path: '$_projects/$projectId',
+        options: await _network.getLocalRequestOptions(),
+      );
+      return NetworkErrorService.isSuccessful(response)
+          ? (response.data[ProjectDataScheme.data] as Map<String, dynamic>)
+          : throw Failure(
+              'Error: ${response.data[ProjectDataScheme.data][ProjectDataScheme.message]}');
+    } catch (e) {
+      throw Failure(e.toString());
+    }
+  }
 }

@@ -1,23 +1,24 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
-import 'package:todo2/storage/secure_storage_service.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/tasks_controller.dart';
+import 'package:todo2/services/message_service/message_service.dart';
+import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 Future<void> showDetailedOptions({
+  required TaskListController taskListController,
   required BuildContext context,
   required TaskModel selectedTask,
 }) async {
-  final secureStorage = SecureStorageSource();
   final List<String> items = [
     LocaleKeys.add_member.tr(),
     LocaleKeys.edit_task.tr(),
     LocaleKeys.delete_task.tr(),
   ];
-  bool isSameId(String storageId) => storageId == selectedTask.ownerId;
+
   await showDialog(
     barrierColor: Colors.black26,
     context: context,
@@ -25,9 +26,9 @@ Future<void> showDetailedOptions({
       alignment: Alignment.topRight,
       child: Padding(
         padding: const EdgeInsets.only(
-          left: 140,
-          right: 40,
-          top: 75,
+          left: 150,
+          right: 30,
+          top: 70,
         ),
         child: AlertDialog(
           insetPadding: EdgeInsets.zero,
@@ -41,19 +42,34 @@ Future<void> showDetailedOptions({
             itemBuilder: ((_, i) {
               return InkWell(
                 onTap: () async {
-                  final id =
-                      await secureStorage.getUserData(type: StorageDataType.id);
                   switch (i) {
                     case 0:
-                      if (isSameId(id!)) {
-                        log('shish');
-                      }
+                      Navigator.pop(context);
                       Navigator.pop(context);
                       break;
                     case 1:
                       Navigator.pop(context);
+                      Navigator.pop(context);
+                      await Navigator.pushNamed(
+                        context,
+                        Pages.addTask.type,
+                        arguments: selectedTask.toMap(),
+                      );
+
                       break;
                     case 2:
+                      await taskListController
+                          .deleteTask(
+                            taskId: selectedTask.id,
+                            taskRepository: taskListController.taskRepository,
+                          )
+                          .then(
+                            (_) => MessageService.displaySnackbar(
+                              context: context,
+                              message: LocaleKeys.deleted.tr(),
+                            ),
+                          );
+                      Navigator.pop(context);
                       Navigator.pop(context);
                       break;
                   }

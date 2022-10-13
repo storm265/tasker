@@ -32,7 +32,8 @@ class TaskModel {
   factory TaskModel.fromJson(Map<String, dynamic> json) => TaskModel(
         id: json[TaskScheme.id],
         title: json[TaskScheme.title],
-        dueDate: DateTime.parse(json[TaskScheme.dueDate]),
+        dueDate: DateTime.parse(json[TaskScheme.dueDate] ??
+            "${DateTime.now().year + 30}-06-21T23:56:02.394631"),
         description: json[TaskScheme.description],
         assignedTo: json[TaskScheme.assignedTo],
         isCompleted: json[TaskScheme.isCompleted],
@@ -77,4 +78,20 @@ class TaskModel {
         attachments: attachments ?? this.attachments,
         members: members ?? this.members,
       );
+
+  Map<String, dynamic> toMap() {
+    return {
+      TaskScheme.id: id,
+      TaskScheme.title: title,
+      TaskScheme.dueDate: dueDate,
+      TaskScheme.description: description,
+      TaskScheme.assignedTo: assignedTo,
+      TaskScheme.isCompleted: isCompleted,
+      TaskScheme.projectId: projectId,
+      TaskScheme.ownerId: ownerId,
+      TaskScheme.createdAt: createdAt,
+      TaskScheme.attachments: attachments,
+      TaskScheme.members: members,
+    };
+  }
 }

@@ -18,7 +18,7 @@ class UserPanelPickerWidget extends StatelessWidget {
     return FutureBuilder<List<UserProfileModel>>(
       initialData: const [],
       future: addEditTaskController.taskMemberSearch(
-        userName: addEditTaskController.memberTextController.text,
+        userName: addEditTaskController.userTextController.text,
       ),
       builder: (context, AsyncSnapshot<List<UserProfileModel>> snapshot) {
         log('data  : ${snapshot.data}');

@@ -21,7 +21,7 @@ class NavigationController extends ChangeNotifier {
     const MenuPage(),
     const QuickPage(),
     const ProfilePage(),
-    const AddTaskPage(),
+    const AddEditTaskPage(),
     const AddQuickNote(),
     const CheckListPage(),
   ];

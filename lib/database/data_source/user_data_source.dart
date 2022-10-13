@@ -19,6 +19,7 @@ abstract class UserProfileDataSource {
     required String name,
     required File file,
   });
+  Future<Map<String, dynamic>> fetchUser({required String id});
 }
 
 class UserProfileDataSourceImpl implements UserProfileDataSource {
@@ -41,10 +42,25 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
     required String accessToken,
   }) async {
     try {
-     
       final response = await _network.get(
         path: '$_userPath/$id',
         options: _network.getRequestOptions(accessToken: accessToken),
+      );
+      return NetworkErrorService.isSuccessful(response)
+          ? response.data[UserDataScheme.data] as Map<String, dynamic>
+          : throw Failure(
+              'Error: ${response.data[UserDataScheme.data][UserDataScheme.message]}');
+    } catch (e) {
+      throw Failure(e.toString());
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> fetchUser({required String id}) async {
+    try {
+      final response = await _network.get(
+        path: '$_userPath/$id',
+        options: await _network.getLocalRequestOptions(),
       );
       return NetworkErrorService.isSuccessful(response)
           ? response.data[UserDataScheme.data] as Map<String, dynamic>

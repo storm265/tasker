@@ -43,7 +43,6 @@ class DescriptionTextField extends StatelessWidget {
                   )
                 : null,
         keyboardType: TextInputType.multiline,
-        maxLines: null,
         decoration: InputDecoration(
           border: InputBorder.none,
           hintText: hintText,

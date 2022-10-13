@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
+import 'package:todo2/database/model/task_models/comment_model.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/attachments_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/member_provider.dart';
@@ -11,6 +12,8 @@ import 'package:todo2/presentation/pages/menu_pages/task/controller/access_token
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/calendar_lib/controller.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
+
+final _now = DateTime.now();
 
 abstract class BaseTasksController extends ChangeNotifier
     with AccessTokenMixin {
@@ -33,13 +36,12 @@ abstract class BaseTasksController extends ChangeNotifier
 
   final formKey = GlobalKey<FormState>();
 
-  final calendarController = AdvancedCalendarController.today();
+  final AdvancedCalendarController calendarController =
+      AdvancedCalendarController.today();
 
-  final pickedDate = AdvancedCalendarController.today();
-
+// TODO remove text
   final userTextController = TextEditingController(text: 'Assignee');
   final projectTextController = TextEditingController(text: 'Project');
-
 
   final memberTextController = TextEditingController();
   final titleTextController = TextEditingController();
@@ -91,6 +93,21 @@ abstract class BaseTasksController extends ChangeNotifier
     panelProvider.changePanelStatus(newStatus: PanelStatus.hide);
   }
 
-  Future<List<UserProfileModel>> taskMemberSearch({required String userName}) async =>
+  Future<List<UserProfileModel>> taskMemberSearch(
+          {required String userName}) async =>
       await taskRepository.taskMemberSearch(nickname: userName);
+
+  Future<List<CommentModel>> fetchComments({required String taskId}) async {
+    return await taskRepository.fetchTaskComments(taskId: taskId);
+  }
+
+  Future<void> createTaskComment({
+    required String content,
+    required String taskId,
+  }) async {
+    return await taskRepository.createTaskComment(
+      taskId: taskId,
+      content: content,
+    );
+  }
 }

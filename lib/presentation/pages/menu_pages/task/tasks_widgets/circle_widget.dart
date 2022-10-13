@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 
 class CirclePainter extends CustomPainter {
-  Color circleColor=getAppColor(color: CategoryColor.blue);
+  Color circleColor = getAppColor(color: CategoryColor.blue);
   CirclePainter({required this.circleColor});
 
   @override

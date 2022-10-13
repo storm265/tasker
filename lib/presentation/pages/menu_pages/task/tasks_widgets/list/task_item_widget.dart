@@ -33,12 +33,12 @@ class TaskCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final date = model.dueDate;
-    String isAm = (date.hour > 12) ? 'pm' : 'am';
     return GestureDetector(
       onTap: () async {
         await showDialog(
           context: context,
           builder: (_) => ViewTask(
+            taskListController: taskController,
             pickedTask: model,
           ),
         );
@@ -103,7 +103,7 @@ class TaskCardWidget extends StatelessWidget {
                   ),
                 ),
                 subtitle: Text(
-                  '${date.hour}:${date.minute} $isAm',
+                  DateFormat.jm().format(date).toLowerCase(),
                   style: TextStyle(
                     overflow: TextOverflow.ellipsis,
                     decoration:

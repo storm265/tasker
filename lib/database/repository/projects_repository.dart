@@ -5,7 +5,7 @@ import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 
 abstract class ProjectRepository {
-  // Future fetchOneProject();
+  Future<ProjectModel> fetchOneProject({required String projectId});
 
   Future<List<ProjectModel>> fetchAllProjects();
 
@@ -32,18 +32,13 @@ class ProjectRepositoryImpl implements ProjectRepository {
   ProjectRepositoryImpl({required ProjectUserDataImpl projectDataSource})
       : _projectDataSource = projectDataSource;
 
-  // @override
-  // Future<ProjectModel> fetchOneProject() async {
-  //   final response = await _projectDataSource.fetchOneProject();
-  //   //  return response.data[ProjectDataScheme.data];
-  //   return ProjectModel(
-  //     id: '',
-  //     color: Colors.red,
-  //     createdAt: DateTime.now(),
-  //     ownerId: '',
-  //     title: '',
-  //   );
-  // }
+  @override
+  Future<ProjectModel> fetchOneProject({required String projectId}) async {
+    final response =
+        await _projectDataSource.fetchOneProject(projectId: projectId);
+
+    return ProjectModel.fromJson(response);
+  }
 
   @override
   Future<List<ProjectModel>> fetchAllProjects() async {

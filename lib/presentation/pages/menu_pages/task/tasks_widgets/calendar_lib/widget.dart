@@ -150,7 +150,11 @@ class _AdvancedCalendarState extends State<AdvancedCalendar>
         widget.preloadWeekViewAmount,
         startWeekDay: widget.startWeekDay,
       );
-      _weekPageController!.jumpToPage(widget.preloadWeekViewAmount ~/ 2);
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (_weekPageController!.hasClients) {
+          _weekPageController!.jumpToPage(widget.preloadWeekViewAmount ~/ 2);
+        }
+      });
     });
     if (widget.startWeekDay != null && widget.startWeekDay! < 7) {
       final time = _controller.value.subtract(

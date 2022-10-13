@@ -18,6 +18,7 @@ abstract class UserProfileRepository {
     required String name,
     required File file,
   });
+  Future<UserProfileModel> fetchUser({required String id});
 }
 
 class UserProfileRepositoryImpl implements UserProfileRepository {
@@ -26,6 +27,17 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
   UserProfileRepositoryImpl(
       {required UserProfileDataSourceImpl userProfileDataSource})
       : _userProfileDataSource = userProfileDataSource;
+
+  @override
+  Future<UserProfileModel> fetchUser({required String id}) async {
+    try {
+      final response = await _userProfileDataSource.fetchUser(id: id);
+
+      return UserProfileModel.fromJson(response);
+    } catch (e) {
+      throw Failure(e.toString());
+    }
+  }
 
   @override
   Future<UserProfileModel> fetchCurrentUser({

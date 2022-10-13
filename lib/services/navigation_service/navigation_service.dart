@@ -44,7 +44,7 @@ Map<String, Widget Function(BuildContext)> routes = {
   Pages.menu.type: (_) => const MenuPage(),
   Pages.quick.type: (_) => const QuickPage(),
   Pages.profile.type: (_) => const ProfilePage(),
-  Pages.addTask.type: (_) => const AddTaskPage(),
+  Pages.addTask.type: (_) => const AddEditTaskPage(),
   Pages.addNote.type: (_) => const AddQuickNote(),
   Pages.addCheckList.type: (_) => const CheckListPage()
 };

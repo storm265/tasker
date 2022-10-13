@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:todo2/database/model/profile_models/users_profile_model.dart';
+import 'package:todo2/database/repository/projects_repository.dart';
+import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/base_tasks_controller.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 class AddEditTaskController extends BaseTasksController {
+  final UserProfileRepository _userRepository;
+  final ProjectRepository _projectRepository;
   AddEditTaskController({
+    required ProjectRepository projectRepository,
+    required UserProfileRepository userRepository,
     required super.taskValidator,
     required super.projectController,
     required super.attachmentsProvider,
@@ -12,7 +19,33 @@ class AddEditTaskController extends BaseTasksController {
     required super.panelProvider,
     required super.memberProvider,
     required super.taskRepository,
-  });
+  })  : _userRepository = userRepository,
+        _projectRepository = projectRepository;
+
+  bool isEditMode = false;
+
+  void getEditData({
+    required String assignedto,
+    required String projectId,
+    required List<UserProfileModel> members,
+  }) async {
+    // fetch user
+    final user = await _userRepository.fetchUser(
+      id: assignedto,
+    );
+    // picked user
+    pickedUser.value = user;
+    userTextController.text = user.username;
+    pickedUser.notifyListeners();
+
+    final project =
+        await _projectRepository.fetchOneProject(projectId: projectId);
+    pickedProject.value = project;
+    pickedProject.notifyListeners();
+    // pick members
+    projectTextController.text = project.title;
+    memberProvider.fillMembers(members);
+  }
 
   Future<void> createTask(BuildContext context) async {
     try {
@@ -33,11 +66,11 @@ class AddEditTaskController extends BaseTasksController {
               description: descriptionTextController.text,
               assignedTo: pickedUser.value?.id,
               projectId: pickedProject.value!.id,
-              dueDate: (pickedDate.value.day == DateTime.now().day ||
-                      pickedDate.value.day < DateTime.now().day)
+              dueDate: (calendarController.value.day == DateTime.now().day ||
+                      calendarController.value.day < DateTime.now().day)
                   ? null
                   : DateFormat("yyyy-MM-ddThh:mm:ss.ssssss")
-                      .format(pickedDate.value),
+                      .format(calendarController.value),
               members: members,
             );
         attachmentsProvider.hasAttachments()
@@ -81,11 +114,11 @@ class AddEditTaskController extends BaseTasksController {
               assignedTo: pickedUser.value?.id,
               projectId: pickedProject.value!.id,
               members: members,
-              dueDate: (pickedDate.value.day == DateTime.now().day ||
-                      pickedDate.value.day < DateTime.now().day)
+              dueDate: (calendarController.value.day == DateTime.now().day ||
+                      calendarController.value.day < DateTime.now().day)
                   ? null
                   : DateFormat("yyyy-MM-ddThh:mm:ss.ssssss")
-                      .format(pickedDate.value),
+                      .format(calendarController.value),
             );
         attachmentsProvider.hasAttachments()
             ? await attachmentsProvider.uploadTaskAttachment(taskId: model.id)

@@ -1,43 +1,39 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:todo2/services/error_service/error_service.dart';
+import 'package:intl/intl.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 
 // TRANSLATE
 class TaskValidator {
+  final now = DateTime.now();
+  final timeFormatter = DateFormat("MM");
   Future<bool> tryValidate({
     required BuildContext context,
     required GlobalKey<FormState> formKey,
   }) async {
-    try {
-      FocusScope.of(context).unfocus();
+    FocusScope.of(context).unfocus();
 
-      if (formKey.currentState!.validate()) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (e, t) {
-      log('trace $t');
-      throw Failure(e.toString());
+    if (formKey.currentState!.validate()) {
+      return true;
+    } else {
+      return false;
     }
   }
 
   bool isValidPickedDate(
-    DateTime time,
+    DateTime pickedDate,
     BuildContext context,
     bool useMessage,
   ) {
-    if (time.day == DateTime.now().day || time.day < DateTime.now().day) {
+    if (pickedDate.isAfter(now)) {
+      return true;
+    } else {
       useMessage
           ? MessageService.displaySnackbar(
-              context: context,
+              context: context, // TRANSLATE
               message: 'You cant pick date before now!',
             )
           : null;
       return false;
-    } else {
-      return true;
     }
   }
 }
