@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/projects_data_source.dart';
+import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/task_repository.dart';
+import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/controller/file_provider.dart';
 import 'package:todo2/presentation/pages/auth/widgets/unfocus_widget.dart';
@@ -41,6 +45,18 @@ class ViewTask extends StatefulWidget {
 
 class _ViewTaskState extends State<ViewTask> {
   final viewTaskController = ViewTaskController(
+    projectRepository: ProjectRepositoryImpl(
+      projectDataSource: ProjectUserDataImpl(
+        secureStorageService: SecureStorageSource(),
+        network: NetworkSource(),
+      ),
+    ),
+    userRepository: UserProfileRepositoryImpl(
+      userProfileDataSource: UserProfileDataSourceImpl(
+        secureStorageService: SecureStorageSource(),
+        network: NetworkSource(),
+      ),
+    ),
     secureStorage: SecureStorageSource(),
     taskValidator: TaskValidator(),
     memberProvider: MemberProvider(),
@@ -64,6 +80,7 @@ class _ViewTaskState extends State<ViewTask> {
   @override
   void initState() {
     viewTaskController.getAccessToken();
+      log(widget.pickedTask.projectId);
     super.initState();
   }
 

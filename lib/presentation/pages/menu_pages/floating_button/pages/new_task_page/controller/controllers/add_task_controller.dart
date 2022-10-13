@@ -33,7 +33,7 @@ class AddEditTaskController extends BaseTasksController {
     final user = await _userRepository.fetchUser(
       id: assignedto,
     );
-    // picked user
+    // picked project
     pickedUser.value = user;
     userTextController.text = user.username;
     pickedUser.notifyListeners();

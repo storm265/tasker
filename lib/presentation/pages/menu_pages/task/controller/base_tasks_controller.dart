@@ -13,8 +13,6 @@ import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/calendar_
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
-final _now = DateTime.now();
-
 abstract class BaseTasksController extends ChangeNotifier
     with AccessTokenMixin {
   final ProjectController projectController;
@@ -23,12 +21,12 @@ abstract class BaseTasksController extends ChangeNotifier
   final PanelProvider panelProvider;
   final MemberProvider memberProvider;
   final TaskRepository taskRepository;
-
+  final SecureStorageSource secureStorage;
   BaseTasksController({
     required this.taskValidator,
     required this.projectController,
     required this.attachmentsProvider,
-    required SecureStorageSource secureStorage,
+    required this. secureStorage,
     required this.panelProvider,
     required this.memberProvider,
     required this.taskRepository,

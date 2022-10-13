@@ -24,7 +24,8 @@ class ItemsWidget extends StatefulWidget {
 class _ItemsWidgetState extends State<ItemsWidget> {
   @override
   void initState() {
-    widget.viewTaskController.getAccessHeader();
+    widget.viewTaskController.fetchUser(widget.pickedTask.assignedTo);
+    widget.viewTaskController.fetchProject(widget.pickedTask.projectId);
     super.initState();
   }
 
@@ -42,14 +43,17 @@ class _ItemsWidgetState extends State<ItemsWidget> {
         itemBuilder: (_, i) {
           switch (i) {
             case 0:
-              // TODO fetch user name
               return DetailedItemWidget(
-                leading: const CircleAvatar(
+                leading: CircleAvatar(
                   backgroundColor: Colors.grey,
+                  backgroundImage: NetworkImage(
+                    widget.viewTaskController.user?.avatarUrl ?? '',
+                    headers: widget.viewTaskController.imageHeader,
+                  ),
                   radius: 20,
                 ),
                 title: LocaleKeys.assigned_to.tr(),
-                subtitle: 'Stephen Chow',
+                subtitle: widget.viewTaskController.user?.username,
               );
 
             case 1:
@@ -120,7 +124,7 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                   ],
                 ),
               );
-// TODo fetch
+
             case 4:
               return DetailedItemWidget(
                 imageIcon: 'tag',
@@ -141,7 +145,7 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                     ),
                     child: Center(
                       child: Text(
-                        'Personal',
+                        widget.viewTaskController.project!.title,
                         style: TextStyle(
                           color: getAppColor(
                             color: CategoryColor.blue,

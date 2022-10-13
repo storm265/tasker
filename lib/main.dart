@@ -63,9 +63,9 @@ class _MyAppState extends State<MyApp> {
           debugShowCheckedModeBanner: false,
           title: 'Todo2',
           theme: _themeDataController.themeData,
-          // initialRoute: '/',
-          //  routes: routes,
-          home: AddEditTaskPage(),
+          initialRoute: '/',
+           routes: routes,
+         // home: TasksPage(),
         ),
       ),
     );
