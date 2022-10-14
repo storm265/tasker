@@ -33,9 +33,10 @@ class ViewTaskController extends ChangeNotifier with AccessTokenMixin {
   UserProfileModel? user;
   ProjectModel? project;
 
-  Future<void> fetchDetailedUser(String? ownerId) async {
-    final id = await _secureStorage.getUserData(type: StorageDataType.id) ?? '';
-    user = await _userRepository.fetchUser(id: ownerId ?? id);
+  Future<void> fetchDetailedUser(String ownerId) async {
+    String id =
+        await _secureStorage.getUserData(type: StorageDataType.id) ?? '';
+    user = await _userRepository.fetchUser(id: ownerId.isEmpty ? id : ownerId);
   }
 
   Future<void> fetchProject(String projectId) async {
@@ -54,7 +55,7 @@ class ViewTaskController extends ChangeNotifier with AccessTokenMixin {
 
   Map<String, String>? imageHeader;
 
-  void getAccessToken() async =>
+  Future<void> getAccessToken() async =>
       imageHeader = await getAccessHeader(_secureStorage);
 
   Future<CommentModel> createTaskComment({

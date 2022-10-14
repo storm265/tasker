@@ -61,7 +61,11 @@ class _ViewTaskState extends State<ViewTask> {
 
   @override
   void initState() {
-    viewTaskController.getAccessToken();
+    Future.wait([
+      viewTaskController.getAccessToken(),
+      viewTaskController.fetchDetailedUser(widget.pickedTask.assignedTo),
+      viewTaskController.fetchProject(widget.pickedTask.projectId)
+    ]).then((_) => setState(() {}));
     super.initState();
   }
 
@@ -103,6 +107,12 @@ class _ViewTaskState extends State<ViewTask> {
                         ),
                         const SizedBox(height: 20),
                         viewTaskController.isShowComments
+                            ? TaskAttachementWidget(
+                                viewTaskController: viewTaskController,
+                                pickedModel: widget.pickedTask,
+                              )
+                            : const SizedBox(),
+                        viewTaskController.isShowComments
                             ? DescriptionBoxWidget(
                                 withImageIcon: true,
                                 descriptionController:
@@ -110,12 +120,6 @@ class _ViewTaskState extends State<ViewTask> {
                                 attachmentsProvider:
                                     viewTaskController.attachmentsProvider,
                                 hintText: LocaleKeys.write_a_comment.tr(),
-                              )
-                            : const SizedBox(),
-                        viewTaskController.isShowComments
-                            ? TaskAttachementWidget(
-                                viewTaskController: viewTaskController,
-                                pickedModel: widget.pickedTask,
                               )
                             : const SizedBox(),
                       ],

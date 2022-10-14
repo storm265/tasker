@@ -42,7 +42,7 @@ class TaskAttachementWidget extends StatelessWidget {
                     radius: 20,
                   ),
                   title: Text(
-                    data[i].commenter,
+                    data[i].commentator.username,
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w200,

@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/database/model/profile_models/stats_model.dart';
@@ -32,7 +31,6 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
   Future<UserProfileModel> fetchUser({required String id}) async {
     try {
       final response = await _userProfileDataSource.fetchUser(id: id);
-
       return UserProfileModel.fromJson(response);
     } catch (e) {
       throw Failure(e.toString());
@@ -76,8 +74,6 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
         name: name,
         file: file,
       );
-
-      debugPrint('avatar url ${response[AuthScheme.avatarUrl]}');
       return response[AuthScheme.avatarUrl];
     } catch (e) {
       throw Failure(e.toString());

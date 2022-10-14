@@ -8,7 +8,7 @@ import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/detai
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
-class ItemsWidget extends StatefulWidget {
+class ItemsWidget extends StatelessWidget {
   final TaskModel pickedTask;
   final ViewTaskController viewTaskController;
   const ItemsWidget({
@@ -16,20 +16,6 @@ class ItemsWidget extends StatefulWidget {
     required this.pickedTask,
     required this.viewTaskController,
   });
-
-  @override
-  State<ItemsWidget> createState() => _ItemsWidgetState();
-}
-
-class _ItemsWidgetState extends State<ItemsWidget> {
-  @override
-  void initState() {
-    Future.wait([
-      widget.viewTaskController.fetchDetailedUser(widget.pickedTask.assignedTo),
-      widget.viewTaskController.fetchProject(widget.pickedTask.projectId)
-    ]).then((_) => setState(() {}));
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,31 +35,28 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                 leading: CircleAvatar(
                   backgroundColor: Colors.grey,
                   backgroundImage: NetworkImage(
-                    widget.viewTaskController.user?.avatarUrl ?? 'url',
-                    headers: widget.viewTaskController.imageHeader,
+                    viewTaskController.user?.avatarUrl ?? 'url',
+                    headers: viewTaskController.imageHeader,
                   ),
                   radius: 20,
                 ),
                 title: LocaleKeys.assigned_to.tr(),
-                subtitle: widget.viewTaskController.user?.username,
+                subtitle: viewTaskController.user?.username,
               );
-
             case 1:
               return DetailedItemWidget(
                 imageIcon: 'calendar',
                 title: LocaleKeys.due_date.tr(),
                 subtitle:
-                    '${widget.pickedTask.dueDate.year} ${widget.pickedTask.dueDate.day},${DateFormat('MMM', locale).format(widget.pickedTask.dueDate)}', // widget.pickedTask.title,
+                    '${pickedTask.dueDate.year} ${pickedTask.dueDate.day},${DateFormat('MMM', locale).format(pickedTask.dueDate)}',
               );
-
             case 2:
               return DetailedItemWidget(
                 isBlackTextColor: true,
                 imageIcon: 'description',
                 title: LocaleKeys.description.tr(),
-                subtitle: widget.pickedTask.description,
+                subtitle: pickedTask.description,
               );
-
             case 3:
               return DetailedItemWidget(
                 imageIcon: 'members',
@@ -86,11 +69,11 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                       child: ListView.builder(
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
-                        itemCount: widget.pickedTask.members == null
+                        itemCount: pickedTask.members == null
                             ? 0
-                            : (widget.pickedTask.members!.length > 5)
+                            : (pickedTask.members!.length > 5)
                                 ? 5
-                                : widget.pickedTask.members?.length,
+                                : pickedTask.members?.length,
                         itemBuilder: (_, index) {
                           return index == 4
                               ? const Padding(
@@ -113,10 +96,8 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                                     radius: 16,
                                     backgroundColor: Colors.grey,
                                     backgroundImage: NetworkImage(
-                                      widget
-                                          .pickedTask.members![index].avatarUrl,
-                                      headers:
-                                          widget.viewTaskController.imageHeader,
+                                      pickedTask.members![index].avatarUrl,
+                                      headers: viewTaskController.imageHeader,
                                     ),
                                   ),
                                 );
@@ -147,7 +128,7 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                     ),
                     child: Center(
                       child: Text(
-                        widget.viewTaskController.project?.title ?? '',
+                        viewTaskController.project?.title ?? '',
                         style: TextStyle(
                           color: getAppColor(
                             color: CategoryColor.blue,
