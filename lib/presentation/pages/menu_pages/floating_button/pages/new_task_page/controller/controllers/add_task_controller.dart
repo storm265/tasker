@@ -3,10 +3,12 @@ import 'package:intl/intl.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/access_token_mixin.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/base_tasks_controller.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
+import 'package:todo2/storage/secure_storage_service.dart';
 
-class AddEditTaskController extends BaseTasksController {
+class AddEditTaskController extends BaseTasksController with AccessTokenMixin {
   final UserProfileRepository _userRepository;
   final ProjectRepository _projectRepository;
   AddEditTaskController({
@@ -30,9 +32,11 @@ class AddEditTaskController extends BaseTasksController {
     required List<UserProfileModel> members,
   }) async {
     // fetch user
+    final id = await secureStorage.getUserData(type: StorageDataType.id) ?? '';
     final user = await _userRepository.fetchUser(
-      id: assignedto,
+      id: assignedto == 'null' ? id : assignedto,
     );
+
     // picked project
     pickedUser.value = user;
     userTextController.text = user.username;
@@ -136,4 +140,9 @@ class AddEditTaskController extends BaseTasksController {
       changeSubmitButton(true);
     }
   }
+
+  Map<String, String>? imageHeader;
+
+  void getAccessToken() async =>
+      imageHeader = await getAccessHeader(secureStorage);
 }

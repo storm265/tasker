@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/projects_data_source.dart';
@@ -11,14 +10,10 @@ import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/controller/file_provider.dart';
 import 'package:todo2/presentation/pages/auth/widgets/unfocus_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/attachments_provider.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/member_provider.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/panel_provider.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_validator.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/description_widgets/description_box_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/confirm_button.dart';
-import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/access_token_mixin.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/tasks_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/atachment_message_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/controller/view_task_controller.dart';
@@ -31,7 +26,7 @@ import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.da
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
-class ViewTask extends StatefulWidget {
+class ViewTask extends StatefulWidget with AccessTokenMixin {
   final TaskListController taskListController;
   final TaskModel pickedTask;
   const ViewTask({
@@ -58,19 +53,6 @@ class _ViewTaskState extends State<ViewTask> {
       ),
     ),
     secureStorage: SecureStorageSource(),
-    taskValidator: TaskValidator(),
-    memberProvider: MemberProvider(),
-    panelProvider: PanelProvider(),
-    projectController: ProjectController(
-      colorPalleteController: ColorPalleteController(),
-      projectsRepository: ProjectRepositoryImpl(
-        projectDataSource: ProjectUserDataImpl(
-          secureStorageService: SecureStorageSource(),
-          network: NetworkSource(),
-        ),
-      ),
-    ),
-    taskRepository: TaskRepositoryImpl(),
     attachmentsProvider: AttachmentsProvider(
       taskRepository: TaskRepositoryImpl(),
       fileProvider: FileProvider(),
@@ -80,7 +62,7 @@ class _ViewTaskState extends State<ViewTask> {
   @override
   void initState() {
     viewTaskController.getAccessToken();
-      log(widget.pickedTask.projectId);
+    log(widget.pickedTask.projectId);
     super.initState();
   }
 

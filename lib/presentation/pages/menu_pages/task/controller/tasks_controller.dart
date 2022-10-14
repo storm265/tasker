@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/database/repository/task_repository.dart';
@@ -28,6 +27,10 @@ class TaskListController extends ChangeNotifier
 
   final tuneIconStatus = ValueNotifier(TaskSortMode.all);
 
+  final List<DateTime> events = [];
+
+  List<TaskModel> tasks = [];
+
   void changeTuneIconValue(int index) {
     switch (index) {
       case 0:
@@ -49,19 +52,24 @@ class TaskListController extends ChangeNotifier
     isTuneIconActive.notifyListeners();
   }
 
-  void getUserId() async {
+  Future<void> fetchInitData(VoidCallback callback) async {
+    await getUserId();
+    await fetchTasks();
+    generateCalendarEvents();
+    callback();
+  }
+
+  Future<void> getUserId() async {
     userId = await secureStorage.getUserData(type: StorageDataType.id) ?? '';
   }
 
   void generateCalendarEvents() {
-    for (var element in tasks) {
-      events.add(element.dueDate);
+    for (var i = 0; i < tasks.length; i++) {
+      events.add(tasks[i].dueDate);
     }
   }
 
-  final List<DateTime> events = [];
 
-  List<TaskModel> tasks = [];
   Future<void> fetchTasks() async {
     final list1 = await fetchUserTasks();
     final list2 = await fetchAssignedToTasks();
@@ -75,7 +83,6 @@ class TaskListController extends ChangeNotifier
     for (var i = 0; i < list2.length; i++) {
       tasks.add(list3[i]);
     }
-    log('task model length ${tasks.length}');
   }
 
   Future<List<TaskModel>> fetchUserTasks() async =>

@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,10 +33,7 @@ class _TasksPageState extends State<TasksPage>
 
   @override
   void initState() {
-    taskController.getAccessHeader();
-    taskController.getUserId();
-    taskController.generateCalendarEvents();
-    taskController.fetchTasks().then((_) => setState(() {}));
+    taskController.fetchInitData(() =>  setState(() {}));
     super.initState();
   }
 

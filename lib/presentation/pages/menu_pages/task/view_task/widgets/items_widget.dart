@@ -24,8 +24,10 @@ class ItemsWidget extends StatefulWidget {
 class _ItemsWidgetState extends State<ItemsWidget> {
   @override
   void initState() {
-    widget.viewTaskController.fetchUser(widget.pickedTask.assignedTo);
-    widget.viewTaskController.fetchProject(widget.pickedTask.projectId);
+    Future.wait([
+      widget.viewTaskController.fetchUser(widget.pickedTask.assignedTo),
+      widget.viewTaskController.fetchProject(widget.pickedTask.projectId)
+    ]).then((_) => setState(() {}));
     super.initState();
   }
 
@@ -47,7 +49,7 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                 leading: CircleAvatar(
                   backgroundColor: Colors.grey,
                   backgroundImage: NetworkImage(
-                    widget.viewTaskController.user?.avatarUrl ?? '',
+                    widget.viewTaskController.user?.avatarUrl ?? 'url',
                     headers: widget.viewTaskController.imageHeader,
                   ),
                   radius: 20,
@@ -89,7 +91,7 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                             : (widget.pickedTask.members!.length > 5)
                                 ? 5
                                 : widget.pickedTask.members?.length,
-                        itemBuilder: (context, index) {
+                        itemBuilder: (_, index) {
                           return index == 4
                               ? const Padding(
                                   padding: EdgeInsets.symmetric(horizontal: 2),
@@ -135,7 +137,7 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                     top: 5,
                   ),
                   child: Container(
-                    height: 30,
+                    height: 35,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
                       border: Border.all(
@@ -145,7 +147,7 @@ class _ItemsWidgetState extends State<ItemsWidget> {
                     ),
                     child: Center(
                       child: Text(
-                        widget.viewTaskController.project!.title,
+                        widget.viewTaskController.project?.title ?? '',
                         style: TextStyle(
                           color: getAppColor(
                             color: CategoryColor.blue,

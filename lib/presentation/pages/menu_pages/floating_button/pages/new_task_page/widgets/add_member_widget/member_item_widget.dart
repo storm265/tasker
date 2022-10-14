@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/controller/base_tasks_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/controllers/add_task_controller.dart';
 
 class UserItemWidget extends StatefulWidget {
-  final BaseTasksController addEditTaskController;
+  final AddEditTaskController addEditTaskController;
   final int index;
   final UserProfileModel userModel;
 

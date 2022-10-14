@@ -22,7 +22,7 @@ class TaskCardWidget extends StatelessWidget {
     if (DateFormat('yyyy-MM-dd').format(deadLineTime) ==
             DateFormat('yyyy-MM-dd').format(
                 DateTime.utc(timeNow.year, timeNow.month, timeNow.day)) &&
-        deadLineTime.difference(timeNow).inHours >= 1 &&
+        deadLineTime.difference(timeNow).inHours >= 0 &&
         deadLineTime.difference(timeNow).inHours <= 2) {
       return true;
     } else {

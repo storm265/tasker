@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/controllers/add_task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/panel_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/panels/project_panel_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/panels/user_panel_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/controller/base_tasks_controller.dart';
 
 class SelectPanelWidget extends StatelessWidget {
-  final BaseTasksController addEditTaskController;
+  final AddEditTaskController addEditTaskController;
   const SelectPanelWidget({
     Key? key,
     required this.addEditTaskController,

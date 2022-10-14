@@ -23,17 +23,17 @@ class DetailedItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 2),
-      child: ListTile(
-        contentPadding: const EdgeInsets.all(0),
-        leading: (leading == null)
-            ? Padding(
-                padding: const EdgeInsets.only(left: 12),
-                child: SvgPicture.asset('$assetsPath/$imageIcon.svg'),
-              )
-            : leading,
-        title: Text(
+    return ListTile(
+      contentPadding: const EdgeInsets.all(0),
+      leading: (leading == null)
+          ? Padding(
+              padding: const EdgeInsets.only(left: 12),
+              child: SvgPicture.asset('$assetsPath/$imageIcon.svg'),
+            )
+          : leading,
+      title: Padding(
+        padding: const EdgeInsets.only(top: 8),
+        child: Text(
           title,
           style: const TextStyle(
             overflow: TextOverflow.ellipsis,
@@ -42,22 +42,22 @@ class DetailedItemWidget extends StatelessWidget {
             color: Color(0xFF9A9A9A),
           ),
         ),
-        subtitle: (customSubtitle == null)
-            ? Text(
-                subtitle!,
-                style: (isBlackTextColor)
-                    ? const TextStyle(
-                        overflow: TextOverflow.ellipsis,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black,
-                      )
-                    : const TextStyle(
-                        color: Color(0xFF9A9A9A),
-                        fontStyle: FontStyle.italic,
-                      ),
-              )
-            : customSubtitle,
       ),
+      subtitle: (customSubtitle == null)
+          ? Text(
+              subtitle ?? '',
+              style: (isBlackTextColor)
+                  ? const TextStyle(
+                      overflow: TextOverflow.ellipsis,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
+                    )
+                  : const TextStyle(
+                      color: Color(0xFF9A9A9A),
+                      fontStyle: FontStyle.italic,
+                    ),
+            )
+          : customSubtitle,
     );
   }
 }

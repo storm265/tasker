@@ -8,13 +8,11 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_ta
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/panel_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_validator.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/controller/access_token_mixin.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/calendar_lib/controller.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
-abstract class BaseTasksController extends ChangeNotifier
-    with AccessTokenMixin {
+abstract class BaseTasksController extends ChangeNotifier {
   final ProjectController projectController;
   final AttachmentsProvider attachmentsProvider;
   final TaskValidator taskValidator;
@@ -26,7 +24,7 @@ abstract class BaseTasksController extends ChangeNotifier
     required this.taskValidator,
     required this.projectController,
     required this.attachmentsProvider,
-    required this. secureStorage,
+    required this.secureStorage,
     required this.panelProvider,
     required this.memberProvider,
     required this.taskRepository,
@@ -44,10 +42,6 @@ abstract class BaseTasksController extends ChangeNotifier
   final memberTextController = TextEditingController();
   final titleTextController = TextEditingController();
   final descriptionTextController = TextEditingController();
-
-  Map<String, String>? imageHeader;
-
-  void getAccessToken() async => imageHeader = await getAccessHeader();
 
   final isActiveSubmitButton = ValueNotifier<bool>(true);
   void changeSubmitButton(bool newValue) {
@@ -94,6 +88,10 @@ abstract class BaseTasksController extends ChangeNotifier
   Future<List<UserProfileModel>> taskMemberSearch(
           {required String userName}) async =>
       await taskRepository.taskMemberSearch(nickname: userName);
+}
+
+mixin CommentsMixin {
+  final taskRepository = TaskRepositoryImpl();
 
   Future<List<CommentModel>> fetchComments({required String taskId}) async {
     return await taskRepository.fetchTaskComments(taskId: taskId);

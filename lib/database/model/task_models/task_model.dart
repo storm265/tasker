@@ -35,7 +35,7 @@ class TaskModel {
         dueDate: DateTime.parse(json[TaskScheme.dueDate] ??
             "${DateTime.now().year + 30}-06-21T23:56:02.394631"),
         description: json[TaskScheme.description],
-        assignedTo: json[TaskScheme.assignedTo],
+        assignedTo: json[TaskScheme.assignedTo] ?? '',
         isCompleted: json[TaskScheme.isCompleted],
         projectId: json[TaskScheme.projectId],
         ownerId: json[TaskScheme.ownerId],
