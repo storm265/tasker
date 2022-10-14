@@ -76,6 +76,12 @@ class ForTextFieldWidget extends StatelessWidget {
                     FocusScope.of(context).unfocus();
                   },
                   decoration: const InputDecoration(
+                    hintText: 'Assignee',
+                    hintStyle:    TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                     border: InputBorder.none,
                   ),
                 ),

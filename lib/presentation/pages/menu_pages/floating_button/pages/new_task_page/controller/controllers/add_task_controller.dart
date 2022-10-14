@@ -27,14 +27,14 @@ class AddEditTaskController extends BaseTasksController with AccessTokenMixin {
   bool isEditMode = false;
 
   void getEditData({
-    required String assignedto,
+    required String? assignedto,
     required String projectId,
     required List<UserProfileModel> members,
   }) async {
     // fetch user
     final id = await secureStorage.getUserData(type: StorageDataType.id) ?? '';
     final user = await _userRepository.fetchUser(
-      id: assignedto == 'null' ? id : assignedto,
+      id: assignedto ?? id,
     );
 
     // picked project
@@ -55,6 +55,7 @@ class AddEditTaskController extends BaseTasksController with AccessTokenMixin {
     try {
       changeSubmitButton(false);
       if (await taskValidator.tryValidate(
+        pickedProject: pickedProject.value,
         context: context,
         formKey: formKey,
       )) {
@@ -102,9 +103,9 @@ class AddEditTaskController extends BaseTasksController with AccessTokenMixin {
       changeSubmitButton(false);
 
       if (await taskValidator.tryValidate(
-        context: context,
-        formKey: formKey,
-      )) {
+          context: context,
+          formKey: formKey,
+          pickedProject: pickedProject.value!)) {
         List<String> members = [];
         if (super.memberProvider.taskMembers.value.isNotEmpty) {
           for (var element in super.memberProvider.taskMembers.value) {

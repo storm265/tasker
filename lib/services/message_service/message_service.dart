@@ -9,10 +9,8 @@ class MessageService {
   }) =>
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
+              padding: const EdgeInsets.only(bottom: 600),
               elevation: 0,
-              margin: const EdgeInsets.only(
-                bottom: 500,
-              ),
               behavior: SnackBarBehavior.floating,
               backgroundColor: Colors.transparent,
               content: Container(

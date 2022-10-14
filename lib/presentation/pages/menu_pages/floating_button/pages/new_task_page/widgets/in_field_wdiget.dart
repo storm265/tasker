@@ -1,11 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/controllers/add_task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/panel_provider.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/controller/base_tasks_controller.dart';
 
 class InFieldWidget extends StatelessWidget {
-  final BaseTasksController addEditTaskController;
+  final AddEditTaskController addEditTaskController;
   final VoidCallback callback;
   const InFieldWidget({
     Key? key,
@@ -57,6 +57,12 @@ class InFieldWidget extends StatelessWidget {
               FocusScope.of(context).unfocus();
             },
             decoration: const InputDecoration(
+              hintText: 'Project',
+              hintStyle: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: Colors.black,
+                overflow: TextOverflow.ellipsis,
+              ),
               border: InputBorder.none,
             ),
           ),

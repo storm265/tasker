@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
-import 'package:todo2/database/model/task_models/comment_model.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/attachments_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/member_provider.dart';
@@ -35,9 +34,8 @@ abstract class BaseTasksController extends ChangeNotifier {
   final AdvancedCalendarController calendarController =
       AdvancedCalendarController.today();
 
-// TODO remove text
-  final userTextController = TextEditingController(text: 'Assignee');
-  final projectTextController = TextEditingController(text: 'Project');
+  final userTextController = TextEditingController();
+  final projectTextController = TextEditingController();
 
   final memberTextController = TextEditingController();
   final titleTextController = TextEditingController();
@@ -89,4 +87,3 @@ abstract class BaseTasksController extends ChangeNotifier {
           {required String userName}) async =>
       await taskRepository.taskMemberSearch(nickname: userName);
 }
-

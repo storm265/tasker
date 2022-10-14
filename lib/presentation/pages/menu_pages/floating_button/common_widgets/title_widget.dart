@@ -41,7 +41,6 @@ class TitleWidget extends StatelessWidget {
           child: AddTextFieldWidget(
             textInputType: textInputType,
             maxLength: maxLength,
-            maxLines: maxLines,
             titleController: textController,
             onEdiditionCompleteCallback: onEdiditionCompleteCallback,
           ),

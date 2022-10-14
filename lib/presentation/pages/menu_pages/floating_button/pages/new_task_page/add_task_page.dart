@@ -8,6 +8,7 @@ import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/controller/file_provider.dart';
+import 'package:todo2/presentation/pages/auth/widgets/unfocus_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/controllers/add_task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/attachments_provider.dart';
@@ -86,7 +87,6 @@ class _AddEditTaskPageState extends State<AddEditTaskPage> {
 
     if (arguments == null) {
       addEditTaskController.isEditMode = false;
-
     } else {
       addEditTaskController.isEditMode = true;
       addEditTaskController.getEditData(
@@ -94,7 +94,6 @@ class _AddEditTaskPageState extends State<AddEditTaskPage> {
         projectId: mapped[TaskScheme.projectId],
         members: mapped[TaskScheme.members],
       );
-
     }
     super.didChangeDependencies();
   }
@@ -122,80 +121,85 @@ class _AddEditTaskPageState extends State<AddEditTaskPage> {
                 );
               },
               height: 700,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 30),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        ForTextFieldWidget(
-                          callback: () async => await Future.delayed(
-                            const Duration(seconds: 1),
-                            () => setState(
-                              () {},
+              child: UnfocusWidget(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 30),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ForTextFieldWidget(
+                            callback: () async => await Future.delayed(
+                              const Duration(seconds: 1),
+                              () => setState(
+                                () {},
+                              ),
+                            ),
+                            addEditTaskController: addEditTaskController,
+                          ),
+                          InFieldWidget(
+                            addEditTaskController: addEditTaskController,
+                            callback: () async => await Future.delayed(
+                              const Duration(seconds: 1),
+                              () => setState(
+                                () {},
+                              ),
                             ),
                           ),
-                          addEditTaskController: addEditTaskController,
-                        ),
-                        InFieldWidget(
-                          addEditTaskController: addEditTaskController,
-                          callback: () async => await Future.delayed(
-                            const Duration(seconds: 1),
-                            () => setState(
-                              () {},
-                            ),
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  ValueListenableBuilder<PanelStatus>(
-                    valueListenable:
-                        addEditTaskController.panelProvider.panelStatus,
-                    builder: (_, value, __) {
-                      return (value != PanelStatus.hide)
-                          ? SelectPanelWidget(
-                              addEditTaskController: addEditTaskController,
-                            )
-                          : Column(
-                              children: [
-                                TaskTitleWidget(
-                                  titleController:
-                                      addEditTaskController.titleTextController,
-                                ),
-                                DescriptionFieldWidget(
-                                  addEditTaskController: addEditTaskController,
-                                ),
-                                PickTimeFieldWidget(
-                                  addEditTaskController: addEditTaskController,
-                                ),
-                                AddMemberWidget(
-                                  addEditTaskController: addEditTaskController,
-                                ),
-                                ValueListenableBuilder<bool>(
-                                  valueListenable: addEditTaskController
-                                      .isActiveSubmitButton,
-                                  builder: (_, isClicked, __) => isClicked
-                                      ? ConfirmButtonWidget(
-                                          title: LocaleKeys.add_task.tr(),
-                                          onPressed: isClicked
-                                              ? () async {
-                                                  await addEditTaskController
-                                                      .createTask(context);
-                                                }
-                                              : null,
-                                        )
-                                      : ProgressIndicatorWidget(
-                                          text: LocaleKeys.validating.tr(),
-                                        ),
-                                ),
-                              ],
-                            );
-                    },
-                  ),
-                ],
+                    ValueListenableBuilder<PanelStatus>(
+                      valueListenable:
+                          addEditTaskController.panelProvider.panelStatus,
+                      builder: (_, value, __) {
+                        return (value != PanelStatus.hide)
+                            ? SelectPanelWidget(
+                                addEditTaskController: addEditTaskController,
+                              )
+                            : Column(
+                                children: [
+                                  TaskTitleWidget(
+                                    titleController: addEditTaskController
+                                        .titleTextController,
+                                  ),
+                                  DescriptionFieldWidget(
+                                    addEditTaskController:
+                                        addEditTaskController,
+                                  ),
+                                  PickTimeFieldWidget(
+                                    addEditTaskController:
+                                        addEditTaskController,
+                                  ),
+                                  AddMemberWidget(
+                                    addEditTaskController:
+                                        addEditTaskController,
+                                  ),
+                                  ValueListenableBuilder<bool>(
+                                    valueListenable: addEditTaskController
+                                        .isActiveSubmitButton,
+                                    builder: (_, isClicked, __) => isClicked
+                                        ? ConfirmButtonWidget(
+                                            title: LocaleKeys.add_task.tr(),
+                                            onPressed: isClicked
+                                                ? () async {
+                                                    await addEditTaskController
+                                                        .createTask(context);
+                                                  }
+                                                : null,
+                                          )
+                                        : ProgressIndicatorWidget(
+                                            text: LocaleKeys.validating.tr(),
+                                          ),
+                                  ),
+                                ],
+                              );
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

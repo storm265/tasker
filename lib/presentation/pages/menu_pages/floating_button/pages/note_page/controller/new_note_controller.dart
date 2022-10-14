@@ -9,7 +9,6 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/c
 import 'package:todo2/presentation/pages/menu_pages/quick/controller/quick_controller.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
-import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/network_service/network_config.dart';
@@ -92,7 +91,6 @@ class NewNoteController extends ChangeNotifier {
         FocusScope.of(context).unfocus();
         changeClickedButtonValueStatus(newValue: false);
         log('isEdit $isEdit');
-
         if (isEdit.value) {
           await updateNote();
           MessageService.displaySnackbar(
@@ -111,68 +109,49 @@ class NewNoteController extends ChangeNotifier {
 
         await navigationController.moveToPage(Pages.quick);
       }
-    } catch (e, t) {
-      log('tryValidateNote $e, $t');
-      throw Failure(e.toString());
     } finally {
       changeClickedButtonValueStatus(newValue: true);
     }
   }
 
   Future<void> createNote() async {
-    try {
-      final model = await _addNoteRepository.createNote(
-        color: colors[colorPalleteController.selectedIndex.value],
-        description: descriptionTextController.text,
-      );
-      userNotesList.add(model);
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final model = await _addNoteRepository.createNote(
+      color: colors[colorPalleteController.selectedIndex.value],
+      description: descriptionTextController.text,
+    );
+    userNotesList.add(model);
   }
 
   Future<List<NotesModel>> fetchUserNotes() async {
-    try {
-      final notes = await _addNoteRepository.fetchUserNotes();
-      userNotesList = notes;
-      return notes;
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final notes = await _addNoteRepository.fetchUserNotes();
+    userNotesList = notes;
+    return notes;
   }
 
   Future<void> deleteNote({
     required NotesModel notesModel,
     required BuildContext context,
   }) async {
-    try {
-      await _addNoteRepository.deleteNote(projectId: notesModel.id);
-      userNotesList.removeWhere((element) => element.id == notesModel.id);
-      quickController.fetchNotesLocally();
-      MessageService.displaySnackbar(
-        context: context,
-        message: LocaleKeys.deleted.tr(),
-      );
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    await _addNoteRepository.deleteNote(projectId: notesModel.id);
+    userNotesList.removeWhere((element) => element.id == notesModel.id);
+    quickController.fetchNotesLocally();
+    MessageService.displaySnackbar(
+      context: context,
+      message: LocaleKeys.deleted.tr(),
+    );
   }
 
   Future<void> updateNote() async {
-    try {
-      final updatedModel = await _addNoteRepository.updateNote(
-        color: colors[colorPalleteController.selectedIndex.value],
-        noteModel: _pickedModel.value,
-        description: descriptionTextController.text,
-      );
-      for (var i = 0; i < userNotesList.length; i++) {
-        if (userNotesList[i].id == updatedModel.id) {
-          userNotesList[i] = updatedModel;
-          break;
-        }
+    final updatedModel = await _addNoteRepository.updateNote(
+      color: colors[colorPalleteController.selectedIndex.value],
+      noteModel: _pickedModel.value,
+      description: descriptionTextController.text,
+    );
+    for (var i = 0; i < userNotesList.length; i++) {
+      if (userNotesList[i].id == updatedModel.id) {
+        userNotesList[i] = updatedModel;
+        break;
       }
-    } catch (e) {
-      throw Failure(e.toString());
     }
   }
 
@@ -180,22 +159,18 @@ class NewNoteController extends ChangeNotifier {
     required NotesModel pickedModel,
     required BuildContext context,
   }) async {
-    try {
-      NotesModel model = pickedModel.copyWith(isCompleted: true);
-      final newModel = await _addNoteRepository.updateNote(
-        color: model.color,
-        noteModel: model,
-        description: model.description,
-      );
-      for (var i = 0; i < userNotesList.length; i++) {
-        if (userNotesList[i].id == newModel.id) {
-          userNotesList[i] = newModel;
-          break;
-        }
+    NotesModel model = pickedModel.copyWith(isCompleted: true);
+    final newModel = await _addNoteRepository.updateNote(
+      color: model.color,
+      noteModel: model,
+      description: model.description,
+    );
+    for (var i = 0; i < userNotesList.length; i++) {
+      if (userNotesList[i].id == newModel.id) {
+        userNotesList[i] = newModel;
+        break;
       }
-      quickController.fetchNotesLocally();
-    } catch (e) {
-      throw Failure(e.toString());
     }
+    quickController.fetchNotesLocally();
   }
 }

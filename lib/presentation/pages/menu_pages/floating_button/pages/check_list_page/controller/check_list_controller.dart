@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/checklists_data_source.dart';
@@ -10,7 +9,6 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/c
 import 'package:todo2/presentation/pages/menu_pages/quick/controller/quick_controller.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
-import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/network_service/network_config.dart';
@@ -120,90 +118,66 @@ class CheckListController extends ChangeNotifier {
         changeIsClickedValueStatus(true);
         await navigationController.moveToPage(Pages.quick);
       }
-    } catch (e, t) {
-      log('tt $t');
-      throw Failure(e.toString());
     } finally {
       changeIsClickedValueStatus(true);
     }
   }
 
   Future<void> createCheckList() async {
-    try {
-      final model = await _checkListRepository.createCheckList(
-        title: titleController.text,
-        color: colors[colorPalleteController.selectedIndex.value],
-        items: checkBoxItems.value,
-      );
-      checklist.add(CheckListModel(
-        id: model.id,
-        title: model.title,
-        color: model.color,
-        ownerId: model.ownerId,
-        createdAt: model.createdAt,
-        items: model.items,
-      ));
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final model = await _checkListRepository.createCheckList(
+      title: titleController.text,
+      color: colors[colorPalleteController.selectedIndex.value],
+      items: checkBoxItems.value,
+    );
+    checklist.add(CheckListModel(
+      id: model.id,
+      title: model.title,
+      color: model.color,
+      ownerId: model.ownerId,
+      createdAt: model.createdAt,
+      items: model.items,
+    ));
   }
 
   Future<void> updateCheckList() async {
-    try {
-      final updatedModel = await _checkListRepository.updateCheckList(
-        color: colors[colorPalleteController.selectedIndex.value],
-        checklistId: _pickedModel.id,
-        items: checkBoxItems.value,
-        title: titleController.text,
-      );
-      for (var i = 0; i < checklist.length; i++) {
-        if (checklist[i].id == updatedModel.id) {
-          checklist[i] = updatedModel;
+    final updatedModel = await _checkListRepository.updateCheckList(
+      color: colors[colorPalleteController.selectedIndex.value],
+      checklistId: _pickedModel.id,
+      items: checkBoxItems.value,
+      title: titleController.text,
+    );
+    for (var i = 0; i < checklist.length; i++) {
+      if (checklist[i].id == updatedModel.id) {
+        checklist[i] = updatedModel;
 
-          break;
-        }
+        break;
       }
-    } catch (e) {
-      throw Failure(e.toString());
     }
   }
 
   Future<List<CheckListModel>> fetchAllCheckLists() async {
-    try {
-      final lists = await _checkListRepository.fetchAllCheckLists();
-      checklist = lists;
-      return lists;
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final lists = await _checkListRepository.fetchAllCheckLists();
+    checklist = lists;
+    return lists;
   }
 
   Future<void> deleteChecklistItem({required String checklistItemId}) async {
-    try {
-      await _checkListRepository.deleteCheckListItem(
-          checkListId: checklistItemId);
-      quickController.fetchNotesLocally();
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    await _checkListRepository.deleteCheckListItem(
+        checkListId: checklistItemId);
+    quickController.fetchNotesLocally();
   }
 
   Future<void> deleteChecklist({
     required CheckListModel checkListModel,
     required BuildContext context,
   }) async {
-    try {
-      await _checkListRepository.deleteCheckList(
-          checkListModel: checkListModel);
-      checklist.removeWhere((element) => element.id == checkListModel.id);
-      quickController.fetchNotesLocally();
-      MessageService.displaySnackbar(
-        context: context,
-        message: LocaleKeys.deleted.tr(),
-      );
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    await _checkListRepository.deleteCheckList(checkListModel: checkListModel);
+    checklist.removeWhere((element) => element.id == checkListModel.id);
+    quickController.fetchNotesLocally();
+    MessageService.displaySnackbar(
+      context: context,
+      message: LocaleKeys.deleted.tr(),
+    );
   }
 
   void addCheckboxItem(int index) {

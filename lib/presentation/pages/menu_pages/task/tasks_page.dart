@@ -33,13 +33,14 @@ class _TasksPageState extends State<TasksPage>
 
   @override
   void initState() {
-    taskController.fetchInitData(() =>  setState(() {}));
+    taskController.fetchInitData(() => setState(() {}));
     super.initState();
   }
 
   @override
   void dispose() {
     _tabController.dispose();
+    taskController.dispose();
     super.dispose();
   }
 
@@ -47,11 +48,6 @@ class _TasksPageState extends State<TasksPage>
   Widget build(BuildContext context) {
     return WillPopWrap(
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            await taskController.fetchAssignedToTasks();
-          },
-        ),
         backgroundColor: const Color(0xffFDFDFD),
         appBar: AppBar(
           systemOverlayStyle: const SystemUiOverlayStyle(

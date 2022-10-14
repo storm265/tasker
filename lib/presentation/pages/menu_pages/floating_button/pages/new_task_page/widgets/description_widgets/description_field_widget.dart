@@ -32,7 +32,6 @@ class DescriptionFieldWidget extends StatelessWidget {
                 addEditTaskController.descriptionTextController,
             hintText: hintText,
           ),
-          //   const AttachementWidget(),
           ValueListenableBuilder<List<PlatformFile>>(
               valueListenable:
                   addEditTaskController.attachmentsProvider.attachments,

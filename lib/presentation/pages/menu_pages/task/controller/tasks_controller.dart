@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/database/repository/task_repository.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/controller/access_token_mixin.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/delete_task_mixin.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/calendar_lib/controller.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
@@ -12,8 +11,7 @@ enum TaskSortMode {
   all,
 }
 
-class TaskListController extends ChangeNotifier
-    with AccessTokenMixin, DeleteTaskMixin {
+class TaskListController extends ChangeNotifier with DeleteTaskMixin {
   final TaskRepositoryImpl taskRepository;
   final secureStorage = SecureStorageSource();
   TaskListController({
@@ -68,7 +66,6 @@ class TaskListController extends ChangeNotifier
       events.add(tasks[i].dueDate);
     }
   }
-
 
   Future<void> fetchTasks() async {
     final list1 = await fetchUserTasks();
