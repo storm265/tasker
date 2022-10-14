@@ -5,24 +5,27 @@ class CommentModel {
   final String content;
   final String taskId;
   final String ownerId;
-  final String attachments;
+  final String commenter;
+  final String avatarUrl;
   final DateTime createdAt;
 
   CommentModel({
     required this.id,
     required this.content,
     required this.taskId,
+    required this.commenter,
     required this.ownerId,
-    required this.attachments,
+    required this.avatarUrl,
     required this.createdAt,
   });
 
   factory CommentModel.fromJson(Map<String, dynamic> json) => CommentModel(
         id: json[CommentAttachmentScheme.id],
         content: json[CommentAttachmentScheme.content],
+        commenter: json[CommentAttachmentScheme.commenter],
         taskId: json[CommentAttachmentScheme.taskId],
         ownerId: json[CommentAttachmentScheme.ownerId],
-        attachments: json[CommentAttachmentScheme.attachments],
+        avatarUrl: json[CommentAttachmentScheme.avatarUrl],
         createdAt: DateTime.parse(json[CommentAttachmentScheme.createdAt]),
       );
 }

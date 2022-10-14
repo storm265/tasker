@@ -90,20 +90,3 @@ abstract class BaseTasksController extends ChangeNotifier {
       await taskRepository.taskMemberSearch(nickname: userName);
 }
 
-mixin CommentsMixin {
-  final taskRepository = TaskRepositoryImpl();
-
-  Future<List<CommentModel>> fetchComments({required String taskId}) async {
-    return await taskRepository.fetchTaskComments(taskId: taskId);
-  }
-
-  Future<void> createTaskComment({
-    required String content,
-    required String taskId,
-  }) async {
-    return await taskRepository.createTaskComment(
-      taskId: taskId,
-      content: content,
-    );
-  }
-}

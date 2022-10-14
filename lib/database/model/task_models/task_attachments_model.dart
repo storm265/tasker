@@ -4,12 +4,14 @@ class TaskAttachmentModel {
   final String id;
   final String url;
   final String type;
+  final String filePath;
   final String taskId;
   final DateTime createdAt;
 
   TaskAttachmentModel({
     required this.id,
     required this.url,
+    required this.filePath,
     required this.type,
     required this.taskId,
     required this.createdAt,
@@ -19,6 +21,7 @@ class TaskAttachmentModel {
     return TaskAttachmentModel(
       id: json[AttachmentScheme.id],
       url: json[AttachmentScheme.url],
+      filePath: json[AttachmentScheme.filePath],
       type: json[AttachmentScheme.type],
       taskId: json[AttachmentScheme.taskId],
       createdAt: DateTime.parse(json[AttachmentScheme.createdAt]),

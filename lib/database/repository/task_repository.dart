@@ -41,7 +41,7 @@ abstract class TaskRepository<T> {
 
   Future<List<TaskModel>> fetchParticipateInTasks();
 
-  Future<void> createTaskComment({
+  Future<CommentModel> createTaskComment({
     required String content,
     required String taskId,
   });
@@ -212,15 +212,16 @@ class TaskRepositoryImpl implements TaskRepository {
   }
 
   @override
-  Future<void> createTaskComment({
+  Future<CommentModel> createTaskComment({
     required String content,
     required String taskId,
   }) async {
     try {
-      await _taskDataSource.createTaskComment(
+      final response = await _taskDataSource.createTaskComment(
         content: content,
         taskId: taskId,
       );
+      return CommentModel.fromJson(response);
     } catch (e) {
       throw Failure(e.toString());
     }

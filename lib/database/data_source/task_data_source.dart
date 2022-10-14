@@ -48,7 +48,7 @@ abstract class TaskDataSource {
     required bool isFile,
   });
 
-  Future<void> createTaskComment({
+  Future<Map<String, dynamic>> createTaskComment({
     required String content,
     required String taskId,
   });
@@ -337,9 +337,8 @@ class TaskDataSourceImpl implements TaskDataSource {
   //   }
   // }
 
-// maybe should return model
   @override
-  Future<void> createTaskComment({
+  Future<Map<String, dynamic>> createTaskComment({
     required String content,
     required String taskId,
   }) async {
@@ -356,9 +355,11 @@ class TaskDataSourceImpl implements TaskDataSource {
         },
         options: await _network.getLocalRequestOptions(useContentType: true),
       );
-
       log('createTaskComment ${response.statusMessage}');
       log('createTaskComment ${response.statusCode}');
+      return NetworkErrorService.isSuccessful(response)
+          ? (response.data![TaskScheme.data] as Map<String, dynamic>)
+          : throw Failure('Error:  createTaskComment error');
     } catch (e) {
       throw Failure(e.toString());
     }
@@ -389,9 +390,6 @@ class TaskDataSourceImpl implements TaskDataSource {
         path: '$_taskMemberSearch?query=$nickname',
         options: await _network.getLocalRequestOptions(),
       );
-      log('search ${response.statusCode}');
-      log('search ${response.statusMessage}');
-      log('search ${response.data}');
       return NetworkErrorService.isSuccessful(response)
           ? (response.data![TaskScheme.data] as List<dynamic>)
           : throw Failure('Error: get taskMemberSearch error');

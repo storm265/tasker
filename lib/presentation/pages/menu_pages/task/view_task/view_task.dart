@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/projects_data_source.dart';
@@ -15,7 +14,7 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_ta
 import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/confirm_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/access_token_mixin.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/tasks_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/view_task/atachment_message_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/view_task/task_attachament_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/controller/view_task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/comment_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/detailed_title_widget.dart';
@@ -40,6 +39,7 @@ class ViewTask extends StatefulWidget with AccessTokenMixin {
 
 class _ViewTaskState extends State<ViewTask> {
   final viewTaskController = ViewTaskController(
+    taskRepository: TaskRepositoryImpl(),
     projectRepository: ProjectRepositoryImpl(
       projectDataSource: ProjectUserDataImpl(
         secureStorageService: SecureStorageSource(),
@@ -62,7 +62,6 @@ class _ViewTaskState extends State<ViewTask> {
   @override
   void initState() {
     viewTaskController.getAccessToken();
-    log(widget.pickedTask.projectId);
     super.initState();
   }
 
@@ -114,7 +113,8 @@ class _ViewTaskState extends State<ViewTask> {
                               )
                             : const SizedBox(),
                         viewTaskController.isShowComments
-                            ? AttachementWidget(
+                            ? TaskAttachementWidget(
+                                viewTaskController: viewTaskController,
                                 pickedModel: widget.pickedTask,
                               )
                             : const SizedBox(),

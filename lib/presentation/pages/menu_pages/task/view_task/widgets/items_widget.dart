@@ -25,7 +25,7 @@ class _ItemsWidgetState extends State<ItemsWidget> {
   @override
   void initState() {
     Future.wait([
-      widget.viewTaskController.fetchUser(widget.pickedTask.assignedTo),
+      widget.viewTaskController.fetchDetailedUser(widget.pickedTask.assignedTo),
       widget.viewTaskController.fetchProject(widget.pickedTask.projectId)
     ]).then((_) => setState(() {}));
     super.initState();

@@ -2,19 +2,22 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/view_task/controller/view_task_controller.dart';
 
-class AttachementWidget extends StatefulWidget {
+class TaskAttachementWidget extends StatefulWidget {
+  final ViewTaskController viewTaskController;
   final TaskModel pickedModel;
-  const AttachementWidget({
+  const TaskAttachementWidget({
     Key? key,
+    required this.viewTaskController,
     required this.pickedModel,
   }) : super(key: key);
 
   @override
-  State<AttachementWidget> createState() => _AttachementWidgetState();
+  State<TaskAttachementWidget> createState() => _TaskAttachementWidgetState();
 }
 
-class _AttachementWidgetState extends State<AttachementWidget> {
+class _TaskAttachementWidgetState extends State<TaskAttachementWidget> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -59,6 +62,7 @@ class _AttachementWidgetState extends State<AttachementWidget> {
                     borderRadius: BorderRadius.circular(5),
                     child: Image.network(
                       widget.pickedModel.attachments![index].url,
+                      headers: widget.viewTaskController.imageHeader,
                     ),
                   )
                 : Column(
