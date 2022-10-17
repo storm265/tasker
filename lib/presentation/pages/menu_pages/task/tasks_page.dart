@@ -7,6 +7,7 @@ import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/task_sort_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/tasks_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/dialogs/tasks_filter_dialog.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/calendar_lib/controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/calendar_lib/widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/list/task_list_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/tabs/bottom_tabs.dart';
@@ -113,6 +114,7 @@ class _TasksPageState extends State<TasksPage>
               ListView(
                 children: [
                   AdvancedCalendar(
+                    calendarProvider: CalendarProvider(),
                     controller: taskController.calendarController,
                     events: taskController.events,
                     taskController: taskController,

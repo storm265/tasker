@@ -3,6 +3,18 @@ import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/tasks_controller.dart';
 
+enum CalendarWorkMode {
+  todayTomorrow, // only for today
+  selectedDay, //
+  fullMonth, // if opened month
+}
+
+enum CalendarSortMode {
+  incomplete,
+  completed,
+  all,
+}
+
 class TaskSortController {
   final now = DateTime.now();
   final formatter = DateFormat('yyyy-MM-dd');

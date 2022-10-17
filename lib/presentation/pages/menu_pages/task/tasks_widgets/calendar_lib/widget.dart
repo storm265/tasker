@@ -30,16 +30,13 @@ class AdvancedCalendar extends StatefulWidget {
     this.dateStyle,
     this.onHorizontalDrag,
     this.innerDot = false,
-    this.isMonth = false,
+    required this.calendarProvider,
     this.useShadow = true,
-    this.canExtend = true,
   }) : super(key: key);
 
+  final CalendarProvider calendarProvider;
+
   final TaskListController? taskController;
-
-  final bool canExtend;
-
-  final bool isMonth;
 
   final bool useShadow;
 
@@ -95,13 +92,10 @@ class _AdvancedCalendarState extends State<AdvancedCalendar>
 
   DateTime? _todayDate;
   List<String>? _weekNames;
-  late bool isMonthMode;
 
   @override
   void initState() {
     super.initState();
-
-    isMonthMode = widget.isMonth;
 
     final monthPageIndex = widget.preloadMonthViewAmount ~/ 2;
 
@@ -124,7 +118,7 @@ class _AdvancedCalendarState extends State<AdvancedCalendar>
     );
     _animationValue = _animationController.value;
 
-    if (isMonthMode) {
+    if (widget.calendarProvider.isMonthMode) {
       _animationController.forward();
       _animationValue = 1.0;
     }
@@ -238,12 +232,12 @@ List<String>.generate(7, (index) {
                         fontStyle: FontStyle.italic,
                       ),
                     ),
-                    widget.canExtend
+                    widget.calendarProvider.canExtend
                         ? Padding(
                             padding: const EdgeInsets.only(left: 5),
                             child: InkWell(
                               child: Icon(
-                                isMonthMode
+                                widget.calendarProvider.isMonthMode
                                     ? Icons.expand_less
                                     : Icons.expand_more,
                                 color: Colors.black,
@@ -251,15 +245,18 @@ List<String>.generate(7, (index) {
                               ),
                               onTap: () async {
                                 setState(() {
-                                  isMonthMode = !isMonthMode;
-                                  widget.taskController
-                                      ?.changeTuneIconStatus(!isMonthMode);
+                                  widget.calendarProvider.isMonthMode =
+                                      !widget.calendarProvider.isMonthMode;
+                                  widget.taskController?.changeTuneIconStatus(
+                                      !widget.calendarProvider.isMonthMode);
                                 });
 
-                                if (isMonthMode) {
+                                if (widget.calendarProvider.isMonthMode) {
+                                  log('month mode');
                                   await _animationController.forward();
                                   _animationValue = 1.0;
                                 } else {
+                                  log('week mode');
                                   await _animationController.reverse();
                                   _animationValue = 0.0;
                                 }
@@ -285,7 +282,7 @@ List<String>.generate(7, (index) {
                 end: widget.weekLineHeight * widget.weeksInMonthViewAmount,
               ).transform(_animationController.value);
               return SizedBox(
-                height: isMonthMode ? 170 : height,
+                height: widget.calendarProvider.isMonthMode ? 170 : height,
                 child: ValueListenableBuilder<DateTime>(
                   valueListenable: _controller,
                   builder: (_, selectedDate, __) {
@@ -301,6 +298,7 @@ List<String>.generate(7, (index) {
                             ).evaluate(_animationController),
                             child: PageView.builder(
                               onPageChanged: (pageIndex) {
+                                log('onHorizontalDrag ');
                                 if (widget.onHorizontalDrag != null) {
                                   widget.onHorizontalDrag!(
                                     _monthRangeList[pageIndex].firstDay,
