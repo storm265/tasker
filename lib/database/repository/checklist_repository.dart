@@ -39,59 +39,36 @@ class CheckListRepositoryImpl extends CheckListsRepository<CheckListModel> {
     required Color color,
     List<Map<String, dynamic>>? items,
   }) async {
-    try {
-      final response = await _checkListsDataSource.createCheckList(
-        title: title,
-        color: color,
-        items: items,
-      );
-      return CheckListModel.fromJson(response);
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final response = await _checkListsDataSource.createCheckList(
+      title: title,
+      color: color,
+      items: items,
+    );
+    return CheckListModel.fromJson(response);
   }
 
   @override
   Future<void> deleteCheckList({required CheckListModel checkListModel}) async {
-    try {
-      await _checkListsDataSource.deleteCheckList(
-          checkListModel: checkListModel);
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    await _checkListsDataSource.deleteCheckList(checkListModel: checkListModel);
   }
 
   @override
-  Future<void> deleteCheckListItem({required String checkListId}) async {
-    try {
+  Future<void> deleteCheckListItem({required String checkListId}) async =>
       await _checkListsDataSource.deleteCheckListItem(checkListId: checkListId);
-    } catch (e) {
-      throw Failure(e.toString());
-    }
-  }
 
   @override
-  Future<void> deleteCheckListItems({required List<String> items}) async {
-    try {
+  Future<void> deleteCheckListItems({required List<String> items}) async =>
       await _checkListsDataSource.deleteCheckListItems(items: items);
-    } catch (e) {
-      throw Failure(e.toString());
-    }
-  }
 
   @override
   Future<List<CheckListModel>> fetchAllCheckLists() async {
-    try {
-      final response = await _checkListsDataSource.fetchAllCheckLists();
-      List<CheckListModel> statsModels = [];
-      for (int i = 0; i < response.length; i++) {
-        statsModels.add(CheckListModel.fromJson(response[i]));
-      }
-      log('model: $statsModels');
-      return statsModels;
-    } catch (e) {
-      throw Failure(e.toString());
+    final response = await _checkListsDataSource.fetchAllCheckLists();
+    List<CheckListModel> statsModels = [];
+    for (int i = 0; i < response.length; i++) {
+      statsModels.add(CheckListModel.fromJson(response[i]));
     }
+
+    return statsModels;
   }
 
   @override
@@ -101,16 +78,12 @@ class CheckListRepositoryImpl extends CheckListsRepository<CheckListModel> {
     required String title,
     required Color color,
   }) async {
-    try {
-      final response = await _checkListsDataSource.updateCheckList(
-        checklistId: checklistId,
-        items: items,
-        title: title,
-        color: color,
-      );
-      return CheckListModel.fromJson(response);
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final response = await _checkListsDataSource.updateCheckList(
+      checklistId: checklistId,
+      items: items,
+      title: title,
+      color: color,
+    );
+    return CheckListModel.fromJson(response);
   }
 }

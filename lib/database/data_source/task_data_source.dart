@@ -105,36 +105,30 @@ class TaskDataSourceImpl implements TaskDataSource {
     List<Map<String, dynamic>>? attachments,
     List<String>? members,
   }) async {
-    try {
-      final ownerId =
-          await _secureStorage.getUserData(type: StorageDataType.id);
-      log('due data $dueDate');
-      final response = await _network.post(
-        path: _tasks,
-        data: {
-          TaskScheme.title: title,
-          TaskScheme.dueDate: dueDate,
-          TaskScheme.description: description,
-          TaskScheme.assignedTo: assignedTo,
-          TaskScheme.isCompleted: false,
-          TaskScheme.projectId: projectId,
-          TaskScheme.ownerId: ownerId,
-          TaskScheme.members: members,
-          TaskScheme.attachments: attachments,
-        },
-        options: await _network.getLocalRequestOptions(useContentType: true),
-      );
-      log('data ${response.data}');
-      log('createTask ${response.statusMessage}');
-      log('createTask ${response.statusCode}');
-      return NetworkErrorService.isSuccessful(response)
-          ? (response.data[TaskScheme.data] as Map<String, dynamic>)
-          : throw Failure(
-              'Error: ${response.data[TaskScheme.data][TaskScheme.message]}');
-    } catch (e, t) {
-      log('create tasl error $t');
-      throw Failure(e.toString());
-    }
+    final ownerId = await _secureStorage.getUserData(type: StorageDataType.id);
+    log('due data $dueDate');
+    final response = await _network.post(
+      path: _tasks,
+      data: {
+        TaskScheme.title: title,
+        TaskScheme.dueDate: dueDate,
+        TaskScheme.description: description,
+        TaskScheme.assignedTo: assignedTo,
+        TaskScheme.isCompleted: false,
+        TaskScheme.projectId: projectId,
+        TaskScheme.ownerId: ownerId,
+        TaskScheme.members: members,
+        TaskScheme.attachments: attachments,
+      },
+      options: await _network.getLocalRequestOptions(useContentType: true),
+    );
+    log('data ${response.data}');
+    log('createTask ${response.statusMessage}');
+    log('createTask ${response.statusCode}');
+    return NetworkErrorService.isSuccessful(response)
+        ? (response.data[TaskScheme.data] as Map<String, dynamic>)
+        : throw Failure(
+            'Error: ${response.data[TaskScheme.data][TaskScheme.message]}');
   }
 
   @override
@@ -147,141 +141,110 @@ class TaskDataSourceImpl implements TaskDataSource {
     required String? dueDate,
     List<String>? members,
   }) async {
-    try {
-      final ownerId =
-          await _secureStorage.getUserData(type: StorageDataType.id);
-      final response = await _network.put(
-        path: '$_tasks/$taskId',
-        data: {
-          TaskScheme.title: title,
-          TaskScheme.dueDate: dueDate,
-          TaskScheme.description: description,
-          TaskScheme.assignedTo: assignedTo,
-          TaskScheme.isCompleted: false,
-          TaskScheme.projectId: projectId,
-          TaskScheme.ownerId: ownerId,
-          TaskScheme.members: members,
-          TaskScheme.attachments: null,
-        },
-        options: await _network.getLocalRequestOptions(useContentType: true),
-      );
-      log('updateTask ${response.statusMessage}');
-      log('updateTask ${response.statusCode}');
-      return NetworkErrorService.isSuccessful(response)
-          ? (response.data[TaskScheme.data] as Map<String, dynamic>)
-          : throw Failure(
-              'Error: ${response.data[TaskScheme.data][TaskScheme.message]}');
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final ownerId = await _secureStorage.getUserData(type: StorageDataType.id);
+    final response = await _network.put(
+      path: '$_tasks/$taskId',
+      data: {
+        TaskScheme.title: title,
+        TaskScheme.dueDate: dueDate,
+        TaskScheme.description: description,
+        TaskScheme.assignedTo: assignedTo,
+        TaskScheme.isCompleted: false,
+        TaskScheme.projectId: projectId,
+        TaskScheme.ownerId: ownerId,
+        TaskScheme.members: members,
+        TaskScheme.attachments: null,
+      },
+      options: await _network.getLocalRequestOptions(useContentType: true),
+    );
+    log('updateTask ${response.statusMessage}');
+    log('updateTask ${response.statusCode}');
+    return NetworkErrorService.isSuccessful(response)
+        ? (response.data[TaskScheme.data] as Map<String, dynamic>)
+        : throw Failure(
+            'Error: ${response.data[TaskScheme.data][TaskScheme.message]}');
   }
 
   @override
   Future<void> deleteTask({required String projectId}) async {
-    try {
-      final response = await _network.delete(
-        path: '$_tasks/$projectId',
-        options: await _network.getLocalRequestOptions(),
-      );
-      log('response ${response.data}');
-      log('deleteTask ${response.statusMessage}');
-      log('deleteTask ${response.statusCode}');
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final response = await _network.delete(
+      path: '$_tasks/$projectId',
+      options: await _network.getLocalRequestOptions(),
+    );
+    log('response ${response.data}');
+    log('deleteTask ${response.statusMessage}');
+    log('deleteTask ${response.statusCode}');
   }
 
   @override
   Future<Map<String, dynamic>> fetchOneTask({required String projectId}) async {
-    try {
-      final response = await _network.get(
-        path: '$_tasks/$projectId',
-        options: await _network.getLocalRequestOptions(),
-      );
+    final response = await _network.get(
+      path: '$_tasks/$projectId',
+      options: await _network.getLocalRequestOptions(),
+    );
 
-      log('fetchOneTask ${response.statusMessage}');
-      log('fetchOneTask ${response.statusCode}');
-      return NetworkErrorService.isSuccessful(response)
-          ? (response.data![TaskScheme.data] as Map<String, dynamic>)
-          : throw Failure('Error: Get fetchOneTask error');
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    log('fetchOneTask ${response.statusMessage}');
+    log('fetchOneTask ${response.statusCode}');
+    return NetworkErrorService.isSuccessful(response)
+        ? (response.data![TaskScheme.data] as Map<String, dynamic>)
+        : throw Failure('Error: Get fetchOneTask error');
   }
 
   @override
-  Future<List<Map<String, dynamic>>> fetchProjectTasks(
-      {required String projectId}) async {
-    try {
-      final response = await _network.get(
-        path: '$_projectTasks/$projectId',
-        options: await _network.getLocalRequestOptions(),
-      );
+  Future<List<dynamic>> fetchProjectTasks({required String projectId}) async {
+    final response = await _network.get(
+      path: '$_projectTasks/$projectId',
+      options: await _network.getLocalRequestOptions(),
+    );
 
-      return NetworkErrorService.isSuccessful(response)
-          ? (response.data![TaskScheme.data] as List<Map<String, dynamic>>)
-          : throw Failure('Error: Get fetchProjectTasks error');
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    return NetworkErrorService.isSuccessful(response)
+        ? (response.data![TaskScheme.data] as List<dynamic>)
+        : throw Failure('Error: Get fetchProjectTasks error');
   }
 
   @override
   Future<List<dynamic>> fetchUserTasks() async {
-    try {
-      final ownerId =
-          await _secureStorage.getUserData(type: StorageDataType.id);
-      final response = await _network.get(
-        path: '$_userTasks/$ownerId',
-        options: await _network.getLocalRequestOptions(),
-      );
+    final ownerId = await _secureStorage.getUserData(type: StorageDataType.id);
+    final response = await _network.get(
+      path: '$_userTasks/$ownerId',
+      options: await _network.getLocalRequestOptions(),
+    );
 
-      if (NetworkErrorService.isSuccessful(response)) {
-        return (response.data![TaskScheme.data] as List<dynamic>);
-      } else {
-        return [];
-      }
-    } catch (e) {
-      throw Failure(e.toString());
+    if (NetworkErrorService.isSuccessful(response)) {
+      return (response.data![TaskScheme.data] as List<dynamic>);
+    } else {
+      return [];
     }
   }
 
   @override
   Future<List<dynamic>> fetchAssignedToTasks() async {
-    try {
-      final ownerId =
-          await _secureStorage.getUserData(type: StorageDataType.id);
-      final response = await _network.get(
-        path: '$_assignedToTasks/$ownerId',
-        options: await _network.getLocalRequestOptions(),
-      );
+    final ownerId = await _secureStorage.getUserData(type: StorageDataType.id);
+    final response = await _network.get(
+      path: '$_assignedToTasks/$ownerId',
+      options: await _network.getLocalRequestOptions(),
+    );
 
-      if (NetworkErrorService.isSuccessful(response)) {
-        return (response.data![TaskScheme.data] as List<dynamic>);
-      } else {
-        return [];
-      }
-    } catch (e) {
-      throw Failure(e.toString());
+    if (NetworkErrorService.isSuccessful(response)) {
+      return (response.data![TaskScheme.data] as List<dynamic>);
+    } else {
+      return [];
     }
   }
 
   @override
   Future<List<dynamic>> fetchParticipateInTasks() async {
     final ownerId = await _secureStorage.getUserData(type: StorageDataType.id);
-    try {
-      final response = await _network.get(
-        path: '$_participateInTasks/$ownerId',
-        options: await _network.getLocalRequestOptions(),
-      );
 
-      if (NetworkErrorService.isSuccessful(response)) {
-        return (response.data![TaskScheme.data] as List<dynamic>);
-      } else {
-        return [];
-      }
-    } catch (e) {
-      throw Failure(e.toString());
+    final response = await _network.get(
+      path: '$_participateInTasks/$ownerId',
+      options: await _network.getLocalRequestOptions(),
+    );
+
+    if (NetworkErrorService.isSuccessful(response)) {
+      return (response.data![TaskScheme.data] as List<dynamic>);
+    } else {
+      return [];
     }
   }
 
@@ -292,37 +255,33 @@ class TaskDataSourceImpl implements TaskDataSource {
     required String taskId,
     required bool isFile,
   }) async {
-    try {
-      String fileName = file.path.split('/').last;
+    String fileName = file.path.split('/').last;
 
-      var formData = FormData.fromMap(
-        {
-          "file": await MultipartFile.fromFile(
-            file.path,
-            filename: fileName,
-          ),
-          "type": isFile == true ? 'FILE' : 'IMAGE',
-          TaskScheme.taskId: taskId,
-        },
-      );
-      final response = await _network.post(
-        path: _tasksAttachments,
-        formData: formData,
-        isFormData: true,
-        options: await _network.getLocalRequestOptions(),
-      );
+    var formData = FormData.fromMap(
+      {
+        "file": await MultipartFile.fromFile(
+          file.path,
+          filename: fileName,
+        ),
+        "type": isFile == true ? 'FILE' : 'IMAGE',
+        TaskScheme.taskId: taskId,
+      },
+    );
+    final response = await _network.post(
+      path: _tasksAttachments,
+      formData: formData,
+      isFormData: true,
+      options: await _network.getLocalRequestOptions(),
+    );
 
-      log('uploadTaskAttachment ${response.statusMessage}');
-      log('uploadTaskAttachment ${response.statusCode}');
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    log('uploadTaskAttachment ${response.statusMessage}');
+    log('uploadTaskAttachment ${response.statusCode}');
   }
 
   //   @override
   // Future<List<dynamic>> downloadTaskAttachment(
   //     {required String attachmentsId}) async {
-  //   try {
+
   //     final response = await _network.get(
   //       path: '$_tasksAttachments/$attachmentsId',
   //       options: await _network.getLocalRequestOptions(),
@@ -332,9 +291,7 @@ class TaskDataSourceImpl implements TaskDataSource {
   //     return NetworkErrorService.isSuccessful(response)
   //         ? (response.data![TaskScheme.data] as List<dynamic>)
   //         : throw Failure('Error: fetchAssignedToTask error');
-  //   } catch (e) {
-  //     throw Failure(e.toString());
-  //   }
+
   // }
 
   @override
@@ -342,76 +299,59 @@ class TaskDataSourceImpl implements TaskDataSource {
     required String content,
     required String taskId,
   }) async {
-    try {
-      final ownerId =
-          await _secureStorage.getUserData(type: StorageDataType.id);
+    final ownerId = await _secureStorage.getUserData(type: StorageDataType.id);
 
-      final response = await _network.post(
-        path: _comments,
-        data: {
-          TaskScheme.content: content,
-          TaskScheme.taskId: taskId,
-          TaskScheme.ownerId: ownerId,
-        },
-        options: await _network.getLocalRequestOptions(useContentType: true),
-      );
-      log('createTaskComment ${response.data}');
-      log('createTaskComment ${response.statusMessage}');
-      log('createTaskComment ${response.statusCode}');
-      return NetworkErrorService.isSuccessful(response)
-          ? (response.data![TaskScheme.data] as Map<String, dynamic>)
-          : throw Failure('Error:  createTaskComment error');
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final response = await _network.post(
+      path: _comments,
+      data: {
+        TaskScheme.content: content,
+        TaskScheme.taskId: taskId,
+        TaskScheme.ownerId: ownerId,
+      },
+      options: await _network.getLocalRequestOptions(useContentType: true),
+    );
+    log('createTaskComment ${response.data}');
+    log('createTaskComment ${response.statusMessage}');
+    log('createTaskComment ${response.statusCode}');
+    return NetworkErrorService.isSuccessful(response)
+        ? (response.data![TaskScheme.data] as Map<String, dynamic>)
+        : throw Failure('Error:  createTaskComment error');
   }
 
   @override
   Future<List<dynamic>> fetchTaskComments({required String taskId}) async {
-    try {
-      final response = await _network.get(
-        path: '$_tasksComments/$taskId',
-        options: await _network.getLocalRequestOptions(),
-      );
+    final response = await _network.get(
+      path: '$_tasksComments/$taskId',
+      options: await _network.getLocalRequestOptions(),
+    );
 
-      log('fetchTaskComments ${response.statusMessage}');
-      log('fetchTaskComments ${response.statusCode}');
-      return NetworkErrorService.isSuccessful(response)
-          ? (response.data![TaskScheme.data] as List<dynamic>)
-          : throw Failure('Error: Get fetchTaskComments error');
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    log('fetchTaskComments ${response.statusMessage}');
+    log('fetchTaskComments ${response.statusCode}');
+    return NetworkErrorService.isSuccessful(response)
+        ? (response.data![TaskScheme.data] as List<dynamic>)
+        : throw Failure('Error: Get fetchTaskComments error');
   }
 
   @override
   Future<List<dynamic>> taskMemberSearch({required String nickname}) async {
-    try {
-      final response = await _network.get(
-        path: '$_taskMemberSearch?query=$nickname',
-        options: await _network.getLocalRequestOptions(),
-      );
-      return NetworkErrorService.isSuccessful(response)
-          ? (response.data![TaskScheme.data] as List<dynamic>)
-          : throw Failure('Error: get taskMemberSearch error');
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final response = await _network.get(
+      path: '$_taskMemberSearch?query=$nickname',
+      options: await _network.getLocalRequestOptions(),
+    );
+    return NetworkErrorService.isSuccessful(response)
+        ? (response.data![TaskScheme.data] as List<dynamic>)
+        : throw Failure('Error: get taskMemberSearch error');
   }
 
   @override
   Future<void> deleteTaskComment({required String taskId}) async {
-    try {
-      final response = await _network.delete(
-        path: '$_comments/$taskId',
-        options: await _network.getLocalRequestOptions(),
-      );
+    final response = await _network.delete(
+      path: '$_comments/$taskId',
+      options: await _network.getLocalRequestOptions(),
+    );
 
-      log('deleteTaskComment ${response.statusMessage}');
-      log('deleteTaskComment ${response.statusCode}');
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    log('deleteTaskComment ${response.statusMessage}');
+    log('deleteTaskComment ${response.statusCode}');
   }
 
   @override
@@ -420,30 +360,26 @@ class TaskDataSourceImpl implements TaskDataSource {
     required String taskId,
     required bool isFile,
   }) async {
-    try {
-      String fileName = file.path.split('/').last;
+    String fileName = file.path.split('/').last;
 
-      var formData = FormData.fromMap(
-        {
-          "file": await MultipartFile.fromFile(
-            file.path,
-            filename: fileName,
-          ),
-          "type": isFile == true ? 'file' : 'image',
-          TaskScheme.commentId: taskId,
-        },
-      );
-      final response = await _network.post(
-        path: _tasksAttachments,
-        formData: formData,
-        isFormData: true,
-        options: await _network.getLocalRequestOptions(),
-      );
+    var formData = FormData.fromMap(
+      {
+        "file": await MultipartFile.fromFile(
+          file.path,
+          filename: fileName,
+        ),
+        "type": isFile == true ? 'file' : 'image',
+        TaskScheme.commentId: taskId,
+      },
+    );
+    final response = await _network.post(
+      path: _tasksAttachments,
+      formData: formData,
+      isFormData: true,
+      options: await _network.getLocalRequestOptions(),
+    );
 
-      log('uploadTaskCommentAttachment ${response.statusMessage}');
-      log('uploadTaskCommentAttachment ${response.statusCode}');
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    log('uploadTaskCommentAttachment ${response.statusMessage}');
+    log('uploadTaskCommentAttachment ${response.statusCode}');
   }
 }

@@ -42,16 +42,12 @@ class ProjectRepositoryImpl implements ProjectRepository {
 
   @override
   Future<List<ProjectModel>> fetchAllProjects() async {
-    try {
-      final response = await _projectDataSource.fetchAllProjects();
-      List<ProjectModel> projects = [];
-      for (int i = 0; i < response.length; i++) {
-        projects.add(ProjectModel.fromJson(response[i]));
-      }
-      return projects;
-    } catch (e) {
-      throw Failure(e.toString());
+    final response = await _projectDataSource.fetchAllProjects();
+    List<ProjectModel> projects = [];
+    for (int i = 0; i < response.length; i++) {
+      projects.add(ProjectModel.fromJson(response[i]));
     }
+    return projects;
   }
 
   @override
@@ -59,25 +55,17 @@ class ProjectRepositoryImpl implements ProjectRepository {
     required Color color,
     required String title,
   }) async {
-    try {
-      final response = await _projectDataSource.createProject(
-        color: color,
-        title: title,
-      );
-      return ProjectModel.fromJson(response);
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final response = await _projectDataSource.createProject(
+      color: color,
+      title: title,
+    );
+    return ProjectModel.fromJson(response);
   }
 
   @override
   Future<List<ProjectModel>> searchProject({required String title}) async {
-    try {
-      final response = await _projectDataSource.searchProject(title: title);
-      return response.map((json) => ProjectModel.fromJson(json)).toList();
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final response = await _projectDataSource.searchProject(title: title);
+    return response.map((json) => ProjectModel.fromJson(json)).toList();
   }
 
   @override
@@ -86,38 +74,25 @@ class ProjectRepositoryImpl implements ProjectRepository {
     required String title,
     required Color color,
   }) async {
-    try {
-      final response = await _projectDataSource.updateProject(
-        color: color,
-        projectModel: projectModel,
-        title: title,
-      );
-      return ProjectModel.fromJson(response);
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final response = await _projectDataSource.updateProject(
+      color: color,
+      projectModel: projectModel,
+      title: title,
+    );
+    return ProjectModel.fromJson(response);
   }
 
   @override
   Future<List<ProjectStatsModel>> fetchProjectStats() async {
-    try {
-      final response = await _projectDataSource.fetchProjectStats();
-      List<ProjectStatsModel> statsModels = [];
-      for (int i = 0; i < response.length; i++) {
-        statsModels.add(ProjectStatsModel.fromJson(response[i]));
-      }
-      return statsModels;
-    } catch (e) {
-      throw Failure(e.toString());
+    final response = await _projectDataSource.fetchProjectStats();
+    List<ProjectStatsModel> statsModels = [];
+    for (int i = 0; i < response.length; i++) {
+      statsModels.add(ProjectStatsModel.fromJson(response[i]));
     }
+    return statsModels;
   }
 
   @override
-  Future<void> deleteProject({required ProjectModel projectModel}) async {
-    try {
+  Future<void> deleteProject({required ProjectModel projectModel}) async =>
       await _projectDataSource.deleteProject(projectModel: projectModel);
-    } catch (e) {
-      throw Failure(e.toString());
-    }
-  }
 }

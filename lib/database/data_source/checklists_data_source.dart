@@ -50,25 +50,21 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
     required Color color,
     List<Map<String, dynamic>>? items,
   }) async {
-    try {
-      final id = await _secureStorage.getUserData(type: StorageDataType.id);
-      final response = await _network.post(
-        path: _checklists,
-        data: {
-          CheckListsScheme.title: title,
-          CheckListsScheme.color: color.toString().toStringColor(),
-          CheckListsScheme.ownerId: id,
-          CheckListsScheme.items: items,
-        },
-        options: await _network.getLocalRequestOptions(useContentType: true),
-      );
-      return NetworkErrorService.isSuccessful(response)
-          ? (response.data[CheckListsScheme.data] as Map<String, dynamic>)
-          : throw Failure(
-              'Error: ${response.data[CheckListsScheme.data][CheckListsScheme.message]}');
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final id = await _secureStorage.getUserData(type: StorageDataType.id);
+    final response = await _network.post(
+      path: _checklists,
+      data: {
+        CheckListsScheme.title: title,
+        CheckListsScheme.color: color.toString().toStringColor(),
+        CheckListsScheme.ownerId: id,
+        CheckListsScheme.items: items,
+      },
+      options: await _network.getLocalRequestOptions(useContentType: true),
+    );
+    return NetworkErrorService.isSuccessful(response)
+        ? (response.data[CheckListsScheme.data] as Map<String, dynamic>)
+        : throw Failure(
+            'Error: ${response.data[CheckListsScheme.data][CheckListsScheme.message]}');
   }
 
   @override
@@ -78,90 +74,68 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
     required String title,
     required Color color,
   }) async {
-    try {
-      final ownerId =
-          await _secureStorage.getUserData(type: StorageDataType.id);
-      final response = await _network.put(
-        path: '$_checklists/$checklistId',
-        data: {
-          CheckListsScheme.title: title,
-          CheckListsScheme.color: color.toString().toStringColor(),
-          CheckListsScheme.ownerId: ownerId,
-          CheckListsScheme.items: items,
-        },
-        options: await _network.getLocalRequestOptions(useContentType: true),
-      );
-      log('update status ${response.statusCode}');
-      log('update status ${response.statusMessage}');
-      return NetworkErrorService.isSuccessful(response)
-          ? (response.data[CheckListsScheme.data] as Map<String, dynamic>)
-          : throw Failure(
-              'Error: ${response.data[CheckListsScheme.data][CheckListsScheme.message]}');
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final ownerId = await _secureStorage.getUserData(type: StorageDataType.id);
+    final response = await _network.put(
+      path: '$_checklists/$checklistId',
+      data: {
+        CheckListsScheme.title: title,
+        CheckListsScheme.color: color.toString().toStringColor(),
+        CheckListsScheme.ownerId: ownerId,
+        CheckListsScheme.items: items,
+      },
+      options: await _network.getLocalRequestOptions(useContentType: true),
+    );
+    log('update status ${response.statusCode}');
+    log('update status ${response.statusMessage}');
+    return NetworkErrorService.isSuccessful(response)
+        ? (response.data[CheckListsScheme.data] as Map<String, dynamic>)
+        : throw Failure(
+            'Error: ${response.data[CheckListsScheme.data][CheckListsScheme.message]}');
   }
 
   @override
   Future<void> deleteCheckListItem({required String checkListId}) async {
-    try {
-      final response = await _network.delete(
-        path: '$_checklistsItems/$checkListId',
-        options: await _network.getLocalRequestOptions(),
-      );
-      log('deleteCheckList ${response.statusCode}');
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final response = await _network.delete(
+      path: '$_checklistsItems/$checkListId',
+      options: await _network.getLocalRequestOptions(),
+    );
+    log('deleteCheckList ${response.statusCode}');
   }
 
   @override
   Future<void> deleteCheckListItems({required List<String>? items}) async {
-    try {
-      final response = await _network.delete(
-        path: _checklistsItems,
-        data: {
-          CheckListsScheme.items: items ?? {},
-        },
-        options: await _network.getLocalRequestOptions(useContentType: true),
-      );
-      log('deleteCheckListItems ${response.data}');
-      log('deleteCheckListItems ${response.statusMessage}');
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final response = await _network.delete(
+      path: _checklistsItems,
+      data: {
+        CheckListsScheme.items: items ?? {},
+      },
+      options: await _network.getLocalRequestOptions(useContentType: true),
+    );
+    log('deleteCheckListItems ${response.data}');
+    log('deleteCheckListItems ${response.statusMessage}');
   }
 
   @override
   Future<void> deleteCheckList({required CheckListModel checkListModel}) async {
-    try {
-      log('id ${checkListModel.id}');
-      final response = await _network.delete(
-        path: '$_checklists/${checkListModel.id}',
-        options: await _network.getLocalRequestOptions(),
-      );
-      log('deleteCheckList ${response.statusCode}');
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    log('id ${checkListModel.id}');
+    final response = await _network.delete(
+      path: '$_checklists/${checkListModel.id}',
+      options: await _network.getLocalRequestOptions(),
+    );
+    log('deleteCheckList ${response.statusCode}');
   }
 
   @override
   Future<List<dynamic>> fetchAllCheckLists() async {
-    try {
-      final ownerId =
-          await _secureStorage.getUserData(type: StorageDataType.id);
-      final response = await _network.get(
-        path: '$_userChecklists/$ownerId',
-        options: await _network.getLocalRequestOptions(),
-      );
-      debugPrint('fetchAllCheckLists ${response.data}');
+    final ownerId = await _secureStorage.getUserData(type: StorageDataType.id);
+    final response = await _network.get(
+      path: '$_userChecklists/$ownerId',
+      options: await _network.getLocalRequestOptions(),
+    );
+    debugPrint('fetchAllCheckLists ${response.data}');
 
-      return NetworkErrorService.isSuccessful(response)
-          ? (response.data![CheckListsScheme.data] as List<dynamic>)
-          : throw Failure('fetchAllCheckLists error');
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    return NetworkErrorService.isSuccessful(response)
+        ? (response.data![CheckListsScheme.data] as List<dynamic>)
+        : throw Failure('fetchAllCheckLists error');
   }
 }

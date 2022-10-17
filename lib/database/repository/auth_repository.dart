@@ -31,15 +31,11 @@ class AuthRepositoryImpl implements AuthRepository {
     required String email,
     required String password,
   }) async {
-    try {
-      final response = await _authDataSource.signIn(
-        email: email,
-        password: password,
-      );
-      return AuthModel.fromJson(json: response);
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final response = await _authDataSource.signIn(
+      email: email,
+      password: password,
+    );
+    return AuthModel.fromJson(json: response);
   }
 
   @override
@@ -48,37 +44,23 @@ class AuthRepositoryImpl implements AuthRepository {
     required String password,
     required String nickname,
   }) async {
-    try {
-      final response = await _authDataSource.signUp(
-        email: email,
-        password: password,
-        nickname: nickname,
-      );
-      return AuthModel.fromJson(
-        json: response,
-        isSignUp: true,
-      );
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final response = await _authDataSource.signUp(
+      email: email,
+      password: password,
+      nickname: nickname,
+    );
+    return AuthModel.fromJson(
+      json: response,
+      isSignUp: true,
+    );
   }
 
   @override
   Future<AuthModel> refreshToken() async {
-    try {
-      final response = await _authDataSource.refreshToken();
-      return AuthModel.fromJson(json: response);
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final response = await _authDataSource.refreshToken();
+    return AuthModel.fromJson(json: response);
   }
 
   @override
-  Future<void> signOut() async {
-    try {
-      await _authDataSource.signOut();
-    } catch (e) {
-      throw Failure(e.toString());
-    }
-  }
+  Future<void> signOut() async => await _authDataSource.signOut();
 }

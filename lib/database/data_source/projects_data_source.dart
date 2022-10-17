@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
@@ -27,7 +26,7 @@ abstract class ProjectUserData {
   });
 
   Future<List<dynamic>> searchProject({required String title});
-  
+
   Future<Map<String, dynamic>> fetchOneProject({required String projectId});
 
   Future<List<dynamic>> fetchAllProjects();
@@ -55,78 +54,61 @@ class ProjectUserDataImpl implements ProjectUserData {
     required Color color,
     required String title,
   }) async {
-    try {
-      final ownerId =
-          await _secureStorageService.getUserData(type: StorageDataType.id);
-      final response = await _network.post(
-        path: _projects,
-        data: {
-          ProjectDataScheme.title: title,
-          ProjectDataScheme.color: '$color'.toStringColor(),
-          ProjectDataScheme.ownerId: ownerId,
-        },
-        options: await _network.getLocalRequestOptions(useContentType: true),
-      );
-      return NetworkErrorService.isSuccessful(response)
-          ? (response.data[ProjectDataScheme.data] as Map<String, dynamic>)
-          : throw Failure(
-              'Error: ${response.data[ProjectDataScheme.data][ProjectDataScheme.message]}');
-    } catch (e) {
-      throw Failure('Error: Create project error');
-    }
+    final ownerId =
+        await _secureStorageService.getUserData(type: StorageDataType.id);
+    final response = await _network.post(
+      path: _projects,
+      data: {
+        ProjectDataScheme.title: title,
+        ProjectDataScheme.color: '$color'.toStringColor(),
+        ProjectDataScheme.ownerId: ownerId,
+      },
+      options: await _network.getLocalRequestOptions(useContentType: true),
+    );
+    return NetworkErrorService.isSuccessful(response)
+        ? (response.data[ProjectDataScheme.data] as Map<String, dynamic>)
+        : throw Failure(
+            'Error: ${response.data[ProjectDataScheme.data][ProjectDataScheme.message]}');
   }
 
   @override
   Future<List<dynamic>> fetchAllProjects() async {
-    try {
-      final id =
-          await _secureStorageService.getUserData(type: StorageDataType.id);
-      final response = await _network.get(
-        path: '$_userProjects/$id',
-        options: await _network.getLocalRequestOptions(),
-      );
-      return NetworkErrorService.isSuccessful(response)
-          ? (response.data![ProjectDataScheme.data] as List<dynamic>)
-          : throw Failure('Error: ${response.data![ProjectDataScheme.data]}');
-    } catch (e) {
-      throw Failure('Failure expersion $e');
-    }
+    final id =
+        await _secureStorageService.getUserData(type: StorageDataType.id);
+    final response = await _network.get(
+      path: '$_userProjects/$id',
+      options: await _network.getLocalRequestOptions(),
+    );
+    return NetworkErrorService.isSuccessful(response)
+        ? (response.data![ProjectDataScheme.data] as List<dynamic>)
+        : throw Failure('Error: ${response.data![ProjectDataScheme.data]}');
   }
 
   @override
   Future<List<dynamic>> searchProject({required String title}) async {
-    try {
-      final response = await _network.get(
-        path: '$_projectsSearch?query=$title',
-        options: await _network.getLocalRequestOptions(useContentType: true),
-      );
+    final response = await _network.get(
+      path: '$_projectsSearch?query=$title',
+      options: await _network.getLocalRequestOptions(useContentType: true),
+    );
 
-      return NetworkErrorService.isSuccessful(response)
-          ? (response.data![ProjectDataScheme.data] as List<dynamic>)
-          : throw Failure('Error: get project error');
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    return NetworkErrorService.isSuccessful(response)
+        ? (response.data![ProjectDataScheme.data] as List<dynamic>)
+        : throw Failure('Error: get project error');
   }
 
   @override
   Future<void> deleteProject({required ProjectModel projectModel}) async {
-    try {
-      final id =
-          await _secureStorageService.getUserData(type: StorageDataType.id);
+    final id =
+        await _secureStorageService.getUserData(type: StorageDataType.id);
 
-      final Response response = await _network.delete(
-        path: '$_projects/$id',
-        queryParameters: {ProjectDataScheme.id: projectModel.id},
-        options: await _network.getLocalRequestOptions(),
-      );
-      if (!NetworkErrorService.isSuccessful(response)) {
-        throw Failure(
-            'Error: ${response.data[ProjectDataScheme.data][AuthScheme.message]}');
-      }
-    } catch (e) {
-      log('delete project error :$e');
-      throw Failure(e.toString());
+    final Response response = await _network.delete(
+      path: '$_projects/$id',
+      queryParameters: {ProjectDataScheme.id: projectModel.id},
+      options: await _network.getLocalRequestOptions(),
+    );
+    if (!NetworkErrorService.isSuccessful(response)) {
+      throw Failure(
+          'Error: ${response.data[ProjectDataScheme.data][AuthScheme.message]}');
     }
   }
 
@@ -136,59 +118,47 @@ class ProjectUserDataImpl implements ProjectUserData {
     required Color color,
     required String title,
   }) async {
-    try {
-      final id =
-          await _secureStorageService.getUserData(type: StorageDataType.id);
-      final response = await _network.put(
-        path: '$_projects/${projectModel.id}',
-        data: {
-          ProjectDataScheme.color: color.toString().toStringColor(),
-          ProjectDataScheme.title: title,
-          ProjectDataScheme.ownerId: id,
-        },
-        options: await _network.getLocalRequestOptions(useContentType: true),
-      );
-      return NetworkErrorService.isSuccessful(response)
-          ? (response.data[ProjectDataScheme.data] as Map<String, dynamic>)
-          : throw Failure(
-              'Error: ${response.data[ProjectDataScheme.data][ProjectDataScheme.message]}');
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final id =
+        await _secureStorageService.getUserData(type: StorageDataType.id);
+    final response = await _network.put(
+      path: '$_projects/${projectModel.id}',
+      data: {
+        ProjectDataScheme.color: color.toString().toStringColor(),
+        ProjectDataScheme.title: title,
+        ProjectDataScheme.ownerId: id,
+      },
+      options: await _network.getLocalRequestOptions(useContentType: true),
+    );
+    return NetworkErrorService.isSuccessful(response)
+        ? (response.data[ProjectDataScheme.data] as Map<String, dynamic>)
+        : throw Failure(
+            'Error: ${response.data[ProjectDataScheme.data][ProjectDataScheme.message]}');
   }
 
   @override
   Future<List<dynamic>> fetchProjectStats() async {
-    try {
-      final userId =
-          await _secureStorageService.getUserData(type: StorageDataType.id);
+    final userId =
+        await _secureStorageService.getUserData(type: StorageDataType.id);
 
-      final response = await _network.get(
-        path: '$_projectsStats/$userId',
-        options: await _network.getLocalRequestOptions(),
-      );
-      return NetworkErrorService.isSuccessful(response)
-          ? (response.data![ProjectDataScheme.data] as List<dynamic>)
-          : throw Failure('Error: Get Statistics');
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final response = await _network.get(
+      path: '$_projectsStats/$userId',
+      options: await _network.getLocalRequestOptions(),
+    );
+    return NetworkErrorService.isSuccessful(response)
+        ? (response.data![ProjectDataScheme.data] as List<dynamic>)
+        : throw Failure('Error: Get Statistics');
   }
 
   @override
   Future<Map<String, dynamic>> fetchOneProject(
       {required String projectId}) async {
-    try {
-      final response = await _network.get(
-        path: '$_projects/$projectId',
-        options: await _network.getLocalRequestOptions(),
-      );
-      return NetworkErrorService.isSuccessful(response)
-          ? (response.data[ProjectDataScheme.data] as Map<String, dynamic>)
-          : throw Failure(
-              'Error: ${response.data[ProjectDataScheme.data][ProjectDataScheme.message]}');
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final response = await _network.get(
+      path: '$_projects/$projectId',
+      options: await _network.getLocalRequestOptions(),
+    );
+    return NetworkErrorService.isSuccessful(response)
+        ? (response.data[ProjectDataScheme.data] as Map<String, dynamic>)
+        : throw Failure(
+            'Error: ${response.data[ProjectDataScheme.data][ProjectDataScheme.message]}');
   }
 }

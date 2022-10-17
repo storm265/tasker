@@ -29,12 +29,8 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
 
   @override
   Future<UserProfileModel> fetchUser({required String id}) async {
-    try {
-      final response = await _userProfileDataSource.fetchUser(id: id);
-      return UserProfileModel.fromJson(response);
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final response = await _userProfileDataSource.fetchUser(id: id);
+    return UserProfileModel.fromJson(response);
   }
 
   @override
@@ -42,26 +38,18 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
     required String id,
     required String accessToken,
   }) async {
-    try {
-      final response = await _userProfileDataSource.fetchCurrentUser(
-        id: id,
-        accessToken: accessToken,
-      );
+    final response = await _userProfileDataSource.fetchCurrentUser(
+      id: id,
+      accessToken: accessToken,
+    );
 
-      return UserProfileModel.fromJson(response);
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    return UserProfileModel.fromJson(response);
   }
 
   @override
   Future<StatsModel> fetchUserStatistics() async {
-    try {
-      final response = await _userProfileDataSource.fetchUserStatistics();
-      return StatsModel.fromJson(response);
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final response = await _userProfileDataSource.fetchUserStatistics();
+    return StatsModel.fromJson(response);
   }
 
   @override
@@ -69,14 +57,10 @@ class UserProfileRepositoryImpl implements UserProfileRepository {
     required String name,
     required File file,
   }) async {
-    try {
-      final response = await _userProfileDataSource.uploadAvatar(
-        name: name,
-        file: file,
-      );
-      return response[AuthScheme.avatarUrl];
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final response = await _userProfileDataSource.uploadAvatar(
+      name: name,
+      file: file,
+    );
+    return response[AuthScheme.avatarUrl];
   }
 }

@@ -41,52 +41,40 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
     required String id,
     required String accessToken,
   }) async {
-    try {
-      final response = await _network.get(
-        path: '$_userPath/$id',
-        options: _network.getRequestOptions(accessToken: accessToken),
-      );
-      return NetworkErrorService.isSuccessful(response)
-          ? response.data[UserDataScheme.data] as Map<String, dynamic>
-          : throw Failure(
-              'Error: ${response.data[UserDataScheme.data][UserDataScheme.message]}');
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final response = await _network.get(
+      path: '$_userPath/$id',
+      options: _network.getRequestOptions(accessToken: accessToken),
+    );
+    return NetworkErrorService.isSuccessful(response)
+        ? response.data[UserDataScheme.data] as Map<String, dynamic>
+        : throw Failure(
+            'Error: ${response.data[UserDataScheme.data][UserDataScheme.message]}');
   }
 
   @override
   Future<Map<String, dynamic>> fetchUser({required String id}) async {
-    try {
-      final response = await _network.get(
-        path: '$_userPath/$id',
-        options: await _network.getLocalRequestOptions(),
-      );
-      return NetworkErrorService.isSuccessful(response)
-          ? response.data[UserDataScheme.data] as Map<String, dynamic>
-          : throw Failure(
-              'Error: ${response.data[UserDataScheme.data][UserDataScheme.message]}');
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final response = await _network.get(
+      path: '$_userPath/$id',
+      options: await _network.getLocalRequestOptions(),
+    );
+    return NetworkErrorService.isSuccessful(response)
+        ? response.data[UserDataScheme.data] as Map<String, dynamic>
+        : throw Failure(
+            'Error: ${response.data[UserDataScheme.data][UserDataScheme.message]}');
   }
 
   @override
   Future<Map<String, dynamic>> fetchUserStatistics() async {
-    try {
-      final id =
-          await _secureStorageService.getUserData(type: StorageDataType.id);
+    final id =
+        await _secureStorageService.getUserData(type: StorageDataType.id);
 
-      final response = await _network.get(
-          path: '$_userStats/$id',
-          options: await _network.getLocalRequestOptions());
-      return NetworkErrorService.isSuccessful(response)
-          ? response.data[UserDataScheme.data] as Map<String, dynamic>
-          : throw Failure(
-              'Error: ${response.data[UserDataScheme.data][UserDataScheme.message]}');
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final response = await _network.get(
+        path: '$_userStats/$id',
+        options: await _network.getLocalRequestOptions());
+    return NetworkErrorService.isSuccessful(response)
+        ? response.data[UserDataScheme.data] as Map<String, dynamic>
+        : throw Failure(
+            'Error: ${response.data[UserDataScheme.data][UserDataScheme.message]}');
   }
 
   @override
@@ -94,39 +82,35 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
     required String name,
     required File file,
   }) async {
-    try {
-      String fileName = file.path.split('/').last;
+    String fileName = file.path.split('/').last;
 
-      var formData = FormData.fromMap(
-        {
-          "file": await MultipartFile.fromFile(
-            file.path,
-            filename: fileName,
-          ),
-          AuthScheme.userId:
-              await _secureStorageService.getUserData(type: StorageDataType.id),
-        },
-      );
-      final response = await _network.post(
-        path: _storagePath,
-        formData: formData,
-        data: formData,
-        isFormData: true,
-        options: _network.getRequestOptions(
-          useMultiPart: true,
-          accessToken: await _secureStorageService.getUserData(
-                  type: StorageDataType.accessToken) ??
-              'null',
+    var formData = FormData.fromMap(
+      {
+        "file": await MultipartFile.fromFile(
+          file.path,
+          filename: fileName,
         ),
-      );
-      log('uploadAvatar  ${response.data}');
+        AuthScheme.userId:
+            await _secureStorageService.getUserData(type: StorageDataType.id),
+      },
+    );
+    final response = await _network.post(
+      path: _storagePath,
+      formData: formData,
+      data: formData,
+      isFormData: true,
+      options: _network.getRequestOptions(
+        useMultiPart: true,
+        accessToken: await _secureStorageService.getUserData(
+                type: StorageDataType.accessToken) ??
+            'null',
+      ),
+    );
+    log('uploadAvatar  ${response.data}');
 
-      return NetworkErrorService.isSuccessful(response)
-          ? response.data[UserDataScheme.data] as Map<String, dynamic>
-          : throw Failure(
-              'Error: ${response.data[UserDataScheme.data][UserDataScheme.message]}');
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    return NetworkErrorService.isSuccessful(response)
+        ? response.data[UserDataScheme.data] as Map<String, dynamic>
+        : throw Failure(
+            'Error: ${response.data[UserDataScheme.data][UserDataScheme.message]}');
   }
 }

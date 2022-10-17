@@ -97,8 +97,7 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                                               taskRepository: widget
                                                   .taskController
                                                   .taskRepository,
-                                              taskId:
-                                                  sortedList[index].projectId,
+                                              taskId: sortedList[index].id,
                                             ),
                                           ),
                                         ]

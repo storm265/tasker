@@ -47,26 +47,22 @@ class AuthDataSourceImpl implements AuthDataSource {
     required String email,
     required String password,
   }) async {
-    try {
-      Response response = await _networkSource.post(
-        path: _signInUrl,
-        data: {
-          AuthScheme.email: email.toLowerCase(),
-          AuthScheme.password: _encodePassword(password),
-        },
-        options: _networkSource.authOptions,
-      );
-      log('signIn ${response.statusMessage}');
-      log('signIn ${response.statusCode}');
+    Response response = await _networkSource.post(
+      path: _signInUrl,
+      data: {
+        AuthScheme.email: email.toLowerCase(),
+        AuthScheme.password: _encodePassword(password),
+      },
+      options: _networkSource.authOptions,
+    );
+    log('signIn ${response.statusMessage}');
+    log('signIn ${response.statusCode}');
 
-      if (NetworkErrorService.isSuccessful(response)) {
-        return response.data[AuthScheme.data] as Map<String, dynamic>;
-      } else {
-        throw Failure(
-            'Error: ${response.data[AuthScheme.data][AuthScheme.message]}');
-      }
-    } catch (e) {
-      throw Failure(e.toString());
+    if (NetworkErrorService.isSuccessful(response)) {
+      return response.data[AuthScheme.data] as Map<String, dynamic>;
+    } else {
+      throw Failure(
+          'Error: ${response.data[AuthScheme.data][AuthScheme.message]}');
     }
   }
 
@@ -76,65 +72,53 @@ class AuthDataSourceImpl implements AuthDataSource {
     required String password,
     required String nickname,
   }) async {
-    try {
-      Response response = await _networkSource.post(
-        path: _signUpUrl,
-        data: {
-          AuthScheme.email: email.toLowerCase(),
-          AuthScheme.password: _encodePassword(password),
-          AuthScheme.username: nickname,
-        },
-        options: _networkSource.authOptions,
-      );
-      return NetworkErrorService.isSuccessful(response)
-          ? response.data[AuthScheme.data] as Map<String, dynamic>
-          : throw Failure(
-              'Error: ${response.data[AuthScheme.data][AuthScheme.message]}');
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    Response response = await _networkSource.post(
+      path: _signUpUrl,
+      data: {
+        AuthScheme.email: email.toLowerCase(),
+        AuthScheme.password: _encodePassword(password),
+        AuthScheme.username: nickname,
+      },
+      options: _networkSource.authOptions,
+    );
+    return NetworkErrorService.isSuccessful(response)
+        ? response.data[AuthScheme.data] as Map<String, dynamic>
+        : throw Failure(
+            'Error: ${response.data[AuthScheme.data][AuthScheme.message]}');
   }
 
   @override
   Future<Map<String, dynamic>> refreshToken() async {
-    try {
-      final refreshToken = await _secureStorageService.getUserData(
-        type: StorageDataType.refreshToken,
-      );
-      Response response = await _networkSource.post(
-        path: _refreshUrl,
-        data: {
-          AuthScheme.refreshToken: refreshToken,
-        },
-        options: _networkSource.authOptions,
-      );
-      log('dataSource refreshToken response ${response.data}');
+    final refreshToken = await _secureStorageService.getUserData(
+      type: StorageDataType.refreshToken,
+    );
+    Response response = await _networkSource.post(
+      path: _refreshUrl,
+      data: {
+        AuthScheme.refreshToken: refreshToken,
+      },
+      options: _networkSource.authOptions,
+    );
+    log('dataSource refreshToken response ${response.data}');
 
-      return NetworkErrorService.isSuccessful(response)
-          ? response.data[AuthScheme.data] as Map<String, dynamic>
-          : throw Failure(
-              'Error: ${response.data[AuthScheme.data][AuthScheme.message]}',
-            );
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    return NetworkErrorService.isSuccessful(response)
+        ? response.data[AuthScheme.data] as Map<String, dynamic>
+        : throw Failure(
+            'Error: ${response.data[AuthScheme.data][AuthScheme.message]}',
+          );
   }
 
   @override
   Future<void> signOut() async {
-    try {
-      await _networkSource.post(
-        path: _signOutUrl,
-        data: {
-          AuthScheme.email: await _secureStorageService.getUserData(
-            type: StorageDataType.email,
-          )
-        },
-        options: _networkSource.authOptions,
-      );
-      await _secureStorageService.removeAllUserData();
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    await _networkSource.post(
+      path: _signOutUrl,
+      data: {
+        AuthScheme.email: await _secureStorageService.getUserData(
+          type: StorageDataType.email,
+        )
+      },
+      options: _networkSource.authOptions,
+    );
+    await _secureStorageService.removeAllUserData();
   }
 }

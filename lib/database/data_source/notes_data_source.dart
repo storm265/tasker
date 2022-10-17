@@ -37,62 +37,50 @@ class NotesDataSourceImpl implements NotesDataSource {
         _secureStorage = secureStorage;
 
   final _notes = '/notes';
-final _userNotes = '/user-notes';
+  final _userNotes = '/user-notes';
+
   @override
   Future<Map<String, dynamic>> createNote({
     required Color color,
     required String description,
   }) async {
-    try {
-      final id = await _secureStorage.getUserData(type: StorageDataType.id);
-      final response = await _network.post(
-        path: _notes,
-        data: {
-          NotesScheme.description: description,
-          NotesScheme.color: color.toString().toStringColor(),
-          NotesScheme.ownerId: id,
-        },
-        options: await _network.getLocalRequestOptions(useContentType: true),
-      );
-      return NetworkErrorService.isSuccessful(response)
-          ? (response.data[NotesScheme.data] as Map<String, dynamic>)
-          : throw Failure(
-              'Error: ${response.data[NotesScheme.data][NotesScheme.message]}');
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final id = await _secureStorage.getUserData(type: StorageDataType.id);
+    final response = await _network.post(
+      path: _notes,
+      data: {
+        NotesScheme.description: description,
+        NotesScheme.color: color.toString().toStringColor(),
+        NotesScheme.ownerId: id,
+      },
+      options: await _network.getLocalRequestOptions(useContentType: true),
+    );
+    return NetworkErrorService.isSuccessful(response)
+        ? (response.data[NotesScheme.data] as Map<String, dynamic>)
+        : throw Failure(
+            'Error: ${response.data[NotesScheme.data][NotesScheme.message]}');
   }
 
   @override
   Future<void> deleteNote({required String projectId}) async {
-    try {
-      await _network.delete(
-        path: '$_notes/$projectId',
-        options: await _network.getLocalRequestOptions(),
-      );
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    await _network.delete(
+      path: '$_notes/$projectId',
+      options: await _network.getLocalRequestOptions(),
+    );
   }
 
   @override
   Future<List<dynamic>> fetchUserNotes() async {
-    try {
-      final ownerId =
-          await _secureStorage.getUserData(type: StorageDataType.id);
-      final response = await _network.get(
-        path: '$_userNotes/$ownerId',
-        queryParameters: {
-          NotesScheme.ownerId: ownerId,
-        },
-        options: await _network.getLocalRequestOptions(useContentType: true),
-      );
-      return NetworkErrorService.isSuccessful(response)
-          ? (response.data![NotesScheme.data] as List<dynamic>)
-          : throw Failure('Error: Get project error');
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final ownerId = await _secureStorage.getUserData(type: StorageDataType.id);
+    final response = await _network.get(
+      path: '$_userNotes/$ownerId',
+      queryParameters: {
+        NotesScheme.ownerId: ownerId,
+      },
+      options: await _network.getLocalRequestOptions(useContentType: true),
+    );
+    return NetworkErrorService.isSuccessful(response)
+        ? (response.data![NotesScheme.data] as List<dynamic>)
+        : throw Failure('Error: Get project error');
   }
 
   @override
@@ -101,32 +89,27 @@ final _userNotes = '/user-notes';
     required String description,
     required Color color,
   }) async {
-    try {
-      final ownerId =
-          await _secureStorage.getUserData(type: StorageDataType.id);
-      final response = await _network.put(
-        path: '$_notes/${noteModel.id}',
-        data: {
-          NotesScheme.description: description,
-          NotesScheme.color: color.toString().toStringColor(),
-          NotesScheme.ownerId: ownerId,
-          NotesScheme.isCompleted: noteModel.isCompleted,
-        },
-        options: await _network.getLocalRequestOptions(useContentType: true),
-      );
-      return NetworkErrorService.isSuccessful(response)
-          ? (response.data[NotesScheme.data] as Map<String, dynamic>)
-          : throw Failure(
-              'Error: ${response.data[NotesScheme.data][NotesScheme.message]}');
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final ownerId = await _secureStorage.getUserData(type: StorageDataType.id);
+    final response = await _network.put(
+      path: '$_notes/${noteModel.id}',
+      data: {
+        NotesScheme.description: description,
+        NotesScheme.color: color.toString().toStringColor(),
+        NotesScheme.ownerId: ownerId,
+        NotesScheme.isCompleted: noteModel.isCompleted,
+      },
+      options: await _network.getLocalRequestOptions(useContentType: true),
+    );
+    return NetworkErrorService.isSuccessful(response)
+        ? (response.data[NotesScheme.data] as Map<String, dynamic>)
+        : throw Failure(
+            'Error: ${response.data[NotesScheme.data][NotesScheme.message]}');
   }
 
   // @override
   // here need note ID not project
   // Future<Map<String, dynamic>> fetchOneNote({required String projectId}) async {
-  //   try {
+
   //     final response = await _network.dio.get(
   //       '$_notes/$projectId',
   //       options: await _network.getLocalRequestOptions(),
@@ -135,8 +118,6 @@ final _userNotes = '/user-notes';
   //         ? (response.data[NotesScheme.data] as Map<String, dynamic>)
   //         : throw Failure(
   //             'Error: ${response.data[NotesScheme.data][NotesScheme.message]}');
-  //   } catch (e) {
-  //     throw Failure(e.toString());
-  //   }
+
   // }
 }

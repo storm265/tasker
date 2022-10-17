@@ -33,25 +33,16 @@ class NoteRepositoryImpl implements NoteRepository<NotesModel> {
     required Color color,
     required String description,
   }) async {
-    try {
-      final response = await _noteDataSource.createNote(
-        color: color,
-        description: description,
-      );
-      return NotesModel.fromJson(response);
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final response = await _noteDataSource.createNote(
+      color: color,
+      description: description,
+    );
+    return NotesModel.fromJson(response);
   }
 
   @override
-  Future<void> deleteNote({required String projectId}) async {
-    try {
+  Future<void> deleteNote({required String projectId}) async =>
       await _noteDataSource.deleteNote(projectId: projectId);
-    } catch (e) {
-      throw Failure(e.toString());
-    }
-  }
 
   // @override
   // Future<NotesModel> fetchOneNote({
@@ -71,16 +62,12 @@ class NoteRepositoryImpl implements NoteRepository<NotesModel> {
 
   @override
   Future<List<NotesModel>> fetchUserNotes() async {
-    try {
-      final response = await _noteDataSource.fetchUserNotes();
-      List<NotesModel> notes = [];
-      for (int i = 0; i < response.length; i++) {
-        notes.add(NotesModel.fromJson(response[i]));
-      }
-      return notes;
-    } catch (e) {
-      throw Failure(e.toString());
+    final response = await _noteDataSource.fetchUserNotes();
+    List<NotesModel> notes = [];
+    for (int i = 0; i < response.length; i++) {
+      notes.add(NotesModel.fromJson(response[i]));
     }
+    return notes;
   }
 
   @override
@@ -89,15 +76,11 @@ class NoteRepositoryImpl implements NoteRepository<NotesModel> {
     required String description,
     required Color color,
   }) async {
-    try {
-      final response = await _noteDataSource.updateNote(
-        noteModel: noteModel,
-        description: description,
-        color: color,
-      );
-      return NotesModel.fromJson(response);
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final response = await _noteDataSource.updateNote(
+      noteModel: noteModel,
+      description: description,
+      color: color,
+    );
+    return NotesModel.fromJson(response);
   }
 }
