@@ -115,7 +115,7 @@ class _TasksPageState extends State<TasksPage>
                 children: [
                   AdvancedCalendar(
                     calendarProvider: CalendarProvider(),
-                    controller: taskController.calendarController,
+                    controller: taskController.selectedDate,
                     events: taskController.events,
                     taskController: taskController,
                   ),

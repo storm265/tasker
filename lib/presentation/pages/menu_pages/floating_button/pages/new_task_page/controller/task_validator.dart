@@ -16,19 +16,19 @@ class TaskValidator {
       return true;
     } else {
       MessageService.displaySnackbar(
-          context: context, message: 'Please select project');
+        context: context,
+        message: 'Please select project',
+      );
       await Future.delayed(const Duration(seconds: 3));
       return false;
     }
   }
 
-  bool isPickedProject({
-    ProjectModel? pickedProject,
-  }) {
+  bool isPickedProject({ProjectModel? pickedProject}) {
     if (pickedProject == null) {
-      return false;
-    } else {
       return true;
+    } else {
+      return false;
     }
   }
 

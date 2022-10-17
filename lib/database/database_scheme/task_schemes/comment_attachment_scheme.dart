@@ -4,7 +4,8 @@ class CommentAttachmentScheme {
   static const content = 'content';
   static const ownerId = 'owner_id';
   static const avatarUrl = 'avatar_url';
-  static const commenter = 'commenter';
+  static const commentator = 'commentator';
+  static const attachments = 'attachments';
   static const type = 'type';
   static const filePath = 'filePath';
   static const taskId = 'task_id';

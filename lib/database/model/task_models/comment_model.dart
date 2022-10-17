@@ -1,13 +1,16 @@
+import 'dart:developer';
+
 import 'package:todo2/database/database_scheme/task_schemes/comment_attachment_scheme.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
 
+// TODO maybe should add attachaments field
 class CommentModel {
   final String id;
   final String content;
   final String taskId;
   final String ownerId;
   final UserProfileModel commentator;
-  final String avatarUrl;
+  final String? attachments;
   final DateTime createdAt;
 
   CommentModel({
@@ -16,7 +19,7 @@ class CommentModel {
     required this.taskId,
     required this.commentator,
     required this.ownerId,
-    required this.avatarUrl,
+    this.attachments,
     required this.createdAt,
   });
 
@@ -24,10 +27,11 @@ class CommentModel {
         id: json[CommentAttachmentScheme.id],
         content: json[CommentAttachmentScheme.content],
         commentator: UserProfileModel.fromJson(
-            json[CommentAttachmentScheme.commenter] as Map<String, dynamic>),
+          json[CommentAttachmentScheme.commentator] as Map<String, dynamic>,
+        ),
         taskId: json[CommentAttachmentScheme.taskId],
+        attachments: json[CommentAttachmentScheme.attachments] ?? '',
         ownerId: json[CommentAttachmentScheme.ownerId],
-        avatarUrl: json[CommentAttachmentScheme.avatarUrl],
         createdAt: DateTime.parse(
           json[CommentAttachmentScheme.createdAt],
         ),

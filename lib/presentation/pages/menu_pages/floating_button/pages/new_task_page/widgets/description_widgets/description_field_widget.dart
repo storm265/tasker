@@ -28,8 +28,7 @@ class DescriptionFieldWidget extends StatelessWidget {
           desciptionTextWidget,
           DescriptionBoxWidget(
             attachmentsProvider: addEditTaskController.attachmentsProvider,
-            descriptionController:
-                addEditTaskController.descriptionTextController,
+            textController: addEditTaskController.descriptionTextController,
             hintText: hintText,
           ),
           ValueListenableBuilder<List<PlatformFile>>(

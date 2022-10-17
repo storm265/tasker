@@ -2,8 +2,8 @@ import 'package:todo2/database/database_scheme/user_data_scheme..dart';
 
 class UserProfileModel {
   final String id;
-  final String username;
   final String email;
+  final String username;
   final String avatarUrl;
   final DateTime createdAt;
 

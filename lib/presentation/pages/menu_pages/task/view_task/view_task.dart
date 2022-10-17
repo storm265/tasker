@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/projects_data_source.dart';
@@ -14,7 +16,8 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_ta
 import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/confirm_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/access_token_mixin.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/tasks_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/view_task/task_attachament_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/attachments/comment_attachment_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/attachments/task_attachament_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/controller/view_task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/comment_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/detailed_title_widget.dart';
@@ -63,9 +66,9 @@ class _ViewTaskState extends State<ViewTask> {
   void initState() {
     Future.wait([
       viewTaskController.getAccessToken(),
-      viewTaskController.fetchDetailedUser(widget.pickedTask.assignedTo),
       viewTaskController.fetchProject(widget.pickedTask.projectId)
     ]).then((_) => setState(() {}));
+
     super.initState();
   }
 
@@ -109,17 +112,26 @@ class _ViewTaskState extends State<ViewTask> {
                         viewTaskController.isShowComments
                             ? TaskAttachementWidget(
                                 viewTaskController: viewTaskController,
-                                pickedModel: widget.pickedTask,
+                                pickedTask: widget.pickedTask,
                               )
                             : const SizedBox(),
                         viewTaskController.isShowComments
                             ? DescriptionBoxWidget(
+                                callback: () => setState(() {}),
                                 withImageIcon: true,
-                                descriptionController:
+                                viewTaskController: viewTaskController,
+                                textController:
                                     viewTaskController.commentController,
                                 attachmentsProvider:
                                     viewTaskController.attachmentsProvider,
+                                pickedTask: widget.pickedTask,
                                 hintText: LocaleKeys.write_a_comment.tr(),
+                              )
+                            : const SizedBox(),
+                        viewTaskController.isShowComments
+                            ? CommentAttachmentWidget(
+                                pickedTask: widget.pickedTask,
+                                viewTaskController: viewTaskController,
                               )
                             : const SizedBox(),
                       ],

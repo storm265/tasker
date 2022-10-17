@@ -10,7 +10,7 @@ import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/controller/file_provider.dart';
 import 'package:todo2/presentation/pages/auth/widgets/unfocus_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/controllers/add_task_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/add_task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/attachments_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/member_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/panel_provider.dart';
@@ -106,7 +106,7 @@ class _AddEditTaskPageState extends State<AddEditTaskPage> {
           : LocaleKeys.new_task.tr(),
       resizeToAvoidBottomInset: false,
       showLeadingButton: true,
-      navRoute: Pages.navigationReplacement,
+      isPopFromNavBar: false,
       child: Stack(
         children: [
           const FakeAppBar(),

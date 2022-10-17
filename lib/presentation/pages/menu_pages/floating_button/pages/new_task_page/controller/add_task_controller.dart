@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
@@ -53,6 +55,7 @@ class AddEditTaskController extends BaseTasksController with AccessTokenMixin {
 
   Future<void> createTask(BuildContext context) async {
     try {
+      log('is picke project ${pickedProject.value?.title}');
       changeSubmitButton(false);
       if (await taskValidator.tryValidate(
         pickedProject: pickedProject.value,
@@ -70,7 +73,7 @@ class AddEditTaskController extends BaseTasksController with AccessTokenMixin {
               title: titleTextController.text,
               description: descriptionTextController.text,
               assignedTo: pickedUser.value?.id,
-              projectId: pickedProject.value!.id,
+              projectId: pickedProject.value?.id ?? '',
               dueDate: (calendarController.value.day == DateTime.now().day ||
                       calendarController.value.day < DateTime.now().day)
                   ? null
@@ -86,7 +89,7 @@ class AddEditTaskController extends BaseTasksController with AccessTokenMixin {
           Duration.zero,
           () => NavigationService.navigateTo(
             context,
-            Pages.tasks,
+            Pages.navigationReplacement,
           ),
         );
       }

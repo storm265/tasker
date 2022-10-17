@@ -1,24 +1,39 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/attachments_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/description_widgets/description_text_field.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/view_task/controller/view_task_controller.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/utils/assets_path.dart';
 
-class DescriptionBoxWidget extends StatelessWidget {
-  final TextEditingController descriptionController;
+class DescriptionBoxWidget extends StatefulWidget {
+  final TaskModel? pickedTask;
   final bool withImageIcon;
   final String? hintText;
   final AttachmentsProvider attachmentsProvider;
+  final TextEditingController textController;
+  final ViewTaskController? viewTaskController;
+  final VoidCallback? callback;
   const DescriptionBoxWidget({
     super.key,
     this.withImageIcon = false,
     required this.attachmentsProvider,
+    required this.textController,
     this.hintText,
-    required this.descriptionController,
+    this.pickedTask,
+    this.callback,
+    this.viewTaskController,
   });
+
+  @override
+  State<DescriptionBoxWidget> createState() => _DescriptionBoxWidgetState();
+}
+
+class _DescriptionBoxWidgetState extends State<DescriptionBoxWidget> {
+  bool isActiveButton = true;
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +50,8 @@ class DescriptionBoxWidget extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           DescriptionTextField(
-            descriptionTextController: descriptionController,
-            hintText: hintText,
+            descriptionTextController: widget.textController,
+            hintText: widget.hintText,
           ),
           Padding(
             padding: const EdgeInsets.only(top: 23),
@@ -53,16 +68,16 @@ class DescriptionBoxWidget extends StatelessWidget {
               height: 40,
               child: Row(
                 children: [
-                  withImageIcon
+                  widget.withImageIcon
                       ? Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 12),
                           child: GestureDetector(
                             onTap: () async {
-                              final image = await attachmentsProvider
-                                  .fileProvider
+                              final image = await widget
+                                  .attachmentsProvider.fileProvider
                                   .pickAvatar(context: context);
-                              attachmentsProvider.addAttachment(
-                                  attachment: image);
+                              widget.attachmentsProvider
+                                  .addAttachment(attachment: image);
                             },
                             child: SvgPicture.asset(
                               AssetsPath.imageIconIconPath,
@@ -74,18 +89,36 @@ class DescriptionBoxWidget extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     child: GestureDetector(
                       onTap: () async {
-                        final file = await attachmentsProvider.fileProvider
+                        final file = await widget
+                            .attachmentsProvider.fileProvider
                             .pickFile(context: context);
-                        attachmentsProvider.addAttachment(attachment: file);
+                        widget.attachmentsProvider
+                            .addAttachment(attachment: file);
                       },
                       child:
                           SvgPicture.asset(AssetsPath.fileAttachmentIconPath),
                     ),
                   ),
                   const Spacer(),
-                  withImageIcon
+                  widget.withImageIcon
                       ? TextButton(
-                          onPressed: () {},
+                          onPressed: isActiveButton
+                              ? () async {
+                                  // await widget.attachmentsProvider
+                                  //     .up(
+                                  //         taskId: widget.pickedTask?.id ?? '');
+                                  if (widget.viewTaskController != null) {
+                                    await widget.viewTaskController!
+                                        .createTaskComment(
+                                      taskId: widget.pickedTask!.id,
+                                    );
+                                    widget.callback!();
+                                  }
+                                  setState(() {
+                                    isActiveButton = true;
+                                  });
+                                }
+                              : null,
                           child: Text(
                             LocaleKeys.send.tr(),
                             style: TextStyle(

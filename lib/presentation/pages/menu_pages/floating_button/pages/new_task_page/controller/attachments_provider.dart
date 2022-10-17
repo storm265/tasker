@@ -33,8 +33,8 @@ class AttachmentsProvider extends ChangeNotifier {
         file: File(attachments.value[i].path ?? ""),
         taskId: taskId,
         isFile: fileProvider.isValidImageFormat(attachments.value[i].name)
-            ? true
-            : false,
+            ? false
+            : true,
       );
     }
   }

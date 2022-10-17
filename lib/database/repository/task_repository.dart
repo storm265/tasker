@@ -223,6 +223,7 @@ class TaskRepositoryImpl implements TaskRepository {
       );
       return CommentModel.fromJson(response);
     } catch (e) {
+
       throw Failure(e.toString());
     }
   }

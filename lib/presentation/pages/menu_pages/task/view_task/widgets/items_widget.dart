@@ -8,7 +8,7 @@ import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/detai
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
-class ItemsWidget extends StatelessWidget {
+class ItemsWidget extends StatefulWidget {
   final TaskModel pickedTask;
   final ViewTaskController viewTaskController;
   const ItemsWidget({
@@ -18,7 +18,19 @@ class ItemsWidget extends StatelessWidget {
   });
 
   @override
+  State<ItemsWidget> createState() => _ItemsWidgetState();
+}
+
+class _ItemsWidgetState extends State<ItemsWidget> {
+  @override
+  void initState() {
+    widget.viewTaskController.fetchDetailedUser(widget.pickedTask.assignedTo);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+
     return ListView.separated(
         physics: const NeverScrollableScrollPhysics(),
         separatorBuilder: (_, i) => Container(
@@ -33,29 +45,33 @@ class ItemsWidget extends StatelessWidget {
             case 0:
               return DetailedItemWidget(
                 leading: CircleAvatar(
-                  backgroundColor: Colors.grey,
-                  backgroundImage: NetworkImage(
-                    viewTaskController.user?.avatarUrl ?? 'url',
-                    headers: viewTaskController.imageHeader,
-                  ),
+                  backgroundColor: Colors.amber,
+                  backgroundImage: widget.pickedTask.assignedTo == null
+                      ? null
+                      : NetworkImage(
+                          widget.viewTaskController.user?.avatarUrl ?? 'url',
+                          headers: widget.viewTaskController.imageHeader,
+                        ),
                   radius: 20,
                 ),
                 title: LocaleKeys.assigned_to.tr(),
-                subtitle: viewTaskController.user?.username,
+                subtitle: widget.pickedTask.assignedTo == null
+                    ? 'Not assigned'
+                    : widget.viewTaskController.user?.username,
               );
             case 1:
               return DetailedItemWidget(
                 imageIcon: 'calendar',
                 title: LocaleKeys.due_date.tr(),
                 subtitle:
-                    '${pickedTask.dueDate.year} ${pickedTask.dueDate.day},${DateFormat('MMM', locale).format(pickedTask.dueDate)}',
+                    '${widget.pickedTask.dueDate.year} ${widget.pickedTask.dueDate.day},${DateFormat('MMM', locale).format(widget.pickedTask.dueDate)}',
               );
             case 2:
               return DetailedItemWidget(
                 isBlackTextColor: true,
                 imageIcon: 'description',
                 title: LocaleKeys.description.tr(),
-                subtitle: pickedTask.description,
+                subtitle: widget.pickedTask.description,
               );
             case 3:
               return DetailedItemWidget(
@@ -69,11 +85,11 @@ class ItemsWidget extends StatelessWidget {
                       child: ListView.builder(
                         shrinkWrap: true,
                         scrollDirection: Axis.horizontal,
-                        itemCount: pickedTask.members == null
+                        itemCount: widget.pickedTask.members == null
                             ? 0
-                            : (pickedTask.members!.length > 5)
+                            : (widget.pickedTask.members!.length > 5)
                                 ? 5
-                                : pickedTask.members?.length,
+                                : widget.pickedTask.members?.length,
                         itemBuilder: (_, index) {
                           return index == 4
                               ? const Padding(
@@ -96,8 +112,10 @@ class ItemsWidget extends StatelessWidget {
                                     radius: 16,
                                     backgroundColor: Colors.grey,
                                     backgroundImage: NetworkImage(
-                                      pickedTask.members![index].avatarUrl,
-                                      headers: viewTaskController.imageHeader,
+                                      widget
+                                          .pickedTask.members![index].avatarUrl,
+                                      headers:
+                                          widget.viewTaskController.imageHeader,
                                     ),
                                   ),
                                 );
@@ -128,7 +146,7 @@ class ItemsWidget extends StatelessWidget {
                     ),
                     child: Center(
                       child: Text(
-                        viewTaskController.project?.title ?? '',
+                        widget.viewTaskController.project?.title ?? '',
                         style: TextStyle(
                           color: getAppColor(
                             color: CategoryColor.blue,

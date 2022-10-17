@@ -19,7 +19,7 @@ class TaskListController extends ChangeNotifier with DeleteTaskMixin {
   });
   String userId = '';
 
-  final calendarController = AdvancedCalendarController.today();
+  final selectedDate = AdvancedCalendarController.today();
 
   final isTuneIconActive = ValueNotifier(true);
 

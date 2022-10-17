@@ -65,7 +65,8 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                         child: Column(
                           children: [
                             HeaderWidget(
-                                text: widget.taskSortController.headers[i]),
+                              text: widget.taskSortController.headers[i],
+                            ),
                             ListView.builder(
                               physics: const NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
