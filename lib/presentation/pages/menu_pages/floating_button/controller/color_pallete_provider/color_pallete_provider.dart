@@ -4,7 +4,7 @@ import 'package:todo2/generated/locale_keys.g.dart';
 
 int _defaultColorIndex = 99;
 
-class ColorPalleteController extends ChangeNotifier {
+class ColorPalleteProvider extends ChangeNotifier {
   String isNotPicked = LocaleKeys.please_pick_color.tr();
   final selectedIndex = ValueNotifier<int>(_defaultColorIndex);
 
@@ -13,5 +13,4 @@ class ColorPalleteController extends ChangeNotifier {
     selectedIndex.value = index;
     selectedIndex.notifyListeners();
   }
-
 }

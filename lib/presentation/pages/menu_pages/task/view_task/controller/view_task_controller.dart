@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'dart:io';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
@@ -92,7 +92,7 @@ class ViewTaskController extends ChangeNotifier with AccessTokenMixin {
         );
       });
       return updatedModel;
-    }finally {
+    } finally {
       changeSubmitButton(true);
     }
   }
@@ -117,11 +117,21 @@ class ViewTaskController extends ChangeNotifier with AccessTokenMixin {
     final model = await _taskRepository.createTaskComment(
       taskId: taskId,
       content: commentController.text,
-      // createdAt: DateFormat("yyyy-MM-ddThh:mm:ss.ssssss").format(
-      //   DateTime.now().toUtc(), // TODO WTF
-      // ),
     );
     commentController.clear();
     return model;
+  }
+
+// TODO finish
+  Future<void> uploadTaskCommentAttachment({required String commentId}) async {
+    for (int i = 0; i < attachmentsProvider.attachments.value.length; i++) {
+      await _taskRepository.uploadTaskCommentAttachment(
+        file: File(attachmentsProvider.attachments.value[i].path ?? ''),
+        taskId: commentId,
+        isFile: attachmentsProvider.fileProvider.isValidImageFormat(
+          attachmentsProvider.attachments.value[i].extension ?? '',
+        ),
+      );
+    }
   }
 }

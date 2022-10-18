@@ -57,6 +57,12 @@ abstract class TaskRepository<T> {
   Future<List<UserProfileModel>> taskMemberSearch({required String nickname});
 
   Future<void> deleteTaskComment({required String taskId});
+
+  Future<void> uploadTaskCommentAttachment({
+    required File file,
+    required String taskId,
+    required bool isFile,
+  });
 }
 
 class TaskRepositoryImpl implements TaskRepository {
@@ -226,6 +232,7 @@ class TaskRepositoryImpl implements TaskRepository {
   Future<void> deleteTaskComment({required String taskId}) async =>
       await _taskDataSource.deleteTaskComment(taskId: taskId);
 
+  @override
   Future<void> uploadTaskCommentAttachment({
     required File file,
     required String taskId,

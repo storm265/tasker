@@ -104,15 +104,18 @@ class _DescriptionBoxWidgetState extends State<DescriptionBoxWidget> {
                       ? TextButton(
                           onPressed: isActiveButton
                               ? () async {
-                                  // await widget.attachmentsProvider
-                                  //     .up(
-                                  //         taskId: widget.pickedTask?.id ?? '');
                                   if (widget.viewTaskController != null) {
-                                    await widget.viewTaskController!
+                                    final commentModel = await widget
+                                        .viewTaskController!
                                         .createTaskComment(
                                       taskId: widget.pickedTask!.id,
                                     );
+                                    // TODO finish
                                     widget.textController.clear();
+                                    await widget.viewTaskController!
+                                        .uploadTaskCommentAttachment(
+                                      commentId: commentModel.id,
+                                    );
                                     widget.callback!();
                                   }
                                   setState(() {

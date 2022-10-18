@@ -369,7 +369,7 @@ class TaskDataSourceImpl implements TaskDataSource {
           file.path,
           filename: fileName,
         ),
-        "type": isFile == true ? 'file' : 'image',
+        "type": isFile == true ? 'FILE' : 'IMAGE',
         TaskScheme.commentId: taskId,
       },
     );
@@ -379,7 +379,7 @@ class TaskDataSourceImpl implements TaskDataSource {
       isFormData: true,
       options: await _network.getLocalRequestOptions(),
     );
-
+    log('uploadTaskCommentAttachment ${response.data}');
     log('uploadTaskCommentAttachment ${response.statusMessage}');
     log('uploadTaskCommentAttachment ${response.statusCode}');
   }

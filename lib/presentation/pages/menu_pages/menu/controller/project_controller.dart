@@ -4,10 +4,9 @@ import 'package:todo2/database/model/project_models/project_stats_model.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_provider/color_pallete_provider.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/message_service/message_service.dart';
-
 
 enum ProjectDialogStatus {
   add,
@@ -22,7 +21,7 @@ class ProjectController extends ChangeNotifier {
     required ProjectRepository projectsRepository,
   }) : _projectsRepository = projectsRepository;
 
-  final ColorPalleteController colorPalleteController;
+  final ColorPalleteProvider colorPalleteController;
 
   final formKey = GlobalKey<FormState>();
 
@@ -75,7 +74,7 @@ class ProjectController extends ChangeNotifier {
         );
       } else {
         await createProject();
-         MessageService.displaySnackbar(
+        MessageService.displaySnackbar(
           context: context,
           message: LocaleKeys.created.tr(),
         );

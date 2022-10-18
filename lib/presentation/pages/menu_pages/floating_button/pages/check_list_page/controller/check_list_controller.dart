@@ -5,7 +5,7 @@ import 'package:todo2/database/database_scheme/check_list_items_scheme.dart';
 import 'package:todo2/database/model/checklist_model.dart';
 import 'package:todo2/database/repository/checklist_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_provider/color_pallete_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/controller/quick_controller.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
@@ -36,7 +36,7 @@ class CheckListController extends ChangeNotifier {
 
   final checkBoxItems = ValueNotifier<List<Map<String, dynamic>>>([]);
 
-  final colorPalleteController = ColorPalleteController();
+  final colorPalleteController = ColorPalleteProvider();
 
   final formKey = GlobalKey<FormState>();
 

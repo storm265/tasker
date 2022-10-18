@@ -5,7 +5,7 @@ import 'package:todo2/database/data_source/notes_data_source.dart';
 import 'package:todo2/database/model/notes_model.dart';
 import 'package:todo2/database/repository/notes_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_provider/color_pallete_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/controller/quick_controller.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
@@ -32,7 +32,7 @@ class NewNoteController extends ChangeNotifier {
 
   final descriptionTextController = TextEditingController();
 
-  final colorPalleteController = ColorPalleteController();
+  final colorPalleteController = ColorPalleteProvider();
 
   final isButtonClicked = ValueNotifier(true);
 

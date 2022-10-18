@@ -5,7 +5,7 @@ import 'package:todo2/database/model/project_models/project_stats_model.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_provider/color_pallete_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/add_project_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/project_item_widget.dart';
@@ -24,7 +24,7 @@ class MenuPage extends StatefulWidget {
 
 class MenuPageState extends State<MenuPage> {
   final _projectController = ProjectController(
-    colorPalleteController: ColorPalleteController(),
+    colorPalleteController: ColorPalleteProvider(),
     projectsRepository: ProjectRepositoryImpl(
       projectDataSource: ProjectUserDataImpl(
         secureStorageService: SecureStorageSource(),

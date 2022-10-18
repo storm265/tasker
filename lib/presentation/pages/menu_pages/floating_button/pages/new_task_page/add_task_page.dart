@@ -9,7 +9,7 @@ import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/providers/file_provider.dart';
 import 'package:todo2/presentation/pages/auth/widgets/unfocus_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_controller/color_pallete_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_provider/color_pallete_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/add_task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/attachments_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/member_provider.dart';
@@ -44,7 +44,7 @@ class _AddEditTaskPageState extends State<AddEditTaskPage> {
     taskRepository: TaskRepositoryImpl(),
     memberProvider: MemberProvider(),
     projectController: ProjectController(
-      colorPalleteController: ColorPalleteController(),
+      colorPalleteController: ColorPalleteProvider(),
       projectsRepository: ProjectRepositoryImpl(
         projectDataSource: ProjectUserDataImpl(
           secureStorageService: SecureStorageSource(),
