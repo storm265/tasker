@@ -377,7 +377,7 @@ class TaskDataSourceImpl implements TaskDataSource {
     );
 
     final response = await _network.post(
-      path: '$_commentsAttachments/', // TODO id
+      path: _commentsAttachments,
       formData: formData,
       isFormData: true,
       options: await _network.getLocalRequestOptions(),

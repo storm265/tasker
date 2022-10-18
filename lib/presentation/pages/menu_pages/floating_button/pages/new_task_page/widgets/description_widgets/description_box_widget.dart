@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -7,6 +9,7 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_ta
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/description_widgets/description_text_field.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/controller/view_task_controller.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
+import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 import 'package:todo2/utils/assets_path.dart';
 
 class DescriptionBoxWidget extends StatefulWidget {
@@ -110,12 +113,17 @@ class _DescriptionBoxWidgetState extends State<DescriptionBoxWidget> {
                                         .createTaskComment(
                                       taskId: widget.pickedTask!.id,
                                     );
+                                    log('comment id ${commentModel.id}');
                                     // TODO finish
                                     widget.textController.clear();
                                     await widget.viewTaskController!
                                         .uploadTaskCommentAttachment(
-                                      commentId: commentModel.id,
-                                    );
+                                          commentId: commentModel.id,
+                                        )
+                                        .then((value) => widget
+                                            .viewTaskController!
+                                            .attachmentsProvider
+                                            .clearAllAttachments());
                                     widget.callback!();
                                   }
                                   setState(() {
@@ -123,15 +131,18 @@ class _DescriptionBoxWidgetState extends State<DescriptionBoxWidget> {
                                   });
                                 }
                               : null,
-                          child: Text(
-                            LocaleKeys.send.tr(),
-                            style: TextStyle(
-                              fontSize: 17,
-                              fontStyle: FontStyle.italic,
-                              fontWeight: FontWeight.w200,
-                              color: getAppColor(color: CategoryColor.blue),
-                            ),
-                          ),
+                          child: isActiveButton
+                              ? Text(
+                                  LocaleKeys.send.tr(),
+                                  style: TextStyle(
+                                    fontSize: 17,
+                                    fontStyle: FontStyle.italic,
+                                    fontWeight: FontWeight.w200,
+                                    color:
+                                        getAppColor(color: CategoryColor.blue),
+                                  ),
+                                )
+                              : const ProgressIndicatorWidget(),
                         )
                       : const SizedBox(),
                 ],

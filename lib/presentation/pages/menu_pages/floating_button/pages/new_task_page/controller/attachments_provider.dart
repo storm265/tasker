@@ -26,6 +26,11 @@ class AttachmentsProvider extends ChangeNotifier {
     attachments.notifyListeners();
   }
 
+  void clearAllAttachments() {
+    attachments.value.clear();
+    attachments.notifyListeners();
+  }
+
   Future<void> uploadTaskAttachment({required String taskId}) async {
     for (int i = 0; i < attachments.value.length; i++) {
       await taskRepository.uploadTaskAttachment(

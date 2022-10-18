@@ -9,6 +9,7 @@ import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/description_widgets/task_attachaments_widget.dart';
 import 'package:todo2/presentation/providers/file_provider.dart';
 import 'package:todo2/presentation/pages/auth/widgets/unfocus_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/attachments_provider.dart';
@@ -107,28 +108,32 @@ class _ViewTaskState extends State<ViewTask> {
                         ),
                         const SizedBox(height: 20),
                         viewTaskController.isShowComments
-                            ? TaskAttachementWidget(
-                                viewTaskController: viewTaskController,
-                                pickedTask: widget.pickedTask,
-                              )
-                            : const SizedBox(),
-                        viewTaskController.isShowComments
-                            ? DescriptionBoxWidget(
-                                callback: () => setState(() {}),
-                                withImageIcon: true,
-                                viewTaskController: viewTaskController,
-                                textController:
-                                    viewTaskController.commentController,
-                                attachmentsProvider:
-                                    viewTaskController.attachmentsProvider,
-                                pickedTask: widget.pickedTask,
-                                hintText: LocaleKeys.write_a_comment.tr(),
-                              )
-                            : const SizedBox(),
-                        viewTaskController.isShowComments
-                            ? CommentAttachmentWidget(
-                                pickedTask: widget.pickedTask,
-                                viewTaskController: viewTaskController,
+                            ? Column(
+                                children: [
+                                  TaskAttachementWidget(
+                                    viewTaskController: viewTaskController,
+                                    pickedTask: widget.pickedTask,
+                                  ),
+                                  DescriptionBoxWidget(
+                                    callback: () => setState(() {}),
+                                    withImageIcon: true,
+                                    viewTaskController: viewTaskController,
+                                    textController:
+                                        viewTaskController.commentController,
+                                    attachmentsProvider:
+                                        viewTaskController.attachmentsProvider,
+                                    pickedTask: widget.pickedTask,
+                                    hintText: LocaleKeys.write_a_comment.tr(),
+                                  ),
+                                  TaskAttachmentsWidget(
+                                    attachmentsProvider:
+                                        viewTaskController.attachmentsProvider,
+                                  ),
+                                  CommentAttachmentWidget(
+                                    pickedTask: widget.pickedTask,
+                                    viewTaskController: viewTaskController,
+                                  )
+                                ],
                               )
                             : const SizedBox(),
                       ],

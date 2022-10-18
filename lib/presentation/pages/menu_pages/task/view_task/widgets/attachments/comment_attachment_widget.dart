@@ -89,32 +89,34 @@ class CommentAttachmentWidget extends StatelessWidget {
                         ),
                       ),
                     ),
-                    // pickedTask.attachments![i].type == "IMAGE"
-                    //     ? ClipRRect(
-                    //         borderRadius: BorderRadius.circular(5),
-                    //         child: Image.network(
-                    //           data[i].commentator.avatarUrl,
-                    //           headers: viewTaskController.imageHeader,
-                    //         ),
-                    //       )
-                    //     : Column(
-                    //         children: [
-                    //           const Icon(
-                    //             Icons.file_present,
-                    //             size: 40,
-                    //             color: Colors.grey,
-                    //           ),
-                    //           Text(
-                    //             pickedTask.attachments![i].name,
-                    //             maxLines: null,
-                    //             style: const TextStyle(
-                    //               overflow: TextOverflow.ellipsis,
-                    //               fontWeight: FontWeight.w500,
-                    //               fontSize: 12,
-                    //             ),
-                    //           ),
-                    //         ],
-                    //       ),
+                    if (pickedTask.attachments != null &&
+                        pickedTask.attachments!.isNotEmpty)
+                      pickedTask.attachments![i].type == "IMAGE"
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(5),
+                              child: Image.network(
+                                data[i].attachments!.filePath,
+                                headers: viewTaskController.imageHeader,
+                              ),
+                            )
+                          : Column(
+                              children: [
+                                const Icon(
+                                  Icons.file_present,
+                                  size: 40,
+                                  color: Colors.grey,
+                                ),
+                                Text(
+                                  pickedTask.attachments![i].name,
+                                  maxLines: null,
+                                  style: const TextStyle(
+                                    overflow: TextOverflow.ellipsis,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ],
+                            ),
                   ],
                 ),
               );

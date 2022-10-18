@@ -10,7 +10,7 @@ String getDaysAgo(
       if (hoursAgo.toString() == '0') {
         return 'recently';
       } else {
-        return '$hoursAgo ${getHour(hoursAgo.toString())} ${LocaleKeys.ago.tr()}';
+        return '$hoursAgo ${_getHour(hoursAgo.toString())} ${LocaleKeys.ago.tr()}';
       }
     case 1:
       return '$daysAgo ${LocaleKeys.day.tr()} ${LocaleKeys.ago.tr()}';
@@ -19,9 +19,9 @@ String getDaysAgo(
   }
 }
 
-String getHour(String hour) {
-  if (hour.contains('1')) {
-    return 'hour';
+String _getHour(String hour) {
+  if (hour.endsWith('1')) {
+    return hour.length == 1 ? LocaleKeys.hour.tr() : LocaleKeys.hours.tr();
   } else {
     return 'hours';
   }

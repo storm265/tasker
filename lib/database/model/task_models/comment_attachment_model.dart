@@ -1,13 +1,13 @@
 import 'package:todo2/database/database_scheme/task_schemes/comment_attachment_scheme.dart';
 
-class CommentAttachment {
+class CommentAttachmentModel {
   final String id;
   final String commentId;
   final String filePath;
   final String type;
   final DateTime createdAt;
 
-  CommentAttachment({
+  CommentAttachmentModel({
     required this.id,
     required this.commentId,
     required this.filePath,
@@ -15,8 +15,8 @@ class CommentAttachment {
     required this.createdAt,
   });
 
-  factory CommentAttachment.fromJson(Map<String, dynamic> json) =>
-      CommentAttachment(
+  factory CommentAttachmentModel.fromJson(Map<String, dynamic> json) =>
+      CommentAttachmentModel(
         id: json[CommentAttachmentScheme.id],
         commentId: json[CommentAttachmentScheme.commentId],
         filePath: json[CommentAttachmentScheme.filePath],
