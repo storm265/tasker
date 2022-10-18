@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/projects_data_source.dart';
@@ -27,11 +29,11 @@ import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
 class ViewTask extends StatefulWidget with AccessTokenMixin {
-  final TaskListController taskListController;
+  final TaskListController taskController;
   final TaskModel pickedTask;
   const ViewTask({
     Key? key,
-    required this.taskListController,
+    required this.taskController,
     required this.pickedTask,
   }) : super(key: key);
   @override
@@ -89,7 +91,7 @@ class _ViewTaskState extends State<ViewTask> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   IconPanelWidget(
-                    taskListController: widget.taskListController,
+                    taskListController: widget.taskController,
                     selectedTask: widget.pickedTask,
                   ),
                   Padding(
@@ -132,27 +134,36 @@ class _ViewTaskState extends State<ViewTask> {
                       ],
                     ),
                   ),
-                  ValueListenableBuilder<bool>(
-                    valueListenable: viewTaskController.isActiveSubmitButton,
-                    builder: (_, isClicked, __) => Padding(
-                      padding: viewTaskController.isShowComments
-                          ? const EdgeInsets.symmetric(vertical: 36)
-                          : const EdgeInsets.all(0),
-                      child: ConfirmButtonWidget(
-                        width: 320,
-                        color: getAppColor(color: CategoryColor.blue),
-                        title: LocaleKeys.complete_task.tr(),
-                        onPressed: isClicked
-                            ? () async {
-                                await viewTaskController.updateTask(
-                                  widget.pickedTask,
-                                  context,
-                                );
-                              }
-                            : null,
-                      ),
-                    ),
-                  ),
+                  widget.pickedTask.isCompleted != true
+                      ? ValueListenableBuilder<bool>(
+                          valueListenable:
+                              viewTaskController.isActiveSubmitButton,
+                          builder: (_, isClicked, __) => Padding(
+                            padding: viewTaskController.isShowComments
+                                ? const EdgeInsets.symmetric(vertical: 36)
+                                : const EdgeInsets.all(0),
+                            child: ConfirmButtonWidget(
+                              width: 320,
+                              color: getAppColor(color: CategoryColor.blue),
+                              title: LocaleKeys.complete_task.tr(),
+                              onPressed: isClicked
+                                  ? () async {
+                                      final updatedModel =
+                                          await viewTaskController.updateTask(
+                                        widget.pickedTask,
+                                        context,
+                                      );
+                                      if (updatedModel.id.isNotEmpty) {
+                                        widget.taskController
+                                            .updateTaskItem(updatedModel);
+                                        Navigator.pop(context);
+                                      }
+                                    }
+                                  : null,
+                            ),
+                          ),
+                        )
+                      : const SizedBox(),
                   !viewTaskController.isShowComments
                       ? CommentButton(
                           onClickedCallback: () => setState(() {

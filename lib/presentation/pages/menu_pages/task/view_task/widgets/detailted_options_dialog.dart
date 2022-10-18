@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
@@ -13,11 +15,15 @@ Future<void> showDetailedOptions({
   required BuildContext context,
   required TaskModel selectedTask,
 }) async {
-  final List<String> items = [
-    LocaleKeys.add_member.tr(),
-    LocaleKeys.edit_task.tr(),
-    LocaleKeys.delete_task.tr(),
-  ];
+  final List<String> items = selectedTask.isCompleted == true
+      ? [
+          LocaleKeys.delete_task.tr(),
+        ]
+      : [
+          LocaleKeys.add_member.tr(),
+          LocaleKeys.edit_task.tr(),
+          LocaleKeys.delete_task.tr(),
+        ];
 
   await showDialog(
     barrierColor: Colors.black26,
@@ -37,15 +43,33 @@ Future<void> showDetailedOptions({
           content: ListView.builder(
             physics: const NeverScrollableScrollPhysics(),
             scrollDirection: Axis.vertical,
-            itemCount: 3,
+            itemCount: items.length,
             shrinkWrap: true,
             itemBuilder: ((_, i) {
               return InkWell(
                 onTap: () async {
                   switch (i) {
                     case 0:
-                      Navigator.pop(context);
-                      Navigator.pop(context);
+                      if (items.length == 1) {
+                        await taskListController
+                            .deleteTask(
+                              taskId: selectedTask.id,
+                              taskRepository: taskListController.taskRepository,
+                            )
+                            .then(
+                              (_) => MessageService.displaySnackbar(
+                                context: context,
+                                message: LocaleKeys.deleted.tr(),
+                              ),
+                            );
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      } else {
+                        // TODO add member
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      }
+
                       break;
                     case 1:
                       Navigator.pop(context);

@@ -38,7 +38,7 @@ class TaskCardWidget extends StatelessWidget {
         await showDialog(
           context: context,
           builder: (_) => ViewTask(
-            taskListController: taskController,
+            taskController: taskController,
             pickedTask: model,
           ),
         );
@@ -77,12 +77,21 @@ class TaskCardWidget extends StatelessWidget {
                 leading: model.isCompleted
                     ? const Padding(
                         padding: EdgeInsets.all(8.0),
-                        child: Icon(Icons.check_circle, color: Palette.red),
+                        child: Icon(
+                          Icons.check_circle,
+                          color: Palette.red,
+                          size: 22,
+                        ),
                       )
                     : Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.only(
+                          top: 8,
+                          left: 12,
+                          bottom: 8,
+                          right: 8,
+                        ),
                         child: CustomPaint(
-                          size: const Size(20, 20),
+                          size: const Size(19, 19),
                           painter: CirclePainter(
                             circleColor: getAppColor(color: CategoryColor.blue),
                           ),

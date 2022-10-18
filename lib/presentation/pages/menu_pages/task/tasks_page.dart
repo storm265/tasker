@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,6 +15,7 @@ import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/list/task
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/tabs/bottom_tabs.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapp.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
+import 'package:todo2/storage/secure_storage_service.dart';
 import 'package:todo2/utils/assets_path.dart';
 
 class TasksPage extends StatefulWidget {
@@ -26,6 +29,7 @@ class _TasksPageState extends State<TasksPage>
   late final _tabController = TabController(length: 2, vsync: this);
 
   final taskController = TaskListController(
+    secureStorage: SecureStorageSource(),
     taskRepository: TaskRepositoryImpl(),
   );
 

@@ -7,11 +7,15 @@ String getDaysAgo(
 ) {
   switch (daysAgo) {
     case 0:
-      return '$hoursAgo ${getHour(hoursAgo.toString())} ago';
+      if (hoursAgo.toString() == '0') {
+        return 'recently';
+      } else {
+        return '$hoursAgo ${getHour(hoursAgo.toString())} ${LocaleKeys.ago.tr()}';
+      }
     case 1:
-      return '$daysAgo ${LocaleKeys.day_ago.tr()}';
+      return '$daysAgo ${LocaleKeys.day.tr()} ${LocaleKeys.ago.tr()}';
     default:
-      return '$daysAgo ${LocaleKeys.days_ago.tr()}';
+      return '$daysAgo ${LocaleKeys.days.tr()} ${LocaleKeys.ago.tr()}';
   }
 }
 

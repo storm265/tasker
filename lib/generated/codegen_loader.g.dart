@@ -1,6 +1,6 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
-// ignore_for_file: prefer_single_quotes, avoid_renaming_method_parameters
+// ignore_for_file: prefer_single_quotes
 
 import 'dart:ui';
 
@@ -77,8 +77,9 @@ class CodegenLoader extends AssetLoader{
   "complete_task": "Выполнить задачу",
   "comment": "Комментарии",
   "write_a_comment": "Напиши комментарий",
-  "days_ago": "дней назад",
-  "day_ago": "день назад",
+  "days": "дней",
+  "day": "день",
+  "ago": "назад",
   "edit_task": "Редактировать задачу",
   "delete_task": "Удалить задачу",
   "projects": "Проекты",
@@ -170,8 +171,9 @@ static const Map<String,dynamic> en = {
   "complete_task": "Complete Task",
   "comments": "Сomments",
   "write_a_comment": "Write a comment",
-  "days_ago": "days ago",
-  "day_ago": "day ago",
+  "days": "days",
+  "day": "day",
+  "ago": "ago",
   "edit_task": "Edit Task",
   "delete_task": "Delete Task",
   "projects": "Projects",

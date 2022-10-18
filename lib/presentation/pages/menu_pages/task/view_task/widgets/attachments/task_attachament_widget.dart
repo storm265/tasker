@@ -1,8 +1,10 @@
 import 'dart:developer';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
+import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/controller/view_task_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/attachments/profile_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/attachments/day_ago.dart';
 
 class TaskAttachementWidget extends StatelessWidget {
   final ViewTaskController viewTaskController;
@@ -16,7 +18,10 @@ class TaskAttachementWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.only(
+        bottom: 10,
+        left: 2,
+      ),
       child: ListView.builder(
         itemCount:
             pickedTask.attachments == null ? 0 : pickedTask.attachments?.length,
@@ -48,7 +53,8 @@ class TaskAttachementWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            viewTaskController.user?.username ?? 'Not assigned',
+                            viewTaskController.user?.username ??
+                                LocaleKeys.not_assigned.tr(),
                             style: const TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w200,
@@ -67,31 +73,34 @@ class TaskAttachementWidget extends StatelessWidget {
                     )
                   ],
                 ),
-                pickedTask.attachments![index].type == "IMAGE"
-                    ? ClipRRect(
-                        borderRadius: BorderRadius.circular(5),
-                        child: Image.network(
-                          pickedTask.attachments![index].url,
-                          headers: viewTaskController.imageHeader,
-                        ),
-                      )
-                    : Column(
-                        children: [
-                          const Icon(
-                            Icons.file_present,
-                            size: 40,
-                            color: Colors.grey,
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: pickedTask.attachments![index].type == "IMAGE"
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(5),
+                          child: Image.network(
+                            pickedTask.attachments![index].url,
+                            headers: viewTaskController.imageHeader,
                           ),
-                          Text(
-                            pickedTask.attachments![index].name,
-                            maxLines: null,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 12,
+                        )
+                      : Column(
+                          children: [
+                            const Icon(
+                              Icons.file_present,
+                              size: 40,
+                              color: Colors.grey,
                             ),
-                          ),
-                        ],
-                      ),
+                            Text(
+                              pickedTask.attachments![index].name,
+                              maxLines: null,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        ),
+                ),
               ],
             ),
           );

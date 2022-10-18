@@ -13,10 +13,11 @@ enum TaskSortMode {
 
 class TaskListController extends ChangeNotifier with DeleteTaskMixin {
   final TaskRepositoryImpl taskRepository;
-  final secureStorage = SecureStorageSource();
+  final SecureStorageSource _secureStorage;
   TaskListController({
     required this.taskRepository,
-  });
+    required SecureStorageSource secureStorage,
+  }) : _secureStorage = secureStorage;
   String userId = '';
 
   final selectedDate = AdvancedCalendarController.today();
@@ -27,7 +28,21 @@ class TaskListController extends ChangeNotifier with DeleteTaskMixin {
 
   final List<DateTime> events = [];
 
-  List<TaskModel> tasks = [];
+  final tasks = ValueNotifier<List<TaskModel>>([]);
+
+  void removeTaskItem(String taskId) {
+    tasks.value.where((element) => element.id == taskId);
+    tasks.notifyListeners();
+  }
+
+  void updateTaskItem(TaskModel updatedModel) {
+    for (var i = 0; i < tasks.value.length; i++) {
+      if (tasks.value[i].id == updatedModel.id) {
+        tasks.value[i] == updatedModel;
+      }
+    }
+    tasks.notifyListeners();
+  }
 
   void changeTuneIconValue(int index) {
     switch (index) {
@@ -58,12 +73,12 @@ class TaskListController extends ChangeNotifier with DeleteTaskMixin {
   }
 
   Future<void> getUserId() async {
-    userId = await secureStorage.getUserData(type: StorageDataType.id) ?? '';
+    userId = await _secureStorage.getUserData(type: StorageDataType.id) ?? '';
   }
 
   void generateCalendarEvents() {
-    for (var i = 0; i < tasks.length; i++) {
-      events.add(tasks[i].dueDate);
+    for (var i = 0; i < tasks.value.length; i++) {
+      events.add(tasks.value[i].dueDate);
     }
   }
 
@@ -72,14 +87,15 @@ class TaskListController extends ChangeNotifier with DeleteTaskMixin {
     final list2 = await fetchAssignedToTasks();
     final list3 = await fetchParticipateInTasks();
     for (var i = 0; i < list1.length; i++) {
-      tasks.add(list1[i]);
+      tasks.value.add(list1[i]);
     }
     for (var i = 0; i < list2.length; i++) {
-      tasks.add(list2[i]);
+      tasks.value.add(list2[i]);
     }
     for (var i = 0; i < list2.length; i++) {
-      tasks.add(list3[i]);
+      tasks.value.add(list3[i]);
     }
+    tasks.notifyListeners();
   }
 
   Future<List<TaskModel>> fetchUserTasks() async =>

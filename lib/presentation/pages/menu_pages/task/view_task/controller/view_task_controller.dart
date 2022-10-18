@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
@@ -42,7 +44,8 @@ class ViewTaskController extends ChangeNotifier with AccessTokenMixin {
 
   Map<String, String>? imageHeader;
 
-  Future<void> fetchInitialData(String projectId,String? assignedTo, VoidCallback callback) async {
+  Future<void> fetchInitialData(
+      String projectId, String? assignedTo, VoidCallback callback) async {
     await Future.wait([
       getAccessToken(),
       fetchProject(projectId),
@@ -58,7 +61,7 @@ class ViewTaskController extends ChangeNotifier with AccessTokenMixin {
     }
   }
 
-  Future<void> updateTask(
+  Future<TaskModel> updateTask(
     TaskModel model,
     BuildContext context,
   ) async {
@@ -71,7 +74,7 @@ class ViewTaskController extends ChangeNotifier with AccessTokenMixin {
         }
       }
 
-      await _taskRepository
+      final updatedModel = await _taskRepository
           .updateTask(
         taskId: model.id,
         title: model.title,
@@ -87,14 +90,9 @@ class ViewTaskController extends ChangeNotifier with AccessTokenMixin {
           context: context,
           message: LocaleKeys.updated.tr(),
         );
-        Navigator.pop(context);
       });
-    } catch (e) {
-      MessageService.displaySnackbar(
-        context: context,
-        message: LocaleKeys.not_updated.tr(),
-      );
-    } finally {
+      return updatedModel;
+    }finally {
       changeSubmitButton(true);
     }
   }
@@ -119,6 +117,9 @@ class ViewTaskController extends ChangeNotifier with AccessTokenMixin {
     final model = await _taskRepository.createTaskComment(
       taskId: taskId,
       content: commentController.text,
+      // createdAt: DateFormat("yyyy-MM-ddThh:mm:ss.ssssss").format(
+      //   DateTime.now().toUtc(), // TODO WTF
+      // ),
     );
     commentController.clear();
     return model;

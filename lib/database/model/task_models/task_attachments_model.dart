@@ -24,7 +24,9 @@ class TaskAttachmentModel {
       name: json[AttachmentScheme.name],
       type: json[AttachmentScheme.type],
       taskId: json[AttachmentScheme.taskId],
-      createdAt: DateTime.parse(json[AttachmentScheme.createdAt]),
+      createdAt: DateTime.parse(
+        '${json[AttachmentScheme.createdAt]}' 'Z',
+      ).toLocal(),
     );
   }
 }

@@ -140,6 +140,7 @@ class TaskDataSourceImpl implements TaskDataSource {
     required String taskId,
     required String? dueDate,
     required bool isCompleted,
+    List<Map<String, dynamic>>? attachments,
     List<String>? members,
   }) async {
     final ownerId = await _secureStorage.getUserData(type: StorageDataType.id);
@@ -154,10 +155,11 @@ class TaskDataSourceImpl implements TaskDataSource {
         TaskScheme.projectId: projectId,
         TaskScheme.ownerId: ownerId,
         TaskScheme.members: members,
-        TaskScheme.attachments: null,
+        TaskScheme.attachments: attachments,
       },
       options: await _network.getLocalRequestOptions(useContentType: true),
     );
+    log('updateTask ${response.data}');
     log('updateTask ${response.statusMessage}');
     log('updateTask ${response.statusCode}');
     return NetworkErrorService.isSuccessful(response)
