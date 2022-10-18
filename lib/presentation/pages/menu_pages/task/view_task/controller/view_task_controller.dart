@@ -1,12 +1,16 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/database/model/task_models/comment_model.dart';
+import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
+import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/attachments_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/access_token_mixin.dart';
+import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
 class ViewTaskController extends ChangeNotifier with AccessTokenMixin {
@@ -31,13 +35,66 @@ class ViewTaskController extends ChangeNotifier with AccessTokenMixin {
   final commentController = TextEditingController();
 
   UserProfileModel? user;
+
   ProjectModel? project;
+
+  final isActiveSubmitButton = ValueNotifier<bool>(true);
+
+  Map<String, String>? imageHeader;
+
+  Future<void> fetchInitialData(String projectId, VoidCallback callback) async {
+    await Future.wait([
+      getAccessToken(),
+      fetchProject(projectId),
+    ]).then((_) => callback());
+  }
 
   Future<void> fetchDetailedUser(String? ownerId) async {
     if (ownerId != null) {
       String id =
           await _secureStorage.getUserData(type: StorageDataType.id) ?? '';
       user = await _userRepository.fetchUser(id: id);
+    }
+  }
+
+  Future<void> updateTask(
+    TaskModel model,
+    BuildContext context,
+  ) async {
+    try {
+      changeSubmitButton(false);
+      List<String> members = [];
+      if (model.members != null) {
+        for (var i = 0; i < model.members!.length; i++) {
+          members.add(model.members![i].id);
+        }
+      }
+
+      await _taskRepository
+          .updateTask(
+            taskId: model.id,
+            title: model.title,
+            isCompleted: true,
+            description: model.description,
+            assignedTo: model.assignedTo,
+            projectId: model.projectId,
+            members: members,
+            dueDate:
+                DateFormat("yyyy-MM-ddThh:mm:ss.ssssss").format(model.dueDate),
+          )
+          .then(
+            (_) => MessageService.displaySnackbar(
+              context: context,
+              message: LocaleKeys.updated.tr(),
+            ),
+          );
+    } catch (e) {
+       MessageService.displaySnackbar(
+        context: context,
+        message: LocaleKeys.not_updated.tr(),
+      );
+    } finally {
+      changeSubmitButton(true);
     }
   }
 
@@ -49,13 +106,10 @@ class ViewTaskController extends ChangeNotifier with AccessTokenMixin {
     return await _taskRepository.fetchTaskComments(taskId: taskId);
   }
 
-  final isActiveSubmitButton = ValueNotifier<bool>(true);
   void changeSubmitButton(bool newValue) {
     isActiveSubmitButton.value = newValue;
     isActiveSubmitButton.notifyListeners();
   }
-
-  Map<String, String>? imageHeader;
 
   Future<void> getAccessToken() async =>
       imageHeader = await getAccessHeader(_secureStorage);

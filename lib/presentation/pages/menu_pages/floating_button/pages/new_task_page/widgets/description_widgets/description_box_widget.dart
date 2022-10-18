@@ -112,6 +112,7 @@ class _DescriptionBoxWidgetState extends State<DescriptionBoxWidget> {
                                         .createTaskComment(
                                       taskId: widget.pickedTask!.id,
                                     );
+                                    widget.textController.clear();
                                     widget.callback!();
                                   }
                                   setState(() {

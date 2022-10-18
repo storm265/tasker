@@ -7,10 +7,18 @@ String getDaysAgo(
 ) {
   switch (daysAgo) {
     case 0:
-      return '$hoursAgo ${hoursAgo >= 0 && hoursAgo <= 1 ? 'hour' : 'hours'} ago';
+      return '$hoursAgo ${getHour(hoursAgo.toString())} ago';
     case 1:
       return '$daysAgo ${LocaleKeys.day_ago.tr()}';
     default:
       return '$daysAgo ${LocaleKeys.days_ago.tr()}';
+  }
+}
+
+String getHour(String hour) {
+  if (hour.contains('1')) {
+    return 'hour';
+  } else {
+    return 'hours';
   }
 }

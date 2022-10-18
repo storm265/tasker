@@ -84,6 +84,8 @@
     "please_restart_app": "Please, restart app.",
     "form_is_not_valid": "Form is not valid ☠️",
     "enter_field": "Please, fill field 😐 ",
+    "not_assigned": "Not assigned",
+    "not_updated": "Not updated",
     "updated": "Updated 😀",
     "deleted": "Deleted 😉",
     "created": "Created 😄",

@@ -116,6 +116,7 @@ class AddEditTaskController extends BaseTasksController with AccessTokenMixin {
           }
         }
         final model = await super.taskRepository.updateTask(
+              isCompleted: false,
               taskId: taskId,
               title: titleTextController.text,
               description: descriptionTextController.text,
@@ -147,6 +148,6 @@ class AddEditTaskController extends BaseTasksController with AccessTokenMixin {
 
   Map<String, String>? imageHeader;
 
-  void getAccessToken() async =>
+  Future<void> getAccessToken() async =>
       imageHeader = await getAccessHeader(secureStorage);
 }

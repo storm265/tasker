@@ -28,6 +28,7 @@ abstract class TaskDataSource {
     required String projectId,
     required String taskId,
     required String? dueDate,
+    required bool isCompleted,
     List<String>? members,
   });
 
@@ -139,6 +140,7 @@ class TaskDataSourceImpl implements TaskDataSource {
     required String projectId,
     required String taskId,
     required String? dueDate,
+    required bool isCompleted,
     List<String>? members,
   }) async {
     final ownerId = await _secureStorage.getUserData(type: StorageDataType.id);
@@ -149,7 +151,7 @@ class TaskDataSourceImpl implements TaskDataSource {
         TaskScheme.dueDate: dueDate,
         TaskScheme.description: description,
         TaskScheme.assignedTo: assignedTo,
-        TaskScheme.isCompleted: false,
+        TaskScheme.isCompleted: isCompleted,
         TaskScheme.projectId: projectId,
         TaskScheme.ownerId: ownerId,
         TaskScheme.members: members,

@@ -26,6 +26,7 @@ abstract class TaskRepository<T> {
     required String? assignedTo,
     required String projectId,
     required String taskId,
+    required bool isCompleted,
     required String? dueDate,
     List<String>? members,
   });
@@ -107,11 +108,13 @@ class TaskRepositoryImpl implements TaskRepository {
     required String projectId,
     required String taskId,
     required String? dueDate,
+    required bool isCompleted,
     List<String>? members,
   }) async {
     final response = await _taskDataSource.updateTask(
       taskId: taskId,
       title: title,
+      isCompleted: isCompleted,
       description: description,
       assignedTo: assignedTo,
       projectId: projectId,

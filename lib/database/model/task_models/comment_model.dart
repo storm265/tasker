@@ -7,7 +7,7 @@ class CommentModel {
   final String content;
   final String taskId;
   final String ownerId;
-  final UserProfileModel commentator;
+  final UserProfileModel? commentator;
   final String? attachments;
   final DateTime createdAt;
 
@@ -24,9 +24,12 @@ class CommentModel {
   factory CommentModel.fromJson(Map<String, dynamic> json) => CommentModel(
         id: json[CommentAttachmentScheme.id],
         content: json[CommentAttachmentScheme.content],
-        commentator: UserProfileModel.fromJson(
-          json[CommentAttachmentScheme.commentator] as Map<String, dynamic>,
-        ),
+        commentator: json[CommentAttachmentScheme.commentator] == null
+            ? null
+            : UserProfileModel.fromJson(
+                json[CommentAttachmentScheme.commentator]
+                    as Map<String, dynamic>,
+              ),
         taskId: json[CommentAttachmentScheme.taskId],
         attachments: json[CommentAttachmentScheme.attachments] ?? '',
         ownerId: json[CommentAttachmentScheme.ownerId],

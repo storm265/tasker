@@ -62,11 +62,8 @@ class _ViewTaskState extends State<ViewTask> {
 
   @override
   void initState() {
-    Future.wait([
-      viewTaskController.getAccessToken(),
-      viewTaskController.fetchProject(widget.pickedTask.projectId)
-    ]).then((_) => setState(() {}));
-
+    viewTaskController.fetchInitialData(
+        widget.pickedTask.projectId, () => setState(() {}));
     super.initState();
   }
 
@@ -147,8 +144,9 @@ class _ViewTaskState extends State<ViewTask> {
                         title: LocaleKeys.complete_task.tr(),
                         onPressed: isClicked
                             ? () async {
-                                await Future.delayed(
-                                  const Duration(seconds: 2),
+                                await viewTaskController.updateTask(
+                                  widget.pickedTask,
+                                  context,
                                 );
                               }
                             : null,

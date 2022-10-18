@@ -89,6 +89,8 @@ abstract class  LocaleKeys {
   static const please_restart_app = 'please_restart_app';
   static const form_is_not_valid = 'form_is_not_valid';
   static const enter_field = 'enter_field';
+  static const not_assigned = 'not_assigned';
+  static const not_updated = 'not_updated';
   static const updated = 'updated';
   static const deleted = 'deleted';
   static const created = 'created';

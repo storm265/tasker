@@ -22,7 +22,7 @@ class CommentAttachmentWidget extends StatelessWidget {
       future: viewTaskController.fetchComments(taskId: pickedTask.id),
       builder: ((_, AsyncSnapshot<List<CommentModel>> snapshot) {
         final data = snapshot.data ?? [];
-        data.sort((a, b) => a.createdAt.compareTo(b.createdAt));
+        data.sort((a, b) => b.createdAt.compareTo(a.createdAt));
         log('comments ${data.length}');
         return ListView.builder(
           itemCount: data.length,
@@ -31,7 +31,7 @@ class CommentAttachmentWidget extends StatelessWidget {
           itemBuilder: (_, i) {
             final timeAgo = DateTime.now().difference(data[i].createdAt);
             return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
+              padding: const EdgeInsets.symmetric(vertical: 12),
               child: Column(
                 children: [
                   Row(
@@ -40,7 +40,7 @@ class CommentAttachmentWidget extends StatelessWidget {
                         backgroundImage: pickedTask.assignedTo == null
                             ? null
                             : NetworkImage(
-                                data[i].commentator.avatarUrl,
+                                data[i].commentator?.avatarUrl ?? '',
                                 headers: viewTaskController.imageHeader,
                               ),
                         radius: 14,
@@ -51,7 +51,7 @@ class CommentAttachmentWidget extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              data[i].commentator.username,
+                              data[i].commentator?.username ?? '',
                               style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w200,
@@ -78,7 +78,6 @@ class CommentAttachmentWidget extends StatelessWidget {
                         data[i].content,
                         maxLines: null,
                         style: const TextStyle(
-                          overflow: TextOverflow.ellipsis,
                           fontWeight: FontWeight.w500,
                           fontSize: 16,
                         ),
