@@ -42,10 +42,11 @@ class ViewTaskController extends ChangeNotifier with AccessTokenMixin {
 
   Map<String, String>? imageHeader;
 
-  Future<void> fetchInitialData(String projectId, VoidCallback callback) async {
+  Future<void> fetchInitialData(String projectId,String? assignedTo, VoidCallback callback) async {
     await Future.wait([
       getAccessToken(),
       fetchProject(projectId),
+      fetchDetailedUser(assignedTo),
     ]).then((_) => callback());
   }
 
@@ -72,24 +73,24 @@ class ViewTaskController extends ChangeNotifier with AccessTokenMixin {
 
       await _taskRepository
           .updateTask(
-            taskId: model.id,
-            title: model.title,
-            isCompleted: true,
-            description: model.description,
-            assignedTo: model.assignedTo,
-            projectId: model.projectId,
-            members: members,
-            dueDate:
-                DateFormat("yyyy-MM-ddThh:mm:ss.ssssss").format(model.dueDate),
-          )
-          .then(
-            (_) => MessageService.displaySnackbar(
-              context: context,
-              message: LocaleKeys.updated.tr(),
-            ),
-          );
+        taskId: model.id,
+        title: model.title,
+        isCompleted: true,
+        description: model.description,
+        assignedTo: model.assignedTo,
+        projectId: model.projectId,
+        members: members,
+        dueDate: DateFormat("yyyy-MM-ddThh:mm:ss.ssssss").format(model.dueDate),
+      )
+          .then((_) {
+        MessageService.displaySnackbar(
+          context: context,
+          message: LocaleKeys.updated.tr(),
+        );
+        Navigator.pop(context);
+      });
     } catch (e) {
-       MessageService.displaySnackbar(
+      MessageService.displaySnackbar(
         context: context,
         message: LocaleKeys.not_updated.tr(),
       );

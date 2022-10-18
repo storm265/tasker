@@ -62,8 +62,8 @@ class _ViewTaskState extends State<ViewTask> {
 
   @override
   void initState() {
-    viewTaskController.fetchInitialData(
-        widget.pickedTask.projectId, () => setState(() {}));
+    viewTaskController.fetchInitialData(widget.pickedTask.projectId,
+        widget.pickedTask.assignedTo, () => setState(() {}));
     super.initState();
   }
 
