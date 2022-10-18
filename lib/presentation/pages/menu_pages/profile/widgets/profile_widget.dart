@@ -1,26 +1,31 @@
+import 'dart:developer';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
+import 'package:todo2/presentation/pages/menu_pages/profile/widgets/panel_widgets/user_data_widget.dart';
 import 'package:todo2/presentation/providers/file_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/profile/widgets/panel_widgets/cached_avatar_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/widgets/panel_widgets/panel_decoration.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/widgets/panel_widgets/tasks_text_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/dialogs/settings_dialog.dart';
+import 'package:todo2/presentation/widgets/common/add_photo_widget.dart';
 import 'package:todo2/utils/assets_path.dart';
 
+  const   _avatarmaxSize = 64;
+  
 class ProfileWidget extends StatefulWidget {
   final int completedTasks;
   final int createdTask;
   final ProfileController profileController;
-  final FileProvider imageController;
+  final FileProvider fileProvider;
   const ProfileWidget({
     Key? key,
     required this.profileController,
     required this.completedTasks,
     required this.createdTask,
-    required this.imageController,
+    required this.fileProvider,
   }) : super(key: key);
 
   @override
@@ -32,6 +37,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
   Future<void> fetchData() async {
     await widget.profileController.fetchProfileInfo();
   }
+
 
   @override
   void initState() {
@@ -62,10 +68,12 @@ class _ProfileWidgetState extends State<ProfileWidget>
               child: IconButton(
                 splashRadius: 20,
                 onPressed: () => showSettingsDialog(
-                  callback: () => setState(() {}),
+                  callback: () => setState(() {
+                    log('set state');
+                  }),
                   context: context,
                   profileController: widget.profileController,
-                  imageController: widget.imageController,
+                  imageController: widget.fileProvider,
                 ),
                 icon: RotationTransition(
                   turns: Tween(begin: 0.0, end: 1.0).animate(
@@ -84,38 +92,54 @@ class _ProfileWidgetState extends State<ProfileWidget>
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       const SizedBox(width: 30),
-                      CachedAvatarWidget(
-                        profileController: widget.profileController,
-                      ),
-                      const SizedBox(width: 15),
-                      Flexible(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              widget.profileController.email,
-                              style: const TextStyle(
-                                fontSize: 18,
-                                overflow: TextOverflow.ellipsis,
-                                fontWeight: FontWeight.w200,
-                                fontStyle: FontStyle.italic,
-                              ),
-                            ),
-                            Text(
-                              widget.profileController.username,
-                              style: const TextStyle(
-                                fontSize: 16,
-                                color: Colors.grey,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
+                      SizedBox(
+                        width: double.parse(_avatarmaxSize.toString()),
+                        height: double.parse(_avatarmaxSize.toString()),
+                        child: ValueListenableBuilder<String>(
+                          valueListenable: widget.profileController.imageUrl,
+                          builder: (__, url, _) => url.isEmpty
+                              ? const CircleAvatar(
+                                  backgroundColor: Color(0xffC4C4C4),
+                                  child: addPhotoWidget,
+                                )
+                              : CachedNetworkImage(
+                                  imageUrl: url,
+                                  httpHeaders:
+                                      widget.profileController.imageHeader,
+                                  imageBuilder: (_, imageProvider) {
+                                    return CircleAvatar(
+                                        backgroundImage: imageProvider);
+                                  },
+                                  placeholder: ((_, url) => SizedBox(
+                                        width: double.parse(_avatarmaxSize.toString()),
+                                        height:
+                                            double.parse(_avatarmaxSize.toString()),
+                                        child: const CircleAvatar(
+                                          backgroundColor: Color(0xffC4C4C4),
+                                          child: addPhotoWidget,
+                                        ),
+                                      )),
+                                  errorWidget: (_, url, error) {
+                                    log('errorWidget error $error');
+                                    return SizedBox(
+                                      width: double.parse(_avatarmaxSize.toString()),
+                                      height: double.parse(_avatarmaxSize.toString()),
+                                      child: const CircleAvatar(
+                                        backgroundColor: Color(0xffC4C4C4),
+                                        child: addPhotoWidget,
+                                      ),
+                                    );
+                                  },
+                                ),
                         ),
                       ),
+                      const SizedBox(width: 15),
+                      UserDataWidget(
+                        profileController: widget.profileController,
+                      )
                     ],
                   ),
                 ),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [

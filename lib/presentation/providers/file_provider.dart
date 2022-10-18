@@ -7,7 +7,6 @@ import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
-import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
@@ -90,7 +89,6 @@ class FileProvider extends ChangeNotifier {
   }
 
   Future<PlatformFile> pickFile({required BuildContext context}) async {
-    try {
       FilePickerResult? result = await FilePicker.platform.pickFiles();
 
       if (result != null && result.files.first.size >= _maxFileSize) {
@@ -103,9 +101,6 @@ class FileProvider extends ChangeNotifier {
         PlatformFile file = result!.files.first;
         return file;
       }
-    } catch (e) {
-      throw Failure(e.toString());
-    }
   }
 
   bool shouldUploadAvatar() => pickedFile.value.path != '';
@@ -136,8 +131,6 @@ class FileProvider extends ChangeNotifier {
         context: context,
         message: LocaleKeys.avatar_not_updated.tr(),
       );
-
-      throw Failure(e.toString());
     }
   }
 

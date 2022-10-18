@@ -9,20 +9,21 @@ import 'package:todo2/database/repository/notes_repository.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/access_token_mixin.dart';
 import 'package:todo2/presentation/providers/file_provider.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
-class ProfileController extends ChangeNotifier {
+class ProfileController extends ChangeNotifier with AccessTokenMixin {
   final SecureStorageSource _secureStorageService;
-  final FileProvider fileController;
+  final FileProvider fileProvider;
   final UserProfileRepositoryImpl userProfileRepository;
   final AuthRepositoryImpl authRepository;
   final TaskRepository _taskRepository;
   final NoteRepository _notesRepository;
   ProfileController({
-    required this.fileController,
+    required this.fileProvider,
     required NoteRepository notesRepository,
     required SecureStorageSource secureStorageService,
     required TaskRepository taskRepository,
@@ -40,6 +41,13 @@ class ProfileController extends ChangeNotifier {
 
   final imageCachedKey = ValueNotifier<String>('0');
 
+  // ignore: prefer_final_fields
+  List<TaskModel> _tasks = [];
+  int _eventsLength = 0;
+  int _todoLength = 0;
+  int _quickNotesLength = 0;
+  List<int> cardLength = [0, 0, 0];
+
   Future<void> clearImage() async {
     final url = await _secureStorageService.getUserData(
             type: StorageDataType.avatarUrl) ??
@@ -55,7 +63,7 @@ class ProfileController extends ChangeNotifier {
     imageUrl.value =
         '${dotenv.env[EnvScheme.apiUrl]}/users-avatar/${await getAvatarLink()}';
     imageUrl.notifyListeners();
-    imageHeader = await getAvatarHeader();
+    imageHeader = await getAccessHeader(_secureStorageService);
 
     email =
         await _secureStorageService.getUserData(type: StorageDataType.email) ??
@@ -71,13 +79,6 @@ class ProfileController extends ChangeNotifier {
         ) ??
         '';
     return avatarLink;
-  }
-
-  Future<Map<String, String>> getAvatarHeader() async {
-    return {
-      'Authorization':
-          'Bearer ${await _secureStorageService.getUserData(type: StorageDataType.accessToken)}',
-    };
   }
 
   void rotateSettingsIcon({required TickerProvider ticker}) {
@@ -104,13 +105,6 @@ class ProfileController extends ChangeNotifier {
         .then((_) => NavigationService.navigateTo(context, Pages.welcome));
   }
 
-   // ignore: prefer_final_fields
-   List<TaskModel> _tasks = [];
-  int _eventsLength = 0;
-  int _todoLength = 0;
-  int _quickNotesLength = 0;
-  List<int> cardLength = [0,0,0];
-
   Future<void> fetchCardsData() async {
     await _fetchTasks();
     await _fetchQuickNotes();
@@ -133,7 +127,6 @@ class ProfileController extends ChangeNotifier {
     for (var i = 0; i < list2.length; i++) {
       _tasks.add(list3[i]);
     }
-
   }
 
   Future<void> _fetchQuickNotes() async {

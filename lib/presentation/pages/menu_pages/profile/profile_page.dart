@@ -42,7 +42,7 @@ class _ProfilePageState extends State<ProfilePage> {
         secureStorage: SecureStorageSource(),
       ),
     ),
-    fileController: FileProvider(),
+    fileProvider: FileProvider(),
     secureStorageService: SecureStorageSource(),
     userProfileRepository: UserProfileRepositoryImpl(
       userProfileDataSource: UserProfileDataSourceImpl(
@@ -85,7 +85,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               child: ProfileWidget(
                 profileController: profileController,
-                imageController: profileController.fileController,
+                fileProvider: profileController.fileProvider,
                 completedTasks: userController.stats.completedTasks,
                 createdTask: userController.stats.createdTasks,
               ),
