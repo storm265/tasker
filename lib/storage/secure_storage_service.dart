@@ -103,7 +103,6 @@ class SecureStorageSource {
           value: value,
         );
         break;
-      default:
     }
   }
 }

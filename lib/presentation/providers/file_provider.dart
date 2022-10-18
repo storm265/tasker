@@ -52,44 +52,40 @@ class FileProvider extends ChangeNotifier {
   Future<PlatformFile> pickAvatar({
     required BuildContext context,
   }) async {
-    try {
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
-            allowCompression: true,
-            type: FileType.custom,
-            allowedExtensions: [
-              _jpeg,
-              _png,
-              _jpg,
-            ],
-          ) ??
-          const FilePickerResult([]);
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+          allowCompression: true,
+          type: FileType.custom,
+          allowedExtensions: [
+            _jpeg,
+            _png,
+            _jpg,
+          ],
+        ) ??
+        const FilePickerResult([]);
+    pickedFile.value = result.files.last;
+    pickedFile.notifyListeners();
+
+    if (result.files.last.size >= _maxImageSize) {
+      pickedFile.value = _emptyImage;
+      result.files.clear();
+      pickedFile.notifyListeners();
+      throw MessageService.displaySnackbar(
+        message: LocaleKeys.file_size_is_too_huge.tr(),
+        context: context,
+      );
+    } else if (isValidImageFormat(pickedFile.value.extension ?? '')) {
       pickedFile.value = result.files.last;
       pickedFile.notifyListeners();
-
-      if (result.files.last.size >= _maxImageSize) {
-        pickedFile.value = _emptyImage;
-        result.files.clear();
-        pickedFile.notifyListeners();
-        throw MessageService.displaySnackbar(
-          message: LocaleKeys.file_size_is_too_huge.tr(),
-          context: context,
-        );
-      } else if (isValidImageFormat(pickedFile.value.extension ?? '')) {
-        pickedFile.value = result.files.last;
-        pickedFile.notifyListeners();
-        return pickedFile.value = result.files.last;
-      } else {
-        pickedFile.value = _emptyImage;
-        result.files.clear();
-        pickedFile.notifyListeners();
-        throw MessageService.displaySnackbar(
-          message:
-              '${LocaleKeys.wrong_image_supported_formats.tr()} .$_jpeg, .$_jpg, .$_png.',
-          context: context,
-        );
-      }
-    } catch (e) {
-      throw Failure(e.toString());
+      return pickedFile.value = result.files.last;
+    } else {
+      pickedFile.value = _emptyImage;
+      result.files.clear();
+      pickedFile.notifyListeners();
+      throw MessageService.displaySnackbar(
+        message:
+            '${LocaleKeys.wrong_image_supported_formats.tr()} .$_jpeg, .$_jpg, .$_png.',
+        context: context,
+      );
     }
   }
 
@@ -135,12 +131,12 @@ class FileProvider extends ChangeNotifier {
         await profileController.clearImage();
         callback();
       }
-    } catch (e, t) {
+    } catch (e) {
       MessageService.displaySnackbar(
         context: context,
         message: LocaleKeys.avatar_not_updated.tr(),
       );
-      log('update img error : $e, $t');
+
       throw Failure(e.toString());
     }
   }

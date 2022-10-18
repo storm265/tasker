@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/controller/file_provider.dart';
+import 'package:todo2/presentation/providers/file_provider.dart';
 import 'package:todo2/presentation/widgets/common/add_photo_widget.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 

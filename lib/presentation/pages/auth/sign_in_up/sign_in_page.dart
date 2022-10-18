@@ -4,7 +4,7 @@ import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
-import 'package:todo2/presentation/controller/user_provider.dart';
+import 'package:todo2/presentation/providers/user_provider.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/sign_in_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/padding_contstant.dart';

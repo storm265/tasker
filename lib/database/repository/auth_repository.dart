@@ -1,6 +1,5 @@
 import 'package:todo2/database/data_source/auth_data_source.dart';
 import 'package:todo2/database/model/auth_model.dart';
-import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 

@@ -1,8 +1,6 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/checklists_data_source.dart';
 import 'package:todo2/database/model/checklist_model.dart';
-import 'package:todo2/services/error_service/error_service.dart';
 
 abstract class CheckListsRepository<T> {
   Future<void> createCheckList({

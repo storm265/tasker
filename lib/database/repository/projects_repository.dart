@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/projects_data_source.dart';
 import 'package:todo2/database/model/project_models/project_stats_model.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
-import 'package:todo2/services/error_service/error_service.dart';
 
 abstract class ProjectRepository {
   Future<ProjectModel> fetchOneProject({required String projectId});

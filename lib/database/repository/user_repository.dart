@@ -3,7 +3,6 @@ import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/database/model/profile_models/stats_model.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
-import 'package:todo2/services/error_service/error_service.dart';
 
 abstract class UserProfileRepository {
   Future<UserProfileModel> fetchCurrentUser({

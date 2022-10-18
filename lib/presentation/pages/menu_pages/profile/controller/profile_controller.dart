@@ -9,7 +9,7 @@ import 'package:todo2/database/repository/notes_repository.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
-import 'package:todo2/presentation/controller/file_provider.dart';
+import 'package:todo2/presentation/providers/file_provider.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/storage/secure_storage_service.dart';

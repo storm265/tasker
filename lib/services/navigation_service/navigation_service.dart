@@ -11,7 +11,6 @@ import 'package:todo2/presentation/pages/menu_pages/profile/profile_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_page.dart';
 import 'package:todo2/presentation/pages/navigation/navigation_page.dart';
-import 'package:todo2/presentation/pages/no_connection_page.dart';
 
 enum Pages {
   welcome('welcome'),
@@ -36,7 +35,6 @@ enum Pages {
 Map<String, Widget Function(BuildContext)> routes = {
   '/': (_) => SplashPage(),
   Pages.navigationReplacement.type: (_) => const NavigationPage(),
-  Pages.noConnection.type: (_) => const NoConnectionPage(),
   Pages.welcome.type: (_) => const WelcomePage(),
   Pages.signUp.type: (_) => const SignUpPage(),
   Pages.signIn.type: (_) => const SignInPage(),

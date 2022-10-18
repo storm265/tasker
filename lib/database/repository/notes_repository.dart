@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:todo2/database/data_source/notes_data_source.dart';
 import 'package:todo2/database/model/notes_model.dart';
-import 'package:todo2/services/error_service/error_service.dart';
 
 abstract class NoteRepository<T> {
   Future<void> createNote({
