@@ -61,7 +61,7 @@ abstract class TaskDataSource {
 
   Future<void> uploadTaskCommentAttachment({
     required File file,
-    required String taskId,
+    required String commentId,
     required bool isFile,
   });
 }
@@ -84,6 +84,8 @@ class TaskDataSourceImpl implements TaskDataSource {
   final _tasksComments = '/tasks-comments';
 
   final _taskMemberSearch = '/task-members-search';
+
+  final _commentsAttachments = '/comments-attachments';
 
   final NetworkSource _network;
 
@@ -358,7 +360,7 @@ class TaskDataSourceImpl implements TaskDataSource {
   @override
   Future<void> uploadTaskCommentAttachment({
     required File file,
-    required String taskId,
+    required String commentId,
     required bool isFile,
   }) async {
     String fileName = file.path.split('/').last;
@@ -370,11 +372,12 @@ class TaskDataSourceImpl implements TaskDataSource {
           filename: fileName,
         ),
         "type": isFile == true ? 'FILE' : 'IMAGE',
-        TaskScheme.commentId: taskId,
+        TaskScheme.commentId: commentId,
       },
     );
+
     final response = await _network.post(
-      path: _tasksAttachments,
+      path: '$_commentsAttachments/', // TODO id
       formData: formData,
       isFormData: true,
       options: await _network.getLocalRequestOptions(),

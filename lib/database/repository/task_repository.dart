@@ -240,7 +240,7 @@ class TaskRepositoryImpl implements TaskRepository {
   }) async =>
       await _taskDataSource.uploadTaskCommentAttachment(
         file: file,
-        taskId: taskId,
+        commentId: taskId,
         isFile: isFile,
       );
 }
