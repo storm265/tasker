@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/projects_data_source.dart';
 import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/database_scheme/task_schemes/task_scheme.dart';
+import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
@@ -82,16 +85,22 @@ class _AddEditTaskPageState extends State<AddEditTaskPage> {
   @override
   void didChangeDependencies() {
     final arguments = ModalRoute.of(context)?.settings.arguments;
-    final mapped = arguments == null ? {} : arguments as Map<String, dynamic>;
+    final model = arguments == null ? null : arguments as Map<String, dynamic>;
 
     if (arguments == null) {
       addEditTaskController.isEditMode = false;
     } else {
       addEditTaskController.isEditMode = true;
       addEditTaskController.getEditData(
-        assignedto: mapped[TaskScheme.assignedTo],
-        projectId: mapped[TaskScheme.projectId],
-        members: mapped[TaskScheme.members],
+        assignedTo: model![TaskScheme.assignedTo],
+        id: model[TaskScheme.id],
+        description: model[TaskScheme.description],
+        dueDate: model[TaskScheme.dueDate],
+        members: model[TaskScheme.members],
+        createdAt: model[TaskScheme.createdAt],
+        ownerId: model[TaskScheme.ownerId],
+        projectId: model[TaskScheme.projectId],
+        title: model[TaskScheme.title],
       );
     }
     super.didChangeDependencies();
@@ -189,11 +198,20 @@ class _AddEditTaskPageState extends State<AddEditTaskPage> {
                                       builder: (_, isClicked, __) => isClicked
                                           ? ConfirmButtonWidget(
                                               width: 310,
-                                              title: LocaleKeys.add_task.tr(),
+                                              title: addEditTaskController
+                                                      .isEditMode
+                                                  ? LocaleKeys.update_task.tr()
+                                                  : LocaleKeys.add_task.tr(),
                                               onPressed: isClicked
                                                   ? () async {
-                                                      await addEditTaskController
-                                                          .createTask(context);
+                                                      addEditTaskController
+                                                              .isEditMode
+                                                          ? await addEditTaskController
+                                                              .updateTask(
+                                                                  context)
+                                                          : await addEditTaskController
+                                                              .createTask(
+                                                                  context);
                                                     }
                                                   : null,
                                             )

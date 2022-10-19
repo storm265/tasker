@@ -29,30 +29,37 @@ class TaskModel {
     this.members,
   });
 
-  factory TaskModel.fromJson(Map<String, dynamic> json) => TaskModel(
-        id: json[TaskScheme.id],
-        title: json[TaskScheme.title],
-        dueDate: DateTime.parse(json[TaskScheme.dueDate] ??
-            "${DateTime.now().year + 30}-06-21T23:56:02.394631"),
-        description: json[TaskScheme.description],
-        assignedTo: json[TaskScheme.assignedTo] == 'null'
-            ? null
-            : json[TaskScheme.assignedTo],
-        isCompleted: json[TaskScheme.isCompleted],
-        projectId: json[TaskScheme.projectId],
-        ownerId: json[TaskScheme.ownerId],
-        createdAt: DateTime.parse(json[TaskScheme.createdAt]),
-        attachments: json[TaskScheme.attachments] == null
-            ? []
-            : (json[TaskScheme.attachments] as List<dynamic>)
-                .map((e) => TaskAttachmentModel.fromJson(e))
-                .toList(),
-        members: json[TaskScheme.members] == null
-            ? []
-            : (json[TaskScheme.members] as List<dynamic>)
-                .map((e) => UserProfileModel.fromJson(e))
-                .toList(),
-      );
+  factory TaskModel.fromJson(Map<String, dynamic> json) {
+    // log('runtimeType ${json[TaskScheme.dueDate].runtimeType}');
+    // log('due date ${json[TaskScheme.dueDate]}');
+    // log('due is null ${json[TaskScheme.dueDate] == null}');
+
+    return TaskModel(
+      id: json[TaskScheme.id],
+      title: json[TaskScheme.title],
+      dueDate: json[TaskScheme.dueDate] == null
+          ? DateTime.parse("${DateTime.now().year + 30}-06-21T23:56:02.394631")
+          : DateTime.parse(json[TaskScheme.dueDate]),
+      description: json[TaskScheme.description],
+      assignedTo: json[TaskScheme.assignedTo] == 'null'
+          ? null
+          : json[TaskScheme.assignedTo],
+      isCompleted: json[TaskScheme.isCompleted],
+      projectId: json[TaskScheme.projectId],
+      ownerId: json[TaskScheme.ownerId],
+      createdAt: DateTime.parse(json[TaskScheme.createdAt]),
+      attachments: json[TaskScheme.attachments] == null
+          ? []
+          : (json[TaskScheme.attachments] as List<dynamic>)
+              .map((e) => TaskAttachmentModel.fromJson(e))
+              .toList(),
+      members: json[TaskScheme.members] == null
+          ? []
+          : (json[TaskScheme.members] as List<dynamic>)
+              .map((e) => UserProfileModel.fromJson(e))
+              .toList(),
+    );
+  }
 
   TaskModel copyWith({
     String? id,

@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
@@ -8,7 +7,6 @@ import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/access_token_mixin.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/base_tasks_controller.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
-import 'package:todo2/storage/secure_storage_service.dart';
 
 class AddEditTaskController extends BaseTasksController with AccessTokenMixin {
   final UserProfileRepository _userRepository;
@@ -27,19 +25,32 @@ class AddEditTaskController extends BaseTasksController with AccessTokenMixin {
         _projectRepository = projectRepository;
 
   bool isEditMode = false;
+  String taskId = '';
 
   void getEditData({
-    required String? assignedto,
+    required String id,
+    required String ownerId,
+    required DateTime dueDate,
+    required DateTime createdAt,
+    required String? assignedTo,
     required String projectId,
+    required String title,
+    required String description,
     required List<UserProfileModel> members,
   }) async {
-    // fetch user
-    final id = await secureStorage.getUserData(type: StorageDataType.id) ?? '';
-    final user = await _userRepository.fetchUser(
-      id: assignedto ?? id,
-    );
+    taskId = id;
 
-    // picked project
+    final user = assignedTo == null
+        ? UserProfileModel(
+            id: ownerId,
+            username: '',
+            email: '',
+            avatarUrl: '',
+            createdAt: createdAt)
+        : await _userRepository.fetchUser(
+            id: assignedTo,
+          );
+
     pickedUser.value = user;
     userTextController.text = user.username;
     pickedUser.notifyListeners();
@@ -48,14 +59,20 @@ class AddEditTaskController extends BaseTasksController with AccessTokenMixin {
         await _projectRepository.fetchOneProject(projectId: projectId);
     pickedProject.value = project;
     pickedProject.notifyListeners();
-    // pick members
+
     projectTextController.text = project.title;
+
+    titleTextController.text = title;
+
+    descriptionTextController.text = description;
+
+    calendarController.value = dueDate;
+
     memberProvider.fillMembers(members);
   }
 
   Future<void> createTask(BuildContext context) async {
     try {
-      log('is picke project ${pickedProject.value?.title}');
       changeSubmitButton(false);
       if (await taskValidator.tryValidate(
         pickedProject: pickedProject.value,
@@ -81,6 +98,7 @@ class AddEditTaskController extends BaseTasksController with AccessTokenMixin {
                       .format(calendarController.value),
               members: members,
             );
+        log('created time ${model.dueDate}');
         attachmentsProvider.hasAttachments()
             ? await attachmentsProvider.uploadTaskAttachment(taskId: model.id)
             : null;
@@ -98,10 +116,7 @@ class AddEditTaskController extends BaseTasksController with AccessTokenMixin {
     }
   }
 
-  Future<void> updateTask({
-    required String taskId,
-    required BuildContext context,
-  }) async {
+  Future<void> updateTask(BuildContext context) async {
     try {
       changeSubmitButton(false);
 

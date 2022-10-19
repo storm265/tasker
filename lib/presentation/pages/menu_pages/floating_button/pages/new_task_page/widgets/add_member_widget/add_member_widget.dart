@@ -73,7 +73,7 @@ class _AddMemberWidgetState extends State<AddMemberWidget> {
                       ),
                       RawMaterialButton(
                         elevation: 0,
-                        onPressed: () => showDialog(
+                        onPressed: () async=> await showDialog(
                           context: context,
                           builder: (_) => AddUserDialog(
                             taskController: widget.addEditTaskController,
@@ -112,12 +112,16 @@ class _AddMemberWidgetState extends State<AddMemberWidget> {
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 3),
-                          child: CircleAvatar(
-                            backgroundColor: Colors.grey,
-                            radius: 17,
-                            backgroundImage: NetworkImage(
-                              userList[i].avatarUrl,
-                              headers: widget.addEditTaskController.imageHeader,
+                          child: Tooltip(
+                            message: userList[i].username,
+                            child: CircleAvatar(
+                              backgroundColor: Colors.grey,
+                              radius: 17,
+                              backgroundImage: NetworkImage(
+                                userList[i].avatarUrl,
+                                headers:
+                                    widget.addEditTaskController.imageHeader,
+                              ),
                             ),
                           ),
                         ),

@@ -51,8 +51,9 @@ class _AddUserDialogState extends State<AddUserDialog> {
                   width: double.infinity,
                   child: TextField(
                     onChanged: (_) async => Future.delayed(
-                        const Duration(seconds: 1),
-                        () => setState(() {})),
+                      const Duration(seconds: 1),
+                      () => setState(() {}),
+                    ),
                     controller: userTextController,
                     decoration: InputDecoration(
                       suffixIcon: InkWell(
@@ -74,7 +75,8 @@ class _AddUserDialogState extends State<AddUserDialog> {
                 child: DisabledGlowWidget(
                   child: FutureBuilder<List<UserProfileModel>>(
                     initialData: const [],
-                    future: widget.taskController.taskMemberSearch(userName: userTextController.text),
+                    future: widget.taskController
+                        .taskMemberSearch(userName: userTextController.text),
                     builder: (context,
                         AsyncSnapshot<List<UserProfileModel>> snapshot) {
                       return (snapshot.hasError || !snapshot.hasData)

@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
@@ -38,15 +37,13 @@ class TaskCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final date = model.dueDate;
     return GestureDetector(
-      onTap: () async {
-        await showDialog(
+      onTap: () async =>  await showDialog(
           context: context,
           builder: (_) => ViewTask(
             taskController: taskController,
             pickedTask: model,
           ),
-        );
-      },
+        ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(

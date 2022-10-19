@@ -15,7 +15,6 @@ class CommentAttachmentWidget extends StatelessWidget {
     required this.pickedTask,
   });
 
-// TODO paste same code to task attachment
   @override
   Widget build(BuildContext context) {
     return Padding(
