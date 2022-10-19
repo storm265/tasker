@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
@@ -18,11 +20,13 @@ class TaskCardWidget extends StatelessWidget {
     required this.taskController,
   }) : super(key: key);
 
+// TODO need more tests
   bool _isSoonExpire(DateTime deadLineTime) {
+    log('dirrefence ${deadLineTime.difference(timeNow).inHours}');
     if (DateFormat('yyyy-MM-dd').format(deadLineTime) ==
             DateFormat('yyyy-MM-dd').format(
                 DateTime.utc(timeNow.year, timeNow.month, timeNow.day)) &&
-        deadLineTime.difference(timeNow).inHours >= 0 &&
+        deadLineTime.difference(timeNow).inHours >= 1 &&
         deadLineTime.difference(timeNow).inHours <= 2) {
       return true;
     } else {
