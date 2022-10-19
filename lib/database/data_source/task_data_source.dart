@@ -328,8 +328,6 @@ class TaskDataSourceImpl implements TaskDataSource {
       options: await _network.getLocalRequestOptions(),
     );
 
-    log('fetchTaskComments ${response.statusMessage}');
-    log('fetchTaskComments ${response.statusCode}');
     return NetworkErrorService.isSuccessful(response)
         ? (response.data![TaskScheme.data] as List<dynamic>)
         : throw Failure('Error: Get fetchTaskComments error');

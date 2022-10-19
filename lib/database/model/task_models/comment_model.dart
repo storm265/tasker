@@ -8,7 +8,7 @@ class CommentModel {
   final String taskId;
   final String ownerId;
   final UserProfileModel? commentator;
-  final CommentAttachmentModel? attachments;
+  final List<CommentAttachmentModel>? attachments;
   final DateTime createdAt;
 
   CommentModel({
@@ -24,19 +24,18 @@ class CommentModel {
   factory CommentModel.fromJson(Map<String, dynamic> json) => CommentModel(
         id: json[CommentAttachmentScheme.id],
         content: json[CommentAttachmentScheme.content],
+        taskId: json[CommentAttachmentScheme.taskId],
         commentator: json[CommentAttachmentScheme.commentator] == null
             ? null
             : UserProfileModel.fromJson(
                 json[CommentAttachmentScheme.commentator]
                     as Map<String, dynamic>,
               ),
-        taskId: json[CommentAttachmentScheme.taskId],
         attachments: json[CommentAttachmentScheme.attachments] == null
             ? null
-            : CommentAttachmentModel.fromJson(
-                json[CommentAttachmentScheme.commentator]
-                    as Map<String, dynamic>,
-              ),
+            : (json[CommentAttachmentScheme.attachments] as List<dynamic>)
+                .map((e) => CommentAttachmentModel.fromJson(e))
+                .toList(),
         ownerId: json[CommentAttachmentScheme.ownerId],
         createdAt: DateTime.parse(
           '${json[CommentAttachmentScheme.createdAt]}' 'Z',

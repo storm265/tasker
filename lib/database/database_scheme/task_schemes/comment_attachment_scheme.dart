@@ -7,6 +7,7 @@ class CommentAttachmentScheme {
   static const commentator = 'commentator';
   static const attachments = 'attachments';
   static const type = 'type';
+  static const url = 'url';
   static const name = 'name';
   static const filePath = 'filePath';
   static const taskId = 'task_id';

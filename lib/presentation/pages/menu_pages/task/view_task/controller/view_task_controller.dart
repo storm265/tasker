@@ -102,7 +102,7 @@ class ViewTaskController extends ChangeNotifier with AccessTokenMixin {
     project = await _projectRepository.fetchOneProject(projectId: projectId);
   }
 
-  Future<List<CommentModel>> fetchComments({required String taskId}) async {
+  Future<List<CommentModel>> fetchTaskComments({required String taskId}) async {
     return await _taskRepository.fetchTaskComments(taskId: taskId);
   }
 
@@ -123,19 +123,14 @@ class ViewTaskController extends ChangeNotifier with AccessTokenMixin {
     return model;
   }
 
-// TODO finish
   Future<void> uploadTaskCommentAttachment({required String commentId}) async {
-    log('files len ${attachmentsProvider.attachments.value.length}');
-    for (var i = 0; i < attachmentsProvider.attachments.value.length; i++) {
-      log('data ${attachmentsProvider.attachments.value[i]}');
-    }
     if (attachmentsProvider.attachments.value.isNotEmpty) {
-      log('files len ${attachmentsProvider.attachments.value.length}');
+
       for (int i = 0; i < attachmentsProvider.attachments.value.length; i++) {
         await _taskRepository.uploadTaskCommentAttachment(
           file: File(attachmentsProvider.attachments.value[i].path ?? ''),
           taskId: commentId,
-          isFile: attachmentsProvider.fileProvider.isValidImageFormat(
+          isFile: !attachmentsProvider.fileProvider.isValidImageFormat(
             attachmentsProvider.attachments.value[i].extension ?? '',
           ),
         );

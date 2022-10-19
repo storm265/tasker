@@ -41,12 +41,13 @@ class TaskAttachmentsWidget extends StatelessWidget {
                         ],
                       ),
                       child: Row(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
                           Chip(
                             avatar: attachmentsProvider.fileProvider
                                     .isValidImageFormat(imgList[i].path ?? '')
                                 ? CircleAvatar(
-                                    radius: 20,
+                                    radius: 25,
                                     backgroundImage: FileImage(
                                       File(imgList[i].path ?? ''),
                                     ),
@@ -57,12 +58,15 @@ class TaskAttachmentsWidget extends StatelessWidget {
                                   ),
                             backgroundColor:
                                 getAppColor(color: CategoryColor.blue),
-                            label: Text(
-                              imgList[i].name,
-                              style: const TextStyle(
-                                color: Colors.white,
-                                overflow: TextOverflow.ellipsis,
-                                fontSize: 12,
+                            label: LimitedBox(
+                              maxWidth: 200,
+                              child: Text(
+                                imgList[i].name,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  overflow: TextOverflow.ellipsis,
+                                  fontSize: 12,
+                                ),
                               ),
                             ),
                           ),

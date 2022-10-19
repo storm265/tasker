@@ -8,7 +8,6 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_ta
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_validator.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/controller/project_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/calendar_lib/controller.dart';
-import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
 abstract class BaseTasksController extends ChangeNotifier {
@@ -48,16 +47,6 @@ abstract class BaseTasksController extends ChangeNotifier {
   }
 
   final pickedProject = ValueNotifier<ProjectModel?>(null);
-
-// TRANSLATE
-  bool isPickedProject(BuildContext context) {
-    return pickedProject.value != null
-        ? true
-        : throw MessageService.displaySnackbar(
-            context: context,
-            message: 'Project is not picked',
-          );
-  }
 
   void pickProject({
     required ProjectModel newProject,

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/services/message_service/message_service.dart';
@@ -12,7 +14,8 @@ class TaskValidator {
   }) async {
     FocusScope.of(context).unfocus();
 
-    if (formKey.currentState!.validate() && isPickedProject()) {
+    if (formKey.currentState!.validate() &&
+        isPickedProject(pickedProject: pickedProject)) {
       return true;
     } else {
       MessageService.displaySnackbar(
@@ -26,9 +29,9 @@ class TaskValidator {
 
   bool isPickedProject({ProjectModel? pickedProject}) {
     if (pickedProject == null) {
-      return true;
-    } else {
       return false;
+    } else {
+      return true;
     }
   }
 
