@@ -55,38 +55,37 @@ class ForTextFieldWidget extends StatelessWidget {
                         ),
                       ),
               ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  child: TextFormField(
-                  
-                    style: const TextStyle(
+              SizedBox(
+                width: 50,
+                child: TextFormField(
+                  textAlign: TextAlign.center,
+                  maxLines: 1,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  onChanged: (_) async => callback(),
+                  onTap: () {
+                    addEditTaskController.userTextController.clear();
+                    addEditTaskController.panelProvider.changePanelStatus(
+                      newStatus: PanelStatus.showUserPanel,
+                    );
+                  },
+                  controller: addEditTaskController.userTextController,
+                  onEditingComplete: () {
+                    addEditTaskController.panelProvider
+                        .changePanelStatus(newStatus: PanelStatus.hide);
+                    FocusScope.of(context).unfocus();
+                  },
+                  decoration: const InputDecoration(
+                    hintText: '   Assignee',
+                    hintStyle: TextStyle(
                       fontWeight: FontWeight.w500,
                       color: Colors.black,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    onChanged: (_) async => callback(),
-                    onTap: () {
-                      addEditTaskController.userTextController.clear();
-                      addEditTaskController.panelProvider.changePanelStatus(
-                        newStatus: PanelStatus.showUserPanel,
-                      );
-                    },
-                    controller: addEditTaskController.userTextController,
-                    onEditingComplete: () {
-                      addEditTaskController.panelProvider
-                          .changePanelStatus(newStatus: PanelStatus.hide);
-                      FocusScope.of(context).unfocus();
-                    },
-                    decoration: const InputDecoration(
-                      hintText: '   Assignee',
-                      hintStyle: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      border: InputBorder.none,
-                    ),
+                    border: InputBorder.none,
                   ),
                 ),
               ),

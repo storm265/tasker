@@ -39,6 +39,7 @@ class InFieldWidget extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 5),
             child: TextFormField(
+              textAlign: TextAlign.center,
               style: const TextStyle(
                 fontWeight: FontWeight.w500,
                 color: Colors.black,
