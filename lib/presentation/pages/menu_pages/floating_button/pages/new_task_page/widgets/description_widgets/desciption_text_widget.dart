@@ -4,7 +4,7 @@ import 'package:todo2/generated/locale_keys.g.dart';
 
 final desciptionTextWidget = Padding(
   padding: const EdgeInsets.only(
-    left: 15,
+    left: 2,
     bottom: 10,
   ),
   child: Align(

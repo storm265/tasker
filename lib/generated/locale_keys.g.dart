@@ -1,7 +1,5 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
-// ignore_for_file: constant_identifier_names
-
 abstract class  LocaleKeys {
   static const get_started = 'get_started';
   static const welcome_to_todoList = 'welcome_to_todoList';
@@ -31,8 +29,6 @@ abstract class  LocaleKeys {
   static const tomorrow = 'tomorrow';
   static const month = 'month';
   static const my_tasks = 'my_tasks';
-  static const new_task = 'new_task';
-  static const update_task = 'update_task';
   static const menu = 'menu';
   static const quick = 'quick';
   static const profile = 'profile';
@@ -47,6 +43,8 @@ abstract class  LocaleKeys {
   static const delete_project = 'delete_project';
   static const update_project = 'update_project';
   static const add_project = 'add_project';
+  static const new_task = 'new_task';
+  static const update_task = 'update_task';
   static const forr = 'forr';
   static const In = 'In';
   static const title = 'title';
@@ -61,8 +59,9 @@ abstract class  LocaleKeys {
   static const assigned_to = 'assigned_to';
   static const members = 'members';
   static const tag = 'tag';
-  static const complete_task = 'complete_task';
   static const comments = 'comments';
+  static const complete_task = 'complete_task';
+  static const comment = 'comment';
   static const write_a_comment = 'write_a_comment';
   static const days = 'days';
   static const day = 'day';
@@ -97,5 +96,7 @@ abstract class  LocaleKeys {
   static const send = 'send';
   static const hour = 'hour';
   static const hours = 'hours';
+  static const you_cant_pick_date_debore_now = 'you_cant_pick_date_debore_now';
+  static const please_select_project = 'please_select_project';
 
 }

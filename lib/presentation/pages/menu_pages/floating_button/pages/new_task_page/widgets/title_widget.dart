@@ -16,7 +16,7 @@ class TaskTitleWidget extends StatelessWidget {
     return UnfocusWidget(
       child: GreyContainerWidget(
         child: Padding(
-          padding: const EdgeInsets.only(left: 40, top: 10),
+          padding: const EdgeInsets.only(left: 30, top: 10),
           child: TextFormField(
             style: const TextStyle(
               fontSize: 18,

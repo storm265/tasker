@@ -121,6 +121,11 @@ class _AddEditTaskPageState extends State<AddEditTaskPage> {
               },
               height: 700,
               child: UnfocusWidget(
+                callback: () {
+                  addEditTaskController.panelProvider
+                      .changePanelStatus(newStatus: PanelStatus.hide);
+                  FocusScope.of(context).unfocus();
+                },
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -176,22 +181,26 @@ class _AddEditTaskPageState extends State<AddEditTaskPage> {
                                     addEditTaskController:
                                         addEditTaskController,
                                   ),
-                                  ValueListenableBuilder<bool>(
-                                    valueListenable: addEditTaskController
-                                        .isActiveSubmitButton,
-                                    builder: (_, isClicked, __) => isClicked
-                                        ? ConfirmButtonWidget(
-                                            title: LocaleKeys.add_task.tr(),
-                                            onPressed: isClicked
-                                                ? () async {
-                                                    await addEditTaskController
-                                                        .createTask(context);
-                                                  }
-                                                : null,
-                                          )
-                                        : ProgressIndicatorWidget(
-                                            text: LocaleKeys.validating.tr(),
-                                          ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 15),
+                                    child: ValueListenableBuilder<bool>(
+                                      valueListenable: addEditTaskController
+                                          .isActiveSubmitButton,
+                                      builder: (_, isClicked, __) => isClicked
+                                          ? ConfirmButtonWidget(
+                                              width: 310,
+                                              title: LocaleKeys.add_task.tr(),
+                                              onPressed: isClicked
+                                                  ? () async {
+                                                      await addEditTaskController
+                                                          .createTask(context);
+                                                    }
+                                                  : null,
+                                            )
+                                          : ProgressIndicatorWidget(
+                                              text: LocaleKeys.validating.tr(),
+                                            ),
+                                    ),
                                   ),
                                 ],
                               );

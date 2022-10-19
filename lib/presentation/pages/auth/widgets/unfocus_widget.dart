@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 
 class UnfocusWidget extends StatelessWidget {
   final Widget child;
+  final VoidCallback? callback;
   const UnfocusWidget({
     Key? key,
+    this.callback,
     required this.child,
   }) : super(key: key);
 
@@ -11,7 +13,10 @@ class UnfocusWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
-      onTap: () => FocusScope.of(context).unfocus(),
+      onTap: () {
+        callback!();
+        FocusScope.of(context).unfocus();
+      },
       child: child,
     );
   }

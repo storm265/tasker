@@ -18,11 +18,10 @@ class SelectPanelWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
         color: const Color(0xFFF4F4F4),
       ),
-      height: 500,
-      width: 365,
+      height: 600,
       child: ValueListenableBuilder<PanelStatus>(
         valueListenable: addEditTaskController.panelProvider.panelStatus,
-        builder: (context, status, _) {
+        builder: (__, status, _) {
           switch (status) {
             case PanelStatus.hide:
               return const SizedBox();

@@ -92,5 +92,7 @@
     "created": "Created 😄",
     "send": "Send",
     "hour": "hour",
-    "hours": "hours"
+    "hours": "hours",
+    "you_cant_pick_date_debore_now": "You cant pick date before now!",
+    "please_select_project" : "Please, select project"
 }

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:todo2/database/database_scheme/task_schemes/comment_attachment_scheme.dart';
 
 class CommentAttachmentModel {

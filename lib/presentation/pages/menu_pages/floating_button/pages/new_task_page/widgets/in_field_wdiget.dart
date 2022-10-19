@@ -36,34 +36,36 @@ class InFieldWidget extends StatelessWidget {
             color: const Color(0xFFF4F4F4),
             borderRadius: BorderRadius.circular(50),
           ),
-          child: TextFormField(
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontWeight: FontWeight.w500,
-              color: Colors.black,
-              overflow: TextOverflow.ellipsis,
-            ),
-            onChanged: (_) async => callback(),
-            onTap: () {
-              addEditTaskController.projectTextController.clear();
-              addEditTaskController.panelProvider.changePanelStatus(
-                newStatus: PanelStatus.showProjectPanel,
-              );
-            },
-            controller: addEditTaskController.projectTextController,
-            onEditingComplete: () {
-              addEditTaskController.panelProvider
-                  .changePanelStatus(newStatus: PanelStatus.hide);
-              FocusScope.of(context).unfocus();
-            },
-            decoration: const InputDecoration(
-              hintText: 'Project',
-              hintStyle: TextStyle(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5),
+            child: TextFormField(
+              style: const TextStyle(
                 fontWeight: FontWeight.w500,
                 color: Colors.black,
                 overflow: TextOverflow.ellipsis,
               ),
-              border: InputBorder.none,
+              onChanged: (_) async => callback(),
+              onTap: () {
+                addEditTaskController.projectTextController.clear();
+                addEditTaskController.panelProvider.changePanelStatus(
+                  newStatus: PanelStatus.showProjectPanel,
+                );
+              },
+              controller: addEditTaskController.projectTextController,
+              onEditingComplete: () {
+                addEditTaskController.panelProvider
+                    .changePanelStatus(newStatus: PanelStatus.hide);
+                FocusScope.of(context).unfocus();
+              },
+              decoration: const InputDecoration(
+                hintText: '     Project',
+                hintStyle: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                border: InputBorder.none,
+              ),
             ),
           ),
         ),

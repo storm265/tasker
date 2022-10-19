@@ -1,10 +1,9 @@
-import 'dart:developer';
-
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
+import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 
-// TRANSLATE
 class TaskValidator {
   final _now = DateTime.now();
   Future<bool> tryValidate({
@@ -20,7 +19,7 @@ class TaskValidator {
     } else {
       MessageService.displaySnackbar(
         context: context,
-        message: 'Please select project',
+        message:LocaleKeys.please_select_project.tr(),
       );
       await Future.delayed(const Duration(seconds: 3));
       return false;
@@ -46,7 +45,7 @@ class TaskValidator {
       useMessage
           ? MessageService.displaySnackbar(
               context: context,
-              message: 'You cant pick date before now!',
+              message:LocaleKeys.you_cant_pick_date_debore_now.tr(),
             )
           : null;
       return false;

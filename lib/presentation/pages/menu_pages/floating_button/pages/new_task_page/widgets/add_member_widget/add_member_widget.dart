@@ -32,45 +32,62 @@ class _AddMemberWidgetState extends State<AddMemberWidget> {
       builder: (_, users, __) => (users.isEmpty)
           ? Padding(
               padding: const EdgeInsets.only(
-                left: 40,
+                left: 25,
                 bottom: 20,
                 top: 20,
               ),
-              child: Row(
+              child: Column(
                 children: [
-                  SizedBox(
-                    width: 90,
-                    height: 50,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        elevation: 0,
-                        backgroundColor: const Color(0xFFF4F4F4),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                      ),
-                      onPressed: () {},
-                      child: Text(
-                        LocaleKeys.anyone.tr(),
-                        style: const TextStyle(color: Colors.black),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      LocaleKeys.add_member.tr(),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),
-                  RawMaterialButton(
-                    elevation: 0,
-                    onPressed: () => showDialog(
-                      context: context,
-                      builder: (_) => AddUserDialog(
-                        taskController: widget.addEditTaskController,
+                  Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: SizedBox(
+                          width: 90,
+                          height: 50,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              elevation: 0,
+                              backgroundColor: const Color(0xFFF4F4F4),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                            ),
+                            onPressed: () {},
+                            child: Text(
+                              LocaleKeys.anyone.tr(),
+                              style: const TextStyle(color: Colors.black),
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                    fillColor: Colors.grey.withOpacity(0.5),
-                    shape: const CircleBorder(),
-                    child: const Icon(
-                      Icons.add,
-                      color: Colors.white,
-                    ),
-                  )
+                      RawMaterialButton(
+                        elevation: 0,
+                        onPressed: () => showDialog(
+                          context: context,
+                          builder: (_) => AddUserDialog(
+                            taskController: widget.addEditTaskController,
+                          ),
+                        ),
+                        fillColor: Colors.grey.withOpacity(0.5),
+                        shape: const CircleBorder(),
+                        child: const Icon(
+                          Icons.add,
+                          color: Colors.white,
+                        ),
+                      )
+                    ],
+                  ),
                 ],
               ),
             )
@@ -98,9 +115,10 @@ class _AddMemberWidgetState extends State<AddMemberWidget> {
                           child: CircleAvatar(
                             backgroundColor: Colors.grey,
                             radius: 17,
-                            backgroundImage: NetworkImage(userList[i].avatarUrl,
-                                headers:
-                                    widget.addEditTaskController.imageHeader),
+                            backgroundImage: NetworkImage(
+                              userList[i].avatarUrl,
+                              headers: widget.addEditTaskController.imageHeader,
+                            ),
                           ),
                         ),
                       ),
