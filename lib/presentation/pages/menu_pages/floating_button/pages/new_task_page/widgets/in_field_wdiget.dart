@@ -59,7 +59,7 @@ class InFieldWidget extends StatelessWidget {
                 FocusScope.of(context).unfocus();
               },
               decoration: const InputDecoration(
-                hintText: '     Project',
+                hintText: '  Project',
                 hintStyle: TextStyle(
                   fontWeight: FontWeight.w500,
                   color: Colors.black,

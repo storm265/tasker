@@ -25,7 +25,7 @@ class TaskCardWidget extends StatelessWidget {
     if (DateFormat('yyyy-MM-dd').format(deadLineTime) ==
             DateFormat('yyyy-MM-dd').format(
                 DateTime.utc(timeNow.year, timeNow.month, timeNow.day)) &&
-        deadLineTime.difference(timeNow).inHours >= 1 &&
+        deadLineTime.difference(timeNow).inHours >= 0 &&
         deadLineTime.difference(timeNow).inHours <= 2) {
       return true;
     } else {
@@ -37,13 +37,13 @@ class TaskCardWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final date = model.dueDate;
     return GestureDetector(
-      onTap: () async =>  await showDialog(
-          context: context,
-          builder: (_) => ViewTask(
-            taskController: taskController,
-            pickedTask: model,
-          ),
+      onTap: () async => await showDialog(
+        context: context,
+        builder: (_) => ViewTask(
+          taskController: taskController,
+          pickedTask: model,
         ),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(

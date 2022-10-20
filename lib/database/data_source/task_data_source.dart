@@ -245,7 +245,8 @@ class TaskDataSourceImpl implements TaskDataSource {
       path: '$_participateInTasks/$ownerId',
       options: await _network.getLocalRequestOptions(),
     );
-
+    log('response ${response.data}');
+    log('response ${response.statusMessage}');
     if (NetworkErrorService.isSuccessful(response)) {
       return (response.data![TaskScheme.data] as List<dynamic>);
     } else {

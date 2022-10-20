@@ -166,16 +166,13 @@ class TaskRepositoryImpl implements TaskRepository {
 
   @override
   Future<List<TaskModel>> fetchParticipateInTasks() async {
-    try {
+
       final response = await _taskDataSource.fetchParticipateInTasks();
       if (response.isEmpty) {
         return [];
       } else {
         return response.map((json) => TaskModel.fromJson(json)).toList();
       }
-    } catch (e) {
-      throw Failure(e.toString());
-    }
   }
 
   @override

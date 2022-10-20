@@ -113,7 +113,7 @@ class _TasksPageState extends State<TasksPage>
               TaskListWidget(
                 taskSortController: taskSortControllerToday,
                 taskController: taskController,
-                isTodayMode: true,
+                calendarWorkMode: CalendarWorkMode.todayTomorrow,
               ),
               ListView(
                 children: [

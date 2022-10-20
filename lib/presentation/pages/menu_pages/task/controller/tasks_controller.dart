@@ -24,7 +24,7 @@ class TaskListController extends ChangeNotifier with DeleteTaskMixin {
 
   final isTuneIconActive = ValueNotifier(true);
 
-  final tuneIconStatus = ValueNotifier(TaskSortMode.all);
+  final sortStatus = ValueNotifier(TaskSortMode.all);
 
   final List<DateTime> events = [];
 
@@ -47,17 +47,17 @@ class TaskListController extends ChangeNotifier with DeleteTaskMixin {
   void changeTuneIconValue(int index) {
     switch (index) {
       case 0:
-        tuneIconStatus.value = TaskSortMode.incomplete;
+        sortStatus.value = TaskSortMode.incomplete;
         break;
       case 1:
-        tuneIconStatus.value = TaskSortMode.completed;
+        sortStatus.value = TaskSortMode.completed;
         break;
       case 2:
-        tuneIconStatus.value = TaskSortMode.all;
+        sortStatus.value = TaskSortMode.all;
         break;
       default:
     }
-    tuneIconStatus.notifyListeners();
+    sortStatus.notifyListeners();
   }
 
   void changeTuneIconStatus(bool isMonthMode) {
@@ -92,7 +92,7 @@ class TaskListController extends ChangeNotifier with DeleteTaskMixin {
     for (var i = 0; i < list2.length; i++) {
       tasks.value.add(list2[i]);
     }
-    for (var i = 0; i < list2.length; i++) {
+    for (var i = 0; i < list3.length; i++) {
       tasks.value.add(list3[i]);
     }
     tasks.notifyListeners();

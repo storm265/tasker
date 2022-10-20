@@ -215,7 +215,6 @@ List<String>.generate(7, (index) {
             child: ValueListenableBuilder<int>(
               valueListenable: _monthViewCurrentPage,
               builder: (_, value, __) {
-                log('ss ${_monthRangeList[value].firstDay}');
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -298,7 +297,7 @@ List<String>.generate(7, (index) {
                             ).evaluate(_animationController),
                             child: PageView.builder(
                               onPageChanged: (pageIndex) {
-                                log('onHorizontalDrag ');
+                                log('onHorizontalDrag ${_monthRangeList[pageIndex].firstDay}');
                                 if (widget.onHorizontalDrag != null) {
                                   widget.onHorizontalDrag!(
                                     _monthRangeList[pageIndex].firstDay,
@@ -350,6 +349,7 @@ List<String>.generate(7, (index) {
                                     height: widget.weekLineHeight,
                                     child: PageView.builder(
                                       onPageChanged: (indexPage) {
+                                        log('month changed ${_weekRangeList[indexPage].first.month}');
                                         final pageIndex =
                                             _monthRangeList.indexWhere(
                                           (index) =>

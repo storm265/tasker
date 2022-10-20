@@ -25,10 +25,10 @@ class CalendarProvider extends ChangeNotifier {
   bool canExtend;
   bool isMonthMode;
 
-  final taskWorkMode =
+  final calendarMode =
       ValueNotifier<CalendarWorkMode>(CalendarWorkMode.selectedDay);
   void updateTaskWorkMode(CalendarWorkMode newMode) {
-    taskWorkMode.value = newMode;
-    taskWorkMode.notifyListeners();
+    calendarMode.value = newMode;
+    calendarMode.notifyListeners();
   }
 }

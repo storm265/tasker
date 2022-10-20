@@ -14,7 +14,7 @@ class UnfocusWidget extends StatelessWidget {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
-        callback!();
+        callback;
         FocusScope.of(context).unfocus();
       },
       child: child,

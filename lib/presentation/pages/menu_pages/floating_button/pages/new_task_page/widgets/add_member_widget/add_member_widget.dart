@@ -73,7 +73,7 @@ class _AddMemberWidgetState extends State<AddMemberWidget> {
                       ),
                       RawMaterialButton(
                         elevation: 0,
-                        onPressed: () async=> await showDialog(
+                        onPressed: () async => await showDialog(
                           context: context,
                           builder: (_) => AddUserDialog(
                             taskController: widget.addEditTaskController,

@@ -55,8 +55,7 @@ class ForTextFieldWidget extends StatelessWidget {
                         ),
                       ),
               ),
-              SizedBox(
-                width: 50,
+              Expanded(
                 child: TextFormField(
                   textAlign: TextAlign.center,
                   maxLines: 1,
@@ -79,7 +78,7 @@ class ForTextFieldWidget extends StatelessWidget {
                     FocusScope.of(context).unfocus();
                   },
                   decoration: const InputDecoration(
-                    hintText: '   Assignee',
+                    hintText: ' Assignee',
                     hintStyle: TextStyle(
                       fontWeight: FontWeight.w500,
                       color: Colors.black,

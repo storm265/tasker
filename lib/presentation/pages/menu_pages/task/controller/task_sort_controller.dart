@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
@@ -21,34 +23,41 @@ class TaskSortController {
   List<TaskModel> sortedList = [];
   List<String> headers = [];
 
-  void generateCalendarHeader({bool isTodayMode = false}) {
-    for (var i = 0; i < getDaysLength(isTodayMode: isTodayMode); i++) {
-      if (i == 0) {
-        headers.add(
-            '${LocaleKeys.today.tr()} ${DateFormat('MMM').format(now)} ${now.day}/${now.year}');
-      }
-      if (i == 1) {
-        headers.add(
-            '${LocaleKeys.tomorrow.tr()}  ${DateFormat('MMM').format(now)} ${now.day + 1}/${now.year}');
-      }
-      if (i > 1) {
+  void generateCalendarHeader({required CalendarWorkMode calendarWorkMode}) {
+    for (var i = 0;
+        i < getDaysLength(calendarWorkMode: calendarWorkMode);
+        i++) {
+      if (calendarWorkMode == CalendarWorkMode.todayTomorrow) {
+        if (i == 0) {
+          headers.add(
+              '${LocaleKeys.today.tr()} ${DateFormat('MMM').format(now)} ${now.day}/${now.year}');
+        }
+        if (i == 1) {
+          headers.add(
+              '${LocaleKeys.tomorrow.tr()}  ${DateFormat('MMM').format(now)} ${now.day + 1}/${now.year}');
+        }
+      } else {
         headers
             .add('${DateFormat('MMM').format(now)} ${now.day + i}/${now.year}');
       }
     }
+    log('headers ${headers}');
   }
 
-  int getDaysLength({bool isTodayMode = false}) {
-    if (isTodayMode) {
-      return 2;
-    } else {
-      final now = DateTime.now();
-      DateTime x1 = now.toUtc();
-      return DateTime(now.year, now.month + 1, 0)
-              .toUtc()
-              .difference(x1)
-              .inDays +
-          2;
+  int getDaysLength({required CalendarWorkMode calendarWorkMode}) {
+    switch (calendarWorkMode) {
+      case CalendarWorkMode.selectedDay:
+        return 1;
+      case CalendarWorkMode.todayTomorrow:
+        return 2;
+      case CalendarWorkMode.fullMonth:
+        final now = DateTime.now();
+        DateTime x1 = now.toUtc();
+        return DateTime(now.year, now.month + 1, 0)
+                .toUtc()
+                .difference(x1)
+                .inDays +
+            2;
     }
   }
 

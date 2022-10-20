@@ -32,7 +32,7 @@ void showTasksFilterDialog({
               width: 230,
               height: 130,
               child: ValueListenableBuilder<TaskSortMode>(
-                valueListenable: taskController.tuneIconStatus,
+                valueListenable: taskController.sortStatus,
                 builder: (_, value, __) => ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   scrollDirection: Axis.vertical,
