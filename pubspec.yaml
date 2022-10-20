@@ -21,6 +21,8 @@ dependencies:
   flutter_svg:
   flutter_dotenv:
   shimmer:
+  # saved my time 
+  grouped_list: ^5.1.2
   # For charles
   http_proxy:
   network_info_plus:

@@ -2,30 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/delete_task_mixin.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/task_sort_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/calendar_lib/controller.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
-
-enum TaskSortMode {
-  incomplete,
-  completed,
-  all,
-}
 
 class TaskListController extends ChangeNotifier with DeleteTaskMixin {
   final TaskRepositoryImpl taskRepository;
   final SecureStorageSource _secureStorage;
+  final CalendarProvider calendarProvider;
   TaskListController({
     required this.taskRepository,
     required SecureStorageSource secureStorage,
+    required this.calendarProvider,
   }) : _secureStorage = secureStorage;
-  
+
   String userId = '';
 
   final selectedDate = AdvancedCalendarController.today();
 
   final isTuneIconActive = ValueNotifier(true);
 
-  final sortStatus = ValueNotifier(TaskSortMode.all);
+  final sortMode = ValueNotifier(TasksSortMode.all);
 
   final List<DateTime> events = [];
 
@@ -48,25 +45,25 @@ class TaskListController extends ChangeNotifier with DeleteTaskMixin {
   void changeTuneIconValue(int index) {
     switch (index) {
       case 0:
-        sortStatus.value = TaskSortMode.incomplete;
+        sortMode.value = TasksSortMode.incomplete;
         break;
       case 1:
-        sortStatus.value = TaskSortMode.completed;
+        sortMode.value = TasksSortMode.completed;
         break;
       case 2:
-        sortStatus.value = TaskSortMode.all;
+        sortMode.value = TasksSortMode.all;
         break;
       default:
     }
-    sortStatus.notifyListeners();
+    sortMode.notifyListeners();
   }
 
-  void changeTuneIconStatus(bool isMonthMode) {
+  void changeTuneIconVisibility(bool isMonthMode) {
     isTuneIconActive.value = isMonthMode;
     isTuneIconActive.notifyListeners();
   }
 
-  Future<void> fetchInitData(VoidCallback callback) async {
+  Future<void> getInitData(VoidCallback callback) async {
     await getUserId();
     await fetchTasks();
     generateCalendarEvents();

@@ -1,73 +1,33 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
-import 'package:todo2/generated/locale_keys.g.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/controller/tasks_controller.dart';
 
-enum CalendarWorkMode {
-  todayTomorrow, // only for today
-  selectedDay, //
+enum TaskMode {
+  todayTomorrow, // only 2 days (today - tomorrow)
+  selectedDay, // only 1 selected day
   fullMonth, // if opened month
 }
 
-enum CalendarSortMode {
+enum TasksSortMode {
   incomplete,
   completed,
   all,
 }
 
+// LocaleKeys.today.tr()
+// {LocaleKeys.tomorrow.tr()
+// TODO refactor
 class TaskSortController {
   final now = DateTime.now();
   final formatter = DateFormat('yyyy-MM-dd');
   List<TaskModel> sortedList = [];
-  List<String> headers = [];
-
-  void generateCalendarHeader({required CalendarWorkMode calendarWorkMode}) {
-    for (var i = 0;
-        i < getDaysLength(calendarWorkMode: calendarWorkMode);
-        i++) {
-      if (calendarWorkMode == CalendarWorkMode.todayTomorrow) {
-        if (i == 0) {
-          headers.add(
-              '${LocaleKeys.today.tr()} ${DateFormat('MMM').format(now)} ${now.day}/${now.year}');
-        }
-        if (i == 1) {
-          headers.add(
-              '${LocaleKeys.tomorrow.tr()}  ${DateFormat('MMM').format(now)} ${now.day + 1}/${now.year}');
-        }
-      } else {
-        headers
-            .add('${DateFormat('MMM').format(now)} ${now.day + i}/${now.year}');
-      }
-    }
-    log('headers $headers');
-  }
-
-  int getDaysLength({required CalendarWorkMode calendarWorkMode}) {
-    switch (calendarWorkMode) {
-      case CalendarWorkMode.selectedDay:
-        return 1;
-      case CalendarWorkMode.todayTomorrow:
-        return 2;
-      case CalendarWorkMode.fullMonth:
-        final now = DateTime.now();
-        DateTime x1 = now.toUtc();
-        return DateTime(now.year, now.month + 1, 0)
-                .toUtc()
-                .difference(x1)
-                .inDays +
-            2;
-    }
-  }
 
   List<TaskModel> sorter({
     required List<TaskModel> tasks,
     required int index,
-    TaskSortMode taskSortMode = TaskSortMode.all,
+    TasksSortMode taskSortMode = TasksSortMode.all,
   }) {
     switch (taskSortMode) {
-      case TaskSortMode.all:
+      case TasksSortMode.all:
         if (index == 0) {
           sortedList = tasks
               .where(
@@ -105,7 +65,7 @@ class TaskSortController {
         }
         break;
 
-      case TaskSortMode.completed:
+      case TasksSortMode.completed:
         if (index == 0) {
           sortedList = tasks
               .where((element) =>
@@ -139,7 +99,7 @@ class TaskSortController {
           sortedList.sort((a, b) => a.dueDate.compareTo(b.dueDate));
         }
         break;
-      case TaskSortMode.incomplete:
+      case TasksSortMode.incomplete:
         if (index == 0) {
           sortedList = tasks
               .where((element) =>

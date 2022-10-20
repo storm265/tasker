@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -29,6 +27,7 @@ class _TasksPageState extends State<TasksPage>
   late final _tabController = TabController(length: 2, vsync: this);
 
   final taskController = TaskListController(
+    calendarProvider: CalendarProvider(),
     secureStorage: SecureStorageSource(),
     taskRepository: TaskRepositoryImpl(),
   );
@@ -38,7 +37,7 @@ class _TasksPageState extends State<TasksPage>
 
   @override
   void initState() {
-    taskController.fetchInitData(() => setState(() {}));
+    taskController.getInitData(() => setState(() {}));
     super.initState();
   }
 
@@ -113,7 +112,7 @@ class _TasksPageState extends State<TasksPage>
               TaskListWidget(
                 taskSortController: taskSortControllerToday,
                 taskController: taskController,
-                calendarWorkMode: CalendarWorkMode.todayTomorrow,
+                calendarWorkMode: TaskMode.todayTomorrow,
               ),
               ListView(
                 children: [
