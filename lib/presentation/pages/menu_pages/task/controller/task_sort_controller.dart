@@ -13,125 +13,65 @@ enum TasksSortMode {
   all,
 }
 
+final monthPattern = DateFormat('yyyy-MM');
+final todayPattern = DateFormat('yyyy-MM-dd');
+
 // LocaleKeys.today.tr()
 // {LocaleKeys.tomorrow.tr()
 // TODO refactor
 class TaskSortController {
   final now = DateTime.now();
-  final formatter = DateFormat('yyyy-MM-dd');
-  List<TaskModel> sortedList = [];
 
-  List<TaskModel> sorter({
+  List<TaskModel> sortList(
+    TaskMode calendarMode,
+    List<TaskModel> list,
+  ) {
+    final now = DateTime.now();
+
+    switch (calendarMode) {
+      case TaskMode.fullMonth:
+        // TODO NOT NOW
+        return list
+            .where((element) =>
+                monthPattern.format(element.dueDate) ==
+                monthPattern.format(now))
+            .toList();
+      case TaskMode.selectedDay:
+        return list
+            .where((element) =>
+                todayPattern.format(element.dueDate) ==
+                todayPattern.format(now))
+            .toList();
+      case TaskMode.todayTomorrow:
+        return list
+            .where((element) =>
+                todayPattern.format(element.dueDate) ==
+                    todayPattern.format(now) &&
+                monthPattern.format(element.dueDate) ==
+                    monthPattern
+                        .format(DateTime.utc(now.year, now.month, now.day + 1)))
+            .toList();
+    }
+  }
+
+  List<TaskModel> sortedList = [];
+  List<TaskModel> taskModeSort({
     required List<TaskModel> tasks,
-    required int index,
     TasksSortMode taskSortMode = TasksSortMode.all,
   }) {
     switch (taskSortMode) {
       case TasksSortMode.all:
-        if (index == 0) {
-          sortedList = tasks
-              .where(
-                (element) =>
-                    formatter.format(element.dueDate) ==
-                    formatter.format(
-                      DateTime.utc(now.year, now.month, now.day),
-                    ),
-              )
-              .toList();
-          sortedList.sort((a, b) => a.dueDate.compareTo(b.dueDate));
-        }
-        if (index == 1) {
-          sortedList = tasks
-              .where(
-                (element) =>
-                    formatter.format(element.dueDate) ==
-                    formatter.format(
-                      DateTime.utc(now.year, now.month, now.day + 1),
-                    ),
-              )
-              .toList();
-          sortedList.sort((a, b) => a.dueDate.compareTo(b.dueDate));
-        } else {
-          sortedList = tasks
-              .where(
-                (element) =>
-                    formatter.format(element.dueDate) ==
-                    formatter.format(
-                      DateTime.utc(now.year, now.month, now.day + index),
-                    ),
-              )
-              .toList();
-          sortedList.sort((a, b) => a.dueDate.compareTo(b.dueDate));
-        }
-        break;
+        return tasks;
 
       case TasksSortMode.completed:
-        if (index == 0) {
-          sortedList = tasks
-              .where((element) =>
-                  formatter.format(element.dueDate) ==
-                      formatter.format(
-                        DateTime.utc(now.year, now.month, now.day),
-                      ) &&
-                  element.isCompleted == true)
-              .toList();
-          sortedList.sort((a, b) => a.dueDate.compareTo(b.dueDate));
-        }
-        if (index == 1) {
-          sortedList = tasks
-              .where((element) =>
-                  formatter.format(element.dueDate) ==
-                      formatter.format(
-                        DateTime.utc(now.year, now.month, now.day + 1),
-                      ) &&
-                  element.isCompleted == true)
-              .toList();
-          sortedList.sort((a, b) => a.dueDate.compareTo(b.dueDate));
-        } else {
-          sortedList = tasks
-              .where((element) =>
-                  formatter.format(element.dueDate) ==
-                      formatter.format(
-                        DateTime.utc(now.year, now.month, now.day + index),
-                      ) &&
-                  element.isCompleted == true)
-              .toList();
-          sortedList.sort((a, b) => a.dueDate.compareTo(b.dueDate));
-        }
+        sortedList =
+            tasks.where((element) => element.isCompleted == true).toList();
+        sortedList.sort((a, b) => a.dueDate.compareTo(b.dueDate));
         break;
       case TasksSortMode.incomplete:
-        if (index == 0) {
-          sortedList = tasks
-              .where((element) =>
-                  formatter.format(element.dueDate) ==
-                      formatter.format(
-                        DateTime.utc(now.year, now.month, now.day),
-                      ) &&
-                  element.isCompleted == false)
-              .toList();
-          sortedList.sort((a, b) => a.dueDate.compareTo(b.dueDate));
-        }
-        if (index == 1) {
-          sortedList = tasks
-              .where((element) =>
-                  formatter.format(element.dueDate) ==
-                      formatter.format(
-                        DateTime.utc(now.year, now.month, now.day + 1),
-                      ) &&
-                  element.isCompleted == false)
-              .toList();
-          sortedList.sort((a, b) => a.dueDate.compareTo(b.dueDate));
-        } else {
-          sortedList = tasks
-              .where((element) =>
-                  formatter.format(element.dueDate) ==
-                      formatter.format(
-                        DateTime.utc(now.year, now.month, now.day + index),
-                      ) &&
-                  element.isCompleted == false)
-              .toList();
-          sortedList.sort((a, b) => a.dueDate.compareTo(b.dueDate));
-        }
+        sortedList =
+            tasks.where((element) => element.isCompleted == false).toList();
+        sortedList.sort((a, b) => a.dueDate.compareTo(b.dueDate));
         break;
       default:
     }

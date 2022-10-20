@@ -30,37 +30,6 @@ class TaskListWidget extends StatefulWidget {
   State<TaskListWidget> createState() => _TaskListWidgetState();
 }
 
-List<TaskModel> sortList(
-  TaskMode sortMode,
-  List<TaskModel> list,
-) {
-  final now = DateTime.now();
-  final monthPattern = DateFormat('yyyy-MM');
-  final todayPattern = DateFormat('yyyy-MM-dd');
-  switch (sortMode) {
-    case TaskMode.fullMonth:
-      // TODO NOT NOW
-      return list
-          .where((element) =>
-              monthPattern.format(element.dueDate) == monthPattern.format(now))
-          .toList();
-    case TaskMode.selectedDay:
-      return list
-          .where((element) =>
-              todayPattern.format(element.dueDate) == todayPattern.format(now))
-          .toList();
-    case TaskMode.todayTomorrow:
-      return list
-          .where((element) =>
-              todayPattern.format(element.dueDate) ==
-                  todayPattern.format(now) &&
-              monthPattern.format(element.dueDate) ==
-                  monthPattern
-                      .format(DateTime.utc(now.year, now.month, now.day + 1)))
-          .toList();
-  }
-}
-
 class _TaskListWidgetState extends State<TaskListWidget> {
   @override
   Widget build(BuildContext context) {
@@ -83,75 +52,83 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                 valueListenable: widget.taskController.sortMode,
 
                 builder: ((_, sortMode, __) {
+                  final sortedList =
+                      widget.taskSortController.taskModeSort(tasks: tasks);
                   // final sortedList = sortList(sortMode, tasks);
                   return ValueListenableBuilder(
                     // todayTomorrow
                     // selectedDay
                     // fullMonth
                     valueListenable:
-                        widget.taskController.calendarProvider.taskMode,
+                        widget.taskController.calendarProvider.calendarMode,
                     builder: (__, calendarMode, _) {
-                      return GroupedListView<TaskModel, DateTime>(
-                        elements: tasks,
-                        groupBy: (TaskModel element) => DateTime(
-                          element.dueDate.year,
-                          element.dueDate.month,
-                          element.dueDate.day,
-                        ),
-
-                        order: GroupedListOrder.ASC, // lower - higher
-                        useStickyGroupSeparators:
-                            true, // optional (keeps header at top)
-                        floatingHeader:
-                            true, // optional (hides background of header)
-                        groupSeparatorBuilder: (DateTime value) => Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: HeaderWidget(
-                            text:
-                                '${DateFormat('MMM').format(value)} ${value.day}/${value.year}',
+                      final ss = widget.taskSortController
+                          .sortList(calendarMode, sortedList);
+                      return SizedBox(
+                        width: double.infinity,
+                        height: 350, //TODO fix it
+                        child: GroupedListView<TaskModel, DateTime>(
+                          elements: ss,
+                          groupBy: (TaskModel element) => DateTime(
+                            element.dueDate.year,
+                            element.dueDate.month,
+                            element.dueDate.day,
                           ),
-                        ),
-                        itemBuilder: (_, element) {
-                          return Slidable(
-                            key: const ValueKey(0),
-                            endActionPane: ActionPane(
-                              motion: const ScrollMotion(),
-                              children: element.ownerId ==
-                                      widget.taskController.userId
-                                  ? [
-                                      EndPageWidget(
-                                        iconPath: AssetsPath.editIconPath,
-                                        onClick: () async =>
-                                            Navigator.pushNamed(
-                                          context,
-                                          Pages.addTask.type,
-                                          arguments: element.toMap(),
+
+                          order: GroupedListOrder.ASC, // lower - higher
+                          useStickyGroupSeparators:
+                              true, // optional (keeps header at top)
+                          floatingHeader:
+                              true, // optional (hides background of header)
+                          groupSeparatorBuilder: (DateTime value) => Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: HeaderWidget(
+                              text:
+                                  '${DateFormat('MMM').format(value)} ${value.day}/${value.year}',
+                            ),
+                          ),
+                          itemBuilder: (_, element) {
+                            return Slidable(
+                              key: const ValueKey(0),
+                              endActionPane: ActionPane(
+                                motion: const ScrollMotion(),
+                                children: element.ownerId ==
+                                        widget.taskController.userId
+                                    ? [
+                                        EndPageWidget(
+                                          iconPath: AssetsPath.editIconPath,
+                                          onClick: () async =>
+                                              Navigator.pushNamed(
+                                            context,
+                                            Pages.addTask.type,
+                                            arguments: element.toMap(),
+                                          ),
                                         ),
-                                      ),
-                                      const GreySlidableWidget(),
-                                      EndPageWidget(
-                                          iconPath: AssetsPath.deleteIconPath,
-                                          onClick: () async {
-                                            await widget.taskController
-                                                .deleteTask(
-                                              taskRepository: widget
-                                                  .taskController
-                                                  .taskRepository,
-                                              taskId: element.id,
-                                              callback: () => widget
-                                                  .taskController
-                                                  .removeTaskItem(element.id),
-                                            );
-                                          }),
-                                    ]
-                                  : [],
-                            ),
-                            child: TaskCardWidget(
-                              taskController: widget.taskController,
-                              model: element,
-                            ),
-                          );
-                        },
+                                        const GreySlidableWidget(),
+                                        EndPageWidget(
+                                            iconPath: AssetsPath.deleteIconPath,
+                                            onClick: () async {
+                                              await widget.taskController
+                                                  .deleteTask(
+                                                taskRepository: widget
+                                                    .taskController
+                                                    .taskRepository,
+                                                taskId: element.id,
+                                                callback: () => widget
+                                                    .taskController
+                                                    .removeTaskItem(element.id),
+                                              );
+                                            }),
+                                      ]
+                                    : [],
+                              ),
+                              child: TaskCardWidget(
+                                taskController: widget.taskController,
+                                model: element,
+                              ),
+                            );
+                          },
+                        ),
                       );
                     },
                   );
