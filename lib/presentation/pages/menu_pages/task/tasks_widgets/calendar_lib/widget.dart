@@ -174,26 +174,6 @@ class _AdvancedCalendarState extends State<AdvancedCalendar>
     }
   }
 
-/*
-for ru
-
-List<String>.generate(7, (index) {
-        return DateFormat(
-          "EEE",
-          locale,
-        ).format(list[index]).toUpperCase();
-      });
-
-
-for eng
-
-List<String>.generate(7, (index) {
-              return DateFormat(
-                "EEEE",
-                locale,
-              ).format(list[index]).split('').first.toUpperCase();
-            });
-*/
   @override
   Widget build(BuildContext context) {
     return Container(

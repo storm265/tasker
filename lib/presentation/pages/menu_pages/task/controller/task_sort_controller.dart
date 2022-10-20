@@ -41,7 +41,7 @@ class TaskSortController {
             .add('${DateFormat('MMM').format(now)} ${now.day + i}/${now.year}');
       }
     }
-    log('headers ${headers}');
+    log('headers $headers');
   }
 
   int getDaysLength({required CalendarWorkMode calendarWorkMode}) {

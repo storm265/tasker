@@ -65,87 +65,91 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                       taskSortMode: sortMode,
                     );
                     return ValueListenableBuilder(
-                      valueListenable: widget.taskController.selectedDate,
-                      builder: ((_, selectedDate, __) {
-                        return sortedList.isEmpty
-                            ? const SizedBox()
-                            : Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    HeaderWidget(
-                                      text:
-                                          widget.taskSortController.headers[i],
-                                    ),
-                                    ListView.builder(
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        shrinkWrap: true,
-                                        itemCount: sortedList.length,
-                                        itemBuilder: (_, index) {
-                                          final selectedDateList = sortedList
-                                              .where((element) =>
-                                                  DateFormat('yyyy-MM-dd')
-                                                      .format(
-                                                          element.dueDate) ==
-                                                  DateFormat('yyyy-MM-dd')
-                                                      .format(selectedDate))
-                                              .toList();
-                                          return Slidable(
-                                            key: const ValueKey(0),
-                                            endActionPane: ActionPane(
-                                              motion: const ScrollMotion(),
-                                              children: sortedList[index]
-                                                          .ownerId ==
-                                                      widget
-                                                          .taskController.userId
-                                                  ? [
-                                                      EndPageWidget(
-                                                        iconPath: AssetsPath
-                                                            .editIconPath,
-                                                        onClick: () async =>
-                                                            Navigator.pushNamed(
-                                                          context,
-                                                          Pages.addTask.type,
-                                                          arguments:
-                                                              sortedList[index]
-                                                                  .toMap(),
-                                                        ),
-                                                      ),
-                                                      const GreySlidableWidget(),
-                                                      EndPageWidget(
-                                                          iconPath: AssetsPath
-                                                              .deleteIconPath,
-                                                          onClick: () async {
-                                                            await widget.taskController.deleteTask(
-                                                                taskRepository: widget
-                                                                    .taskController
-                                                                    .taskRepository,
-                                                                taskId:
+                        valueListenable: widget.taskController.selectedDate,
+                        builder: ((_, selectedDate, __) {
+                          return sortedList.isEmpty
+                              ? const SizedBox()
+                              : Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    children: [
+                                      HeaderWidget(
+                                        //  text: widget.taskSortController.headers[i],
+                                        text:
+                                            '${DateFormat('MMM').format(selectedDate)} ${selectedDate.day}/${selectedDate.year}',
+                                      ),
+                                      ListView.builder(
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          itemCount: sortedList.length,
+                                          itemBuilder: (_, index) {
+                                            final ss = sortedList
+                                                .where((element) =>
+                                                    DateFormat('yyyy-MM-dd')
+                                                        .format(
+                                                            element.dueDate) ==
+                                                    DateFormat('yyyy-MM-dd')
+                                                        .format(selectedDate))
+                                                .toList();
+                                            log('ss ${ss.length}');
+                                            return Slidable(
+                                              key: const ValueKey(0),
+                                              endActionPane: ActionPane(
+                                                motion: const ScrollMotion(),
+                                                children:
+                                                    sortedList[index].ownerId ==
+                                                            widget
+                                                                .taskController
+                                                                .userId
+                                                        ? [
+                                                            EndPageWidget(
+                                                              iconPath: AssetsPath
+                                                                  .editIconPath,
+                                                              onClick: () async =>
+                                                                  Navigator
+                                                                      .pushNamed(
+                                                                context,
+                                                                Pages.addTask
+                                                                    .type,
+                                                                arguments:
                                                                     sortedList[
                                                                             index]
-                                                                        .id,
-                                                                callback: () => widget
-                                                                    .taskController
-                                                                    .removeTaskItem(
-                                                                        sortedList[index]
-                                                                            .id));
-                                                          }),
-                                                    ]
-                                                  : [],
-                                            ),
-                                            child: TaskCardWidget(
-                                              taskController:
-                                                  widget.taskController,
-                                              model: selectedDateList[index],
-                                            ),
-                                          );
-                                        }),
-                                  ],
-                                ),
-                              );
-                      }),
-                    );
+                                                                        .toMap(),
+                                                              ),
+                                                            ),
+                                                            const GreySlidableWidget(),
+                                                            EndPageWidget(
+                                                                iconPath: AssetsPath
+                                                                    .deleteIconPath,
+                                                                onClick:
+                                                                    () async {
+                                                                  await widget.taskController.deleteTask(
+                                                                      taskRepository: widget
+                                                                          .taskController
+                                                                          .taskRepository,
+                                                                      taskId:
+                                                                          sortedList[index]
+                                                                              .id,
+                                                                      callback: () => widget
+                                                                          .taskController
+                                                                          .removeTaskItem(
+                                                                              sortedList[index].id));
+                                                                }),
+                                                          ]
+                                                        : [],
+                                              ),
+                                              child: TaskCardWidget(
+                                                taskController:
+                                                    widget.taskController,
+                                                model: ss[index],
+                                              ),
+                                            );
+                                          }),
+                                    ],
+                                  ),
+                                );
+                        }));
                   },
                 ),
               );

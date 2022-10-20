@@ -16,7 +16,6 @@ class AdvancedCalendarController extends ValueNotifier<DateTime> {
   }
 }
 
-
 class CalendarProvider extends ChangeNotifier {
   CalendarProvider({
     this.isMonthMode = false,
@@ -27,6 +26,7 @@ class CalendarProvider extends ChangeNotifier {
 
   final calendarMode =
       ValueNotifier<CalendarWorkMode>(CalendarWorkMode.selectedDay);
+
   void updateTaskWorkMode(CalendarWorkMode newMode) {
     calendarMode.value = newMode;
     calendarMode.notifyListeners();
