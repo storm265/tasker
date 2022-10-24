@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
+import 'package:todo2/presentation/pages/menu_pages/menu/widgets/project_item_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/task_list.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/task_sort_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/dialogs/tasks_filter_dialog.dart';
@@ -11,8 +12,10 @@ import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/calendar_
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/calendar_lib/widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/list/task_list_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/tabs/bottom_tabs.dart';
+import 'package:todo2/presentation/pages/navigation/controllers/inherited_navigator.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapp.dart';
+import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 import 'package:todo2/utils/assets_path.dart';
@@ -38,7 +41,10 @@ class _DetailedPageState extends State<DetailedPage>
 
   @override
   void initState() {
-    taskController.getInitData(callback: () => setState(() {}));
+    taskController.getInitData(
+      callback: () => setState(() {}),
+      projectId: detailedId,
+    );
     super.initState();
   }
 
@@ -51,16 +57,32 @@ class _DetailedPageState extends State<DetailedPage>
 
   @override
   Widget build(BuildContext context) {
+    final navigationController =
+        NavigationInherited.of(context).navigationController;
     return WillPopWrap(
       child: Scaffold(
         backgroundColor: const Color(0xffFDFDFD),
         appBar: AppBar(
-          systemOverlayStyle: const SystemUiOverlayStyle(
-            statusBarColor: Palette.red,
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: getAppColor(color: CategoryColor.blue),
             statusBarIconBrightness: Brightness.light,
             statusBarBrightness: Brightness.light,
           ),
           elevation: 0,
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: GestureDetector(
+              onTap: () async {
+                FocusScope.of(context).unfocus();
+                await navigationController.moveToPage(Pages.menu);
+              },
+              child: const Icon(
+                Icons.west_rounded,
+                size: 30,
+                color: Colors.white,
+              ),
+            ),
+          ),
           backgroundColor: getAppColor(color: CategoryColor.blue),
           centerTitle: true,
           title: Text(

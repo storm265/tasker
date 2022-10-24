@@ -120,7 +120,7 @@ class _DescriptionBoxWidgetState extends State<DescriptionBoxWidget> {
                                         .uploadTaskCommentAttachment(
                                           commentId: commentModel.id,
                                         )
-                                        .then((value) => widget
+                                        .then((_) => widget
                                             .viewTaskController!
                                             .attachmentsProvider
                                             .clearAllAttachments());

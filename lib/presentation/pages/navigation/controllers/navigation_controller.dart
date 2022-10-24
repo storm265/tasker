@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/checklist_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/note_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/add_task_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/menu/detailed_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/menu_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/profile_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_page.dart';
+import 'package:todo2/presentation/pages/navigation/controllers/keep_alive_page.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 class NavigationController extends ChangeNotifier {
@@ -18,12 +20,14 @@ class NavigationController extends ChangeNotifier {
 
   final List<Widget> pages = [
     const TasksPage(),
-    const MenuPage(),
-    const QuickPage(),
+    // TODO KEEP IN RAM
+    const KeepAlivePageWidget(child: MenuPage()),
+    const KeepAlivePageWidget(child: QuickPage()),
     const ProfilePage(),
     const AddEditTaskPage(),
     const AddQuickNote(),
     const CheckListPage(),
+    const DetailedPage(),
   ];
 
   Future<void> moveToPage(Pages page) async {
@@ -48,6 +52,9 @@ class NavigationController extends ChangeNotifier {
         break;
       case Pages.addCheckList:
         pageIndex.value = 6;
+        break;
+      case Pages.detailedProject:
+        pageIndex.value = 7;
         break;
       default:
         pageIndex.value = 0;

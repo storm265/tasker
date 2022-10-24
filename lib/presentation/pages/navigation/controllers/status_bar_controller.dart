@@ -1,14 +1,30 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
-class StatusBarController extends ChangeNotifier {
-  final isRedStatusBar = ValueNotifier(true);
+enum StatusBarColors {
+  red,
+  white,
+  blue,
+}
 
-  void setRedStatusMode(bool newValue) {
-    isRedStatusBar.value = newValue;
-    isRedStatusBar.notifyListeners();
+class StatusBarController extends ChangeNotifier {
+  final statusBarStatus = ValueNotifier<StatusBarColors>(StatusBarColors.red);
+  void setStatusModeColor(StatusBarColors newValue) {
+    statusBarStatus.value = newValue;
+    statusBarStatus.notifyListeners();
+  }
+}
+
+SystemUiOverlayStyle getStatusBarColor(StatusBarColors status) {
+  switch (status) {
+    case StatusBarColors.white:
+      return lightStatusBar;
+    case StatusBarColors.red:
+      return redStatusBar;
+    case StatusBarColors.blue:
+      return blueStatusBar;
   }
 }
 
@@ -22,6 +38,13 @@ const lightStatusBar = SystemUiOverlayStyle(
 const redStatusBar = SystemUiOverlayStyle(
   systemNavigationBarColor: Colors.black,
   statusBarColor: Palette.red,
+  statusBarIconBrightness: Brightness.light,
+  statusBarBrightness: Brightness.dark,
+);
+
+final blueStatusBar = SystemUiOverlayStyle(
+  systemNavigationBarColor: Colors.black,
+  statusBarColor: getAppColor(color: CategoryColor.blue),
   statusBarIconBrightness: Brightness.light,
   statusBarBrightness: Brightness.dark,
 );

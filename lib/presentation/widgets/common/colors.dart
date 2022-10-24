@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 enum CategoryColor {
   blue,
@@ -24,7 +25,7 @@ Color getAppColor({required CategoryColor color}) {
     case CategoryColor.purple:
       return colors[5];
     default:
-      return colors[5];
+      return Palette.red;
   }
 }
 

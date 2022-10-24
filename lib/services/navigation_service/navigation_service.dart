@@ -6,6 +6,7 @@ import 'package:todo2/presentation/pages/auth/welcome/welcome_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/checklist_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/note_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/add_task_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/menu/detailed_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/menu_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/profile_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
@@ -26,7 +27,8 @@ enum Pages {
   noConnection('noConnection'),
   addNote('addNote'),
   addCheckList('addCheckList'),
-  addTask('addTask');
+  addTask('addTask'),
+  detailedProject('detailedProject');
 
   final String type;
   const Pages(this.type);
@@ -44,7 +46,8 @@ Map<String, Widget Function(BuildContext)> routes = {
   Pages.profile.type: (_) => const ProfilePage(),
   Pages.addTask.type: (_) => const AddEditTaskPage(),
   Pages.addNote.type: (_) => const AddQuickNote(),
-  Pages.addCheckList.type: (_) => const CheckListPage()
+  Pages.addCheckList.type: (_) => const CheckListPage(),
+  Pages.detailedProject.type: (_) => const DetailedPage(),
 };
 
 class NavigationService {
@@ -109,6 +112,10 @@ class NavigationService {
 
       case Pages.addTask:
         await Navigator.pushNamed(context, Pages.addTask.type);
+        break;
+
+      case Pages.detailedProject:
+        await Navigator.pushNamed(context, Pages.detailedProject.type);
         break;
     }
   }

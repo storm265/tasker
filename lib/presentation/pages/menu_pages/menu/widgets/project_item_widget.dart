@@ -5,29 +5,38 @@ import 'package:todo2/presentation/pages/menu_pages/menu/dialogs/add_project_dia
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/category_length_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/category_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/circle_widget.dart';
+import 'package:todo2/presentation/pages/navigation/controllers/inherited_navigator.dart';
+import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
+String detailedId = '';
+
 class ProjectItemWidget extends StatelessWidget {
-  final ProjectModel model;
+  final ProjectModel selectedModel;
   final int taskLength;
   final ProjectController projectController;
-  
+
   const ProjectItemWidget({
     Key? key,
-    required this.model,
+    required this.selectedModel,
     required this.taskLength,
     required this.projectController,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final navigationController =
+        NavigationInherited.of(context).navigationController;
     return InkWell(
-      highlightColor: Palette.red.withOpacity(0.4),
       borderRadius: BorderRadius.circular(5),
-      onLongPress: model.title == 'Personal'
+      onTap: () async {
+        await navigationController.moveToPage(Pages.detailedProject);
+        detailedId = selectedModel.id;
+      },
+      onLongPress: selectedModel.title == 'Personal'
           ? null
           : () async {
-              projectController.findEditColor(model: model);
+              projectController.findEditColor(model: selectedModel);
               await showAddEditProjectDialog(
                 context: context,
                 projectController: projectController,
@@ -56,7 +65,7 @@ class ProjectItemWidget extends StatelessWidget {
                 Align(
                   alignment: Alignment.topLeft,
                   child: DoubleCircleWidget(
-                    color: model.color,
+                    color: selectedModel.color,
                   ),
                 ),
                 Align(
@@ -64,7 +73,7 @@ class ProjectItemWidget extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      CategoryWidget(title: model.title),
+                      CategoryWidget(title: selectedModel.title),
                       const SizedBox(height: 9),
                       CategoryLengthWidget(taskLength: taskLength)
                     ],

@@ -86,7 +86,7 @@ class MenuPageState extends State<MenuPage> {
                               builder: (_, tasksNumber, __) =>
                                   ProjectItemWidget(
                                 projectController: _projectController,
-                                model: projectsList[i],
+                                selectedModel: projectsList[i],
                                 taskLength: tasksNumber.isEmpty
                                     ? 0
                                     : tasksNumber[i].tasksNumber,

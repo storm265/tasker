@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,10 +22,10 @@ class NavigationPage extends StatelessWidget {
     final navigationController =
         NavigationInherited.of(context).navigationController;
     return ValueListenableBuilder(
-        valueListenable: statusBarController.isRedStatusBar,
-        builder: (context, isRed, _) {
+        valueListenable: statusBarController.statusBarStatus,
+        builder: (context, statusBarStatus, _) {
           return AnnotatedRegion<SystemUiOverlayStyle>(
-            value: (isRed == true) ? redStatusBar : lightStatusBar,
+            value: getStatusBarColor(statusBarStatus),
             child: Scaffold(
               resizeToAvoidBottomInset: false,
               floatingActionButton: const FloatingButtonWidget(),
@@ -39,27 +40,39 @@ class NavigationPage extends StatelessWidget {
                   controller: navigationController.pageController,
                   itemBuilder: (_, i) => navigationController.pages[i],
                   onPageChanged: (index) {
+                    log('current inde $index');
                     switch (index) {
                       case 0:
-                        statusBarController.setRedStatusMode(true);
+                        statusBarController
+                            .setStatusModeColor(StatusBarColors.red);
                         break;
                       case 1:
-                        statusBarController.setRedStatusMode(false);
+                        statusBarController
+                            .setStatusModeColor(StatusBarColors.white);
                         break;
                       case 2:
-                        statusBarController.setRedStatusMode(false);
+                        statusBarController
+                            .setStatusModeColor(StatusBarColors.white);
                         break;
                       case 3:
-                        statusBarController.setRedStatusMode(false);
+                        statusBarController
+                            .setStatusModeColor(StatusBarColors.white);
                         break;
                       case 4:
-                        statusBarController.setRedStatusMode(true);
+                        statusBarController
+                            .setStatusModeColor(StatusBarColors.red);
                         break;
                       case 5:
-                        statusBarController.setRedStatusMode(true);
+                        statusBarController
+                            .setStatusModeColor(StatusBarColors.red);
                         break;
                       case 6:
-                        statusBarController.setRedStatusMode(true);
+                        statusBarController
+                            .setStatusModeColor(StatusBarColors.red);
+                        break;
+                      case 7:
+                        statusBarController
+                            .setStatusModeColor(StatusBarColors.blue);
                         break;
                     }
                   },
@@ -88,8 +101,9 @@ class NavigationPage extends StatelessWidget {
                                 .moveToPage(Pages.menu),
                             label: LocaleKeys.menu.tr(),
                             icon: 'menu',
-                            iconColor:
-                                pageIndex == 1 ? Colors.white : _greyColor,
+                            iconColor: pageIndex == 1 || pageIndex == 7
+                                ? Colors.white
+                                : _greyColor,
                           ),
                           const SizedBox(width: 50),
                           NavBarItem(
