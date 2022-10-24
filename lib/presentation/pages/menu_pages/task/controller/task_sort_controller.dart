@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
+import 'package:todo2/generated/locale_keys.g.dart';
 
 enum TaskMode {
   todayTomorrow, // only 2 days (today - tomorrow)
@@ -77,5 +78,16 @@ class TaskSortController {
       default:
     }
     return sortedList;
+  }
+
+  String formatDay(DateTime date) {
+    if (todayPattern.format(date) == todayPattern.format(now)) {
+      return LocaleKeys.today.tr();
+    } else if (monthPattern.format(date) == monthPattern.format(now) &&
+        date.day == now.day + 1) {
+      return LocaleKeys.tomorrow.tr();
+    } else {
+      return '';
+    }
   }
 }

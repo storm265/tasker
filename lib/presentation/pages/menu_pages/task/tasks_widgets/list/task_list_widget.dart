@@ -33,9 +33,11 @@ class TaskListWidget extends StatefulWidget {
 class _TaskListWidgetState extends State<TaskListWidget> {
   @override
   void initState() {
-    widget.taskController.calendarProvider.updateTaskWorkMode(widget.calendarWorkMode);
+    widget.taskController.calendarProvider
+        .updateTaskWorkMode(widget.calendarWorkMode);
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
@@ -54,7 +56,7 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                 valueListenable: widget.taskController.sortMode,
 
                 builder: ((_, sortMode, __) {
-                  final sortedList =
+                  final sortedModeList =
                       widget.taskSortController.taskModeSort(tasks: tasks);
 
                   return ValueListenableBuilder(
@@ -69,14 +71,15 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                         valueListenable:
                             widget.taskController.calendarProvider.calendarMode,
                         builder: (__, calendarMode, _) {
-                          final ss = widget.taskSortController.sortList(
+                          final calendarModeSortedList =
+                              widget.taskSortController.sortList(
                             calendarMode,
-                            sortedList,
+                            sortedModeList,
                             selectedMonth,
                           );
-                          log('ss len ${ss.length}');
+                          log('ss len ${calendarModeSortedList.length}');
                           return GroupedListView<TaskModel, DateTime>(
-                            elements: ss,
+                            elements: calendarModeSortedList,
                             groupBy: (TaskModel element) => DateTime(
                               element.dueDate.year,
                               element.dueDate.month,
@@ -91,7 +94,7 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                               padding: const EdgeInsets.all(8.0),
                               child: HeaderWidget(
                                 text:
-                                    '${DateFormat('MMM').format(value)} ${value.day}/${value.year}',
+                                    '${widget.taskSortController.formatDay(value)} ${DateFormat('MMM').format(value)} ${value.day}/${value.year}',
                               ),
                             ),
                             itemBuilder: (_, element) {
