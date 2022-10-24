@@ -12,7 +12,8 @@ Future<void> showDetailedOptions({
   required BuildContext context,
   required TaskModel selectedTask,
 }) async {
-  final List<String> items = selectedTask.isCompleted == true
+  final List<String> items = selectedTask.isCompleted == true &&
+          DateTime.now().isBefore(selectedTask.dueDate)
       ? [
           LocaleKeys.delete_task.tr(),
         ]

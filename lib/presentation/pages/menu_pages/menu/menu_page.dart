@@ -92,7 +92,8 @@ class MenuPageState extends State<MenuPage> {
                                     : tasksNumber[i].tasksNumber,
                               ),
                             );
-                    })),
+                    },
+                  )),
           ),
         ),
       ),

@@ -16,7 +16,6 @@ import 'package:todo2/presentation/pages/navigation/controllers/inherited_naviga
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapp.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
-import 'package:todo2/services/theme_service/theme_data_controller.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 import 'package:todo2/utils/assets_path.dart';
 
@@ -86,7 +85,7 @@ class _DetailedPageState extends State<DetailedPage>
           backgroundColor: getAppColor(color: CategoryColor.blue),
           centerTitle: true,
           title: Text(
-            LocaleKeys.work_list.tr(),
+            projectTitle,
             style: const TextStyle(
               fontStyle: FontStyle.italic,
               color: Colors.white,

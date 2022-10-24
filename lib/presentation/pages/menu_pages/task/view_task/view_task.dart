@@ -1,5 +1,4 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/projects_data_source.dart';
@@ -139,7 +138,8 @@ class _ViewTaskState extends State<ViewTask> {
                       ],
                     ),
                   ),
-                  widget.pickedTask.isCompleted != true
+                  widget.pickedTask.isCompleted != true &&
+                          DateTime.now().isBefore(widget.pickedTask.dueDate)
                       ? ValueListenableBuilder<bool>(
                           valueListenable:
                               viewTaskController.isActiveSubmitButton,

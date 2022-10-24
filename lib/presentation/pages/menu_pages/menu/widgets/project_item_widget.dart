@@ -7,9 +7,9 @@ import 'package:todo2/presentation/pages/menu_pages/menu/widgets/category_widget
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/circle_widget.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_navigator.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
-import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 String detailedId = '';
+String projectTitle='';
 
 class ProjectItemWidget extends StatelessWidget {
   final ProjectModel selectedModel;
@@ -32,6 +32,7 @@ class ProjectItemWidget extends StatelessWidget {
       onTap: () async {
         await navigationController.moveToPage(Pages.detailedProject);
         detailedId = selectedModel.id;
+        projectTitle = selectedModel.title;
       },
       onLongPress: selectedModel.title == 'Personal'
           ? null

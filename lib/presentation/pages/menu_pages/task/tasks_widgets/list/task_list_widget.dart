@@ -105,15 +105,19 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                                   children: element.ownerId ==
                                           widget.taskController.userId
                                       ? [
-                                          EndPageWidget(
-                                            iconPath: AssetsPath.editIconPath,
-                                            onClick: () async =>
-                                                Navigator.pushNamed(
-                                              context,
-                                              Pages.addTask.type,
-                                              arguments: element.toMap(),
-                                            ),
-                                          ),
+                                          DateTime.now()
+                                                  .isBefore(element.dueDate)
+                                              ? EndPageWidget(
+                                                  iconPath:
+                                                      AssetsPath.editIconPath,
+                                                  onClick: () async =>
+                                                      Navigator.pushNamed(
+                                                    context,
+                                                    Pages.addTask.type,
+                                                    arguments: element.toMap(),
+                                                  ),
+                                                )
+                                              : const SizedBox(),
                                           const GreySlidableWidget(),
                                           EndPageWidget(
                                               iconPath:
