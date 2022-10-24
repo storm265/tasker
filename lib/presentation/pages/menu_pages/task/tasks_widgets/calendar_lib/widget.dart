@@ -289,6 +289,8 @@ class _AdvancedCalendarState extends State<AdvancedCalendar>
                                     _monthRangeList[pageIndex].firstDay,
                                   );
                                 }
+                                widget.calendarProvider.onChangeMonth(
+                                    _monthRangeList[pageIndex].firstDay);
                                 _monthViewCurrentPage.value = pageIndex;
                               },
                               controller: _monthPageController,
@@ -344,7 +346,9 @@ class _AdvancedCalendarState extends State<AdvancedCalendar>
                                                   .first
                                                   .month,
                                         );
-
+                                        widget.calendarProvider.onChangeMonth(
+                                            _monthRangeList[pageIndex]
+                                                .firstDay);
                                         if (widget.onHorizontalDrag != null) {
                                           widget.onHorizontalDrag!(
                                             _monthRangeList[pageIndex].firstDay,
@@ -394,6 +398,8 @@ class _AdvancedCalendarState extends State<AdvancedCalendar>
 
   void _handleDateChanged(DateTime date) {
     _controller.value = date;
+    log('date changed');
+    widget.calendarProvider.onChangeMonth(date);
   }
 
   ScrollPhysics closeMonthScroll() {

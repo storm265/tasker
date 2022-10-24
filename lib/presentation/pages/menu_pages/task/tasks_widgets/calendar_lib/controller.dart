@@ -1,4 +1,8 @@
+import 'dart:async';
+import 'dart:developer';
+
 import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/task_sort_controller.dart';
 import 'datetime_util.dart';
 
@@ -30,4 +34,13 @@ class CalendarProvider extends ChangeNotifier {
     calendarMode.value = newMode;
     calendarMode.notifyListeners();
   }
+
+  final selectedMonth = ValueNotifier<DateTime>(DateTime.now());
+  void onChangeMonth(DateTime newDate) {
+    selectedMonth.value = newDate;
+    log('selectedMonth.value ${selectedMonth.value}');
+    selectedMonth.notifyListeners();
+  }
+ 
 }
+ 

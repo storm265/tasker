@@ -25,8 +25,9 @@ class TaskSortController {
   List<TaskModel> sortList(
     TaskMode calendarMode,
     List<TaskModel> list,
+    DateTime? selectedDay
   ) {
-    final now = DateTime.now();
+    
 
     switch (calendarMode) {
       case TaskMode.fullMonth:
@@ -40,7 +41,7 @@ class TaskSortController {
         return list
             .where((element) =>
                 todayPattern.format(element.dueDate) ==
-                todayPattern.format(now))
+                todayPattern.format(selectedDay!))
             .toList();
       case TaskMode.todayTomorrow:
         return list

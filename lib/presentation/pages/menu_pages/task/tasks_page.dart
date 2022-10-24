@@ -109,15 +109,16 @@ class _TasksPageState extends State<TasksPage>
             physics: const NeverScrollableScrollPhysics(),
             controller: _tabController,
             children: [
-              TaskListWidget(
-                taskSortController: taskSortControllerToday,
-                taskController: taskController,
-                calendarWorkMode: TaskMode.todayTomorrow,
-              ),
+              // TaskListWidget(
+              //   taskSortController: taskSortControllerToday,
+              //   taskController: taskController,
+              //   calendarWorkMode: TaskMode.todayTomorrow,
+              // ),
+              Text('data'),
               ListView(
                 children: [
                   AdvancedCalendar(
-                    calendarProvider: CalendarProvider(),
+                    calendarProvider: taskController.calendarProvider,
                     controller: taskController.selectedDate,
                     events: taskController.events,
                     taskController: taskController,

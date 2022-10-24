@@ -36,11 +36,8 @@ class _TaskListWidgetState extends State<TaskListWidget> {
     return ValueListenableBuilder(
       valueListenable: widget.taskController.tasks,
       builder: (_, tasks, __) {
-        // final today = tasks.where((element) =>
-        //     DateFormat('yyyy-MM-dd').format(element.dueDate) ==
-        //     DateFormat('yyyy-MM-dd').format(DateTime.now())).toList();
-
         log('tasks len ${tasks.length}');
+
         return tasks.isEmpty
             ? Center(
                 child: ProgressIndicatorWidget(text: LocaleKeys.no_data.tr()),
@@ -54,81 +51,95 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                 builder: ((_, sortMode, __) {
                   final sortedList =
                       widget.taskSortController.taskModeSort(tasks: tasks);
-                  // final sortedList = sortList(sortMode, tasks);
-                  return ValueListenableBuilder(
-                    // todayTomorrow
-                    // selectedDay
-                    // fullMonth
-                    valueListenable:
-                        widget.taskController.calendarProvider.calendarMode,
-                    builder: (__, calendarMode, _) {
-                      final ss = widget.taskSortController
-                          .sortList(calendarMode, sortedList);
-                      return SizedBox(
-                        width: double.infinity,
-                        height: 350, //TODO fix it
-                        child: GroupedListView<TaskModel, DateTime>(
-                          elements: ss,
-                          groupBy: (TaskModel element) => DateTime(
-                            element.dueDate.year,
-                            element.dueDate.month,
-                            element.dueDate.day,
-                          ),
 
-                          order: GroupedListOrder.ASC, // lower - higher
-                          useStickyGroupSeparators:
-                              true, // optional (keeps header at top)
-                          floatingHeader:
-                              true, // optional (hides background of header)
-                          groupSeparatorBuilder: (DateTime value) => Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: HeaderWidget(
-                              text:
-                                  '${DateFormat('MMM').format(value)} ${value.day}/${value.year}',
+                  return ValueListenableBuilder(
+                    valueListenable:
+                        widget.taskController.calendarProvider.selectedMonth,
+                    builder: (_, selectedMonth, __) {
+                      log('selectedMonth $selectedMonth');
+                      return ValueListenableBuilder(
+                        // todayTomorrow
+                        // selectedDay
+                        // fullMonth
+                        valueListenable:
+                            widget.taskController.calendarProvider.calendarMode,
+                        builder: (__, calendarMode, _) {
+                          final ss = widget.taskSortController.sortList(
+                            calendarMode,
+                            sortedList,
+                            selectedMonth,
+                          );
+                          log('ss len ${ss.length}');
+                          return SizedBox(
+                            width: double.infinity,
+                            height: 350, //TODO fix it
+                            child: GroupedListView<TaskModel, DateTime>(
+                              elements: ss,
+                              groupBy: (TaskModel element) => DateTime(
+                                element.dueDate.year,
+                                element.dueDate.month,
+                                element.dueDate.day,
+                              ),
+
+                              order: GroupedListOrder.ASC, // lower - higher
+                              useStickyGroupSeparators:
+                                  true, // optional (keeps header at top)
+                              floatingHeader:
+                                  true, // optional (hides background of header)
+                              groupSeparatorBuilder: (DateTime value) =>
+                                  Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: HeaderWidget(
+                                  text:
+                                      '${DateFormat('MMM').format(value)} ${value.day}/${value.year}',
+                                ),
+                              ),
+                              itemBuilder: (_, element) {
+                                return Slidable(
+                                  key: const ValueKey(0),
+                                  endActionPane: ActionPane(
+                                    motion: const ScrollMotion(),
+                                    children: element.ownerId ==
+                                            widget.taskController.userId
+                                        ? [
+                                            EndPageWidget(
+                                              iconPath: AssetsPath.editIconPath,
+                                              onClick: () async =>
+                                                  Navigator.pushNamed(
+                                                context,
+                                                Pages.addTask.type,
+                                                arguments: element.toMap(),
+                                              ),
+                                            ),
+                                            const GreySlidableWidget(),
+                                            EndPageWidget(
+                                                iconPath:
+                                                    AssetsPath.deleteIconPath,
+                                                onClick: () async {
+                                                  await widget.taskController
+                                                      .deleteTask(
+                                                    taskRepository: widget
+                                                        .taskController
+                                                        .taskRepository,
+                                                    taskId: element.id,
+                                                    callback: () => widget
+                                                        .taskController
+                                                        .removeTaskItem(
+                                                            element.id),
+                                                  );
+                                                }),
+                                          ]
+                                        : [],
+                                  ),
+                                  child: TaskCardWidget(
+                                    taskController: widget.taskController,
+                                    model: element,
+                                  ),
+                                );
+                              },
                             ),
-                          ),
-                          itemBuilder: (_, element) {
-                            return Slidable(
-                              key: const ValueKey(0),
-                              endActionPane: ActionPane(
-                                motion: const ScrollMotion(),
-                                children: element.ownerId ==
-                                        widget.taskController.userId
-                                    ? [
-                                        EndPageWidget(
-                                          iconPath: AssetsPath.editIconPath,
-                                          onClick: () async =>
-                                              Navigator.pushNamed(
-                                            context,
-                                            Pages.addTask.type,
-                                            arguments: element.toMap(),
-                                          ),
-                                        ),
-                                        const GreySlidableWidget(),
-                                        EndPageWidget(
-                                            iconPath: AssetsPath.deleteIconPath,
-                                            onClick: () async {
-                                              await widget.taskController
-                                                  .deleteTask(
-                                                taskRepository: widget
-                                                    .taskController
-                                                    .taskRepository,
-                                                taskId: element.id,
-                                                callback: () => widget
-                                                    .taskController
-                                                    .removeTaskItem(element.id),
-                                              );
-                                            }),
-                                      ]
-                                    : [],
-                              ),
-                              child: TaskCardWidget(
-                                taskController: widget.taskController,
-                                model: element,
-                              ),
-                            );
-                          },
-                        ),
+                          );
+                        },
                       );
                     },
                   );
