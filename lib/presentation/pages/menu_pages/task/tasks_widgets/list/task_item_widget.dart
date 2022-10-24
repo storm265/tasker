@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/controller/tasks_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/task_list.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/circle_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/view_task.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
@@ -12,7 +12,7 @@ final timeNow = DateTime.now();
 
 class TaskCardWidget extends StatelessWidget {
   final TaskModel model;
-  final TaskListController taskController;
+  final TaskList taskController;
   const TaskCardWidget({
     Key? key,
     required this.model,

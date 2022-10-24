@@ -1,11 +1,10 @@
 import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo2/presentation/pages/auth/splash_page.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/task_list.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/task_sort_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/controller/tasks_controller.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'controller.dart';
 import 'datetime_util.dart';
@@ -37,7 +36,7 @@ class AdvancedCalendar extends StatefulWidget {
 
   final CalendarProvider calendarProvider;
 
-  final TaskListController? taskController;
+  final TaskList? taskController;
 
   final bool useShadow;
 

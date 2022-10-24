@@ -4,29 +4,30 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/task_list.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/task_sort_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/controller/tasks_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/dialogs/tasks_filter_dialog.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/calendar_lib/controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/calendar_lib/widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/list/task_list_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/tabs/bottom_tabs.dart';
+import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapp.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 import 'package:todo2/utils/assets_path.dart';
 
-class TasksPage extends StatefulWidget {
-  const TasksPage({Key? key}) : super(key: key);
+class DetailedPage extends StatefulWidget {
+  const DetailedPage({Key? key}) : super(key: key);
   @override
-  State<TasksPage> createState() => _TasksPageState();
+  State<DetailedPage> createState() => _DetailedPageState();
 }
 
-class _TasksPageState extends State<TasksPage>
+class _DetailedPageState extends State<DetailedPage>
     with SingleTickerProviderStateMixin {
   late final _tabController = TabController(length: 2, vsync: this);
 
-  final taskController = TaskListController(
+  final taskController = TaskList(
     calendarProvider: CalendarProvider(),
     secureStorage: SecureStorageSource(),
     taskRepository: TaskRepositoryImpl(),
@@ -60,7 +61,7 @@ class _TasksPageState extends State<TasksPage>
             statusBarBrightness: Brightness.light,
           ),
           elevation: 0,
-          backgroundColor: Palette.red,
+          backgroundColor: getAppColor(color: CategoryColor.blue),
           centerTitle: true,
           title: Text(
             LocaleKeys.work_list.tr(),

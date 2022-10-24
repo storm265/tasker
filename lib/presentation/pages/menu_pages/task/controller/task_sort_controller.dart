@@ -18,24 +18,24 @@ final todayPattern = DateFormat('yyyy-MM-dd');
 
 // LocaleKeys.today.tr()
 // {LocaleKeys.tomorrow.tr()
-// TODO refactor
 class TaskSortController {
   final now = DateTime.now();
 
   List<TaskModel> sortList(
-    TaskMode calendarMode,
-    List<TaskModel> list,
-    DateTime? selectedDay
-  ) {
-    
-
+      TaskMode calendarMode, List<TaskModel> list, DateTime? selectedDay) {
     switch (calendarMode) {
       case TaskMode.fullMonth:
-        // TODO NOT NOW
         return list
-            .where((element) =>
-                monthPattern.format(element.dueDate) ==
-                monthPattern.format(now))
+            .where(
+              (element) =>
+                  monthPattern.format(element.dueDate) ==
+                  monthPattern.format(
+                    DateTime.utc(
+                      now.year,
+                      selectedDay!.month,
+                    ),
+                  ),
+            )
             .toList();
       case TaskMode.selectedDay:
         return list
