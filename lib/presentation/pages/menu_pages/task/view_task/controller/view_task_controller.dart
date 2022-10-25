@@ -10,21 +10,26 @@ import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/attachments_provider.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/member_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/access_token_mixin.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/tasks_mixin.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
-class ViewTaskController extends ChangeNotifier with AccessTokenMixin {
+class ViewTaskController extends ChangeNotifier
+    with AccessTokenMixin, TasksMixin {
   final UserProfileRepository _userRepository;
   final AttachmentsProvider attachmentsProvider;
   final SecureStorageSource _secureStorage;
   final ProjectRepository _projectRepository;
   final TaskRepository _taskRepository;
+  final MemberProvider memberProvider;
   ViewTaskController({
     required UserProfileRepository userRepository,
     required ProjectRepository projectRepository,
     required TaskRepository taskRepository,
     required this.attachmentsProvider,
+    required this.memberProvider,
     required SecureStorageSource secureStorage,
   })  : _userRepository = userRepository,
         _taskRepository = taskRepository,
@@ -43,13 +48,24 @@ class ViewTaskController extends ChangeNotifier with AccessTokenMixin {
 
   Map<String, String>? imageHeader;
 
-  Future<void> fetchInitialData(
-      String projectId, String? assignedTo, VoidCallback callback) async {
+  Future<void> fetchInitialData({
+    required String projectId,
+    required String? assignedTo,
+    required VoidCallback callback,
+    required TaskModel pickedTask,
+  }) async {
     await Future.wait([
       getAccessToken(),
       fetchProject(projectId),
       fetchDetailedUser(assignedTo),
-    ]).then((_) => callback());
+    ]);
+    if (pickedTask.members != null) {
+      for (int i = 0; i < pickedTask.members!.length; i++) {
+        memberProvider.addMember(userModel: pickedTask.members![i]);
+      }
+    }
+
+    callback();
   }
 
   Future<void> fetchDetailedUser(String? ownerId) async {
@@ -123,7 +139,6 @@ class ViewTaskController extends ChangeNotifier with AccessTokenMixin {
 
   Future<void> uploadTaskCommentAttachment({required String commentId}) async {
     if (attachmentsProvider.attachments.value.isNotEmpty) {
-
       for (int i = 0; i < attachmentsProvider.attachments.value.length; i++) {
         await _taskRepository.uploadTaskCommentAttachment(
           file: File(attachmentsProvider.attachments.value[i].path ?? ''),

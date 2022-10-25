@@ -20,7 +20,6 @@ class AddEditTaskController extends BaseTasksController with AccessTokenMixin {
     required super.secureStorage,
     required super.panelProvider,
     required super.memberProvider,
-    required super.taskRepository,
   })  : _userRepository = userRepository,
         _projectRepository = projectRepository;
 

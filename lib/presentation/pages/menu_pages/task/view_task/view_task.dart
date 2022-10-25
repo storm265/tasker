@@ -8,6 +8,7 @@ import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/member_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/description_widgets/task_attachaments_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/task_list.dart';
 import 'package:todo2/presentation/providers/file_provider.dart';
@@ -20,7 +21,7 @@ import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/attac
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/attachments/task_attachament_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/controller/view_task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/comment_button.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/detailed_title_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/detailed/detailed_title_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/icon_panel.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/items_widget.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
@@ -42,6 +43,7 @@ class ViewTask extends StatefulWidget with AccessTokenMixin {
 
 class _ViewTaskState extends State<ViewTask> {
   final viewTaskController = ViewTaskController(
+    memberProvider: MemberProvider(),
     taskRepository: TaskRepositoryImpl(),
     projectRepository: ProjectRepositoryImpl(
       projectDataSource: ProjectUserDataImpl(
@@ -64,8 +66,12 @@ class _ViewTaskState extends State<ViewTask> {
 
   @override
   void initState() {
-    viewTaskController.fetchInitialData(widget.pickedTask.projectId,
-        widget.pickedTask.assignedTo, () => setState(() {}));
+    viewTaskController.fetchInitialData(
+      projectId: widget.pickedTask.projectId,
+      assignedTo: widget.pickedTask.assignedTo,
+      callback: () => setState(() {}),
+      pickedTask: widget.pickedTask,
+    );
     super.initState();
   }
 
@@ -91,6 +97,7 @@ class _ViewTaskState extends State<ViewTask> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   IconPanelWidget(
+                    viewTaskController: viewTaskController,
                     taskListController: widget.taskController,
                     selectedTask: widget.pickedTask,
                   ),

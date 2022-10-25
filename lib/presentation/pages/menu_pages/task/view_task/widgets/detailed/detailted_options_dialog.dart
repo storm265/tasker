@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/task_list.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/view_task/controller/view_task_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/add_member/add_member_dialog.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 Future<void> showDetailedOptions({
   required TaskList taskListController,
   required BuildContext context,
+  required ViewTaskController viewTaskController,
   required TaskModel selectedTask,
 }) async {
   final List<String> items = selectedTask.isCompleted == true &&
@@ -64,6 +67,12 @@ Future<void> showDetailedOptions({
                         Navigator.pop(context);
                       } else {
                         // TODO add member
+                        await await showDialog(
+                          context: context,
+                          builder: (_) => AddMemberDialog(
+                            viewTaskController: viewTaskController,
+                          ),
+                        );
                         Navigator.pop(context);
                         Navigator.pop(context);
                       }

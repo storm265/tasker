@@ -41,7 +41,6 @@ class AddEditTaskPage extends StatefulWidget {
 
 class _AddEditTaskPageState extends State<AddEditTaskPage> {
   final addEditTaskController = AddEditTaskController(
-    taskRepository: TaskRepositoryImpl(),
     memberProvider: MemberProvider(),
     projectController: ProjectController(
       colorPalleteController: ColorPalleteProvider(),

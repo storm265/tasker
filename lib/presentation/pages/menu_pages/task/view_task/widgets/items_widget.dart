@@ -4,7 +4,7 @@ import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/auth/splash_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/controller/view_task_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/detailed_item_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/detailed/detailed_item_widget.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
@@ -68,46 +68,54 @@ class ItemsWidget extends StatelessWidget {
                 customSubtitle: Row(
                   children: [
                     SizedBox(
-                      height: 30,
-                      width: 200,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.horizontal,
-                        itemCount: pickedTask.members == null
-                            ? 0
-                            : (pickedTask.members!.length > 5)
-                                ? 5
-                                : pickedTask.members?.length,
-                        itemBuilder: (_, index) {
-                          return index == 4
-                              ? const Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 2),
-                                  child: CircleAvatar(
-                                    radius: 15,
-                                    backgroundColor: Palette.red,
-                                    child: Icon(
-                                      Icons.more_horiz,
-                                    ),
-                                  ),
-                                )
-                              : Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: 2,
-                                    left: 1.25,
-                                    right: 1.25,
-                                  ),
-                                  child: CircleAvatar(
-                                    radius: 16,
-                                    backgroundColor: Colors.grey,
-                                    backgroundImage: NetworkImage(
-                                      pickedTask.members![index].avatarUrl,
-                                      headers: viewTaskController.imageHeader,
-                                    ),
-                                  ),
-                                );
-                        },
-                      ),
-                    )
+                        height: 30,
+                        width: 200,
+                        child: ValueListenableBuilder(
+                          valueListenable:
+                              viewTaskController.memberProvider.taskMembers,
+                          builder: (context, members, child) {
+                            return members.isEmpty
+                                ? const SizedBox()
+                                : ListView.builder(
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: (pickedTask.members!.length > 5)
+                                        ? 5
+                                        : pickedTask.members?.length,
+                                    itemBuilder: (_, index) {
+                                      return index == 4
+                                          ? const Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 2),
+                                              child: CircleAvatar(
+                                                radius: 15,
+                                                backgroundColor: Palette.red,
+                                                child: Icon(
+                                                  Icons.more_horiz,
+                                                ),
+                                              ),
+                                            )
+                                          : Padding(
+                                              padding: const EdgeInsets.only(
+                                                top: 2,
+                                                left: 1.25,
+                                                right: 1.25,
+                                              ),
+                                              child: CircleAvatar(
+                                                radius: 16,
+                                                backgroundColor: Colors.grey,
+                                                backgroundImage: NetworkImage(
+                                                  pickedTask.members![index]
+                                                      .avatarUrl,
+                                                  headers: viewTaskController
+                                                      .imageHeader,
+                                                ),
+                                              ),
+                                            );
+                                    },
+                                  );
+                          },
+                        ))
                   ],
                 ),
               );

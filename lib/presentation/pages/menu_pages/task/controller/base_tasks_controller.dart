@@ -7,16 +7,17 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_ta
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/panel_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_validator.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/controller/menu_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/tasks_mixin.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/calendar_lib/controller.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
-abstract class BaseTasksController extends ChangeNotifier {
+abstract class BaseTasksController extends ChangeNotifier with TasksMixin {
   final ProjectController projectController;
   final AttachmentsProvider attachmentsProvider;
   final TaskValidator taskValidator;
   final PanelProvider panelProvider;
   final MemberProvider memberProvider;
-  final TaskRepository taskRepository;
+
   final SecureStorageSource secureStorage;
   BaseTasksController({
     required this.taskValidator,
@@ -25,7 +26,6 @@ abstract class BaseTasksController extends ChangeNotifier {
     required this.secureStorage,
     required this.panelProvider,
     required this.memberProvider,
-    required this.taskRepository,
   });
 
   final formKey = GlobalKey<FormState>();
@@ -71,8 +71,4 @@ abstract class BaseTasksController extends ChangeNotifier {
     FocusScope.of(context).unfocus();
     panelProvider.changePanelStatus(newStatus: PanelStatus.hide);
   }
-
-  Future<List<UserProfileModel>> taskMemberSearch(
-          {required String userName}) async =>
-      await taskRepository.taskMemberSearch(nickname: userName);
 }
