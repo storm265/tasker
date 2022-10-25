@@ -111,7 +111,8 @@ class CodegenLoader extends AssetLoader{
   "hour": "час",
   "hours": "часа",
   "you_cant_pick_date_debore_now": "Ты не можешь выбрать прошлую дату!",
-  "please_select_project": "Пожалуйста, выбери проект"
+  "please_select_project": "Пожалуйста, выбери проект",
+  "no_internet": "Нет интернета 😳"
 };
 static const Map<String,dynamic> en = {
   "get_started": "Get Started",
@@ -209,7 +210,8 @@ static const Map<String,dynamic> en = {
   "hour": "hour",
   "hours": "hours",
   "you_cant_pick_date_debore_now": "You cant pick date before now!",
-  "please_select_project": "Please, select project"
+  "please_select_project": "Please, select project",
+  "no_internet": "No internet 😳"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ru": ru, "en": en};
 }

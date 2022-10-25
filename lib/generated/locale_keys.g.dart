@@ -100,5 +100,6 @@ abstract class  LocaleKeys {
   static const hours = 'hours';
   static const you_cant_pick_date_debore_now = 'you_cant_pick_date_debore_now';
   static const please_select_project = 'please_select_project';
+  static const no_internet = 'no_internet';
 
 }

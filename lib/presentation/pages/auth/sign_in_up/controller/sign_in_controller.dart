@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
@@ -6,9 +8,10 @@ import 'package:todo2/presentation/providers/user_provider.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
+import 'package:todo2/services/network_service/connection_checker.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
-class SignInController extends ChangeNotifier {
+class SignInController extends ChangeNotifier with ConnectionCheckerMixin {
   final AuthRepositoryImpl _authRepository;
   final FormValidatorController formValidatorController;
   final SecureStorageSource _storageSource;
@@ -37,36 +40,45 @@ class SignInController extends ChangeNotifier {
     required String passwordController,
     required BuildContext context,
   }) async {
-    try {
-      changeSignInButtonStatus(isActive: false);
-      if (formKey.currentState!.validate()) {
-        await _signIn(
-          context: context,
-          email: emailController,
-          password: passwordController,
-        );
-      } else {
-        throw MessageService.displaySnackbar(
-          message: LocaleKeys.form_is_not_valid.tr(),
-          context: context,
-        );
-      }
+    changeSignInButtonStatus(isActive: false);
+    if (await isConnected()) {
+      try {
+        if (formKey.currentState!.validate()) {
+          await _signIn(
+            context: context,
+            email: emailController,
+            password: passwordController,
+          );
+        } else {
+          throw MessageService.displaySnackbar(
+            message: LocaleKeys.form_is_not_valid.tr(),
+            context: context,
+          );
+        }
 
-      await Future.delayed(
-        Duration.zero,
-        () => NavigationService.navigateTo(
-          context,
-          Pages.navigationReplacement,
-        ),
-      );
-    } catch (e) {
-      if (!e.toString().contains('Scaffold')) {
-        throw MessageService.displaySnackbar(
-          message: e.toString(),
-          context: context,
+        await Future.delayed(
+          Duration.zero,
+          () => NavigationService.navigateTo(
+            context,
+            Pages.navigationReplacement,
+          ),
         );
+      } catch (e) {
+        if (!e.toString().contains('Scaffold')) {
+          throw MessageService.displaySnackbar(
+            message: e.toString(),
+            context: context,
+          );
+        }
+      } finally {
+        changeSignInButtonStatus(isActive: true);
       }
-    } finally {
+      log('empty');
+    } else {
+      MessageService.displaySnackbar(
+        message: LocaleKeys.no_internet.tr(),
+        context: context,
+      );
       changeSignInButtonStatus(isActive: true);
     }
   }

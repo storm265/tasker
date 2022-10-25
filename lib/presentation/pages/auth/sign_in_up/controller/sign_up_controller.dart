@@ -6,9 +6,10 @@ import 'package:todo2/presentation/providers/file_provider.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
+import 'package:todo2/services/network_service/connection_checker.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
-class SignUpController extends ChangeNotifier {
+class SignUpController extends ChangeNotifier with ConnectionCheckerMixin {
   final AuthRepositoryImpl _authRepository;
   final FormValidatorController formValidatorController;
   final FileProvider fileController;
@@ -37,48 +38,57 @@ class SignUpController extends ChangeNotifier {
     required String email,
     required String password,
   }) async {
-    try {
-      changeSignUpButtonValue(isActive: false);
+    changeSignUpButtonValue(isActive: false);
+    if (await isConnected()) {
+      try {
+        changeSignUpButtonValue(isActive: false);
 
-      if (formKey.currentState!.validate()) {
-        await _signUp(
-          context: context,
-          username: userName,
-          email: email,
-          password: password,
-        );
-      } else {
-        throw MessageService.displaySnackbar(
-          message: LocaleKeys.form_is_not_valid.tr(),
-          context: context,
-        );
-      }
-      if (fileController.shouldUploadAvatar()) {
-        if (fileController
-            .isValidImageFormat(fileController.pickedFile.value.extension!)) {
-          final imageResponse = await fileController.uploadAvatar();
-          await _storageSource.storageApi.saveData(
-            type: StorageDataType.avatarUrl,
-            value: imageResponse,
+        if (formKey.currentState!.validate()) {
+          await _signUp(
+            context: context,
+            username: userName,
+            email: email,
+            password: password,
+          );
+        } else {
+          throw MessageService.displaySnackbar(
+            message: LocaleKeys.form_is_not_valid.tr(),
+            context: context,
           );
         }
-      }
+        if (fileController.shouldUploadAvatar()) {
+          if (fileController
+              .isValidImageFormat(fileController.pickedFile.value.extension!)) {
+            final imageResponse = await fileController.uploadAvatar();
+            await _storageSource.storageApi.saveData(
+              type: StorageDataType.avatarUrl,
+              value: imageResponse,
+            );
+          }
+        }
 
-      await Future.delayed(
-        Duration.zero,
-        () => NavigationService.navigateTo(
-          context,
-          Pages.navigationReplacement,
-        ),
-      );
-    } catch (e) {
-      if (!e.toString().contains('Scaffold')) {
-        throw MessageService.displaySnackbar(
-          message: e.toString(),
-          context: context,
+        await Future.delayed(
+          Duration.zero,
+          () => NavigationService.navigateTo(
+            context,
+            Pages.navigationReplacement,
+          ),
         );
+      } catch (e) {
+        if (!e.toString().contains('Scaffold')) {
+          throw MessageService.displaySnackbar(
+            message: e.toString(),
+            context: context,
+          );
+        }
+      } finally {
+        changeSignUpButtonValue(isActive: true);
       }
-    } finally {
+    } else {
+      MessageService.displaySnackbar(
+        message: LocaleKeys.no_internet.tr(),
+        context: context,
+      );
       changeSignUpButtonValue(isActive: true);
     }
   }
