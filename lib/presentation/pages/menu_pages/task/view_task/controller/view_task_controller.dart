@@ -83,9 +83,9 @@ class ViewTaskController extends ChangeNotifier
     try {
       changeSubmitButton(false);
       List<String> members = [];
-      if (model.members != null) {
+      if (memberProvider.taskMembers.value.isNotEmpty) {
         for (var i = 0; i < model.members!.length; i++) {
-          members.add(model.members![i].id);
+          members.add(memberProvider.taskMembers.value.elementAt(i).id);
         }
       }
 
