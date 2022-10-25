@@ -23,6 +23,7 @@ dependencies:
   shimmer:
   drift:
   grouped_list: ^5.1.2
+  flutter_cache_manager:
   # For charles
   http_proxy:
   network_info_plus:
