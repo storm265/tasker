@@ -96,8 +96,10 @@ class _CheckBoxWidgetState extends State<CheckBoxWidget> {
         Padding(
           padding: const EdgeInsets.only(left: 20),
           child: GestureDetector(
-            onTap: () =>
-                widget.checkBoxController.removeCheckboxItem(widget.index),
+            onTap: () => widget.checkBoxController.removeCheckboxItem(
+              context: context,
+              index: widget.index,
+            ),
             child: const Icon(
               Icons.delete,
               color: darkGrey,

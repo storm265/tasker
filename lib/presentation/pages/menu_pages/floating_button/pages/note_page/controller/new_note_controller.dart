@@ -11,10 +11,11 @@ import 'package:todo2/presentation/pages/navigation/controllers/navigation_contr
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
+import 'package:todo2/services/network_service/connection_checker.dart';
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
-class NewNoteController extends ChangeNotifier {
+class NewNoteController extends ChangeNotifier with ConnectionCheckerMixin {
   static final NewNoteController _instance = NewNoteController._internal();
 
   factory NewNoteController() {
@@ -85,31 +86,40 @@ class NewNoteController extends ChangeNotifier {
     required GlobalKey<FormState> formKey,
     required BuildContext context,
   }) async {
-    try {
-      if (formKey.currentState!.validate() &&
-          !colorPalleteController.isNotPickerColor) {
-        FocusScope.of(context).unfocus();
-        changeClickedButtonValueStatus(newValue: false);
-        log('isEdit $isEdit');
-        if (isEdit.value) {
-          await updateNote();
-          MessageService.displaySnackbar(
-            context: context,
-            message: LocaleKeys.updated.tr(),
-          );
-        } else {
-          await createNote();
-          MessageService.displaySnackbar(
-            context: context,
-            message: LocaleKeys.created.tr(),
-          );
-        }
-        clearData();
-        quickController.fetchNotesLocally();
+    changeClickedButtonValueStatus(newValue: false);
+    if (await isConnected()) {
+      try {
+        if (formKey.currentState!.validate() &&
+            !colorPalleteController.isNotPickerColor) {
+          FocusScope.of(context).unfocus();
 
-        await navigationController.moveToPage(Pages.quick);
+          log('isEdit $isEdit');
+          if (isEdit.value) {
+            await updateNote();
+            MessageService.displaySnackbar(
+              context: context,
+              message: LocaleKeys.updated.tr(),
+            );
+          } else {
+            await createNote();
+            MessageService.displaySnackbar(
+              context: context,
+              message: LocaleKeys.created.tr(),
+            );
+          }
+          clearData();
+          quickController.fetchNotesLocally();
+
+          await navigationController.moveToPage(Pages.quick);
+        }
+      } finally {
+        changeClickedButtonValueStatus(newValue: true);
       }
-    } finally {
+    } else {
+      MessageService.displaySnackbar(
+        message: LocaleKeys.no_internet.tr(),
+        context: context,
+      );
       changeClickedButtonValueStatus(newValue: true);
     }
   }
@@ -133,8 +143,11 @@ class NewNoteController extends ChangeNotifier {
     required BuildContext context,
   }) async {
     await _addNoteRepository.deleteNote(projectId: notesModel.id);
+
     userNotesList.removeWhere((element) => element.id == notesModel.id);
+
     quickController.fetchNotesLocally();
+
     MessageService.displaySnackbar(
       context: context,
       message: LocaleKeys.deleted.tr(),
@@ -159,18 +172,26 @@ class NewNoteController extends ChangeNotifier {
     required NotesModel pickedModel,
     required BuildContext context,
   }) async {
-    NotesModel model = pickedModel.copyWith(isCompleted: true);
-    final newModel = await _addNoteRepository.updateNote(
-      color: model.color,
-      noteModel: model,
-      description: model.description,
-    );
-    for (var i = 0; i < userNotesList.length; i++) {
-      if (userNotesList[i].id == newModel.id) {
-        userNotesList[i] = newModel;
-        break;
+    if (await isConnected()) {
+      NotesModel model = pickedModel.copyWith(isCompleted: true);
+      final newModel = await _addNoteRepository.updateNote(
+        color: model.color,
+        noteModel: model,
+        description: model.description,
+      );
+      for (var i = 0; i < userNotesList.length; i++) {
+        if (userNotesList[i].id == newModel.id) {
+          userNotesList[i] = newModel;
+          break;
+        }
       }
+      quickController.fetchNotesLocally();
+    } else {
+      MessageService.displaySnackbar(
+        message: LocaleKeys.no_internet.tr(),
+        context: context,
+      );
+      changeClickedButtonValueStatus(newValue: true);
     }
-    quickController.fetchNotesLocally();
   }
 }

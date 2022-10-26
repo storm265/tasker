@@ -41,7 +41,6 @@ class SignUpController extends ChangeNotifier with ConnectionCheckerMixin {
     changeSignUpButtonValue(isActive: false);
     if (await isConnected()) {
       try {
-        changeSignUpButtonValue(isActive: false);
 
         if (formKey.currentState!.validate()) {
           await _signUp(

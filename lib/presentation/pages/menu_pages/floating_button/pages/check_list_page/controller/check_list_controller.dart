@@ -11,10 +11,11 @@ import 'package:todo2/presentation/pages/navigation/controllers/navigation_contr
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
+import 'package:todo2/services/network_service/connection_checker.dart';
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
-class CheckListController extends ChangeNotifier {
+class CheckListController extends ChangeNotifier with ConnectionCheckerMixin {
   static final CheckListController _instance = CheckListController._internal();
 
   factory CheckListController() {
@@ -94,31 +95,39 @@ class CheckListController extends ChangeNotifier {
     required BuildContext context,
     required NavigationController navigationController,
   }) async {
-    try {
-      if (formKey.currentState!.validate() &&
-          !colorPalleteController.isNotPickerColor) {
-        removeItemsWhereTitleIsEmpty();
-        FocusScope.of(context).unfocus();
-        changeIsClickedValueStatus(false);
-        if (isEditStatus.value) {
-          await updateCheckList();
-          MessageService.displaySnackbar(
-            context: context,
-            message: LocaleKeys.updated.tr(),
-          );
-        } else {
-          await createCheckList();
-          MessageService.displaySnackbar(
-            context: context,
-            message: LocaleKeys.created.tr(),
-          );
+    if (await isConnected()) {
+      try {
+        if (formKey.currentState!.validate() &&
+            !colorPalleteController.isNotPickerColor) {
+          removeItemsWhereTitleIsEmpty();
+          FocusScope.of(context).unfocus();
+          changeIsClickedValueStatus(false);
+          if (isEditStatus.value) {
+            await updateCheckList();
+            MessageService.displaySnackbar(
+              context: context,
+              message: LocaleKeys.updated.tr(),
+            );
+          } else {
+            await createCheckList();
+            MessageService.displaySnackbar(
+              context: context,
+              message: LocaleKeys.created.tr(),
+            );
+          }
+          quickController.fetchNotesLocally();
+          clearData();
+          changeIsClickedValueStatus(true);
+          await navigationController.moveToPage(Pages.quick);
         }
-        quickController.fetchNotesLocally();
-        clearData();
+      } finally {
         changeIsClickedValueStatus(true);
-        await navigationController.moveToPage(Pages.quick);
       }
-    } finally {
+    } else {
+      MessageService.displaySnackbar(
+        message: LocaleKeys.no_internet.tr(),
+        context: context,
+      );
       changeIsClickedValueStatus(true);
     }
   }
@@ -171,13 +180,21 @@ class CheckListController extends ChangeNotifier {
     required CheckListModel checkListModel,
     required BuildContext context,
   }) async {
-    await _checkListRepository.deleteCheckList(checkListModel: checkListModel);
-    checklist.removeWhere((element) => element.id == checkListModel.id);
-    quickController.fetchNotesLocally();
-    MessageService.displaySnackbar(
-      context: context,
-      message: LocaleKeys.deleted.tr(),
-    );
+    if (await isConnected()) {
+      await _checkListRepository.deleteCheckList(
+          checkListModel: checkListModel);
+      checklist.removeWhere((element) => element.id == checkListModel.id);
+      quickController.fetchNotesLocally();
+      MessageService.displaySnackbar(
+        context: context,
+        message: LocaleKeys.deleted.tr(),
+      );
+    } else {
+      MessageService.displaySnackbar(
+        message: LocaleKeys.no_internet.tr(),
+        context: context,
+      );
+    }
   }
 
   void addCheckboxItem(int index) {
@@ -207,16 +224,27 @@ class CheckListController extends ChangeNotifier {
     checkBoxItems.notifyListeners();
   }
 
-  void removeCheckboxItem(int index) async {
+  void removeCheckboxItem({
+    required int index,
+    required BuildContext context,
+  }) async {
     if (checkBoxItems.value[index][CheckListItemsScheme.id] == null) {
       checkBoxItems.value.removeAt(index);
     } else {
-      await deleteChecklistItem(
-          checklistItemId: checkBoxItems.value[index][CheckListItemsScheme.id]);
-      checkBoxItems.value.removeAt(index);
-      quickController.fetchNotesLocally();
+      if (await isConnected()) {
+        await deleteChecklistItem(
+            checklistItemId: checkBoxItems.value[index]
+                [CheckListItemsScheme.id]);
+        checkBoxItems.value.removeAt(index);
+        quickController.fetchNotesLocally();
+      } else {
+        MessageService.displaySnackbar(
+          message: LocaleKeys.no_internet.tr(),
+          context: context,
+        );
+        checkBoxItems.notifyListeners();
+      }
     }
-    checkBoxItems.notifyListeners();
   }
 
   void removeItemsWhereTitleIsEmpty() async {

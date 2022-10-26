@@ -39,8 +39,6 @@ class ProfileController extends ChangeNotifier with AccessTokenMixin {
   late String email = '';
   late AnimationController iconAnimationController;
 
-  final imageCachedKey = ValueNotifier<String>('0');
-
   // ignore: prefer_final_fields
   List<TaskModel> _tasks = [];
   int _eventsLength = 0;

@@ -1,13 +1,18 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
-abstract class  LocaleKeys {
+// ignore_for_file: constant_identifier_names
+
+abstract class LocaleKeys {
   static const get_started = 'get_started';
   static const welcome_to_todoList = 'welcome_to_todoList';
-  static const whats_going_to_happen_tomorrow = 'whats_going_to_happen_tomorrow';
+  static const whats_going_to_happen_tomorrow =
+      'whats_going_to_happen_tomorrow';
   static const work_happens = 'work_happens';
-  static const get_notified_when_work_happens = 'get_notified_when_work_happens';
+  static const get_notified_when_work_happens =
+      'get_notified_when_work_happens';
   static const tasks_and_assign = 'tasks_and_assign';
-  static const task_and_assign_them_to_colleagues = 'task_and_assign_them_to_colleagues';
+  static const task_and_assign_them_to_colleagues =
+      'task_and_assign_them_to_colleagues';
   static const welcome = 'welcome';
   static const sign_up_to_continue = 'sign_up_to_continue';
   static const sign_in_to_continue = 'sign_in_to_continue';
@@ -100,5 +105,4 @@ abstract class  LocaleKeys {
   static const please_select_project = 'please_select_project';
   static const no_internet = 'no_internet';
   static const no_tasks = 'no_tasks';
-
 }

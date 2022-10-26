@@ -7,6 +7,7 @@ import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_provider/color_pallete_provider.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/message_service/message_service.dart';
+import 'package:todo2/services/network_service/connection_checker.dart';
 
 enum ProjectDialogStatus {
   add,
@@ -14,7 +15,7 @@ enum ProjectDialogStatus {
   remove,
 }
 
-class ProjectController extends ChangeNotifier {
+class ProjectController extends ChangeNotifier with ConnectionCheckerMixin {
   final ProjectRepository _projectsRepository;
   ProjectController({
     required this.colorPalleteController,
@@ -64,24 +65,31 @@ class ProjectController extends ChangeNotifier {
     required BuildContext context,
   }) async {
     setClickedValue(false);
-    if (formKey.currentState!.validate() &&
-        !colorPalleteController.isNotPickerColor) {
-      if (isEdit) {
-        await updateProject(projectModel: selectedModel!);
-        MessageService.displaySnackbar(
-          context: context,
-          message: LocaleKeys.updated.tr(),
-        );
-      } else {
-        await createProject();
-        MessageService.displaySnackbar(
-          context: context,
-          message: LocaleKeys.created.tr(),
-        );
+    if (await isConnected()) {
+      if (formKey.currentState!.validate() &&
+          !colorPalleteController.isNotPickerColor) {
+        if (isEdit) {
+          await updateProject(projectModel: selectedModel!);
+          MessageService.displaySnackbar(
+            context: context,
+            message: LocaleKeys.updated.tr(),
+          );
+        } else {
+          await createProject();
+          MessageService.displaySnackbar(
+            context: context,
+            message: LocaleKeys.created.tr(),
+          );
+        }
+        clearProjects();
+        setClickedValue(true);
+        await Future.delayed(Duration.zero, () => Navigator.pop(context));
       }
-      clearProjects();
-      setClickedValue(true);
-      await Future.delayed(Duration.zero, () => Navigator.pop(context));
+    } else {
+      MessageService.displaySnackbar(
+        message: LocaleKeys.no_internet.tr(),
+        context: context,
+      );
     }
   }
 
@@ -127,19 +135,26 @@ class ProjectController extends ChangeNotifier {
 
   Future<void> deleteProject({required BuildContext context}) async {
     setClickedValue(false);
-    await _projectsRepository.deleteProject(
-      projectModel: selectedModel!,
-    );
-    await fetchProjectStats();
-    projects.value.removeWhere((element) => selectedModel!.id == element.id);
-    projects.notifyListeners();
+    if (await isConnected()) {
+      await _projectsRepository.deleteProject(
+        projectModel: selectedModel!,
+      );
+      await fetchProjectStats().then((_) => MessageService.displaySnackbar(
+            context: context,
+            message: LocaleKeys.deleted.tr(),
+          ));
+      projects.value.removeWhere((element) => selectedModel!.id == element.id);
+      projects.notifyListeners();
 
-    MessageService.displaySnackbar(
-      context: context,
-      message: LocaleKeys.deleted.tr(),
-    );
-    clearProjects();
+      clearProjects();
+
+      await Future.delayed(Duration.zero, () => Navigator.pop(context));
+    } else {
+      MessageService.displaySnackbar(
+        message: LocaleKeys.no_internet.tr(),
+        context: context,
+      );
+    }
     setClickedValue(true);
-    await Future.delayed(Duration.zero, () => Navigator.pop(context));
   }
 }
