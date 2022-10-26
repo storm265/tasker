@@ -1,6 +1,6 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
-// ignore_for_file: prefer_single_quotes, avoid_renaming_method_parameters
+// ignore_for_file: prefer_single_quotes
 
 import 'dart:ui';
 
@@ -112,7 +112,8 @@ class CodegenLoader extends AssetLoader{
   "hours": "часа",
   "you_cant_pick_date_debore_now": "Ты не можешь выбрать прошлую дату!",
   "please_select_project": "Пожалуйста, выбери проект",
-  "no_internet": "Нет интернета 😳"
+  "no_internet": "Нет интернета 😳",
+  "no_tasks": "Нет задач"
 };
 static const Map<String,dynamic> en = {
   "get_started": "Get Started",
@@ -211,7 +212,8 @@ static const Map<String,dynamic> en = {
   "hours": "hours",
   "you_cant_pick_date_debore_now": "You cant pick date before now!",
   "please_select_project": "Please, select project",
-  "no_internet": "No internet 😳"
+  "no_internet": "No internet 😳",
+  "no_tasks": "No tasks"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ru": ru, "en": en};
 }

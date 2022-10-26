@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_navigator.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_status.dart';
@@ -67,24 +66,6 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
     );
-  }
-}
-
-class CustomCacheManager {
-  static const key = 'customCacheKey';
-  static CacheManager instance = CacheManager(
-    Config(
-      key,
-      stalePeriod: const Duration(days: 7),
-      maxNrOfCacheObjects: 20,
-      repo: JsonCacheInfoRepository(databaseName: key),
-      //    fileSystem: FileSystem,
-      fileService: HttpFileService(),
-    ),
-  );
-
-  void ss() async {
-    var file = await DefaultCacheManager().getSingleFile('url');
   }
 }
 

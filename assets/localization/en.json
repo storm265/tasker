@@ -95,5 +95,6 @@
     "hours": "hours",
     "you_cant_pick_date_debore_now": "You cant pick date before now!",
     "please_select_project": "Please, select project",
-    "no_internet": "No internet 😳"
+    "no_internet": "No internet 😳",
+    "no_tasks": "No tasks"
 }

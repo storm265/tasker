@@ -1,7 +1,5 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
-// ignore_for_file: constant_identifier_names
-
 abstract class  LocaleKeys {
   static const get_started = 'get_started';
   static const welcome_to_todoList = 'welcome_to_todoList';
@@ -101,5 +99,6 @@ abstract class  LocaleKeys {
   static const you_cant_pick_date_debore_now = 'you_cant_pick_date_debore_now';
   static const please_select_project = 'please_select_project';
   static const no_internet = 'no_internet';
+  static const no_tasks = 'no_tasks';
 
 }

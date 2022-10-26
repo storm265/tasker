@@ -45,40 +45,42 @@ class _TaskListWidgetState extends State<TaskListWidget> {
       builder: (_, tasks, __) {
         log('tasks len ${tasks.length}');
 
-        return tasks.isEmpty
-            ? Center(
-                child: ProgressIndicatorWidget(text: LocaleKeys.no_data.tr()),
-              )
-            : ValueListenableBuilder(
-                // incomplete,
-                // completed,
-                // all,
-                valueListenable: widget.taskController.sortMode,
+        return ValueListenableBuilder(
+          // incomplete,
+          // completed,
+          // all,
+          valueListenable: widget.taskController.sortMode,
 
-                builder: ((_, sortMode, __) {
-                  final sortedModeList =
-                      widget.taskSortController.taskModeSort(tasks: tasks);
+          builder: ((_, sortMode, __) {
+            final sortedModeList =
+                widget.taskSortController.taskModeSort(tasks: tasks);
 
-                  return ValueListenableBuilder(
-                    valueListenable:
-                        widget.taskController.calendarProvider.selectedMonth,
-                    builder: (_, selectedMonth, __) {
-                      log('selectedMonth $selectedMonth');
-                      return ValueListenableBuilder(
-                        // todayTomorrow
-                        // selectedDay
-                        // fullMonth
-                        valueListenable:
-                            widget.taskController.calendarProvider.calendarMode,
-                        builder: (__, calendarMode, _) {
-                          final calendarModeSortedList =
-                              widget.taskSortController.sortList(
-                            calendarMode,
-                            sortedModeList,
-                            selectedMonth,
-                          );
-                          log('ss len ${calendarModeSortedList.length}');
-                          return GroupedListView<TaskModel, DateTime>(
+            return ValueListenableBuilder(
+              valueListenable:
+                  widget.taskController.calendarProvider.selectedMonth,
+              builder: (_, selectedMonth, __) {
+                log('selectedMonth $selectedMonth');
+                return ValueListenableBuilder(
+                  // todayTomorrow
+                  // selectedDay
+                  // fullMonth
+                  valueListenable:
+                      widget.taskController.calendarProvider.calendarMode,
+                  builder: (__, calendarMode, _) {
+                    final calendarModeSortedList =
+                        widget.taskSortController.sortList(
+                      calendarMode,
+                      sortedModeList,
+                      selectedMonth,
+                    );
+                    log('ss len ${calendarModeSortedList.length}');
+                    return calendarModeSortedList.isEmpty
+                        ? Center(
+                            child: Text(
+                              LocaleKeys.no_tasks.tr(),
+                            ),
+                          )
+                        : GroupedListView<TaskModel, DateTime>(
                             elements: calendarModeSortedList,
                             groupBy: (TaskModel element) => DateTime(
                               element.dueDate.year,
@@ -145,12 +147,12 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                               );
                             },
                           );
-                        },
-                      );
-                    },
-                  );
-                }),
-              );
+                  },
+                );
+              },
+            );
+          }),
+        );
       },
     );
   }

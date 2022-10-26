@@ -290,6 +290,8 @@ class _AdvancedCalendarState extends State<AdvancedCalendar>
                                 }
                                 widget.calendarProvider.onChangeMonth(
                                     _monthRangeList[pageIndex].firstDay);
+                                widget.calendarProvider
+                                    .updateTaskWorkMode(TaskMode.fullMonth);
                                 _monthViewCurrentPage.value = pageIndex;
                               },
                               controller: _monthPageController,
@@ -399,6 +401,7 @@ class _AdvancedCalendarState extends State<AdvancedCalendar>
     _controller.value = date;
     log('date changed');
     widget.calendarProvider.onChangeMonth(date);
+    widget.calendarProvider.updateTaskWorkMode(TaskMode.selectedDay);
   }
 
   ScrollPhysics closeMonthScroll() {
