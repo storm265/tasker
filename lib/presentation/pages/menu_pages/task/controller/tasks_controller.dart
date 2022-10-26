@@ -34,8 +34,7 @@ class TaskListController extends TaskList {
     for (var i = 0; i < list3.length; i++) {
       tasks.value.add(list3[i]);
     }
-    // TODO JUST TEST
-    await FlutterDynamicIcon.setApplicationIconBadgeNumber(tasks.value.length);
+
     tasks.notifyListeners();
   }
 

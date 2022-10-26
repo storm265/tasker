@@ -22,16 +22,13 @@ dependencies:
   flutter_dotenv:
   shimmer:
   drift:
-  path_provider: ^2.0.0
-  path: ^1.8.2
+  path_provider:
+  path: 
   grouped_list: ^5.1.2
   # For charles
   http_proxy:
   network_info_plus:
   permission_handler:
-  #test
-  flutter_dynamic_icon: ^2.1.0
-  quickalert: ^1.0.0
   
 
 
@@ -41,7 +38,7 @@ dev_dependencies:
   flutter_lints:
   flutter_native_splash:
   drift_dev: ^2.2.0+1
-  build_runner: ^2.2.1
+  build_runner:
 
 flutter:
   uses-material-design: true

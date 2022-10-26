@@ -2,7 +2,6 @@ import 'package:drift/drift.dart';
 
 part 'note_table.g.dart';
 
-@DataClassName("Note")
 class NoteTable extends Table {
   TextColumn get id => text()();
   BoolColumn get isCompleted => boolean()();
