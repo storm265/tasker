@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
@@ -74,14 +76,15 @@ class ItemsWidget extends StatelessWidget {
                           valueListenable:
                               viewTaskController.memberProvider.taskMembers,
                           builder: (context, members, child) {
+                            log('members items ${members.length}');
                             return members.isEmpty
                                 ? const SizedBox()
                                 : ListView.builder(
                                     shrinkWrap: true,
                                     scrollDirection: Axis.horizontal,
-                                    itemCount: (pickedTask.members!.length > 5)
+                                    itemCount: (members.length > 5)
                                         ? 5
-                                        : pickedTask.members?.length,
+                                        : members.length,
                                     itemBuilder: (_, index) {
                                       return index == 4
                                           ? const Padding(
@@ -105,7 +108,8 @@ class ItemsWidget extends StatelessWidget {
                                                 radius: 16,
                                                 backgroundColor: Colors.grey,
                                                 backgroundImage: NetworkImage(
-                                                  pickedTask.members![index]
+                                                  members
+                                                      .elementAt(index)
                                                       .avatarUrl,
                                                   headers: viewTaskController
                                                       .imageHeader,

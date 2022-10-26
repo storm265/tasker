@@ -67,14 +67,12 @@ Future<void> showDetailedOptions({
                         Navigator.pop(context);
                       } else {
                         // TODO add member
-                        await await showDialog(
+                        await showDialog(
                           context: context,
                           builder: (_) => AddMemberDialog(
                             viewTaskController: viewTaskController,
                           ),
                         );
-                        Navigator.pop(context);
-                        Navigator.pop(context);
                       }
 
                       break;

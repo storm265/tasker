@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/controller/view_task_controller.dart';
@@ -47,6 +49,7 @@ class _MemberItemWidgetState extends State<MemberItemWidget> {
             if (isSelected) {
               widget.viewTaskController.memberProvider
                   .addMember(userModel: widget.userModel);
+      
             } else {
               widget.viewTaskController.memberProvider
                   .removeMember(model: widget.userModel);

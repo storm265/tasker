@@ -1,11 +1,14 @@
 import 'dart:developer';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
+import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/access_token_mixin.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/base_tasks_controller.dart';
+import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 class AddEditTaskController extends BaseTasksController with AccessTokenMixin {
@@ -101,7 +104,12 @@ class AddEditTaskController extends BaseTasksController with AccessTokenMixin {
         attachmentsProvider.hasAttachments()
             ? await attachmentsProvider.uploadTaskAttachment(taskId: model.id)
             : null;
-
+        if (model.id.isNotEmpty) {
+          MessageService.displaySnackbar(
+            context: context,
+            message: LocaleKeys.created.tr(),
+          );
+        }
         Future.delayed(
           Duration.zero,
           () => NavigationService.navigateTo(
@@ -146,7 +154,12 @@ class AddEditTaskController extends BaseTasksController with AccessTokenMixin {
         attachmentsProvider.hasAttachments()
             ? await attachmentsProvider.uploadTaskAttachment(taskId: model.id)
             : null;
-
+        if (model.id.isNotEmpty) {
+          MessageService.displaySnackbar(
+            context: context,
+            message: LocaleKeys.created.tr(),
+          );
+        }
         Future.delayed(
           Duration.zero,
           () => NavigationService.navigateTo(
