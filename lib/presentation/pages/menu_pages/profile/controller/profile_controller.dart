@@ -13,15 +13,18 @@ import 'package:todo2/presentation/pages/menu_pages/task/controller/access_token
 import 'package:todo2/presentation/providers/file_provider.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
+import 'package:todo2/services/network_service/connection_checker.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
-class ProfileController extends ChangeNotifier with AccessTokenMixin {
+class ProfileController extends ChangeNotifier
+    with AccessTokenMixin, ConnectionCheckerMixin {
   final SecureStorageSource _secureStorageService;
   final FileProvider fileProvider;
   final UserProfileRepositoryImpl userProfileRepository;
   final AuthRepositoryImpl authRepository;
   final TaskRepository _taskRepository;
   final NoteRepository _notesRepository;
+
   ProfileController({
     required this.fileProvider,
     required NoteRepository notesRepository,
@@ -97,10 +100,17 @@ class ProfileController extends ChangeNotifier with AccessTokenMixin {
   }
 
   Future<void> signOut({required BuildContext context}) async {
-    await _secureStorageService.removeAllUserData();
-    await authRepository
-        .signOut()
-        .then((_) => NavigationService.navigateTo(context, Pages.welcome));
+    if (await isConnected()) {
+      await _secureStorageService.removeAllUserData();
+      await authRepository
+          .signOut()
+          .then((_) => NavigationService.navigateTo(context, Pages.welcome));
+    } else {
+      MessageService.displaySnackbar(
+        message: LocaleKeys.no_internet.tr(),
+        context: context,
+      );
+    }
   }
 
   Future<void> fetchCardsData() async {

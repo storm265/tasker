@@ -42,11 +42,8 @@ void showTasksFilterDialog({
                   itemBuilder: ((_, index) {
                     return GestureDetector(
                       onTap: () async {
-                        // setState(() => selectedIndex = index);
                         taskController.changeTuneIconValue(index);
-
-                        await Future.delayed(const Duration(milliseconds: 500))
-                            .then((_) => Navigator.pop(context));
+                        Navigator.pop(context);
                       },
                       child: Row(
                         children: [
