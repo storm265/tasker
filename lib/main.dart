@@ -73,9 +73,10 @@ class _MyAppState extends State<MyApp> {
 class InMemoryCache {
   // key : value
 
-  Map<String, String> values = {
-    'tasks': '2025-06-21T23:56:02.394631',
-    'menu': '2025-06-21T23:56:02.394631',
+  Map<String, DateTime> values = {
+    'tasks': DateTime.now(),
+    'menu': DateTime.now(),
+    'quick': DateTime.now(),
   };
 }
 /*

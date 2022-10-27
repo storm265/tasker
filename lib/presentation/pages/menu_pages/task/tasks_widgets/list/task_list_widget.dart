@@ -9,7 +9,6 @@ import 'package:todo2/presentation/pages/menu_pages/task/controller/task_list.da
 import 'package:todo2/presentation/pages/menu_pages/task/controller/task_sort_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/list/task_item_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/list/today_widget.dart';
-import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 import 'package:todo2/presentation/widgets/common/slidable_widgets/endpane_widget.dart';
 import 'package:todo2/presentation/widgets/common/slidable_widgets/grey_slidable_widget.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';

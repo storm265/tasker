@@ -1,13 +1,10 @@
 import 'package:drift/drift.dart';
 
-part 'note_table.g.dart';
-
-class NoteTable extends Table {
+class CheckListItemTable extends Table {
   TextColumn get id => text()();
+  TextColumn get content => text()();
   BoolColumn get isCompleted => boolean()();
-  TextColumn get description => text()();
-  TextColumn get color => text()();
-  TextColumn get ownerId => text()();
+  TextColumn get checklistId => text().nullable()();
   DateTimeColumn get createdAt => dateTime()();
 
   @override

@@ -1,11 +1,10 @@
 import 'package:drift/drift.dart';
 
-part 'checklist_table.g.dart';
-
-class CheckListTable extends Table {
+@DataClassName("Project")
+class ProjectTable extends Table {
   TextColumn get id => text()();
   TextColumn get title => text()();
-  TextColumn get color => text()();
+  IntColumn get color => integer()();
   TextColumn get ownerId => text()();
   DateTimeColumn get createdAt => dateTime()();
 
