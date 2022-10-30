@@ -37,8 +37,12 @@ import 'package:todo2/storage/secure_storage_service.dart';
 final getIt = GetIt.instance;
 
 void setupDependencies() {
+  final projectDao = ProjectDaoImpl(ProjectDatabase());
+  final taskDao = TaskDaoImpl(TaskDatabase());
+
   getIt.registerFactory<FormValidatorController>(
-      () => FormValidatorController());
+    () => FormValidatorController(),
+  );
 
   getIt.registerFactory<SignInController>(
     () => SignInController(
@@ -73,50 +77,61 @@ void setupDependencies() {
       storageSource: SecureStorageSource(),
     ),
   );
-  getIt.registerFactory<AddEditTaskController>(() => AddEditTaskController(
-        memberProvider: MemberProvider(),
-        projectController: ProjectController(
-          colorPalleteProvider: ColorPalleteProvider(),
-          projectsRepository: ProjectRepositoryImpl(
-            inMemoryCache: InMemoryCache(),
-            projectDao: ProjectDao(ProjectDatabase()),
-            projectDataSource: ProjectUserDataImpl(
-              secureStorageService: SecureStorageSource(),
-              network: NetworkSource(),
-            ),
-          ),
-        ),
-        panelProvider: PanelProvider(),
-        taskValidator: TaskValidator(),
-        attachmentsProvider: AttachmentsProvider(
-          fileProvider: FileProvider(),
-          taskRepository: TaskRepositoryImpl(
-            inMemoryCache: InMemoryCache(),
-            taskDao: TaskDaoImpl(
-              TaskDatabase(),
-            ),
-            taskDataSource: TaskDataSourceImpl(
-              network: NetworkSource(),
-              secureStorage: SecureStorageSource(),
-            ),
-          ),
-        ),
+
+  getIt.registerFactory<TaskRepositoryImpl>(
+    () => TaskRepositoryImpl(
+      inMemoryCache: InMemoryCache(),
+      taskDao: taskDao,
+      taskDataSource: TaskDataSourceImpl(
+        network: NetworkSource(),
         secureStorage: SecureStorageSource(),
-        projectRepository: ProjectRepositoryImpl(
+      ),
+    ),
+  );
+  getIt.registerFactory<AddEditTaskController>(
+    () => AddEditTaskController(
+      memberProvider: MemberProvider(),
+      projectController: ProjectController(
+        colorPalleteProvider: ColorPalleteProvider(),
+        projectsRepository: ProjectRepositoryImpl(
           inMemoryCache: InMemoryCache(),
-          projectDao: ProjectDao(ProjectDatabase()),
+          projectDao: projectDao,
           projectDataSource: ProjectUserDataImpl(
             secureStorageService: SecureStorageSource(),
             network: NetworkSource(),
           ),
         ),
-        userRepository: UserProfileRepositoryImpl(
-          userProfileDataSource: UserProfileDataSourceImpl(
-            secureStorageService: SecureStorageSource(),
+      ),
+      panelProvider: PanelProvider(),
+      taskValidator: TaskValidator(),
+      attachmentsProvider: AttachmentsProvider(
+        fileProvider: FileProvider(),
+        taskRepository: TaskRepositoryImpl(
+          inMemoryCache: InMemoryCache(),
+          taskDao: taskDao,
+          taskDataSource: TaskDataSourceImpl(
             network: NetworkSource(),
+            secureStorage: SecureStorageSource(),
           ),
         ),
-      ));
+      ),
+      secureStorage: SecureStorageSource(),
+      projectRepository: ProjectRepositoryImpl(
+        inMemoryCache: InMemoryCache(),
+        projectDao: projectDao,
+        projectDataSource: ProjectUserDataImpl(
+          secureStorageService: SecureStorageSource(),
+          network: NetworkSource(),
+        ),
+      ),
+      userRepository: UserProfileRepositoryImpl(
+        userProfileDataSource: UserProfileDataSourceImpl(
+          secureStorageService: SecureStorageSource(),
+          network: NetworkSource(),
+        ),
+      ),
+    ),
+  );
 
   getIt.registerSingleton<CheckListController>(
     CheckListController(
@@ -145,7 +160,7 @@ void setupDependencies() {
       colorPalleteProvider: ColorPalleteProvider(),
       projectsRepository: ProjectRepositoryImpl(
         inMemoryCache: InMemoryCache(),
-        projectDao: ProjectDao(ProjectDatabase()),
+        projectDao: projectDao,
         projectDataSource: ProjectUserDataImpl(
           secureStorageService: SecureStorageSource(),
           network: NetworkSource(),
@@ -158,9 +173,7 @@ void setupDependencies() {
     () => ProfileController(
       taskRepository: TaskRepositoryImpl(
         inMemoryCache: InMemoryCache(),
-        taskDao: TaskDaoImpl(
-          TaskDatabase(),
-        ),
+        taskDao: taskDao,
         taskDataSource: TaskDataSourceImpl(
           network: NetworkSource(),
           secureStorage: SecureStorageSource(),

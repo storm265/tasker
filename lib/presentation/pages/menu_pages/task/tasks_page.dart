@@ -50,9 +50,6 @@ class _TasksPageState extends State<TasksPage>
   Widget build(BuildContext context) {
     return WillPopWrap(
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async => await _taskController.fetchTasks(),
-        ),
         backgroundColor: const Color(0xffFDFDFD),
         appBar: AppBar(
           systemOverlayStyle: const SystemUiOverlayStyle(

@@ -62,7 +62,7 @@ class _ViewTaskState extends State<ViewTask> {
     ),
     projectRepository: ProjectRepositoryImpl(
       inMemoryCache: InMemoryCache(),
-      projectDao: ProjectDao(ProjectDatabase()),
+      projectDao: ProjectDaoImpl(ProjectDatabase()),
       projectDataSource: ProjectUserDataImpl(
         secureStorageService: SecureStorageSource(),
         network: NetworkSource(),

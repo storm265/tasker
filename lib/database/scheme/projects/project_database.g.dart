@@ -292,7 +292,8 @@ class $ProjectTableTable extends ProjectTable
 abstract class _$ProjectDatabase extends GeneratedDatabase {
   _$ProjectDatabase(QueryExecutor e) : super(e);
   late final $ProjectTableTable projectTable = $ProjectTableTable(this);
-  late final ProjectDao projectDao = ProjectDao(this as ProjectDatabase);
+  late final ProjectDaoImpl projectDao =
+      ProjectDaoImpl(this as ProjectDatabase);
   @override
   Iterable<TableInfo<Table, dynamic>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();

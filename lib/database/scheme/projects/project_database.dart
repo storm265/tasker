@@ -8,7 +8,7 @@ import 'package:todo2/database/scheme/projects/project_table.dart';
 
 part 'project_database.g.dart';
 
-@DriftDatabase(tables: [ProjectTable], daos: [ProjectDao])
+@DriftDatabase(tables: [ProjectTable], daos: [ProjectDaoImpl])
 class ProjectDatabase extends _$ProjectDatabase {
   ProjectDatabase() : super(_database());
 

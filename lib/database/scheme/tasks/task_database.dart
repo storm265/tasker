@@ -10,7 +10,8 @@ part 'task_database.g.dart';
 
 @DriftDatabase(tables: [TaskTable], daos: [TaskDaoImpl])
 class TaskDatabase extends _$TaskDatabase {
-  TaskDatabase() : super(_database());
+ TaskDatabase() : super(_database());
+
 
   @override
   int get schemaVersion => 1;

@@ -35,11 +35,11 @@ abstract class ProjectRepository {
 
 class ProjectRepositoryImpl implements ProjectRepository {
   final InMemoryCache _inMemoryCache;
-  final ProjectDao _projectDao;
+  final ProjectDaoImpl _projectDao;
   final ProjectUserDataImpl _projectDataSource;
   ProjectRepositoryImpl({
     required ProjectUserDataImpl projectDataSource,
-    required ProjectDao projectDao,
+    required ProjectDaoImpl projectDao,
     required InMemoryCache inMemoryCache,
   })  : _projectDataSource = projectDataSource,
         _projectDao = projectDao,
