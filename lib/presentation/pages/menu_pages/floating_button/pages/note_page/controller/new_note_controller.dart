@@ -5,7 +5,7 @@ import 'package:todo2/database/data_source/notes_data_source.dart';
 import 'package:todo2/database/model/notes_model.dart';
 import 'package:todo2/database/repository/notes_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_provider/color_pallete_provider.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/providers/color_pallete_provider/color_pallete_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/controller/quick_controller.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
@@ -16,20 +16,9 @@ import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
 class NewNoteController extends ChangeNotifier with ConnectionCheckerMixin {
-  static final NewNoteController _instance = NewNoteController._internal();
-
-  factory NewNoteController() {
-    return _instance;
-  }
-
-  NewNoteController._internal();
-
-  final _addNoteRepository = NoteRepositoryImpl(
-    noteDataSource: NotesDataSourceImpl(
-      network: NetworkSource(),
-      secureStorage: SecureStorageSource(),
-    ),
-  );
+  final NoteRepository _addNoteRepository;
+  NewNoteController({required NoteRepository addNoteRepository})
+      : _addNoteRepository = addNoteRepository;
 
   final descriptionTextController = TextEditingController();
 

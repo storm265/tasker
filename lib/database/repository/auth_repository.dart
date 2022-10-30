@@ -1,7 +1,5 @@
 import 'package:todo2/database/data_source/auth_data_source.dart';
 import 'package:todo2/database/model/auth_model.dart';
-import 'package:todo2/services/network_service/network_config.dart';
-import 'package:todo2/storage/secure_storage_service.dart';
 
 abstract class AuthRepository {
   Future<AuthModel> signUp({
@@ -20,10 +18,9 @@ abstract class AuthRepository {
 }
 
 class AuthRepositoryImpl implements AuthRepository {
-  final _authDataSource = AuthDataSourceImpl(
-    network: NetworkSource(),
-    secureStorageService: SecureStorageSource(),
-  );
+  AuthRepositoryImpl({required AuthDataSource authDataSource})
+      : _authDataSource = authDataSource;
+  final AuthDataSource _authDataSource;
 
   @override
   Future<AuthModel> signIn({
@@ -54,11 +51,16 @@ class AuthRepositoryImpl implements AuthRepository {
     );
   }
 
+// TODO refactor
   @override
   Future<AuthModel> refreshToken() async {
     final response = await _authDataSource.refreshToken();
     return AuthModel.fromJson(json: response);
   }
+// // #2
+//   @override
+//   Future<AuthModel> refreshToken() async =>
+//       AuthModel.fromJson(json: await _authDataSource.refreshToken());
 
   @override
   Future<void> signOut() async => await _authDataSource.signOut();

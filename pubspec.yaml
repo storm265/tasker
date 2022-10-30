@@ -26,6 +26,7 @@ dependencies:
   path_provider: ^2.0.0
   path: ^1.8.2
   grouped_list: ^5.1.2
+  get_it:
   # For charles
   http_proxy:
   network_info_plus:

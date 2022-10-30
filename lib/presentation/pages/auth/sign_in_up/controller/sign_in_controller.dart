@@ -12,13 +12,13 @@ import 'package:todo2/services/network_service/connection_checker.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
 class SignInController extends ChangeNotifier with ConnectionCheckerMixin {
-  final AuthRepositoryImpl _authRepository;
+  final AuthRepository _authRepository;
   final FormValidatorController formValidatorController;
   final SecureStorageSource _storageSource;
   final UserProvider _userController;
 
   SignInController({
-    required AuthRepositoryImpl authRepository,
+    required AuthRepository authRepository,
     required SecureStorageSource storageSource,
     required UserProvider userController,
     required this.formValidatorController,

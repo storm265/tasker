@@ -1,16 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:todo2/database/data_source/notes_data_source.dart';
-import 'package:todo2/database/data_source/task_data_source.dart';
-import 'package:todo2/database/data_source/user_data_source.dart';
-import 'package:todo2/database/repository/auth_repository.dart';
-import 'package:todo2/database/repository/notes_repository.dart';
-import 'package:todo2/database/repository/task_repository.dart';
-import 'package:todo2/database/repository/user_repository.dart';
-import 'package:todo2/database/scheme/tasks/task_dao.dart';
-import 'package:todo2/database/scheme/tasks/task_database.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
-import 'package:todo2/presentation/providers/file_provider.dart';
 import 'package:todo2/presentation/providers/user_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/constants/stats_padding_constants.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
@@ -18,9 +8,7 @@ import 'package:todo2/presentation/pages/menu_pages/profile/widgets/stats_widget
 import 'package:todo2/presentation/pages/menu_pages/profile/widgets/task_list_widgets/task_list_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/widgets/profile_widget.dart';
-import 'package:todo2/services/cache_service/cache_service.dart';
-import 'package:todo2/services/network_service/network_config.dart';
-import 'package:todo2/storage/secure_storage_service.dart';
+import 'package:todo2/services/dependency_service/dependency_service.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -30,46 +18,13 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final userController = UserProvider(
-    userProfileRepository: UserProfileRepositoryImpl(
-      userProfileDataSource: UserProfileDataSourceImpl(
-        network: NetworkSource(),
-        secureStorageService: SecureStorageSource(),
-      ),
-    ),
-  );
-  final profileController = ProfileController(
-    taskRepository:  TaskRepositoryImpl(
-      inMemoryCache: InMemoryCache(),
-      taskDao: TaskDaoImpl(
-        TaskDatabase(),
-      ),
-      taskDataSource: TaskDataSourceImpl(
-        network: NetworkSource(),
-        secureStorage: SecureStorageSource(),
-      ),
-    ),
-    notesRepository: NoteRepositoryImpl(
-      noteDataSource: NotesDataSourceImpl(
-        network: NetworkSource(),
-        secureStorage: SecureStorageSource(),
-      ),
-    ),
-    fileProvider: FileProvider(),
-    secureStorageService: SecureStorageSource(),
-    userProfileRepository: UserProfileRepositoryImpl(
-      userProfileDataSource: UserProfileDataSourceImpl(
-        network: NetworkSource(),
-        secureStorageService: SecureStorageSource(),
-      ),
-    ),
-    authRepository: AuthRepositoryImpl(),
-  );
+  final userProvider = getIt<UserProvider>();
+  final profileController = getIt<ProfileController>();
 
   @override
   void initState() {
     Future.wait([
-      userController.fetchStats(),
+      userProvider.fetchStats(),
       profileController.fetchCardsData(),
     ]).then((_) => setState(() {}));
 
@@ -99,17 +54,17 @@ class _ProfilePageState extends State<ProfilePage> {
               child: ProfileWidget(
                 profileController: profileController,
                 fileProvider: profileController.fileProvider,
-                completedTasks: userController.stats.completedTasks,
-                createdTask: userController.stats.createdTasks,
+                completedTasks: userProvider.stats.completedTasks,
+                createdTask: userProvider.stats.createdTasks,
               ),
             ),
             Column(
               children: [
                 TaskListWidget(
-                  model: userController.stats,
+                  model: userProvider.stats,
                   cardLength: profileController.cardLength,
                 ),
-                StatsWidget(statsModel: userController.stats),
+                StatsWidget(statsModel: userProvider.stats),
               ],
             ),
           ],

@@ -3,11 +3,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:todo2/presentation/pages/menu_pages/menu/menu_page.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_navigator.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_status.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/status_bar_controller.dart';
+import 'package:todo2/services/dependency_service/dependency_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/network_service/refresh_token_controller.dart';
 import 'package:todo2/services/network_service/set_charles_network_support.dart';
@@ -17,6 +17,7 @@ import 'services/theme_service/theme_data_controller.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+  setupDependencies();
   await dotenv.load(fileName: '.env');
   await SystemChromeProvider.setSystemChrome();
   await setCharlesSupportNetwork();

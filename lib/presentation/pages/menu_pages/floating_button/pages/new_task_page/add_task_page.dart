@@ -12,14 +12,9 @@ import 'package:todo2/database/scheme/projects/project_database.dart';
 import 'package:todo2/database/scheme/tasks/task_dao.dart';
 import 'package:todo2/database/scheme/tasks/task_database.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
-import 'package:todo2/presentation/providers/file_provider.dart';
 import 'package:todo2/presentation/pages/auth/widgets/unfocus_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_provider/color_pallete_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/add_task_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/attachments_provider.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/member_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/panel_provider.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/task_validator.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/add_member_widget/add_member_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/description_widgets/description_field_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/for_field_widget.dart';
@@ -31,12 +26,9 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_ta
 import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/confirm_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/red_app_bar.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/white_box_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/menu/controller/menu_controller.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
-import 'package:todo2/services/cache_service/cache_service.dart';
-import 'package:todo2/services/network_service/network_config.dart';
-import 'package:todo2/storage/secure_storage_service.dart';
+import 'package:todo2/services/dependency_service/dependency_service.dart';
 
 class AddEditTaskPage extends StatefulWidget {
   const AddEditTaskPage({Key? key}) : super(key: key);
@@ -46,50 +38,7 @@ class AddEditTaskPage extends StatefulWidget {
 }
 
 class _AddEditTaskPageState extends State<AddEditTaskPage> {
-  final addEditTaskController = AddEditTaskController(
-    memberProvider: MemberProvider(),
-    projectController: ProjectController(
-      colorPalleteController: ColorPalleteProvider(),
-      projectsRepository: ProjectRepositoryImpl(
-        inMemoryCache: InMemoryCache(),
-        projectDao: ProjectDao(ProjectDatabase()),
-        projectDataSource: ProjectUserDataImpl(
-          secureStorageService: SecureStorageSource(),
-          network: NetworkSource(),
-        ),
-      ),
-    ),
-    panelProvider: PanelProvider(),
-    taskValidator: TaskValidator(),
-    attachmentsProvider: AttachmentsProvider(
-      fileProvider: FileProvider(),
-      taskRepository: TaskRepositoryImpl(
-        inMemoryCache: InMemoryCache(),
-        taskDao: TaskDaoImpl(
-          TaskDatabase(),
-        ),
-        taskDataSource: TaskDataSourceImpl(
-          network: NetworkSource(),
-          secureStorage: SecureStorageSource(),
-        ),
-      ),
-    ),
-    secureStorage: SecureStorageSource(),
-    projectRepository: ProjectRepositoryImpl(
-      inMemoryCache: InMemoryCache(),
-      projectDao: ProjectDao(ProjectDatabase()),
-      projectDataSource: ProjectUserDataImpl(
-        secureStorageService: SecureStorageSource(),
-        network: NetworkSource(),
-      ),
-    ),
-    userRepository: UserProfileRepositoryImpl(
-      userProfileDataSource: UserProfileDataSourceImpl(
-        secureStorageService: SecureStorageSource(),
-        network: NetworkSource(),
-      ),
-    ),
-  );
+  final addEditTaskController = getIt<AddEditTaskController>();
 
   @override
   void initState() {

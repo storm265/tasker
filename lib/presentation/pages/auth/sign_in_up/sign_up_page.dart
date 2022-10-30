@@ -1,9 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
-import 'package:todo2/presentation/providers/file_provider.dart';
-import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/sign_up_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/padding_contstant.dart';
 import 'package:todo2/presentation/pages/auth/widgets/unfocus_widget.dart';
@@ -16,7 +13,7 @@ import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/textfield_widge
 import 'package:todo2/presentation/pages/auth/widgets/title_widget.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
-import 'package:todo2/storage/secure_storage_service.dart';
+import 'package:todo2/services/dependency_service/dependency_service.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -30,12 +27,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
 
-  final _signUpController = SignUpController(
-    authRepository: AuthRepositoryImpl(),
-    fileController: FileProvider(),
-    formValidatorController: FormValidatorController(),
-    storageSource: SecureStorageSource(),
-  );
+  final _signUpController = getIt<SignUpController>();
 
   @override
   void dispose() {

@@ -12,6 +12,7 @@ import 'package:todo2/presentation/pages/menu_pages/menu/widgets/color_pallete_w
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_navigator.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
+import 'package:todo2/services/dependency_service/dependency_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 class CheckListPage extends StatefulWidget {
@@ -25,7 +26,7 @@ class CheckListPage extends StatefulWidget {
 
 class _CheckListPageState extends State<CheckListPage> {
   final _scrollController = ScrollController();
-  final _checkListController = CheckListController();
+  final _checkListController = getIt<CheckListController>();
 
   @override
   void dispose() {
@@ -69,7 +70,8 @@ class _CheckListPageState extends State<CheckListPage> {
                             FocusScope.of(context).unfocus(),
                       ),
                     ),
-                    subtitle: ValueListenableBuilder<List<Map<String, dynamic>>>(
+                    subtitle:
+                        ValueListenableBuilder<List<Map<String, dynamic>>>(
                       valueListenable: _checkListController.checkBoxItems,
                       builder: (_, items, __) => ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),

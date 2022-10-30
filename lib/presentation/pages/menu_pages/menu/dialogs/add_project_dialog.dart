@@ -62,7 +62,7 @@ Future<void> showAddEditProjectDialog({
             ),
             const SizedBox(height: 40),
             ColorPalleteWidget(
-              colorController: projectController.colorPalleteController,
+              colorController: projectController.colorPalleteProvider,
             )
           ],
         ),

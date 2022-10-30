@@ -2,18 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/checklists_data_source.dart';
 import 'package:todo2/database/model/checklist_model.dart';
 
-abstract class CheckListsRepository<T> {
-  Future<void> createCheckList({
+abstract class CheckListRepository {
+  Future<CheckListModel> createCheckList({
     required String title,
     required Color color,
     List<Map<String, dynamic>>? items,
-  });
-
-  Future<void> updateCheckList({
-    required String checklistId,
-    List<Map<String, dynamic>>? items,
-    required String title,
-    required Color color,
   });
 
   Future<void> deleteCheckList({required CheckListModel checkListModel});
@@ -23,9 +16,16 @@ abstract class CheckListsRepository<T> {
   Future<void> deleteCheckListItems({required List<String> items});
 
   Future<List<CheckListModel>> fetchAllCheckLists();
+
+  Future<CheckListModel> updateCheckList({
+    required String checklistId,
+    List<Map<String, dynamic>>? items,
+    required String title,
+    required Color color,
+  });
 }
 
-class CheckListRepositoryImpl extends CheckListsRepository<CheckListModel> {
+class CheckListRepositoryImpl extends CheckListRepository {
   CheckListRepositoryImpl(
       {required CheckListsDataSourceImpl checkListsDataSource})
       : _checkListsDataSource = checkListsDataSource;
@@ -85,5 +85,3 @@ class CheckListRepositoryImpl extends CheckListsRepository<CheckListModel> {
     return CheckListModel.fromJson(response);
   }
 }
-
-

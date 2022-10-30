@@ -1,11 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:todo2/database/data_source/user_data_source.dart';
-import 'package:todo2/database/repository/auth_repository.dart';
-import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
-import 'package:todo2/presentation/providers/user_provider.dart';
-import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/sign_in_controller.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/padding_contstant.dart';
 import 'package:todo2/presentation/pages/auth/widgets/unfocus_widget.dart';
@@ -17,8 +12,7 @@ import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/subtitle_widget
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/textfield_widget.dart';
 import 'package:todo2/presentation/pages/auth/widgets/title_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
-import 'package:todo2/services/network_service/network_config.dart';
-import 'package:todo2/storage/secure_storage_service.dart';
+import 'package:todo2/services/dependency_service/dependency_service.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
@@ -31,19 +25,7 @@ class _SignInPageState extends State<SignInPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  final _signInController = SignInController(
-    userController: UserProvider(
-      userProfileRepository: UserProfileRepositoryImpl(
-        userProfileDataSource: UserProfileDataSourceImpl(
-          network: NetworkSource(),
-          secureStorageService: SecureStorageSource(),
-        ),
-      ),
-    ),
-    storageSource: SecureStorageSource(),
-    authRepository: AuthRepositoryImpl(),
-    formValidatorController: FormValidatorController(),
-  );
+  final _signInController = getIt<SignInController>();
 
   @override
   void dispose() {

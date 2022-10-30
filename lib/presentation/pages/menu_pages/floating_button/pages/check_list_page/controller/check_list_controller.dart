@@ -1,35 +1,21 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:todo2/database/data_source/checklists_data_source.dart';
 import 'package:todo2/database/database_scheme/check_list_items_scheme.dart';
 import 'package:todo2/database/model/checklist_model.dart';
 import 'package:todo2/database/repository/checklist_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_provider/color_pallete_provider.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/providers/color_pallete_provider/color_pallete_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/controller/quick_controller.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/network_service/connection_checker.dart';
-import 'package:todo2/services/network_service/network_config.dart';
-import 'package:todo2/storage/secure_storage_service.dart';
 
 class CheckListController extends ChangeNotifier with ConnectionCheckerMixin {
-  static final CheckListController _instance = CheckListController._internal();
-
-  factory CheckListController() {
-    return _instance;
-  }
-
-  CheckListController._internal();
-
-  final _checkListRepository = CheckListRepositoryImpl(
-    checkListsDataSource: CheckListsDataSourceImpl(
-      network: NetworkSource(),
-      secureStorage: SecureStorageSource(),
-    ),
-  );
+  final CheckListRepository _checkListRepository;
+  CheckListController({required CheckListRepository checkListRepository})
+      : _checkListRepository = checkListRepository;
 
   final TextEditingController titleController = TextEditingController();
 
@@ -41,14 +27,7 @@ class CheckListController extends ChangeNotifier with ConnectionCheckerMixin {
 
   final formKey = GlobalKey<FormState>();
 
-  CheckListModel _pickedModel = CheckListModel(
-    id: 'id',
-    title: '',
-    color: Colors.red,
-    ownerId: '',
-    createdAt: DateTime(2022),
-    items: [],
-  );
+  CheckListModel? _pickedModel;
 
   final isEditStatus = ValueNotifier(false);
   final isClickedButton = ValueNotifier(true);
@@ -151,7 +130,7 @@ class CheckListController extends ChangeNotifier with ConnectionCheckerMixin {
   Future<void> updateCheckList() async {
     final updatedModel = await _checkListRepository.updateCheckList(
       color: colors[colorPalleteController.selectedIndex.value],
-      checklistId: _pickedModel.id,
+      checklistId: _pickedModel?.id ?? '',
       items: checkBoxItems.value,
       title: titleController.text,
     );

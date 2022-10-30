@@ -10,6 +10,7 @@ import 'package:todo2/presentation/pages/menu_pages/menu/widgets/color_pallete_w
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_navigator.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
+import 'package:todo2/services/dependency_service/dependency_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 class AddQuickNote extends StatefulWidget {
@@ -20,7 +21,7 @@ class AddQuickNote extends StatefulWidget {
 }
 
 class _AddQuickNoteState extends State<AddQuickNote> {
-  final _addNoteController = NewNoteController();
+  final _addNoteController = getIt<NewNoteController>();
   final formKey = GlobalKey<FormState>();
 
   @override

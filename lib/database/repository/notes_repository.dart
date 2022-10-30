@@ -2,26 +2,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:todo2/database/data_source/notes_data_source.dart';
 import 'package:todo2/database/model/notes_model.dart';
 
-abstract class NoteRepository<T> {
-  Future<void> createNote({
+abstract class NoteRepository {
+  Future<NotesModel> createNote({
     required Color color,
     required String description,
   });
 
   Future<void> deleteNote({required String projectId});
 
-  // Future<NotesModel> fetchOneNote({required String projectId});
-
   Future<List<NotesModel>> fetchUserNotes();
 
-  Future<void> updateNote({
+  Future<NotesModel> updateNote({
     required NotesModel noteModel,
     required String description,
     required Color color,
   });
 }
 
-class NoteRepositoryImpl implements NoteRepository<NotesModel> {
+class NoteRepositoryImpl implements NoteRepository {
   final NotesDataSourceImpl _noteDataSource;
 
   NoteRepositoryImpl({required NotesDataSourceImpl noteDataSource})
@@ -42,22 +40,6 @@ class NoteRepositoryImpl implements NoteRepository<NotesModel> {
   @override
   Future<void> deleteNote({required String projectId}) async =>
       await _noteDataSource.deleteNote(projectId: projectId);
-
-  // @override
-  // Future<NotesModel> fetchOneNote({
-  //   required String projectId
-  // })async {
-  //   try {
-  //     final response = await _noteDataSource.fetchUserNotes();
-  //     List<NotesModel> notes = [];
-  //     for (int i = 0; i < response.length; i++) {
-  //       notes.add(NotesModel.fromJson(response[i]));
-  //     }
-  //     return notes;
-  //   } catch (e) {
-  //     throw Failure(e.toString());
-  //   }
-  // }
 
   @override
   Future<List<NotesModel>> fetchUserNotes() async {

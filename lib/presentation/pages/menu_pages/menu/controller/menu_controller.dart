@@ -4,7 +4,7 @@ import 'package:todo2/database/model/project_models/project_stats_model.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_provider/color_pallete_provider.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/providers/color_pallete_provider/color_pallete_provider.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/network_service/connection_checker.dart';
@@ -18,11 +18,11 @@ enum ProjectDialogStatus {
 class ProjectController extends ChangeNotifier with ConnectionCheckerMixin {
   final ProjectRepository _projectsRepository;
   ProjectController({
-    required this.colorPalleteController,
+    required this.colorPalleteProvider,
     required ProjectRepository projectsRepository,
   }) : _projectsRepository = projectsRepository;
 
-  final ColorPalleteProvider colorPalleteController;
+  final ColorPalleteProvider colorPalleteProvider;
 
   final formKey = GlobalKey<FormState>();
 
@@ -47,14 +47,14 @@ class ProjectController extends ChangeNotifier with ConnectionCheckerMixin {
 
   void clearProjects() {
     titleController.clear();
-    colorPalleteController.changeSelectedIndex(99);
+    colorPalleteProvider.changeSelectedIndex(99);
   }
 
   void findEditColor({required ProjectModel model}) {
     pickProject(pickedModel: model);
     for (int i = 0; i < colors.length; i++) {
       if (colors[i] == model.color) {
-        colorPalleteController.changeSelectedIndex(i);
+        colorPalleteProvider.changeSelectedIndex(i);
         break;
       }
     }
@@ -67,7 +67,7 @@ class ProjectController extends ChangeNotifier with ConnectionCheckerMixin {
     setClickedValue(false);
     if (await isConnected()) {
       if (formKey.currentState!.validate() &&
-          !colorPalleteController.isNotPickerColor) {
+          !colorPalleteProvider.isNotPickerColor) {
         if (isEdit) {
           await updateProject(projectModel: selectedModel!);
           MessageService.displaySnackbar(
@@ -107,7 +107,7 @@ class ProjectController extends ChangeNotifier with ConnectionCheckerMixin {
 
   Future<void> createProject() async {
     final model = await _projectsRepository.createProject(
-      color: colors[colorPalleteController.selectedIndex.value],
+      color: colors[colorPalleteProvider.selectedIndex.value],
       title: titleController.text,
     );
     await fetchProjectStats();
@@ -120,7 +120,7 @@ class ProjectController extends ChangeNotifier with ConnectionCheckerMixin {
 
   Future<void> updateProject({required ProjectModel projectModel}) async {
     final updatedModel = await _projectsRepository.updateProject(
-      color: colors[colorPalleteController.selectedIndex.value],
+      color: colors[colorPalleteProvider.selectedIndex.value],
       projectModel: projectModel,
       title: titleController.text,
     );
