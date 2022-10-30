@@ -79,10 +79,10 @@ class AddEditTaskController extends BaseTasksController
     if (await isConnected()) {
       try {
         if (await taskValidator.tryValidate(
-          pickedProject: pickedProject.value,
-          context: context,
-          formKey: formKey,
-        )) {
+            pickedProject: pickedProject.value,
+            context: context,
+            formKey: formKey,
+            pickedDate: calendarController.value)) {
           List<String> members = [];
           if (super.memberProvider.taskMembers.value.isNotEmpty) {
             for (var element in super.memberProvider.taskMembers.value) {
@@ -95,14 +95,11 @@ class AddEditTaskController extends BaseTasksController
                 description: descriptionTextController.text,
                 assignedTo: pickedUser.value?.id,
                 projectId: pickedProject.value?.id ?? '',
-                dueDate: (calendarController.value.day == DateTime.now().day ||
-                        calendarController.value.day < DateTime.now().day)
-                    ? null
-                    : DateFormat("yyyy-MM-ddThh:mm:ss.ssssss")
-                        .format(calendarController.value),
+                dueDate: DateFormat("yyyy-MM-ddThh:mm:ss.ssssss")
+                    .format(calendarController.value),
                 members: members,
               );
-          log('created time ${model.dueDate}');
+          log('dueDate time ${model.dueDate}');
           attachmentsProvider.hasAttachments()
               ? await attachmentsProvider.uploadTaskAttachment(taskId: model.id)
               : null;
@@ -139,7 +136,8 @@ class AddEditTaskController extends BaseTasksController
         if (await taskValidator.tryValidate(
             context: context,
             formKey: formKey,
-            pickedProject: pickedProject.value!)) {
+            pickedProject: pickedProject.value,
+            pickedDate: calendarController.value)) {
           List<String> members = [];
           if (super.memberProvider.taskMembers.value.isNotEmpty) {
             for (var element in super.memberProvider.taskMembers.value) {
@@ -154,11 +152,8 @@ class AddEditTaskController extends BaseTasksController
                 assignedTo: pickedUser.value?.id,
                 projectId: pickedProject.value!.id,
                 members: members,
-                dueDate: (calendarController.value.day == DateTime.now().day ||
-                        calendarController.value.day < DateTime.now().day)
-                    ? null
-                    : DateFormat("yyyy-MM-ddThh:mm:ss.ssssss")
-                        .format(calendarController.value),
+                dueDate: DateFormat("yyyy-MM-ddThh:mm:ss.ssssss")
+                    .format(calendarController.value),
               );
           attachmentsProvider.hasAttachments()
               ? await attachmentsProvider.uploadTaskAttachment(taskId: model.id)

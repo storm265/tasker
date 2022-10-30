@@ -10,11 +10,12 @@ class TaskValidator {
     required BuildContext context,
     required GlobalKey<FormState> formKey,
     required ProjectModel? pickedProject,
+    required DateTime pickedDate,
   }) async {
     FocusScope.of(context).unfocus();
 
     if (formKey.currentState!.validate() &&
-        isPickedProject(pickedProject: pickedProject)) {
+        isPickedProject(pickedProject: pickedProject) && isValidPickedDate(pickedDate, context, true,)) {
       return true;
     } else {
       MessageService.displaySnackbar(
