@@ -25,7 +25,8 @@ class ProjectModel {
       title: json[ProjectDataScheme.title],
       color: Color(
         int.parse(
-            json[ProjectDataScheme.color].toString().replaceColorSymbol()),
+          json[ProjectDataScheme.color].toString().replaceColorSymbol(),
+        ),
       ),
       createdAt: DateTime.parse(json[ProjectDataScheme.createdAt]),
       ownerId: json[ProjectDataScheme.ownerId],
