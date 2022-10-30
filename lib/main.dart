@@ -8,7 +8,6 @@ import 'package:todo2/presentation/pages/navigation/controllers/inherited_naviga
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_status.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/status_bar_controller.dart';
-import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/network_service/refresh_token_controller.dart';
 import 'package:todo2/services/network_service/set_charles_network_support.dart';
 import 'package:todo2/services/system_service/system_chrome.dart';
@@ -64,9 +63,9 @@ class _MyAppState extends State<MyApp> {
           debugShowCheckedModeBanner: false,
           title: 'Todo2',
           theme: _themeDataController.themeData,
-         //    initialRoute: '/',
-         //     routes: routes,
-        home: MenuPage(),
+          //    initialRoute: '/',
+          //     routes: routes,
+          home: const MenuPage(),
         ),
       ),
     );

@@ -4,7 +4,6 @@ import 'package:todo2/presentation/pages/menu_pages/task/controller/task_list.da
 
 class TaskListController extends TaskList {
   TaskListController({
-    required super.taskRepository,
     required super.secureStorage,
     required super.calendarProvider,
   });
@@ -21,18 +20,8 @@ class TaskListController extends TaskList {
   }
 
   Future<void> fetchTasks() async {
-    final list1 = await fetchUserTasks();
-    final list2 = await fetchAssignedToTasks();
-    final list3 = await fetchParticipateInTasks();
-    for (var i = 0; i < list1.length; i++) {
-      tasks.value.add(list1[i]);
-    }
-    for (var i = 0; i < list2.length; i++) {
-      tasks.value.add(list2[i]);
-    }
-    for (var i = 0; i < list3.length; i++) {
-      tasks.value.add(list3[i]);
-    }
+    final allTasks = await taskRepository.fetchAllTasks();
+    tasks.value = allTasks;
 
     tasks.notifyListeners();
   }

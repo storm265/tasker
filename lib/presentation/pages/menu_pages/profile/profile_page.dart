@@ -1,11 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/notes_data_source.dart';
+import 'package:todo2/database/data_source/task_data_source.dart';
 import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/notes_repository.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
+import 'package:todo2/database/scheme/tasks/task_dao.dart';
+import 'package:todo2/database/scheme/tasks/task_database.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/providers/file_provider.dart';
 import 'package:todo2/presentation/providers/user_provider.dart';
@@ -15,6 +18,7 @@ import 'package:todo2/presentation/pages/menu_pages/profile/widgets/stats_widget
 import 'package:todo2/presentation/pages/menu_pages/profile/widgets/task_list_widgets/task_list_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/widgets/profile_widget.dart';
+import 'package:todo2/services/cache_service/cache_service.dart';
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
@@ -35,7 +39,16 @@ class _ProfilePageState extends State<ProfilePage> {
     ),
   );
   final profileController = ProfileController(
-    taskRepository: TaskRepositoryImpl(),
+    taskRepository:  TaskRepositoryImpl(
+      inMemoryCache: InMemoryCache(),
+      taskDao: TaskDaoImpl(
+        TaskDatabase(),
+      ),
+      taskDataSource: TaskDataSourceImpl(
+        network: NetworkSource(),
+        secureStorage: SecureStorageSource(),
+      ),
+    ),
     notesRepository: NoteRepositoryImpl(
       noteDataSource: NotesDataSourceImpl(
         network: NetworkSource(),

@@ -1,11 +1,13 @@
 import 'dart:io';
+import 'package:drift/drift.dart';
 import 'package:todo2/database/data_source/task_data_source.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
 import 'package:todo2/database/model/task_models/comment_model.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
+import 'package:todo2/database/scheme/tasks/task_dao.dart';
+import 'package:todo2/database/scheme/tasks/task_database.dart';
+import 'package:todo2/services/cache_service/cache_service.dart';
 import 'package:todo2/services/error_service/error_service.dart';
-import 'package:todo2/services/network_service/network_config.dart';
-import 'package:todo2/storage/secure_storage_service.dart';
 
 abstract class TaskRepository<T> {
   Future<TaskModel> createTask({
@@ -63,13 +65,22 @@ abstract class TaskRepository<T> {
     required String taskId,
     required bool isFile,
   });
+
+  Future<List<TaskModel>> fetchAllTasks();
 }
 
 class TaskRepositoryImpl implements TaskRepository {
-  final _taskDataSource = TaskDataSourceImpl(
-    network: NetworkSource(),
-    secureStorage: SecureStorageSource(),
-  );
+  final InMemoryCache _inMemoryCache;
+  final TaskDao _taskDao;
+  final TaskDataSource _taskDataSource;
+
+  TaskRepositoryImpl({
+    required TaskDao taskDao,
+    required InMemoryCache inMemoryCache,
+    required TaskDataSource taskDataSource,
+  })  : _taskDataSource = taskDataSource,
+        _taskDao = taskDao,
+        _inMemoryCache = inMemoryCache;
 
   @override
   Future<TaskModel> createTask({
@@ -99,11 +110,7 @@ class TaskRepositoryImpl implements TaskRepository {
 
   @override
   Future<void> deleteTask({required String taskId}) async {
-    try {
-      await _taskDataSource.deleteTask(projectId: taskId);
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    await _taskDataSource.deleteTask(projectId: taskId);
   }
 
   @override
@@ -133,6 +140,44 @@ class TaskRepositoryImpl implements TaskRepository {
   Future<TaskModel> fetchOneTask({required String projectId}) async {
     final response = await _taskDataSource.fetchOneTask(projectId: projectId);
     return TaskModel.fromJson(response);
+  }
+
+  @override
+  Future<List<TaskModel>> fetchAllTasks() async {
+    if (_inMemoryCache.shouldFetchOnlineData(
+        date: DateTime.now(), key: CacheKeys.tasks)) {
+      final userTasks = await fetchUserTasks();
+      final assignedToTasks = await fetchAssignedToTasks();
+      final participateInTasks = await fetchParticipateInTasks();
+      final tasks = [...assignedToTasks, ...userTasks, ...participateInTasks];
+
+      await _taskDao.deleteAllTasks();
+      for (int i = 0; i < tasks.length; i++) {
+        await _taskDao.insertTask(
+          TaskTableCompanion(
+            assignedTo: Value(userTasks[i].assignedTo),
+            createdAt: Value(userTasks[i].createdAt.toIso8601String()),
+            description: Value(userTasks[i].description),
+            dueDate: Value(userTasks[i].dueDate.toIso8601String()),
+            id: Value(userTasks[i].id),
+            isCompleted: Value(userTasks[i].isCompleted),
+            ownerId: Value(userTasks[i].ownerId),
+            projectId: Value(userTasks[i].projectId),
+            title: Value(userTasks[i].title),
+          ),
+        );
+      }
+
+      return tasks;
+    } else {
+      final list = await _taskDao.getTasks();
+      List<TaskModel> tasks = [];
+      for (int i = 0; i < list.length; i++) {
+        tasks.add(TaskModel.fromJson(list[i].toJson()));
+      }
+
+      return tasks;
+    }
   }
 
   @override
@@ -166,13 +211,12 @@ class TaskRepositoryImpl implements TaskRepository {
 
   @override
   Future<List<TaskModel>> fetchParticipateInTasks() async {
-
-      final response = await _taskDataSource.fetchParticipateInTasks();
-      if (response.isEmpty) {
-        return [];
-      } else {
-        return response.map((json) => TaskModel.fromJson(json)).toList();
-      }
+    final response = await _taskDataSource.fetchParticipateInTasks();
+    if (response.isEmpty) {
+      return [];
+    } else {
+      return response.map((json) => TaskModel.fromJson(json)).toList();
+    }
   }
 
   @override
@@ -207,7 +251,7 @@ class TaskRepositoryImpl implements TaskRepository {
     final response = await _taskDataSource.fetchTaskComments(
       taskId: taskId,
     );
-        List<CommentModel> commentsList = [];
+    List<CommentModel> commentsList = [];
     for (int i = 0; i < response.length; i++) {
       commentsList.add(CommentModel.fromJson(response[i]));
     }

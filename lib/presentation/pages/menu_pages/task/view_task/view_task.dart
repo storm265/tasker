@@ -2,6 +2,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/projects_data_source.dart';
+import 'package:todo2/database/data_source/task_data_source.dart';
 import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
@@ -9,6 +10,8 @@ import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/database/scheme/projects/project_dao.dart';
 import 'package:todo2/database/scheme/projects/project_database.dart';
+import 'package:todo2/database/scheme/tasks/task_dao.dart';
+import 'package:todo2/database/scheme/tasks/task_database.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/member_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/description_widgets/task_attachaments_widget.dart';
@@ -47,7 +50,16 @@ class ViewTask extends StatefulWidget with AccessTokenMixin {
 class _ViewTaskState extends State<ViewTask> {
   final viewTaskController = ViewTaskController(
     memberProvider: MemberProvider(),
-    taskRepository: TaskRepositoryImpl(),
+    taskRepository: TaskRepositoryImpl(
+      inMemoryCache: InMemoryCache(),
+      taskDao: TaskDaoImpl(
+        TaskDatabase(),
+      ),
+      taskDataSource: TaskDataSourceImpl(
+        network: NetworkSource(),
+        secureStorage: SecureStorageSource(),
+      ),
+    ),
     projectRepository: ProjectRepositoryImpl(
       inMemoryCache: InMemoryCache(),
       projectDao: ProjectDao(ProjectDatabase()),
@@ -64,7 +76,16 @@ class _ViewTaskState extends State<ViewTask> {
     ),
     secureStorage: SecureStorageSource(),
     attachmentsProvider: AttachmentsProvider(
-      taskRepository: TaskRepositoryImpl(),
+      taskRepository: TaskRepositoryImpl(
+        inMemoryCache: InMemoryCache(),
+        taskDao: TaskDaoImpl(
+          TaskDatabase(),
+        ),
+        taskDataSource: TaskDataSourceImpl(
+          network: NetworkSource(),
+          secureStorage: SecureStorageSource(),
+        ),
+      ),
       fileProvider: FileProvider(),
     ),
   );

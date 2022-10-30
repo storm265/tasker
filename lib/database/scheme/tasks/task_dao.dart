@@ -4,36 +4,61 @@ import 'package:todo2/database/scheme/tasks/task_table.dart';
 
 part 'task_dao.g.dart';
 
-@DriftAccessor(tables: [TaskTable])
-class TaskDao extends DatabaseAccessor<TaskDatabase> with _$TaskDaoMixin {
-  TaskDao(TaskDatabase taskDatabase) : super(taskDatabase);
+abstract class TaskDao {
+  Future<List<Task>> getTasks();
 
-  Future<List<Task>> getProjects() async {
+  Stream<List<Task>> getTasksStream();
+
+  Future<Task> getTask(String id);
+
+  Future<bool> updateTask(TaskTableCompanion entity);
+
+  Future<int> insertTask(TaskTableCompanion entity);
+
+  Future<int> deleteTask(String id);
+
+  Future<int> deleteAllTasks();
+}
+
+@DriftAccessor(tables: [TaskTable])
+class TaskDaoImpl extends DatabaseAccessor<TaskDatabase>
+    with _$TaskDaoMixin
+    implements TaskDao {
+  TaskDaoImpl(TaskDatabase taskDatabase) : super(taskDatabase);
+
+  @override
+  Future<List<Task>> getTasks() async {
     return await select(taskTable).get();
   }
 
-  Stream<List<Task>> getProjectsStream() {
+  @override
+  Stream<List<Task>> getTasksStream() {
     return select(taskTable).watch();
   }
 
-  Future<Task> getProject(String id) async {
+  @override
+  Future<Task> getTask(String id) async {
     return await (select(taskTable)..where((tbl) => tbl.id.equals(id)))
         .getSingle();
   }
 
-  Future<bool> updateProject(TaskTableCompanion entity) async {
+  @override
+  Future<bool> updateTask(TaskTableCompanion entity) async {
     return await update(taskTable).replace(entity);
   }
 
-  Future<int> insertProject(TaskTableCompanion entity) async {
+  @override
+  Future<int> insertTask(TaskTableCompanion entity) async {
     return await into(taskTable).insert(entity);
   }
 
-  Future<int> deleteProject(String id) async {
+  @override
+  Future<int> deleteTask(String id) async {
     return await (delete(taskTable)..where((tbl) => tbl.id.equals(id))).go();
   }
 
-  Future<int> deleteAllProjects() async {
+  @override
+  Future<int> deleteAllTasks() async {
     return await (delete(taskTable)).go();
   }
 }

@@ -4,7 +4,6 @@ import 'package:todo2/presentation/pages/menu_pages/task/controller/task_list.da
 
 class DetailedController extends TaskList {
   DetailedController({
-    required super.taskRepository,
     required super.secureStorage,
     required super.calendarProvider,
   });

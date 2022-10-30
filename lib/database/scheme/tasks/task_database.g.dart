@@ -12,7 +12,7 @@ class Task extends DataClass implements Insertable<Task> {
   final String title;
   final String dueDate;
   final String description;
-  final String assignedTo;
+  final String? assignedTo;
   final bool isCompleted;
   final String projectId;
   final String ownerId;
@@ -22,7 +22,7 @@ class Task extends DataClass implements Insertable<Task> {
       required this.title,
       required this.dueDate,
       required this.description,
-      required this.assignedTo,
+      this.assignedTo,
       required this.isCompleted,
       required this.projectId,
       required this.ownerId,
@@ -34,7 +34,9 @@ class Task extends DataClass implements Insertable<Task> {
     map['title'] = Variable<String>(title);
     map['due_date'] = Variable<String>(dueDate);
     map['description'] = Variable<String>(description);
-    map['assigned_to'] = Variable<String>(assignedTo);
+    if (!nullToAbsent || assignedTo != null) {
+      map['assigned_to'] = Variable<String>(assignedTo);
+    }
     map['is_completed'] = Variable<bool>(isCompleted);
     map['project_id'] = Variable<String>(projectId);
     map['owner_id'] = Variable<String>(ownerId);
@@ -48,7 +50,9 @@ class Task extends DataClass implements Insertable<Task> {
       title: Value(title),
       dueDate: Value(dueDate),
       description: Value(description),
-      assignedTo: Value(assignedTo),
+      assignedTo: assignedTo == null && nullToAbsent
+          ? const Value.absent()
+          : Value(assignedTo),
       isCompleted: Value(isCompleted),
       projectId: Value(projectId),
       ownerId: Value(ownerId),
@@ -64,8 +68,8 @@ class Task extends DataClass implements Insertable<Task> {
       title: serializer.fromJson<String>(json['title']),
       dueDate: serializer.fromJson<String>(json['due_date']),
       description: serializer.fromJson<String>(json['description']),
-      assignedTo: serializer.fromJson<String>(json['assignedTo']),
-      isCompleted: serializer.fromJson<bool>(json['isCompleted']),
+      assignedTo: serializer.fromJson<String?>(json['assigned_to']),
+      isCompleted: serializer.fromJson<bool>(json['is_completed']),
       projectId: serializer.fromJson<String>(json['project_id']),
       ownerId: serializer.fromJson<String>(json['owner_id']),
       createdAt: serializer.fromJson<String>(json['created_at']),
@@ -79,8 +83,8 @@ class Task extends DataClass implements Insertable<Task> {
       'title': serializer.toJson<String>(title),
       'due_date': serializer.toJson<String>(dueDate),
       'description': serializer.toJson<String>(description),
-      'assignedTo': serializer.toJson<String>(assignedTo),
-      'isCompleted': serializer.toJson<bool>(isCompleted),
+      'assigned_to': serializer.toJson<String?>(assignedTo),
+      'is_completed': serializer.toJson<bool>(isCompleted),
       'project_id': serializer.toJson<String>(projectId),
       'owner_id': serializer.toJson<String>(ownerId),
       'created_at': serializer.toJson<String>(createdAt),
@@ -92,7 +96,7 @@ class Task extends DataClass implements Insertable<Task> {
           String? title,
           String? dueDate,
           String? description,
-          String? assignedTo,
+          Value<String?> assignedTo = const Value.absent(),
           bool? isCompleted,
           String? projectId,
           String? ownerId,
@@ -102,7 +106,7 @@ class Task extends DataClass implements Insertable<Task> {
         title: title ?? this.title,
         dueDate: dueDate ?? this.dueDate,
         description: description ?? this.description,
-        assignedTo: assignedTo ?? this.assignedTo,
+        assignedTo: assignedTo.present ? assignedTo.value : this.assignedTo,
         isCompleted: isCompleted ?? this.isCompleted,
         projectId: projectId ?? this.projectId,
         ownerId: ownerId ?? this.ownerId,
@@ -147,7 +151,7 @@ class TaskTableCompanion extends UpdateCompanion<Task> {
   final Value<String> title;
   final Value<String> dueDate;
   final Value<String> description;
-  final Value<String> assignedTo;
+  final Value<String?> assignedTo;
   final Value<bool> isCompleted;
   final Value<String> projectId;
   final Value<String> ownerId;
@@ -168,7 +172,7 @@ class TaskTableCompanion extends UpdateCompanion<Task> {
     required String title,
     required String dueDate,
     required String description,
-    required String assignedTo,
+    this.assignedTo = const Value.absent(),
     required bool isCompleted,
     required String projectId,
     required String ownerId,
@@ -177,7 +181,6 @@ class TaskTableCompanion extends UpdateCompanion<Task> {
         title = Value(title),
         dueDate = Value(dueDate),
         description = Value(description),
-        assignedTo = Value(assignedTo),
         isCompleted = Value(isCompleted),
         projectId = Value(projectId),
         ownerId = Value(ownerId),
@@ -211,7 +214,7 @@ class TaskTableCompanion extends UpdateCompanion<Task> {
       Value<String>? title,
       Value<String>? dueDate,
       Value<String>? description,
-      Value<String>? assignedTo,
+      Value<String?>? assignedTo,
       Value<bool>? isCompleted,
       Value<String>? projectId,
       Value<String>? ownerId,
@@ -308,8 +311,8 @@ class $TaskTableTable extends TaskTable with TableInfo<$TaskTableTable, Task> {
   final VerificationMeta _assignedToMeta = const VerificationMeta('assignedTo');
   @override
   late final GeneratedColumn<String> assignedTo = GeneratedColumn<String>(
-      'assigned_to', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
+      'assigned_to', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   final VerificationMeta _isCompletedMeta =
       const VerificationMeta('isCompleted');
   @override
@@ -384,8 +387,6 @@ class $TaskTableTable extends TaskTable with TableInfo<$TaskTableTable, Task> {
           _assignedToMeta,
           assignedTo.isAcceptableOrUnknown(
               data['assigned_to']!, _assignedToMeta));
-    } else if (isInserting) {
-      context.missing(_assignedToMeta);
     }
     if (data.containsKey('is_completed')) {
       context.handle(
@@ -431,7 +432,7 @@ class $TaskTableTable extends TaskTable with TableInfo<$TaskTableTable, Task> {
       description: attachedDatabase.options.types
           .read(DriftSqlType.string, data['${effectivePrefix}description'])!,
       assignedTo: attachedDatabase.options.types
-          .read(DriftSqlType.string, data['${effectivePrefix}assigned_to'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}assigned_to']),
       isCompleted: attachedDatabase.options.types
           .read(DriftSqlType.bool, data['${effectivePrefix}is_completed'])!,
       projectId: attachedDatabase.options.types
@@ -452,7 +453,7 @@ class $TaskTableTable extends TaskTable with TableInfo<$TaskTableTable, Task> {
 abstract class _$TaskDatabase extends GeneratedDatabase {
   _$TaskDatabase(QueryExecutor e) : super(e);
   late final $TaskTableTable taskTable = $TaskTableTable(this);
-  late final TaskDao taskDao = TaskDao(this as TaskDatabase);
+  late final TaskDaoImpl taskDao = TaskDaoImpl(this as TaskDatabase);
   @override
   Iterable<TableInfo<Table, dynamic>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();

@@ -53,10 +53,7 @@ Future<void> showDetailedOptions({
                     case 0:
                       if (items.length == 1) {
                         await taskListController
-                            .deleteTask(
-                              taskId: selectedTask.id,
-                              taskRepository: taskListController.taskRepository,
-                            )
+                            .deleteTask(taskId: selectedTask.id)
                             .then(
                               (_) => MessageService.displaySnackbar(
                                 context: context,
@@ -88,10 +85,7 @@ Future<void> showDetailedOptions({
                       break;
                     case 2:
                       await taskListController
-                          .deleteTask(
-                            taskId: selectedTask.id,
-                            taskRepository: taskListController.taskRepository,
-                          )
+                          .deleteTask(taskId: selectedTask.id)
                           .then(
                             (_) => MessageService.displaySnackbar(
                               context: context,

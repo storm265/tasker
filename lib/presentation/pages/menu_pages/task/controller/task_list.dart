@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
-import 'package:todo2/database/repository/task_repository.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/controller/delete_task_mixin.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/task_sort_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/tasks_mixin.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/calendar_lib/controller.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
-class TaskList with DeleteTaskMixin, ChangeNotifier {
-  final TaskRepositoryImpl taskRepository;
+class TaskList with TasksMixin, ChangeNotifier {
+
   final SecureStorageSource _secureStorage;
   final CalendarProvider calendarProvider;
   TaskList({
-    required this.taskRepository,
     required SecureStorageSource secureStorage,
     required this.calendarProvider,
   }) : _secureStorage = secureStorage;

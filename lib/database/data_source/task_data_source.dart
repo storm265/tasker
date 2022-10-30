@@ -20,10 +20,10 @@ abstract class TaskDataSource {
 
   Future<void> deleteTask({required String projectId});
 
-  Future<void> updateTask({
+  Future<Map<String, dynamic>> updateTask({
     required String title,
     required String description,
-    required String assignedTo,
+    required String? assignedTo,
     required String projectId,
     required String taskId,
     required String? dueDate,

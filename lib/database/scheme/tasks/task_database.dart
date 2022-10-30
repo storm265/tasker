@@ -8,7 +8,7 @@ import 'package:todo2/database/scheme/tasks/task_table.dart';
 
 part 'task_database.g.dart';
 
-@DriftDatabase(tables: [TaskTable], daos: [TaskDao])
+@DriftDatabase(tables: [TaskTable], daos: [TaskDaoImpl])
 class TaskDatabase extends _$TaskDatabase {
   TaskDatabase() : super(_database());
 

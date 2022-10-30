@@ -9,7 +9,6 @@ import 'package:todo2/database/scheme/projects/project_database.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_provider/color_pallete_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/controller/menu_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/menu/widgets/add_project_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/project_item_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/project_shimmer_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';

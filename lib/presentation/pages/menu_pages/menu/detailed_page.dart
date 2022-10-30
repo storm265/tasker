@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/project_item_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/task_list.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/task_sort_controller.dart';
@@ -30,7 +29,6 @@ class _DetailedPageState extends State<DetailedPage>
   final taskController = TaskList(
     calendarProvider: CalendarProvider(),
     secureStorage: SecureStorageSource(),
-    taskRepository: TaskRepositoryImpl(),
   );
 
   final taskSortControllerMonth = TaskSortController();

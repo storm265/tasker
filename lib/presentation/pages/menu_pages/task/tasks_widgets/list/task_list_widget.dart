@@ -126,9 +126,6 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                                               onClick: () async {
                                                 await widget.taskController
                                                     .deleteTask(
-                                                  taskRepository: widget
-                                                      .taskController
-                                                      .taskRepository,
                                                   taskId: element.id,
                                                   callback: () => widget
                                                       .taskController
