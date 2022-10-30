@@ -14,10 +14,11 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_ta
 import 'package:todo2/presentation/pages/menu_pages/task/controller/access_token_mixin.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/tasks_mixin.dart';
 import 'package:todo2/services/message_service/message_service.dart';
+import 'package:todo2/services/network_service/connection_checker.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
 class ViewTaskController extends ChangeNotifier
-    with AccessTokenMixin, TasksMixin {
+    with AccessTokenMixin, TasksMixin, ConnectionCheckerMixin {
   final UserProfileRepository _userRepository;
   final AttachmentsProvider attachmentsProvider;
   final SecureStorageSource _secureStorage;
@@ -80,35 +81,48 @@ class ViewTaskController extends ChangeNotifier
     TaskModel model,
     BuildContext context,
   ) async {
-    try {
-      changeSubmitButton(false);
-      List<String> members = [];
-      if (memberProvider.taskMembers.value.isNotEmpty) {
-        for (var i = 0; i < model.members!.length; i++) {
-          members.add(memberProvider.taskMembers.value.elementAt(i).id);
+    changeSubmitButton(false);
+    if (await isConnected()) {
+      try {
+        List<String> members = [];
+        if (memberProvider.taskMembers.value.isNotEmpty) {
+          for (var i = 0; i < model.members!.length; i++) {
+            members.add(memberProvider.taskMembers.value.elementAt(i).id);
+          }
         }
-      }
 
-      final updatedModel = await _taskRepository
-          .updateTask(
-        taskId: model.id,
-        title: model.title,
-        isCompleted: true,
-        description: model.description,
-        assignedTo: model.assignedTo,
-        projectId: model.projectId,
-        members: members,
-        dueDate: DateFormat("yyyy-MM-ddThh:mm:ss.ssssss").format(model.dueDate),
-      )
-          .then((_) {
-        MessageService.displaySnackbar(
-          context: context,
-          message: LocaleKeys.updated.tr(),
-        );
-      });
-      return updatedModel;
-    } finally {
-      changeSubmitButton(true);
+        final updatedModel = await _taskRepository
+            .updateTask(
+          taskId: model.id,
+          title: model.title,
+          isCompleted: true,
+          description: model.description,
+          assignedTo: model.assignedTo,
+          projectId: model.projectId,
+          members: members,
+          dueDate:
+              DateFormat("yyyy-MM-ddThh:mm:ss.ssssss").format(model.dueDate),
+        )
+            .then((_) {
+          MessageService.displaySnackbar(
+            context: context,
+            message: LocaleKeys.updated.tr(),
+          );
+        });
+        return updatedModel;
+      } 
+    
+      finally {
+        changeSubmitButton(true);
+      }
+    } else {
+      MessageService.displaySnackbar(
+        message: LocaleKeys.no_internet.tr(),
+        context: context,
+      );
+       changeSubmitButton(true);
+      throw LocaleKeys.no_internet.tr();
+     
     }
   }
 

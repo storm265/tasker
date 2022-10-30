@@ -28,6 +28,7 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_p
 import 'package:todo2/presentation/pages/menu_pages/floating_button/providers/color_pallete_provider/color_pallete_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/controller/menu_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/view_task/controller/view_task_controller.dart';
 import 'package:todo2/presentation/providers/file_provider.dart';
 import 'package:todo2/presentation/providers/user_provider.dart';
 import 'package:todo2/services/cache_service/cache_service.dart';
@@ -129,6 +130,46 @@ void setupDependencies() {
           secureStorageService: SecureStorageSource(),
           network: NetworkSource(),
         ),
+      ),
+    ),
+  );
+
+  getIt.registerFactory<ViewTaskController>(
+    () => ViewTaskController(
+      memberProvider: MemberProvider(),
+      taskRepository: TaskRepositoryImpl(
+        inMemoryCache: InMemoryCache(),
+        taskDao: taskDao,
+        taskDataSource: TaskDataSourceImpl(
+          network: NetworkSource(),
+          secureStorage: SecureStorageSource(),
+        ),
+      ),
+      projectRepository: ProjectRepositoryImpl(
+        inMemoryCache: InMemoryCache(),
+        projectDao: projectDao,
+        projectDataSource: ProjectUserDataImpl(
+          secureStorageService: SecureStorageSource(),
+          network: NetworkSource(),
+        ),
+      ),
+      userRepository: UserProfileRepositoryImpl(
+        userProfileDataSource: UserProfileDataSourceImpl(
+          secureStorageService: SecureStorageSource(),
+          network: NetworkSource(),
+        ),
+      ),
+      secureStorage: SecureStorageSource(),
+      attachmentsProvider: AttachmentsProvider(
+        taskRepository: TaskRepositoryImpl(
+          inMemoryCache: InMemoryCache(),
+          taskDao: taskDao,
+          taskDataSource: TaskDataSourceImpl(
+            network: NetworkSource(),
+            secureStorage: SecureStorageSource(),
+          ),
+        ),
+        fileProvider: FileProvider(),
       ),
     ),
   );

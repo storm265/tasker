@@ -1,24 +1,13 @@
 // ignore_for_file: use_build_context_synchronously
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:todo2/database/data_source/projects_data_source.dart';
-import 'package:todo2/database/data_source/task_data_source.dart';
-import 'package:todo2/database/data_source/user_data_source.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
-import 'package:todo2/database/repository/projects_repository.dart';
-import 'package:todo2/database/repository/task_repository.dart';
-import 'package:todo2/database/repository/user_repository.dart';
-import 'package:todo2/database/scheme/projects/project_dao.dart';
-import 'package:todo2/database/scheme/projects/project_database.dart';
-import 'package:todo2/database/scheme/tasks/task_dao.dart';
-import 'package:todo2/database/scheme/tasks/task_database.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/member_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/description_widgets/task_attachaments_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/task_list.dart';
-import 'package:todo2/presentation/providers/file_provider.dart';
 import 'package:todo2/presentation/pages/auth/widgets/unfocus_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/attachments_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/description_widgets/description_box_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/confirm_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/access_token_mixin.dart';
@@ -31,9 +20,7 @@ import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/icon_
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/items_widget.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
-import 'package:todo2/services/cache_service/cache_service.dart';
-import 'package:todo2/services/network_service/network_config.dart';
-import 'package:todo2/storage/secure_storage_service.dart';
+import 'package:todo2/services/dependency_service/dependency_service.dart';
 
 class ViewTask extends StatefulWidget with AccessTokenMixin {
   final TaskList taskController;
@@ -48,47 +35,7 @@ class ViewTask extends StatefulWidget with AccessTokenMixin {
 }
 
 class _ViewTaskState extends State<ViewTask> {
-  final viewTaskController = ViewTaskController(
-    memberProvider: MemberProvider(),
-    taskRepository: TaskRepositoryImpl(
-      inMemoryCache: InMemoryCache(),
-      taskDao: TaskDaoImpl(
-        TaskDatabase(),
-      ),
-      taskDataSource: TaskDataSourceImpl(
-        network: NetworkSource(),
-        secureStorage: SecureStorageSource(),
-      ),
-    ),
-    projectRepository: ProjectRepositoryImpl(
-      inMemoryCache: InMemoryCache(),
-      projectDao: ProjectDaoImpl(ProjectDatabase()),
-      projectDataSource: ProjectUserDataImpl(
-        secureStorageService: SecureStorageSource(),
-        network: NetworkSource(),
-      ),
-    ),
-    userRepository: UserProfileRepositoryImpl(
-      userProfileDataSource: UserProfileDataSourceImpl(
-        secureStorageService: SecureStorageSource(),
-        network: NetworkSource(),
-      ),
-    ),
-    secureStorage: SecureStorageSource(),
-    attachmentsProvider: AttachmentsProvider(
-      taskRepository: TaskRepositoryImpl(
-        inMemoryCache: InMemoryCache(),
-        taskDao: TaskDaoImpl(
-          TaskDatabase(),
-        ),
-        taskDataSource: TaskDataSourceImpl(
-          network: NetworkSource(),
-          secureStorage: SecureStorageSource(),
-        ),
-      ),
-      fileProvider: FileProvider(),
-    ),
-  );
+  final viewTaskController = getIt<ViewTaskController>();
 
   @override
   void initState() {

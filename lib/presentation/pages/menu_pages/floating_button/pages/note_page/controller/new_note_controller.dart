@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:todo2/database/data_source/notes_data_source.dart';
 import 'package:todo2/database/model/notes_model.dart';
 import 'package:todo2/database/repository/notes_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
@@ -12,8 +11,6 @@ import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/network_service/connection_checker.dart';
-import 'package:todo2/services/network_service/network_config.dart';
-import 'package:todo2/storage/secure_storage_service.dart';
 
 class NewNoteController extends ChangeNotifier with ConnectionCheckerMixin {
   final NoteRepository _addNoteRepository;
