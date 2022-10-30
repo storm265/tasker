@@ -8,7 +8,7 @@ import 'package:todo2/database/scheme/notes/note_table.dart';
 
 part 'note_database.g.dart';
 
-@DriftDatabase(tables: [NoteTable], daos: [NoteDao])
+@DriftDatabase(tables: [NoteTable], daos: [NoteDaoImpl])
 class NoteDatabase extends _$NoteDatabase {
   NoteDatabase() : super(_database());
 

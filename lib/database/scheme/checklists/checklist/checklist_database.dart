@@ -8,7 +8,7 @@ import 'package:todo2/database/scheme/checklists/checklist/checklist_table.dart'
 
 part 'checklist_database.g.dart';
 
-@DriftDatabase(tables: [CheckListTable], daos: [CheckListDao])
+@DriftDatabase(tables: [CheckListTable], daos: [CheckListDaoImpl])
 class CheckListDatabase extends _$CheckListDatabase {
   CheckListDatabase() : super(_database());
 

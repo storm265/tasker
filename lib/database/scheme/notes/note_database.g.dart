@@ -336,7 +336,7 @@ class $NoteTableTable extends NoteTable with TableInfo<$NoteTableTable, Note> {
 abstract class _$NoteDatabase extends GeneratedDatabase {
   _$NoteDatabase(QueryExecutor e) : super(e);
   late final $NoteTableTable noteTable = $NoteTableTable(this);
-  late final NoteDao noteDao = NoteDao(this as NoteDatabase);
+  late final NoteDaoImpl noteDao = NoteDaoImpl(this as NoteDatabase);
   @override
   Iterable<TableInfo<Table, dynamic>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();

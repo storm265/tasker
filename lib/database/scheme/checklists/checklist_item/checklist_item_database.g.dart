@@ -307,8 +307,8 @@ abstract class _$CheckListItemDatabase extends GeneratedDatabase {
   _$CheckListItemDatabase(QueryExecutor e) : super(e);
   late final $CheckListItemTableTable checkListItemTable =
       $CheckListItemTableTable(this);
-  late final CheckListItemDao checkListItemDao =
-      CheckListItemDao(this as CheckListItemDatabase);
+  late final CheckListItemDaoImpl checkListItemDao =
+      CheckListItemDaoImpl(this as CheckListItemDatabase);
   @override
   Iterable<TableInfo<Table, dynamic>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
