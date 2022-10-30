@@ -16,11 +16,13 @@ abstract class CheckListDao {
   Future<int> insertChecklist(CheckListTableCompanion entity);
 
   Future<int> deleteChecklist(String id);
+
+  Future<int> deleteAllChecklists();
 }
 
 @DriftAccessor(tables: [CheckListTable])
 class CheckListDaoImpl extends DatabaseAccessor<CheckListDatabase>
-    with _$CheckListDaoMixin
+    with _$CheckListDaoImplMixin
     implements CheckListDao {
   CheckListDaoImpl(CheckListDatabase checklistDatabase)
       : super(checklistDatabase);
@@ -55,5 +57,10 @@ class CheckListDaoImpl extends DatabaseAccessor<CheckListDatabase>
   Future<int> deleteChecklist(String id) async {
     return await (delete(checkListTable)..where((tbl) => tbl.id.equals(id)))
         .go();
+  }
+
+  @override
+  Future<int> deleteAllChecklists() async {
+    return await (delete(checkListTable)).go();
   }
 }

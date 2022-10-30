@@ -292,7 +292,7 @@ class $ProjectTableTable extends ProjectTable
 abstract class _$ProjectDatabase extends GeneratedDatabase {
   _$ProjectDatabase(QueryExecutor e) : super(e);
   late final $ProjectTableTable projectTable = $ProjectTableTable(this);
-  late final ProjectDaoImpl projectDao =
+  late final ProjectDaoImpl projectDaoImpl =
       ProjectDaoImpl(this as ProjectDatabase);
   @override
   Iterable<TableInfo<Table, dynamic>> get allTables =>

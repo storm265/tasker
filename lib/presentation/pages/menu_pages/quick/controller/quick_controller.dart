@@ -17,8 +17,8 @@ class QuickController extends ChangeNotifier {
   List<CheckListModel> checkList = [];
 
   Future<List<dynamic>> fetchNotes() async {
-    notes = await noteController.fetchUserNotes();
     checkList = await checkListController.fetchAllCheckLists();
+    notes = await noteController.fetchUserNotes();
 
     linkedModels.value = [...notes, ...checkList]..shuffle();
     linkedModels.value.sort((a, b) => b.createdAt.compareTo(a.createdAt));

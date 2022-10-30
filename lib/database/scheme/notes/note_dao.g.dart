@@ -6,6 +6,6 @@ part of 'note_dao.dart';
 // DaoGenerator
 // **************************************************************************
 
-mixin _$NoteDaoMixin on DatabaseAccessor<NoteDatabase> {
+mixin _$NoteDaoImplMixin on DatabaseAccessor<NoteDatabase> {
   $NoteTableTable get noteTable => attachedDatabase.noteTable;
 }

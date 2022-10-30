@@ -6,6 +6,6 @@ part of 'project_dao.dart';
 // DaoGenerator
 // **************************************************************************
 
-mixin _$ProjectDaoMixin on DatabaseAccessor<ProjectDatabase> {
+mixin _$ProjectDaoImplMixin on DatabaseAccessor<ProjectDatabase> {
   $ProjectTableTable get projectTable => attachedDatabase.projectTable;
 }

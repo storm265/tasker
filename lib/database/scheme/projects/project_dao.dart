@@ -16,12 +16,13 @@ abstract class ProjectDao {
   Future<int> insertProject(ProjectTableCompanion entity);
 
   Future<int> deleteProject(String id);
+  
   Future<int> deleteAllProjects();
 }
 
 @DriftAccessor(tables: [ProjectTable])
 class ProjectDaoImpl extends DatabaseAccessor<ProjectDatabase>
-    with _$ProjectDaoMixin
+    with _$ProjectDaoImplMixin
     implements ProjectDao {
   ProjectDaoImpl(ProjectDatabase projectDatabase) : super(projectDatabase);
 

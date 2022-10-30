@@ -11,9 +11,9 @@ class Note extends DataClass implements Insertable<Note> {
   final String id;
   final bool isCompleted;
   final String description;
-  final int color;
+  final String color;
   final String ownerId;
-  final DateTime createdAt;
+  final String createdAt;
   const Note(
       {required this.id,
       required this.isCompleted,
@@ -27,9 +27,9 @@ class Note extends DataClass implements Insertable<Note> {
     map['id'] = Variable<String>(id);
     map['is_completed'] = Variable<bool>(isCompleted);
     map['description'] = Variable<String>(description);
-    map['color'] = Variable<int>(color);
+    map['color'] = Variable<String>(color);
     map['owner_id'] = Variable<String>(ownerId);
-    map['created_at'] = Variable<DateTime>(createdAt);
+    map['created_at'] = Variable<String>(createdAt);
     return map;
   }
 
@@ -49,11 +49,11 @@ class Note extends DataClass implements Insertable<Note> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Note(
       id: serializer.fromJson<String>(json['id']),
-      isCompleted: serializer.fromJson<bool>(json['isCompleted']),
+      isCompleted: serializer.fromJson<bool>(json['is_completed']),
       description: serializer.fromJson<String>(json['description']),
-      color: serializer.fromJson<int>(json['color']),
-      ownerId: serializer.fromJson<String>(json['ownerId']),
-      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      color: serializer.fromJson<String>(json['color']),
+      ownerId: serializer.fromJson<String>(json['owner_id']),
+      createdAt: serializer.fromJson<String>(json['created_at']),
     );
   }
   @override
@@ -61,11 +61,11 @@ class Note extends DataClass implements Insertable<Note> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
-      'isCompleted': serializer.toJson<bool>(isCompleted),
+      'is_completed': serializer.toJson<bool>(isCompleted),
       'description': serializer.toJson<String>(description),
-      'color': serializer.toJson<int>(color),
-      'ownerId': serializer.toJson<String>(ownerId),
-      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'color': serializer.toJson<String>(color),
+      'owner_id': serializer.toJson<String>(ownerId),
+      'created_at': serializer.toJson<String>(createdAt),
     };
   }
 
@@ -73,9 +73,9 @@ class Note extends DataClass implements Insertable<Note> {
           {String? id,
           bool? isCompleted,
           String? description,
-          int? color,
+          String? color,
           String? ownerId,
-          DateTime? createdAt}) =>
+          String? createdAt}) =>
       Note(
         id: id ?? this.id,
         isCompleted: isCompleted ?? this.isCompleted,
@@ -116,9 +116,9 @@ class NoteTableCompanion extends UpdateCompanion<Note> {
   final Value<String> id;
   final Value<bool> isCompleted;
   final Value<String> description;
-  final Value<int> color;
+  final Value<String> color;
   final Value<String> ownerId;
-  final Value<DateTime> createdAt;
+  final Value<String> createdAt;
   const NoteTableCompanion({
     this.id = const Value.absent(),
     this.isCompleted = const Value.absent(),
@@ -131,9 +131,9 @@ class NoteTableCompanion extends UpdateCompanion<Note> {
     required String id,
     required bool isCompleted,
     required String description,
-    required int color,
+    required String color,
     required String ownerId,
-    required DateTime createdAt,
+    required String createdAt,
   })  : id = Value(id),
         isCompleted = Value(isCompleted),
         description = Value(description),
@@ -144,9 +144,9 @@ class NoteTableCompanion extends UpdateCompanion<Note> {
     Expression<String>? id,
     Expression<bool>? isCompleted,
     Expression<String>? description,
-    Expression<int>? color,
+    Expression<String>? color,
     Expression<String>? ownerId,
-    Expression<DateTime>? createdAt,
+    Expression<String>? createdAt,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -162,9 +162,9 @@ class NoteTableCompanion extends UpdateCompanion<Note> {
       {Value<String>? id,
       Value<bool>? isCompleted,
       Value<String>? description,
-      Value<int>? color,
+      Value<String>? color,
       Value<String>? ownerId,
-      Value<DateTime>? createdAt}) {
+      Value<String>? createdAt}) {
     return NoteTableCompanion(
       id: id ?? this.id,
       isCompleted: isCompleted ?? this.isCompleted,
@@ -188,13 +188,13 @@ class NoteTableCompanion extends UpdateCompanion<Note> {
       map['description'] = Variable<String>(description.value);
     }
     if (color.present) {
-      map['color'] = Variable<int>(color.value);
+      map['color'] = Variable<String>(color.value);
     }
     if (ownerId.present) {
       map['owner_id'] = Variable<String>(ownerId.value);
     }
     if (createdAt.present) {
-      map['created_at'] = Variable<DateTime>(createdAt.value);
+      map['created_at'] = Variable<String>(createdAt.value);
     }
     return map;
   }
@@ -239,9 +239,9 @@ class $NoteTableTable extends NoteTable with TableInfo<$NoteTableTable, Note> {
       type: DriftSqlType.string, requiredDuringInsert: true);
   final VerificationMeta _colorMeta = const VerificationMeta('color');
   @override
-  late final GeneratedColumn<int> color = GeneratedColumn<int>(
+  late final GeneratedColumn<String> color = GeneratedColumn<String>(
       'color', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   final VerificationMeta _ownerIdMeta = const VerificationMeta('ownerId');
   @override
   late final GeneratedColumn<String> ownerId = GeneratedColumn<String>(
@@ -249,9 +249,9 @@ class $NoteTableTable extends NoteTable with TableInfo<$NoteTableTable, Note> {
       type: DriftSqlType.string, requiredDuringInsert: true);
   final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
   @override
-  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+  late final GeneratedColumn<String> createdAt = GeneratedColumn<String>(
       'created_at', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
       [id, isCompleted, description, color, ownerId, createdAt];
@@ -319,11 +319,11 @@ class $NoteTableTable extends NoteTable with TableInfo<$NoteTableTable, Note> {
       description: attachedDatabase.options.types
           .read(DriftSqlType.string, data['${effectivePrefix}description'])!,
       color: attachedDatabase.options.types
-          .read(DriftSqlType.int, data['${effectivePrefix}color'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}color'])!,
       ownerId: attachedDatabase.options.types
           .read(DriftSqlType.string, data['${effectivePrefix}owner_id'])!,
       createdAt: attachedDatabase.options.types
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}created_at'])!,
     );
   }
 
@@ -336,7 +336,7 @@ class $NoteTableTable extends NoteTable with TableInfo<$NoteTableTable, Note> {
 abstract class _$NoteDatabase extends GeneratedDatabase {
   _$NoteDatabase(QueryExecutor e) : super(e);
   late final $NoteTableTable noteTable = $NoteTableTable(this);
-  late final NoteDaoImpl noteDao = NoteDaoImpl(this as NoteDatabase);
+  late final NoteDaoImpl noteDaoImpl = NoteDaoImpl(this as NoteDatabase);
   @override
   Iterable<TableInfo<Table, dynamic>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();

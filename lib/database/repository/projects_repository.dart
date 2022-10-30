@@ -35,11 +35,11 @@ abstract class ProjectRepository {
 
 class ProjectRepositoryImpl implements ProjectRepository {
   final InMemoryCache _inMemoryCache;
-  final ProjectDaoImpl _projectDao;
+  final ProjectDao _projectDao;
   final ProjectUserDataImpl _projectDataSource;
   ProjectRepositoryImpl({
     required ProjectUserDataImpl projectDataSource,
-    required ProjectDaoImpl projectDao,
+    required ProjectDao projectDao,
     required InMemoryCache inMemoryCache,
   })  : _projectDataSource = projectDataSource,
         _projectDao = projectDao,
@@ -80,7 +80,6 @@ class ProjectRepositoryImpl implements ProjectRepository {
       log('offline');
       final list = await _projectDao.getProjects();
 
-      log('model ${list[0].createdAt}');
       for (int i = 0; i < list.length; i++) {
         log('list date ${list[i].toJson()}');
         projects.add(ProjectModel.fromJson(list[i].toJson()));

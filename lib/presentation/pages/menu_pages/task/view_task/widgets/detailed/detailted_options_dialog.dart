@@ -63,7 +63,6 @@ Future<void> showDetailedOptions({
                         Navigator.pop(context);
                         Navigator.pop(context);
                       } else {
-                        // TODO add member
                         await showDialog(
                           context: context,
                           builder: (_) => AddMemberDialog(

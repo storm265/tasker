@@ -453,7 +453,7 @@ class $TaskTableTable extends TaskTable with TableInfo<$TaskTableTable, Task> {
 abstract class _$TaskDatabase extends GeneratedDatabase {
   _$TaskDatabase(QueryExecutor e) : super(e);
   late final $TaskTableTable taskTable = $TaskTableTable(this);
-  late final TaskDaoImpl taskDao = TaskDaoImpl(this as TaskDatabase);
+  late final TaskDaoImpl taskDaoImpl = TaskDaoImpl(this as TaskDatabase);
   @override
   Iterable<TableInfo<Table, dynamic>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();

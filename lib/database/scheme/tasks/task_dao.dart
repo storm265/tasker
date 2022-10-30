@@ -22,7 +22,7 @@ abstract class TaskDao {
 
 @DriftAccessor(tables: [TaskTable])
 class TaskDaoImpl extends DatabaseAccessor<TaskDatabase>
-    with _$TaskDaoMixin
+    with _$TaskDaoImplMixin
     implements TaskDao {
   TaskDaoImpl(TaskDatabase taskDatabase) : super(taskDatabase);
 

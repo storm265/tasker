@@ -10,9 +10,9 @@ part of 'checklist_database.dart';
 class Checklist extends DataClass implements Insertable<Checklist> {
   final String id;
   final String title;
-  final int color;
+  final String color;
   final String ownerId;
-  final DateTime createdAt;
+  final String createdAt;
   const Checklist(
       {required this.id,
       required this.title,
@@ -24,9 +24,9 @@ class Checklist extends DataClass implements Insertable<Checklist> {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     map['title'] = Variable<String>(title);
-    map['color'] = Variable<int>(color);
+    map['color'] = Variable<String>(color);
     map['owner_id'] = Variable<String>(ownerId);
-    map['created_at'] = Variable<DateTime>(createdAt);
+    map['created_at'] = Variable<String>(createdAt);
     return map;
   }
 
@@ -46,9 +46,9 @@ class Checklist extends DataClass implements Insertable<Checklist> {
     return Checklist(
       id: serializer.fromJson<String>(json['id']),
       title: serializer.fromJson<String>(json['title']),
-      color: serializer.fromJson<int>(json['color']),
-      ownerId: serializer.fromJson<String>(json['ownerId']),
-      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+      color: serializer.fromJson<String>(json['color']),
+      ownerId: serializer.fromJson<String>(json['owner_id']),
+      createdAt: serializer.fromJson<String>(json['created_at']),
     );
   }
   @override
@@ -57,18 +57,18 @@ class Checklist extends DataClass implements Insertable<Checklist> {
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
       'title': serializer.toJson<String>(title),
-      'color': serializer.toJson<int>(color),
-      'ownerId': serializer.toJson<String>(ownerId),
-      'createdAt': serializer.toJson<DateTime>(createdAt),
+      'color': serializer.toJson<String>(color),
+      'owner_id': serializer.toJson<String>(ownerId),
+      'created_at': serializer.toJson<String>(createdAt),
     };
   }
 
   Checklist copyWith(
           {String? id,
           String? title,
-          int? color,
+          String? color,
           String? ownerId,
-          DateTime? createdAt}) =>
+          String? createdAt}) =>
       Checklist(
         id: id ?? this.id,
         title: title ?? this.title,
@@ -104,9 +104,9 @@ class Checklist extends DataClass implements Insertable<Checklist> {
 class CheckListTableCompanion extends UpdateCompanion<Checklist> {
   final Value<String> id;
   final Value<String> title;
-  final Value<int> color;
+  final Value<String> color;
   final Value<String> ownerId;
-  final Value<DateTime> createdAt;
+  final Value<String> createdAt;
   const CheckListTableCompanion({
     this.id = const Value.absent(),
     this.title = const Value.absent(),
@@ -117,9 +117,9 @@ class CheckListTableCompanion extends UpdateCompanion<Checklist> {
   CheckListTableCompanion.insert({
     required String id,
     required String title,
-    required int color,
+    required String color,
     required String ownerId,
-    required DateTime createdAt,
+    required String createdAt,
   })  : id = Value(id),
         title = Value(title),
         color = Value(color),
@@ -128,9 +128,9 @@ class CheckListTableCompanion extends UpdateCompanion<Checklist> {
   static Insertable<Checklist> custom({
     Expression<String>? id,
     Expression<String>? title,
-    Expression<int>? color,
+    Expression<String>? color,
     Expression<String>? ownerId,
-    Expression<DateTime>? createdAt,
+    Expression<String>? createdAt,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -144,9 +144,9 @@ class CheckListTableCompanion extends UpdateCompanion<Checklist> {
   CheckListTableCompanion copyWith(
       {Value<String>? id,
       Value<String>? title,
-      Value<int>? color,
+      Value<String>? color,
       Value<String>? ownerId,
-      Value<DateTime>? createdAt}) {
+      Value<String>? createdAt}) {
     return CheckListTableCompanion(
       id: id ?? this.id,
       title: title ?? this.title,
@@ -166,13 +166,13 @@ class CheckListTableCompanion extends UpdateCompanion<Checklist> {
       map['title'] = Variable<String>(title.value);
     }
     if (color.present) {
-      map['color'] = Variable<int>(color.value);
+      map['color'] = Variable<String>(color.value);
     }
     if (ownerId.present) {
       map['owner_id'] = Variable<String>(ownerId.value);
     }
     if (createdAt.present) {
-      map['created_at'] = Variable<DateTime>(createdAt.value);
+      map['created_at'] = Variable<String>(createdAt.value);
     }
     return map;
   }
@@ -208,9 +208,9 @@ class $CheckListTableTable extends CheckListTable
       type: DriftSqlType.string, requiredDuringInsert: true);
   final VerificationMeta _colorMeta = const VerificationMeta('color');
   @override
-  late final GeneratedColumn<int> color = GeneratedColumn<int>(
+  late final GeneratedColumn<String> color = GeneratedColumn<String>(
       'color', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   final VerificationMeta _ownerIdMeta = const VerificationMeta('ownerId');
   @override
   late final GeneratedColumn<String> ownerId = GeneratedColumn<String>(
@@ -218,9 +218,9 @@ class $CheckListTableTable extends CheckListTable
       type: DriftSqlType.string, requiredDuringInsert: true);
   final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
   @override
-  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
+  late final GeneratedColumn<String> createdAt = GeneratedColumn<String>(
       'created_at', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [id, title, color, ownerId, createdAt];
   @override
@@ -275,11 +275,11 @@ class $CheckListTableTable extends CheckListTable
       title: attachedDatabase.options.types
           .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
       color: attachedDatabase.options.types
-          .read(DriftSqlType.int, data['${effectivePrefix}color'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}color'])!,
       ownerId: attachedDatabase.options.types
           .read(DriftSqlType.string, data['${effectivePrefix}owner_id'])!,
       createdAt: attachedDatabase.options.types
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at'])!,
+          .read(DriftSqlType.string, data['${effectivePrefix}created_at'])!,
     );
   }
 
@@ -292,7 +292,7 @@ class $CheckListTableTable extends CheckListTable
 abstract class _$CheckListDatabase extends GeneratedDatabase {
   _$CheckListDatabase(QueryExecutor e) : super(e);
   late final $CheckListTableTable checkListTable = $CheckListTableTable(this);
-  late final CheckListDaoImpl checkListDao =
+  late final CheckListDaoImpl checkListDaoImpl =
       CheckListDaoImpl(this as CheckListDatabase);
   @override
   Iterable<TableInfo<Table, dynamic>> get allTables =>

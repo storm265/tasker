@@ -34,12 +34,13 @@ class InMemoryCache {
   bool shouldFetchOnlineData({
     required CacheKeys key,
     required DateTime date,
+    bool isSaveKey = true,
   }) {
     if (_lastFetched[key.type] == null ||
         (_lastFetched[key.type] != null &&
             DateTime.now().difference(_lastFetched[key.type]!).inMinutes >=
                 _defaultMinutes)) {
-      updateCacheKey(key: key, date: date);
+      isSaveKey ? updateCacheKey(key: key, date: date) : null;
       return true;
     } else {
       return false;

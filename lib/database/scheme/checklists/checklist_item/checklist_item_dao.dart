@@ -4,55 +4,62 @@ import 'package:todo2/database/scheme/checklists/checklist_item/checklist_item_t
 part 'checklist_item_dao.g.dart';
 
 abstract class CheckListItemDao {
-  Future<List<CheckListItemTableData>> getEmployees();
+  Future<List<CheckListItemTableData>> getChecklistItems();
 
-  Stream<List<CheckListItemTableData>> getEmployeesStream();
+  Stream<List<CheckListItemTableData>> getChecklistItemsStream();
 
-  Future<CheckListItemTableData> getEmployee(String id);
+  Future<CheckListItemTableData> getChecklistItem(String id);
 
-  Future<bool> updateEmployee(CheckListItemTableCompanion entity);
+  Future<bool> updateChecklistItem(CheckListItemTableCompanion entity);
 
-  Future<int> insertEmployee(CheckListItemTableCompanion entity);
+  Future<int> insertChecklistItem(CheckListItemTableCompanion entity);
 
-  Future<int> deleteEmployee(String id);
+  Future<int> deleteChecklist(String id);
+
+  Future<int> deleteAllChecklistItems();
 }
 
 @DriftAccessor(tables: [CheckListItemTable])
 class CheckListItemDaoImpl extends DatabaseAccessor<CheckListItemDatabase>
-    with _$CheckListItemDaoMixin
+    with _$CheckListItemDaoImplMixin
     implements CheckListItemDao {
   CheckListItemDaoImpl(CheckListItemDatabase checklistDatabase)
       : super(checklistDatabase);
 
   @override
-  Future<List<CheckListItemTableData>> getEmployees() async {
+  Future<List<CheckListItemTableData>> getChecklistItems() async {
     return await select(checkListItemTable).get();
   }
 
   @override
-  Stream<List<CheckListItemTableData>> getEmployeesStream() {
+  Stream<List<CheckListItemTableData>> getChecklistItemsStream() {
     return select(checkListItemTable).watch();
   }
 
   @override
-  Future<CheckListItemTableData> getEmployee(String id) async {
+  Future<CheckListItemTableData> getChecklistItem(String id) async {
     return await (select(checkListItemTable)..where((tbl) => tbl.id.equals(id)))
         .getSingle();
   }
 
   @override
-  Future<bool> updateEmployee(CheckListItemTableCompanion entity) async {
+  Future<bool> updateChecklistItem(CheckListItemTableCompanion entity) async {
     return await update(checkListItemTable).replace(entity);
   }
 
   @override
-  Future<int> insertEmployee(CheckListItemTableCompanion entity) async {
+  Future<int> insertChecklistItem(CheckListItemTableCompanion entity) async {
     return await into(checkListItemTable).insert(entity);
   }
 
   @override
-  Future<int> deleteEmployee(String id) async {
+  Future<int> deleteChecklist(String id) async {
     return await (delete(checkListItemTable)..where((tbl) => tbl.id.equals(id)))
         .go();
+  }
+
+  @override
+  Future<int> deleteAllChecklistItems() async {
+    return await (delete(checkListItemTable)).go();
   }
 }

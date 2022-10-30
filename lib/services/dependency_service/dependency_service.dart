@@ -11,6 +11,8 @@ import 'package:todo2/database/repository/notes_repository.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
+import 'package:todo2/database/scheme/notes/note_dao.dart';
+import 'package:todo2/database/scheme/notes/note_database.dart';
 import 'package:todo2/database/scheme/projects/project_dao.dart';
 import 'package:todo2/database/scheme/projects/project_database.dart';
 import 'package:todo2/database/scheme/tasks/task_dao.dart';
@@ -40,6 +42,7 @@ final getIt = GetIt.instance;
 void setupDependencies() {
   final projectDao = ProjectDaoImpl(ProjectDatabase());
   final taskDao = TaskDaoImpl(TaskDatabase());
+  final noteDao = NoteDaoImpl(NoteDatabase());
 
   getIt.registerFactory<FormValidatorController>(
     () => FormValidatorController(),
@@ -188,6 +191,8 @@ void setupDependencies() {
   getIt.registerSingleton<NewNoteController>(
     NewNoteController(
       addNoteRepository: NoteRepositoryImpl(
+        noteDao: noteDao,
+        inMemoryCache: InMemoryCache(),
         noteDataSource: NotesDataSourceImpl(
           network: NetworkSource(),
           secureStorage: SecureStorageSource(),
@@ -221,6 +226,8 @@ void setupDependencies() {
         ),
       ),
       notesRepository: NoteRepositoryImpl(
+        noteDao: noteDao,
+        inMemoryCache: InMemoryCache(),
         noteDataSource: NotesDataSourceImpl(
           network: NetworkSource(),
           secureStorage: SecureStorageSource(),

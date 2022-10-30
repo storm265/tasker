@@ -6,7 +6,7 @@ part of 'checklist_item_dao.dart';
 // DaoGenerator
 // **************************************************************************
 
-mixin _$CheckListItemDaoMixin on DatabaseAccessor<CheckListItemDatabase> {
+mixin _$CheckListItemDaoImplMixin on DatabaseAccessor<CheckListItemDatabase> {
   $CheckListItemTableTable get checkListItemTable =>
       attachedDatabase.checkListItemTable;
 }
