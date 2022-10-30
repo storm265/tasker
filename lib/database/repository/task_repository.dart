@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:drift/drift.dart';
 import 'package:todo2/database/data_source/task_data_source.dart';
@@ -146,6 +147,7 @@ class TaskRepositoryImpl implements TaskRepository {
   Future<List<TaskModel>> fetchAllTasks() async {
     if (_inMemoryCache.shouldFetchOnlineData(
         date: DateTime.now(), key: CacheKeys.tasks)) {
+      log('online fetch tasks');
       final userTasks = await fetchUserTasks();
       final assignedToTasks = await fetchAssignedToTasks();
       final participateInTasks = await fetchParticipateInTasks();
@@ -170,6 +172,8 @@ class TaskRepositoryImpl implements TaskRepository {
 
       return tasks;
     } else {
+      log('locally fetch tasks');
+
       final list = await _taskDao.getTasks();
       List<TaskModel> tasks = [];
       for (int i = 0; i < list.length; i++) {

@@ -25,13 +25,4 @@ class TaskListController extends TaskList {
 
     tasks.notifyListeners();
   }
-
-  Future<List<TaskModel>> fetchUserTasks() async =>
-      await taskRepository.fetchUserTasks();
-
-  Future<List<TaskModel>> fetchAssignedToTasks() async =>
-      await taskRepository.fetchAssignedToTasks();
-
-  Future<List<TaskModel>> fetchParticipateInTasks() async =>
-      await taskRepository.fetchParticipateInTasks();
 }

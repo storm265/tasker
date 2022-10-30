@@ -25,24 +25,24 @@ class _TasksPageState extends State<TasksPage>
     with SingleTickerProviderStateMixin {
   late final _tabController = TabController(length: 2, vsync: this);
 
-  final taskController = TaskListController(
+  final _taskController = TaskListController(
     calendarProvider: CalendarProvider(),
     secureStorage: SecureStorageSource(),
   );
 
-  final taskSortControllerMonth = TaskSortController();
-  final taskSortControllerToday = TaskSortController();
+  final _taskSortControllerMonth = TaskSortController();
+  final _taskSortControllerToday = TaskSortController();
 
   @override
   void initState() {
-    taskController.getInitData(callback: () => setState(() {}));
+    _taskController.getInitData(callback: () => setState(() {}));
     super.initState();
   }
 
   @override
   void dispose() {
     _tabController.dispose();
-    taskController.dispose();
+    _taskController.dispose();
     super.dispose();
   }
 
@@ -50,6 +50,9 @@ class _TasksPageState extends State<TasksPage>
   Widget build(BuildContext context) {
     return WillPopWrap(
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async => await _taskController.fetchTasks(),
+        ),
         backgroundColor: const Color(0xffFDFDFD),
         appBar: AppBar(
           systemOverlayStyle: const SystemUiOverlayStyle(
@@ -71,7 +74,7 @@ class _TasksPageState extends State<TasksPage>
           ),
           actions: [
             ValueListenableBuilder(
-              valueListenable: taskController.isTuneIconActive,
+              valueListenable: _taskController.isTuneIconActive,
               builder: (_, isActive, __) => isActive
                   ? Padding(
                       padding: const EdgeInsets.all(8.0),
@@ -79,7 +82,7 @@ class _TasksPageState extends State<TasksPage>
                         child: SvgPicture.asset(AssetsPath.tuneIconPath),
                         onTap: () => showTasksFilterDialog(
                           context: context,
-                          taskController: taskController,
+                          taskController: _taskController,
                         ),
                       ),
                     )
@@ -108,21 +111,21 @@ class _TasksPageState extends State<TasksPage>
             controller: _tabController,
             children: [
               TaskListWidget(
-                taskSortController: taskSortControllerToday,
-                taskController: taskController,
+                taskSortController: _taskSortControllerToday,
+                taskController: _taskController,
                 calendarWorkMode: TaskMode.todayTomorrow,
               ),
               ListView(
                 children: [
                   AdvancedCalendar(
-                    calendarProvider: taskController.calendarProvider,
-                    controller: taskController.selectedDate,
-                    events: taskController.events,
-                    taskController: taskController,
+                    calendarProvider: _taskController.calendarProvider,
+                    controller: _taskController.selectedDate,
+                    events: _taskController.events,
+                    taskController: _taskController,
                   ),
                   TaskListWidget(
-                    taskSortController: taskSortControllerMonth,
-                    taskController: taskController,
+                    taskSortController: _taskSortControllerMonth,
+                    taskController: _taskController,
                   ),
                 ],
               ),
