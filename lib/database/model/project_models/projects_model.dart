@@ -1,8 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:todo2/database/database_scheme/project_schemes/project_user_scheme.dart';
 import 'package:todo2/utils/extensions/color_extension/color_string_extension.dart';
 
-class ProjectModel  {
+class ProjectModel {
   final String id;
   final String title;
   final Color color;
@@ -29,5 +31,4 @@ class ProjectModel  {
       ownerId: json[ProjectDataScheme.ownerId],
     );
   }
-
 }

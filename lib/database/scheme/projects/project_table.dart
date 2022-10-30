@@ -4,9 +4,11 @@ import 'package:drift/drift.dart';
 class ProjectTable extends Table {
   TextColumn get id => text()();
   TextColumn get title => text()();
-  IntColumn get color => integer()();
+  TextColumn get color => text()();
+  @JsonKey('owner_id')
   TextColumn get ownerId => text()();
-  DateTimeColumn get createdAt => dateTime()();
+  @JsonKey('created_at')
+  TextColumn get createdAt => text()();
 
   @override
   Set<Column> get primaryKey => {id};

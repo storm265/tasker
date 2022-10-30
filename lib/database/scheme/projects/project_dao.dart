@@ -9,28 +9,31 @@ class ProjectDao extends DatabaseAccessor<ProjectDatabase>
     with _$ProjectDaoMixin {
   ProjectDao(ProjectDatabase projectDatabase) : super(projectDatabase);
 
-  Future<List<Project>> getChecklists() async {
+  Future<List<Project>> getProjects() async {
     return await select(projectTable).get();
   }
 
-  Stream<List<Project>> getChecklistsStream() {
+  Stream<List<Project>> getProjectsStream() {
     return select(projectTable).watch();
   }
 
-  Future<Project> getChecklist(String id) async {
+  Future<Project> getProject(String id) async {
     return await (select(projectTable)..where((tbl) => tbl.id.equals(id)))
         .getSingle();
   }
 
-  Future<bool> updateChecklist(ProjectTableCompanion entity) async {
+  Future<bool> updateProject(ProjectTableCompanion entity) async {
     return await update(projectTable).replace(entity);
   }
 
-  Future<int> insertChecklist(ProjectTableCompanion entity) async {
+  Future<int> insertProject(ProjectTableCompanion entity) async {
     return await into(projectTable).insert(entity);
   }
 
-  Future<int> deleteChecklist(String id) async {
+  Future<int> deleteProject(String id) async {
     return await (delete(projectTable)..where((tbl) => tbl.id.equals(id))).go();
+  }
+   Future<int> deleteAllProjects() async {
+    return await (delete(projectTable)).go();
   }
 }

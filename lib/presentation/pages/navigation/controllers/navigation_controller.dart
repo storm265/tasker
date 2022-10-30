@@ -7,7 +7,6 @@ import 'package:todo2/presentation/pages/menu_pages/menu/menu_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/profile_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/quick_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_page.dart';
-import 'package:todo2/presentation/pages/navigation/controllers/keep_alive_page.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 class NavigationController extends ChangeNotifier {
@@ -20,9 +19,8 @@ class NavigationController extends ChangeNotifier {
 
   final List<Widget> pages = [
     const TasksPage(),
-    // TODO KEEP IN RAM
-    const KeepAlivePageWidget(child: MenuPage()),
-    const KeepAlivePageWidget(child: QuickPage()),
+    const MenuPage(),
+    const QuickPage(),
     const ProfilePage(),
     const AddEditTaskPage(),
     const AddQuickNote(),

@@ -1,6 +1,9 @@
+// ignore_for_file: prefer_final_fields
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:todo2/presentation/pages/menu_pages/menu/menu_page.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_navigator.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_status.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/navigation_controller.dart';
@@ -61,25 +64,11 @@ class _MyAppState extends State<MyApp> {
           debugShowCheckedModeBanner: false,
           title: 'Todo2',
           theme: _themeDataController.themeData,
-          initialRoute: '/',
-          routes: routes,
+         //    initialRoute: '/',
+         //     routes: routes,
+        home: MenuPage(),
         ),
       ),
     );
   }
 }
-
-//
-class InMemoryCache {
-  // key : value
-
-  Map<String, DateTime> values = {
-    'tasks': DateTime.now(),
-    'menu': DateTime.now(),
-    'quick': DateTime.now(),
-  };
-}
-/*
-DateFormat("yyyy-MM-ddThh:mm:ss.ssssss")
-                      .format(calendarController.value),
-*/

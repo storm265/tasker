@@ -7,6 +7,8 @@ import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
+import 'package:todo2/database/scheme/projects/project_dao.dart';
+import 'package:todo2/database/scheme/projects/project_database.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/member_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/description_widgets/task_attachaments_widget.dart';
@@ -26,6 +28,7 @@ import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/icon_
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/items_widget.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
+import 'package:todo2/services/cache_service/cache_service.dart';
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
@@ -46,6 +49,8 @@ class _ViewTaskState extends State<ViewTask> {
     memberProvider: MemberProvider(),
     taskRepository: TaskRepositoryImpl(),
     projectRepository: ProjectRepositoryImpl(
+      inMemoryCache: InMemoryCache(),
+      projectDao: ProjectDao(ProjectDatabase()),
       projectDataSource: ProjectUserDataImpl(
         secureStorageService: SecureStorageSource(),
         network: NetworkSource(),

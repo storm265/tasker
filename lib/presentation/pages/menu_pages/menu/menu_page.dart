@@ -4,6 +4,8 @@ import 'package:todo2/database/data_source/projects_data_source.dart';
 import 'package:todo2/database/model/project_models/project_stats_model.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
+import 'package:todo2/database/scheme/projects/project_dao.dart';
+import 'package:todo2/database/scheme/projects/project_database.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/controller/color_pallete_provider/color_pallete_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/controller/menu_controller.dart';
@@ -12,6 +14,7 @@ import 'package:todo2/presentation/pages/menu_pages/menu/widgets/project_item_wi
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/project_shimmer_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
+import 'package:todo2/services/cache_service/cache_service.dart';
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
@@ -26,6 +29,8 @@ class MenuPageState extends State<MenuPage> {
   final _projectController = ProjectController(
     colorPalleteController: ColorPalleteProvider(),
     projectsRepository: ProjectRepositoryImpl(
+      inMemoryCache: InMemoryCache(),
+      projectDao: ProjectDao(ProjectDatabase()),
       projectDataSource: ProjectUserDataImpl(
         secureStorageService: SecureStorageSource(),
         network: NetworkSource(),
@@ -50,9 +55,12 @@ class MenuPageState extends State<MenuPage> {
   Widget build(BuildContext context) {
     return AppbarWrapWidget(
       floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
-      floatingActionButton: AddProjectButton(
-        projectController: _projectController,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async => await _projectController.fetchAllProjects(),
       ),
+      // floatingActionButton: AddProjectButton(
+      //   projectController: _projectController,
+      // ),
       isWhite: false,
       title: LocaleKeys.projects.tr(),
       isRedAppBar: false,

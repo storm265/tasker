@@ -6,6 +6,8 @@ import 'package:todo2/database/database_scheme/task_schemes/task_scheme.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
+import 'package:todo2/database/scheme/projects/project_dao.dart';
+import 'package:todo2/database/scheme/projects/project_database.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/providers/file_provider.dart';
 import 'package:todo2/presentation/pages/auth/widgets/unfocus_widget.dart';
@@ -29,6 +31,7 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widge
 import 'package:todo2/presentation/pages/menu_pages/menu/controller/menu_controller.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
+import 'package:todo2/services/cache_service/cache_service.dart';
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
@@ -45,6 +48,8 @@ class _AddEditTaskPageState extends State<AddEditTaskPage> {
     projectController: ProjectController(
       colorPalleteController: ColorPalleteProvider(),
       projectsRepository: ProjectRepositoryImpl(
+        inMemoryCache: InMemoryCache(),
+        projectDao: ProjectDao(ProjectDatabase()),
         projectDataSource: ProjectUserDataImpl(
           secureStorageService: SecureStorageSource(),
           network: NetworkSource(),
@@ -59,6 +64,8 @@ class _AddEditTaskPageState extends State<AddEditTaskPage> {
     ),
     secureStorage: SecureStorageSource(),
     projectRepository: ProjectRepositoryImpl(
+      inMemoryCache: InMemoryCache(),
+      projectDao: ProjectDao(ProjectDatabase()),
       projectDataSource: ProjectUserDataImpl(
         secureStorageService: SecureStorageSource(),
         network: NetworkSource(),

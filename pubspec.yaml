@@ -21,9 +21,10 @@ dependencies:
   flutter_svg:
   flutter_dotenv:
   shimmer:
-  drift:
-  path_provider:
-  path: 
+  drift: ^2.2.0
+  sqlite3_flutter_libs: ^0.5.0
+  path_provider: ^2.0.0
+  path: ^1.8.2
   grouped_list: ^5.1.2
   # For charles
   http_proxy:
@@ -38,7 +39,7 @@ dev_dependencies:
   flutter_lints:
   flutter_native_splash:
   drift_dev: ^2.2.0+1
-  build_runner:
+  build_runner: ^2.2.1
 
 flutter:
   uses-material-design: true

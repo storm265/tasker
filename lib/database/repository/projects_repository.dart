@@ -1,7 +1,14 @@
+import 'dart:developer';
+
+import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/projects_data_source.dart';
 import 'package:todo2/database/model/project_models/project_stats_model.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
+import 'package:todo2/database/scheme/projects/project_dao.dart';
+import 'package:todo2/database/scheme/projects/project_database.dart';
+import 'package:todo2/services/cache_service/cache_service.dart';
+import 'package:todo2/utils/extensions/color_extension/color_string_extension.dart';
 
 abstract class ProjectRepository {
   Future<ProjectModel> fetchOneProject({required String projectId});
@@ -27,9 +34,16 @@ abstract class ProjectRepository {
 }
 
 class ProjectRepositoryImpl implements ProjectRepository {
+  final InMemoryCache _inMemoryCache;
+  final ProjectDao _projectDao;
   final ProjectUserDataImpl _projectDataSource;
-  ProjectRepositoryImpl({required ProjectUserDataImpl projectDataSource})
-      : _projectDataSource = projectDataSource;
+  ProjectRepositoryImpl({
+    required ProjectUserDataImpl projectDataSource,
+    required ProjectDao projectDao,
+    required InMemoryCache inMemoryCache,
+  })  : _projectDataSource = projectDataSource,
+        _projectDao = projectDao,
+        _inMemoryCache = inMemoryCache;
 
   @override
   Future<ProjectModel> fetchOneProject({required String projectId}) async {
@@ -41,12 +55,39 @@ class ProjectRepositoryImpl implements ProjectRepository {
 
   @override
   Future<List<ProjectModel>> fetchAllProjects() async {
-    final response = await _projectDataSource.fetchAllProjects();
     List<ProjectModel> projects = [];
-    for (int i = 0; i < response.length; i++) {
-      projects.add(ProjectModel.fromJson(response[i]));
+    if (_inMemoryCache.shouldFetchOnlineData(
+        date: DateTime.now(), key: CacheKeys.menu)) {
+      log('online');
+      final response = await _projectDataSource.fetchAllProjects();
+
+      await _projectDao.deleteAllProjects();
+      for (int i = 0; i < response.length; i++) {
+        projects.add(ProjectModel.fromJson(response[i]));
+        await _projectDao.insertProject(
+          ProjectTableCompanion(
+            color: Value(projects[i].color.toString().toStringColor()),
+            title: Value(projects[i].title),
+            createdAt: Value(projects[i].createdAt.toIso8601String()),
+            id: Value(projects[i].id),
+            ownerId: Value(projects[i].ownerId),
+          ),
+        );
+      }
+
+      return projects;
+    } else {
+      log('offline');
+      final list = await _projectDao.getProjects();
+
+      log('model ${list[0].createdAt}');
+      for (int i = 0; i < list.length; i++) {
+        log('list date ${list[i].toJson()}');
+        projects.add(ProjectModel.fromJson(list[i].toJson()));
+      }
+
+      return projects;
     }
-    return projects;
   }
 
   @override
