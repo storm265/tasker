@@ -17,7 +17,7 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widge
 import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/red_app_bar.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/white_box_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
-import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
+import 'package:todo2/presentation/widgets/common/activity_indicator_widget.dart';
 import 'package:todo2/services/dependency_service/dependency_service.dart';
 
 class AddEditTaskPage extends StatefulWidget {
@@ -169,7 +169,7 @@ class _AddEditTaskPageState extends State<AddEditTaskPage> {
                                                     }
                                                   : null,
                                             )
-                                          : ProgressIndicatorWidget(
+                                          : ActivityIndicatorWidget(
                                               text: LocaleKeys.validating.tr(),
                                             ),
                                     ),

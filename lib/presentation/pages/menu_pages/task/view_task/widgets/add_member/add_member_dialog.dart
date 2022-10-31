@@ -6,7 +6,7 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widge
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/controller/view_task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/add_member/member_item_widget.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
-import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
+import 'package:todo2/presentation/widgets/common/activity_indicator_widget.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 class AddMemberDialog extends StatefulWidget {
@@ -82,7 +82,7 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                         AsyncSnapshot<List<UserProfileModel>> snapshot) {
                       return (snapshot.hasError || !snapshot.hasData)
                           ? const Center(
-                              child: ProgressIndicatorWidget(),
+                              child: ActivityIndicatorWidget(),
                             )
                           : ListView.builder(
                               itemCount: snapshot.data!.length,

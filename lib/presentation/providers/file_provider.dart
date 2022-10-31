@@ -10,7 +10,7 @@ import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_c
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/network_service/connection_checker.dart';
 import 'package:todo2/services/network_service/network_config.dart';
-import 'package:todo2/storage/secure_storage_service.dart';
+import 'package:todo2/services/secure_storage_service.dart';
 
 const _jpeg = 'jpeg';
 const _png = 'png';
@@ -69,6 +69,7 @@ class FileProvider extends ChangeNotifier with ConnectionCheckerMixin {
       pickedFile.value = _emptyImage;
       result.files.clear();
       pickedFile.notifyListeners();
+
       throw MessageService.displaySnackbar(
         message: LocaleKeys.file_size_is_too_huge.tr(),
         context: context,
@@ -81,6 +82,7 @@ class FileProvider extends ChangeNotifier with ConnectionCheckerMixin {
       pickedFile.value = _emptyImage;
       result.files.clear();
       pickedFile.notifyListeners();
+
       throw MessageService.displaySnackbar(
         message:
             '${LocaleKeys.wrong_image_supported_formats.tr()} .$_jpeg, .$_jpg, .$_png.',

@@ -11,7 +11,7 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widge
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/color_pallete_widget.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_navigator.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
-import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
+import 'package:todo2/presentation/widgets/common/activity_indicator_widget.dart';
 import 'package:todo2/services/dependency_service/dependency_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 
@@ -123,7 +123,7 @@ class _CheckListPageState extends State<CheckListPage> {
                                         }
                                       : null,
                                 )
-                              : ProgressIndicatorWidget(
+                              : ActivityIndicatorWidget(
                                   text: LocaleKeys.validating.tr(),
                                 ),
                         ),

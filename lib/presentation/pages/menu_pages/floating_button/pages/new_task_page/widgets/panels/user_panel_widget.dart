@@ -5,7 +5,7 @@ import 'package:todo2/database/model/profile_models/users_profile_model.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/add_task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/panel_provider.dart';
-import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
+import 'package:todo2/presentation/widgets/common/activity_indicator_widget.dart';
 
 class UserPanelPickerWidget extends StatelessWidget {
   final AddEditTaskController addEditTaskController;
@@ -24,7 +24,7 @@ class UserPanelPickerWidget extends StatelessWidget {
         log('data  : ${snapshot.data}');
         return (!snapshot.hasData || snapshot.data == null)
             ? Center(
-                child: ProgressIndicatorWidget(
+                child: ActivityIndicatorWidget(
                   text: LocaleKeys.loaing.tr(),
                 ),
               )

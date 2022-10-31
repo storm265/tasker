@@ -8,7 +8,7 @@ import 'package:todo2/presentation/pages/menu_pages/quick/widgets/notes/note_car
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/common_widgets/quick_shimmer_widget.dart';
 import 'package:todo2/presentation/pages/navigation/controllers/inherited_navigator.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
-import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
+import 'package:todo2/presentation/widgets/common/activity_indicator_widget.dart';
 
 class QuickPage extends StatefulWidget {
   const QuickPage({Key? key}) : super(key: key);
@@ -30,8 +30,8 @@ class _QuickPageState extends State<QuickPage> {
         NavigationInherited.of(context).navigationController;
     return AppbarWrapWidget(
       floatingActionButton: FloatingActionButton(
-        onPressed: () async{
-         await   quickController.fetchNotes();
+        onPressed: () async {
+          await quickController.fetchNotes();
         },
       ),
       title: LocaleKeys.quick_notes.tr(),
@@ -39,7 +39,7 @@ class _QuickPageState extends State<QuickPage> {
       child: ValueListenableBuilder<List<dynamic>>(
         valueListenable: quickController.linkedModels,
         builder: ((__, projectsList, _) => projectsList.isEmpty
-            ? ProgressIndicatorWidget(text: LocaleKeys.no_data.tr())
+            ? ActivityIndicatorWidget(text: LocaleKeys.no_data.tr())
             : ListView.builder(
                 itemCount: projectsList.length,
                 itemBuilder: (_, i) => projectsList.isEmpty

@@ -11,7 +11,7 @@ import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/sign_up_button_
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/subtitle_widget.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/widgets/textfield_widget.dart';
 import 'package:todo2/presentation/pages/auth/widgets/title_widget.dart';
-import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
+import 'package:todo2/presentation/widgets/common/activity_indicator_widget.dart';
 import 'package:todo2/services/dependency_service/dependency_service.dart';
 
 class SignInPage extends StatefulWidget {
@@ -104,7 +104,7 @@ class _SignInPageState extends State<SignInPage> {
                                   }
                                 : null,
                           )
-                        : ProgressIndicatorWidget(
+                        : ActivityIndicatorWidget(
                             text: LocaleKeys.validating.tr(),
                           )),
                   ),

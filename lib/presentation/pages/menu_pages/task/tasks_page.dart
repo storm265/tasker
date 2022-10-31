@@ -12,7 +12,7 @@ import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/list/task
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/tabs/bottom_tabs.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapp.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
-import 'package:todo2/storage/secure_storage_service.dart';
+import 'package:todo2/services/secure_storage_service.dart';
 import 'package:todo2/utils/assets_path.dart';
 
 class TasksPage extends StatefulWidget {

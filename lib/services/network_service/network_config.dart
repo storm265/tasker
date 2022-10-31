@@ -5,7 +5,7 @@ import 'package:todo2/database/data_source/auth_data_source.dart';
 import 'package:todo2/database/database_scheme/env_scheme.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/services/network_service/refresh_token_controller.dart';
-import 'package:todo2/storage/secure_storage_service.dart';
+import 'package:todo2/services/secure_storage_service.dart';
 
 const _contentType = 'Content-Type';
 const _authorization = 'Authorization';

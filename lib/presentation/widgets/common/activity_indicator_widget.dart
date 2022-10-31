@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
-class ProgressIndicatorWidget extends StatelessWidget {
+class ActivityIndicatorWidget extends StatelessWidget {
   final String? text;
-  const ProgressIndicatorWidget({
+  const ActivityIndicatorWidget({
     Key? key,
     this.text,
   }) : super(key: key);

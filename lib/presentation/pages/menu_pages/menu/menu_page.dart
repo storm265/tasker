@@ -8,7 +8,7 @@ import 'package:todo2/presentation/pages/menu_pages/menu/widgets/add_project_but
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/project_item_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/project_shimmer_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
-import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
+import 'package:todo2/presentation/widgets/common/activity_indicator_widget.dart';
 import 'package:todo2/services/dependency_service/dependency_service.dart';
 
 class MenuPage extends StatefulWidget {
@@ -52,7 +52,7 @@ class MenuPageState extends State<MenuPage> {
             valueListenable: _projectController.projects,
             builder: ((__, projectsList, _) => (projectsList.isEmpty)
                 ? Center(
-                    child: ProgressIndicatorWidget(
+                    child: ActivityIndicatorWidget(
                       text: LocaleKeys.no_data.tr(),
                     ),
                   )

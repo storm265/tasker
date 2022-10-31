@@ -6,7 +6,7 @@ import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/panel_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/circle_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/base_tasks.dart';
-import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
+import 'package:todo2/presentation/widgets/common/activity_indicator_widget.dart';
 
 class ProjectPanelPickerWidget extends StatelessWidget {
   final BaseTasks addEditTaskController;
@@ -24,7 +24,7 @@ class ProjectPanelPickerWidget extends StatelessWidget {
         log('snapshot.data ${snapshot.data}');
         return (!snapshot.hasData || snapshot.data == null)
             ? Center(
-                child: ProgressIndicatorWidget(
+                child: ActivityIndicatorWidget(
                   text: LocaleKeys.loaing.tr(),
                 ),
               )

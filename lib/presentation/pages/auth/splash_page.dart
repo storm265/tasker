@@ -3,7 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
-import 'package:todo2/storage/secure_storage_service.dart';
+import 'package:todo2/services/secure_storage_service.dart';
 import 'package:todo2/utils/assets_path.dart';
 
 String? locale;

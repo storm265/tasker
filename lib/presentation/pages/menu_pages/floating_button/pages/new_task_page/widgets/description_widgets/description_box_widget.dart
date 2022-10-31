@@ -9,7 +9,7 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_ta
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/description_widgets/description_text_field.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/controller/view_task_controller.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
-import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
+import 'package:todo2/presentation/widgets/common/activity_indicator_widget.dart';
 import 'package:todo2/utils/assets_path.dart';
 
 class DescriptionBoxWidget extends StatefulWidget {
@@ -119,8 +119,7 @@ class _DescriptionBoxWidgetState extends State<DescriptionBoxWidget> {
                                         .uploadTaskCommentAttachment(
                                           commentId: commentModel.id,
                                         )
-                                        .then((_) => widget
-                                            .viewTaskController!
+                                        .then((_) => widget.viewTaskController!
                                             .attachmentsProvider
                                             .clearAllAttachments());
                                     widget.callback!();
@@ -141,7 +140,7 @@ class _DescriptionBoxWidgetState extends State<DescriptionBoxWidget> {
                                         getAppColor(color: CategoryColor.blue),
                                   ),
                                 )
-                              : const ProgressIndicatorWidget(),
+                              : const ActivityIndicatorWidget(),
                         )
                       : const SizedBox(),
                 ],

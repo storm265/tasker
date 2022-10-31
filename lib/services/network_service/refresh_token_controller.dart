@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
-import 'package:todo2/storage/secure_storage_service.dart';
+import 'package:todo2/services/secure_storage_service.dart';
 
 enum States {
   today,
