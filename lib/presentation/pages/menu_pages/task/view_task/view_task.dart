@@ -1,6 +1,4 @@
 // ignore_for_file: use_build_context_synchronously
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
@@ -35,11 +33,11 @@ class ViewTask extends StatefulWidget with AccessTokenMixin {
 }
 
 class _ViewTaskState extends State<ViewTask> {
-  final viewTaskController = getIt<ViewTaskController>();
+  final _viewTaskController = getIt<ViewTaskController>();
 
   @override
   void initState() {
-    viewTaskController.fetchInitialData(
+    _viewTaskController.fetchInitialData(
       projectId: widget.pickedTask.projectId,
       assignedTo: widget.pickedTask.assignedTo,
       callback: () => setState(() {}),
@@ -50,7 +48,7 @@ class _ViewTaskState extends State<ViewTask> {
 
   @override
   void dispose() {
-    viewTaskController.commentController.dispose();
+    _viewTaskController.commentController.dispose();
     super.dispose();
   }
 
@@ -70,7 +68,7 @@ class _ViewTaskState extends State<ViewTask> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   IconPanelWidget(
-                    viewTaskController: viewTaskController,
+                    viewTaskController: _viewTaskController,
                     taskListController: widget.taskController,
                     selectedTask: widget.pickedTask,
                   ),
@@ -83,34 +81,34 @@ class _ViewTaskState extends State<ViewTask> {
                         DetailedTitleWidget(title: widget.pickedTask.title),
                         ItemsWidget(
                           pickedTask: widget.pickedTask,
-                          viewTaskController: viewTaskController,
+                          viewTaskController: _viewTaskController,
                         ),
                         const SizedBox(height: 20),
-                        viewTaskController.isShowComments
+                        _viewTaskController.isShowComments
                             ? Column(
                                 children: [
                                   TaskAttachementWidget(
-                                    viewTaskController: viewTaskController,
+                                    viewTaskController: _viewTaskController,
                                     pickedTask: widget.pickedTask,
                                   ),
                                   DescriptionBoxWidget(
                                     callback: () => setState(() {}),
                                     withImageIcon: true,
-                                    viewTaskController: viewTaskController,
+                                    viewTaskController: _viewTaskController,
                                     textController:
-                                        viewTaskController.commentController,
+                                        _viewTaskController.commentController,
                                     attachmentsProvider:
-                                        viewTaskController.attachmentsProvider,
+                                        _viewTaskController.attachmentsProvider,
                                     pickedTask: widget.pickedTask,
                                     hintText: LocaleKeys.write_a_comment.tr(),
                                   ),
                                   TaskAttachmentsWidget(
                                     attachmentsProvider:
-                                        viewTaskController.attachmentsProvider,
+                                        _viewTaskController.attachmentsProvider,
                                   ),
                                   CommentAttachmentWidget(
                                     pickedTask: widget.pickedTask,
-                                    viewTaskController: viewTaskController,
+                                    viewTaskController: _viewTaskController,
                                   )
                                 ],
                               )
@@ -122,9 +120,9 @@ class _ViewTaskState extends State<ViewTask> {
                           DateTime.now().isBefore(widget.pickedTask.dueDate)
                       ? ValueListenableBuilder<bool>(
                           valueListenable:
-                              viewTaskController.isActiveSubmitButton,
+                              _viewTaskController.isActiveSubmitButton,
                           builder: (_, isClicked, __) => Padding(
-                            padding: viewTaskController.isShowComments
+                            padding: _viewTaskController.isShowComments
                                 ? const EdgeInsets.symmetric(vertical: 36)
                                 : const EdgeInsets.all(0),
                             child: ConfirmButtonWidget(
@@ -134,7 +132,7 @@ class _ViewTaskState extends State<ViewTask> {
                               onPressed: isClicked
                                   ? () async {
                                       final updatedModel =
-                                          await viewTaskController.updateTask(
+                                          await _viewTaskController.updateTask(
                                         widget.pickedTask,
                                         context,
                                       );
@@ -149,11 +147,11 @@ class _ViewTaskState extends State<ViewTask> {
                           ),
                         )
                       : const SizedBox(),
-                  !viewTaskController.isShowComments
+                  !_viewTaskController.isShowComments
                       ? CommentButton(
                           onClickedCallback: () => setState(() {
-                            viewTaskController.isShowComments =
-                                !viewTaskController.isShowComments;
+                            _viewTaskController.isShowComments =
+                                !_viewTaskController.isShowComments;
                           }),
                         )
                       : const SizedBox(),

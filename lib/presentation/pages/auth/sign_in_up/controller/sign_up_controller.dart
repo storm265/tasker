@@ -41,7 +41,6 @@ class SignUpController extends ChangeNotifier with ConnectionCheckerMixin {
     changeSignUpButtonValue(isActive: false);
     if (await isConnected()) {
       try {
-
         if (formKey.currentState!.validate()) {
           await _signUp(
             context: context,
@@ -67,7 +66,7 @@ class SignUpController extends ChangeNotifier with ConnectionCheckerMixin {
         }
 
         await Future.delayed(
-          Duration.zero,
+          const Duration(milliseconds: 1),
           () => NavigationService.navigateTo(
             context,
             Pages.navigationReplacement,

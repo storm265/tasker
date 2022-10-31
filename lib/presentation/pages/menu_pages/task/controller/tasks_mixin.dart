@@ -6,7 +6,6 @@ import 'package:todo2/services/dependency_service/dependency_service.dart';
 mixin TasksMixin {
   final taskRepository = getIt<TaskRepositoryImpl>();
 
-
   Future<void> deleteTask({
     required String taskId,
     VoidCallback? callback,

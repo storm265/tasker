@@ -5,11 +5,11 @@ import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/panel_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/circle_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/controller/base_tasks_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/base_tasks.dart';
 import 'package:todo2/presentation/widgets/common/progress_indicator_widget.dart';
 
 class ProjectPanelPickerWidget extends StatelessWidget {
-  final BaseTasksController addEditTaskController;
+  final BaseTasks addEditTaskController;
   const ProjectPanelPickerWidget({
     Key? key,
     required this.addEditTaskController,

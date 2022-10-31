@@ -114,7 +114,6 @@ class _DescriptionBoxWidgetState extends State<DescriptionBoxWidget> {
                                       taskId: widget.pickedTask!.id,
                                     );
                                     log('comment id ${commentModel.id}');
-                                    // TODO finish
                                     widget.textController.clear();
                                     await widget.viewTaskController!
                                         .uploadTaskCommentAttachment(

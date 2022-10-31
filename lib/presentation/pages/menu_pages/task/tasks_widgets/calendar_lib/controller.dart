@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/controller/task_sort_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/task_sort_provider.dart';
 import 'datetime_util.dart';
 
 class AdvancedCalendarController extends ValueNotifier<DateTime> {

@@ -17,8 +17,8 @@ import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/network_service/connection_checker.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
-class ViewTaskController extends ChangeNotifier
-    with AccessTokenMixin, TasksMixin, ConnectionCheckerMixin {
+class ViewTaskController
+    with AccessTokenMixin, TasksMixin, ConnectionCheckerMixin, ChangeNotifier {
   final UserProfileRepository _userRepository;
   final AttachmentsProvider attachmentsProvider;
   final SecureStorageSource _secureStorage;
@@ -110,9 +110,7 @@ class ViewTaskController extends ChangeNotifier
           );
         });
         return updatedModel;
-      } 
-    
-      finally {
+      } finally {
         changeSubmitButton(true);
       }
     } else {
@@ -120,9 +118,8 @@ class ViewTaskController extends ChangeNotifier
         message: LocaleKeys.no_internet.tr(),
         context: context,
       );
-       changeSubmitButton(true);
+      changeSubmitButton(true);
       throw LocaleKeys.no_internet.tr();
-     
     }
   }
 

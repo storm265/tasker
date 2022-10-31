@@ -6,12 +6,12 @@ import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/access_token_mixin.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/controller/base_tasks_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/base_tasks.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/network_service/connection_checker.dart';
 
-class AddEditTaskController extends BaseTasksController
+class AddEditTaskController extends BaseTasks
     with AccessTokenMixin, ConnectionCheckerMixin {
   final UserProfileRepository _userRepository;
   final ProjectRepository _projectRepository;

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/description_widgets/desciption_text_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/description_widgets/description_box_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/description_widgets/task_attachaments_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/controller/base_tasks_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/base_tasks.dart';
 
 class DescriptionFieldWidget extends StatelessWidget {
   final String? hintText;
   final int maxLength;
-  final BaseTasksController addEditTaskController;
+  final BaseTasks addEditTaskController;
   const DescriptionFieldWidget({
     Key? key,
     this.hintText,

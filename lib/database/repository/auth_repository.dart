@@ -51,16 +51,11 @@ class AuthRepositoryImpl implements AuthRepository {
     );
   }
 
-// TODO refactor
   @override
   Future<AuthModel> refreshToken() async {
     final response = await _authDataSource.refreshToken();
     return AuthModel.fromJson(json: response);
   }
-// // #2
-//   @override
-//   Future<AuthModel> refreshToken() async =>
-//       AuthModel.fromJson(json: await _authDataSource.refreshToken());
 
   @override
   Future<void> signOut() async => await _authDataSource.signOut();

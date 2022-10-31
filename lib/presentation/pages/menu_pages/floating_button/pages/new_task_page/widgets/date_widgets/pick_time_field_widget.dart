@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/common/grey_container.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/date_widgets/pick_date_dialog.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/controller/base_tasks_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/base_tasks.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 
 class PickTimeFieldWidget extends StatefulWidget {
-  final BaseTasksController addEditTaskController;
+  final BaseTasks addEditTaskController;
   const PickTimeFieldWidget({
     Key? key,
     required this.addEditTaskController,

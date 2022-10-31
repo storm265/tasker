@@ -126,14 +126,20 @@ class ProfileController extends ChangeNotifier
     final list1 = await _taskRepository.fetchUserTasks();
     final list2 = await _taskRepository.fetchAssignedToTasks();
     final list3 = await _taskRepository.fetchParticipateInTasks();
-    for (var i = 0; i < list1.length; i++) {
-      _tasks.add(list1[i]);
+    if (list1.isNotEmpty) {
+      for (var i = 0; i < list1.length; i++) {
+        _tasks.add(list1[i]);
+      }
     }
-    for (var i = 0; i < list2.length; i++) {
-      _tasks.add(list2[i]);
+    if (list2.isNotEmpty) {
+      for (var i = 0; i < list2.length; i++) {
+        _tasks.add(list2[i]);
+      }
     }
-    for (var i = 0; i < list2.length; i++) {
-      _tasks.add(list3[i]);
+    if (list3.isNotEmpty) {
+      for (var i = 0; i < list2.length; i++) {
+        _tasks.add(list3[i]);
+      }
     }
   }
 

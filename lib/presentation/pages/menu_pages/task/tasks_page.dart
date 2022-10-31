@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/controller/task_sort_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/task_sort_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/tasks_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/dialogs/tasks_filter_dialog.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/calendar_lib/controller.dart';

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo2/presentation/pages/auth/splash_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/task_list.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/controller/task_sort_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/task_sort_provider.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'controller.dart';
 import 'datetime_util.dart';

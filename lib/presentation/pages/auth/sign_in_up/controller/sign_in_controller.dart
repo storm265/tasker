@@ -57,7 +57,7 @@ class SignInController extends ChangeNotifier with ConnectionCheckerMixin {
         }
 
         await Future.delayed(
-          Duration.zero,
+          const Duration(milliseconds: 1),
           () => NavigationService.navigateTo(
             context,
             Pages.navigationReplacement,

@@ -6,7 +6,7 @@ import 'package:grouped_list/grouped_list.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/task_list.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/controller/task_sort_controller.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/task_sort_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/list/task_item_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/list/today_widget.dart';
 import 'package:todo2/presentation/widgets/common/slidable_widgets/endpane_widget.dart';

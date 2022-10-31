@@ -10,7 +10,7 @@ import 'package:todo2/presentation/pages/menu_pages/task/controller/tasks_mixin.
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/calendar_lib/controller.dart';
 import 'package:todo2/storage/secure_storage_service.dart';
 
-abstract class BaseTasksController extends ChangeNotifier with TasksMixin {
+abstract class BaseTasks extends ChangeNotifier with TasksMixin {
   final ProjectController projectController;
   final AttachmentsProvider attachmentsProvider;
   final TaskValidator taskValidator;
@@ -18,7 +18,7 @@ abstract class BaseTasksController extends ChangeNotifier with TasksMixin {
   final MemberProvider memberProvider;
 
   final SecureStorageSource secureStorage;
-  BaseTasksController({
+  BaseTasks({
     required this.taskValidator,
     required this.projectController,
     required this.attachmentsProvider,
