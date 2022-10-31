@@ -58,7 +58,6 @@ class _TaskListWidgetState extends State<TaskListWidget> {
               valueListenable:
                   widget.taskController.calendarProvider.selectedMonth,
               builder: (_, selectedMonth, __) {
-                log('selectedMonth $selectedMonth');
                 return ValueListenableBuilder(
                   // todayTomorrow
                   // selectedDay
@@ -72,7 +71,6 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                       sortedModeList,
                       selectedMonth,
                     );
-                    log('ss len ${calendarModeSortedList.length}');
                     return calendarModeSortedList.isEmpty
                         ? Center(
                             child: Text(

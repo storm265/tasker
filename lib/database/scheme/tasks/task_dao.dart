@@ -49,7 +49,7 @@ class TaskDaoImpl extends DatabaseAccessor<TaskDatabase>
 
   @override
   Future<int> insertTask(TaskTableCompanion entity) async {
-    return await into(taskTable).insert(entity);
+    return await into(taskTable).insert(entity,mode: InsertMode.insertOrReplace);
   }
 
   @override

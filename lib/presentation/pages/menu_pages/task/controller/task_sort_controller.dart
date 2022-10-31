@@ -81,15 +81,13 @@ class TaskSortController {
     }
     return sortedList;
   }
+
 // TODO finish
   bool isTomorrow(DateTime date) {
-      log('difference  ${date.difference (monthPattern.format() == monthPattern.format() && date.day == now.day + 1)}');
+    log('difference  $now ::: $date');
+    log('difference inDays ${date.difference(now).inDays}');
     log('short equal ${(monthPattern.format(date) == monthPattern.format(now) && date.day == now.day + 1)}');
-    if ((monthPattern.format(date) == monthPattern.format(now) &&
-            date.day == now.day + 1) ||
-        (date.year == now.year &&
-            date.day == now.day + 1 &&
-            date.month >= now.month + 1)) {
+    if (now.difference(date).inDays == 1) {
       log('its tomorrow ');
       return true;
     } else {

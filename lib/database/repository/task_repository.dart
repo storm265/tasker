@@ -149,7 +149,7 @@ class TaskRepositoryImpl implements TaskRepository {
       final assignedToTasks = await fetchAssignedToTasks();
 
       final participateInTasks = await fetchParticipateInTasks();
-
+// TODO why Set  not removed dublicates ?
       List<TaskModel> allTasks = [
         ...assignedToTasks,
         ...userTasks,
@@ -157,22 +157,8 @@ class TaskRepositoryImpl implements TaskRepository {
       ]
         ..toSet()
         ..toList();
-      log('allTasks before clean len ${allTasks.length}');
-      //TODO WTF
-      final copiedList = allTasks;
+   
 
-      for (var i = 0; i < allTasks.length; i++) {
-        if (allTasks[i].id == copiedList[i].id) {
-          // log('is equal ${allTasks[i].id}  - ${allTasks[i].id == copiedList[i].id} - ${copiedList[i].id}');
-          allTasks.removeAt(i);
-        }
-      }
-      for (var i = 0; i < allTasks.length; i++) {
-        if (allTasks[i].id == copiedList[i].id) {
-          // log('is equal ${allTasks[i].id}  - ${allTasks[i].id == copiedList[i].id} - ${copiedList[i].id}');
-          allTasks.removeAt(i);
-        }
-      }
       log('userTasks ${userTasks.length}');
       log('assignedToTasks ${assignedToTasks.length}');
       log('participateInTasks ${participateInTasks.length}');
@@ -181,8 +167,6 @@ class TaskRepositoryImpl implements TaskRepository {
       await _taskDao.deleteAllTasks();
 
       for (int i = 0; i < allTasks.length; i++) {
-        log('i $i ${allTasks[i].id}');
-
         await _taskDao.insertTask(
           TaskTableCompanion(
             assignedTo: Value(allTasks.elementAt(i).assignedTo),
