@@ -47,22 +47,23 @@ class ColorPalleteWidget extends StatelessWidget {
                 shrinkWrap: true,
                 itemBuilder: ((_, i) {
                   return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 6),
-                      child: GestureDetector(
-                        onTap: () => colorController.changeSelectedIndex(i),
-                        child: Container(
-                          width: 48,
-                          height: 48,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: colors[i],
-                          ),
-                          child: Icon(
-                            (selectedIndex == i) ? Icons.done : null,
-                            color: Colors.white,
-                          ),
+                    padding: const EdgeInsets.symmetric(horizontal: 6),
+                    child: GestureDetector(
+                      onTap: () => colorController.changeSelectedIndex(i),
+                      child: Container(
+                        width: 48,
+                        height: 48,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: colors[i],
                         ),
-                      ));
+                        child: Icon(
+                          (selectedIndex == i) ? Icons.done : null,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  );
                 }),
               ),
             ),
