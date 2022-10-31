@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
@@ -79,12 +81,27 @@ class TaskSortController {
     }
     return sortedList;
   }
+// TODO finish
+  bool isTomorrow(DateTime date) {
+      log('difference  ${date.difference (monthPattern.format() == monthPattern.format() && date.day == now.day + 1)}');
+    log('short equal ${(monthPattern.format(date) == monthPattern.format(now) && date.day == now.day + 1)}');
+    if ((monthPattern.format(date) == monthPattern.format(now) &&
+            date.day == now.day + 1) ||
+        (date.year == now.year &&
+            date.day == now.day + 1 &&
+            date.month >= now.month + 1)) {
+      log('its tomorrow ');
+      return true;
+    } else {
+      log('not tomorrow ');
+      return false;
+    }
+  }
 
   String formatDay(DateTime date) {
     if (todayPattern.format(date) == todayPattern.format(now)) {
       return LocaleKeys.today.tr();
-    } else if (monthPattern.format(date) == monthPattern.format(now) &&
-        date.day == now.day + 1) {
+    } else if (isTomorrow(date)) {
       return LocaleKeys.tomorrow.tr();
     } else {
       return '';
