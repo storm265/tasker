@@ -66,7 +66,6 @@ class ForTextFieldWidget extends StatelessWidget {
                   ),
                   onChanged: (_) async => callback(),
                   onTap: () {
-                    addEditTaskController.userTextController.clear();
                     addEditTaskController.panelProvider.changePanelStatus(
                       newStatus: PanelStatus.showUserPanel,
                     );

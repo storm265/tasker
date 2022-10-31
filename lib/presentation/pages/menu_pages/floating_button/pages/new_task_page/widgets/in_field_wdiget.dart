@@ -47,7 +47,6 @@ class InFieldWidget extends StatelessWidget {
               ),
               onChanged: (_) async => callback(),
               onTap: () {
-                addEditTaskController.projectTextController.clear();
                 addEditTaskController.panelProvider.changePanelStatus(
                   newStatus: PanelStatus.showProjectPanel,
                 );
