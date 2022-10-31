@@ -11,6 +11,10 @@ import 'package:todo2/database/repository/notes_repository.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
+import 'package:todo2/database/scheme/checklists/checklist/checklist_dao.dart';
+import 'package:todo2/database/scheme/checklists/checklist/checklist_database.dart';
+import 'package:todo2/database/scheme/checklists/checklist_item/checklist_item_dao.dart';
+import 'package:todo2/database/scheme/checklists/checklist_item/checklist_item_database.dart';
 import 'package:todo2/database/scheme/notes/note_dao.dart';
 import 'package:todo2/database/scheme/notes/note_database.dart';
 import 'package:todo2/database/scheme/projects/project_dao.dart';
@@ -43,6 +47,8 @@ void setupDependencies() {
   final projectDao = ProjectDaoImpl(ProjectDatabase());
   final taskDao = TaskDaoImpl(TaskDatabase());
   final noteDao = NoteDaoImpl(NoteDatabase());
+  final checklistDao = CheckListDaoImpl(CheckListDatabase());
+  final checklistItemDao = CheckListItemDaoImpl(CheckListItemDatabase());
 
   getIt.registerFactory<FormValidatorController>(
     () => FormValidatorController(),
@@ -180,6 +186,9 @@ void setupDependencies() {
   getIt.registerSingleton<CheckListController>(
     CheckListController(
       checkListRepository: CheckListRepositoryImpl(
+        checklistDao: checklistDao,
+        checklistItemDao: checklistItemDao,
+        inMemoryCache: InMemoryCache(),
         checkListsDataSource: CheckListsDataSourceImpl(
           network: NetworkSource(),
           secureStorage: SecureStorageSource(),

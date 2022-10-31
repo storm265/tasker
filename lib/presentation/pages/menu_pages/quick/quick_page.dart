@@ -29,6 +29,11 @@ class _QuickPageState extends State<QuickPage> {
     final navigationController =
         NavigationInherited.of(context).navigationController;
     return AppbarWrapWidget(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async{
+         await   quickController.fetchNotes();
+        },
+      ),
       title: LocaleKeys.quick_notes.tr(),
       isRedAppBar: false,
       child: ValueListenableBuilder<List<dynamic>>(

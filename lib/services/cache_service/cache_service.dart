@@ -17,7 +17,7 @@ class InMemoryCache {
   }
   InMemoryCache._internal();
 
-  final _defaultMinutes = 2;
+  final _defaultMinutes = 1;
 
   Map<String, DateTime?> _lastFetched = {
     CacheKeys.tasks.type: null,

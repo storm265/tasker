@@ -34,6 +34,10 @@ Future<void> setCharlesSupportNetwork() async {
           HttpOverrides.global = httpProxy;
           break;
         default:
+          HttpProxy httpProxy = await HttpProxy.createHttpProxy();
+          httpProxy.host = "10.101.4.108";
+          httpProxy.port = "8888";
+          HttpOverrides.global = httpProxy;
       }
     }
   }

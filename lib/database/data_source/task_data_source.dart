@@ -73,7 +73,7 @@ class TaskDataSourceImpl implements TaskDataSource {
 
   final _userTasks = '/user-tasks';
 
-  final _assignedToTasks = '/asigned-tasks';
+  final _assignedToTasks = '/assigned-tasks';
 
   final _participateInTasks = '/participate-in-tasks';
 

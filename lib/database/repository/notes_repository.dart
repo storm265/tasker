@@ -60,7 +60,7 @@ class NoteRepositoryImpl implements NoteRepository {
     List<NotesModel> notes = [];
     if (_inMemoryCache.shouldFetchOnlineData(
         date: DateTime.now(), key: CacheKeys.quick)) {
-      log('online');
+      log('online notes');
 
       final response = await _noteDataSource.fetchUserNotes();
 
@@ -79,7 +79,7 @@ class NoteRepositoryImpl implements NoteRepository {
 
       return notes;
     } else {
-      log('offline');
+      log('offline notes');
       final list = await _noteDao.getNotes();
       for (int i = 0; i < list.length; i++) {
         notes.add(NotesModel.fromJson(list[i].toJson()));

@@ -151,10 +151,11 @@ class TaskRepositoryImpl implements TaskRepository {
       final userTasks = await fetchUserTasks();
       final assignedToTasks = await fetchAssignedToTasks();
       final participateInTasks = await fetchParticipateInTasks();
-      final tasks = [...assignedToTasks, ...userTasks, ...participateInTasks];
+      final allTasks = [...assignedToTasks, ...userTasks, ...participateInTasks];
 
       await _taskDao.deleteAllTasks();
-      for (int i = 0; i < tasks.length; i++) {
+      log('allTasks len ${allTasks.length}');
+      for (int i = 0; i < allTasks.length; i++) {
         await _taskDao.insertTask(
           TaskTableCompanion(
             assignedTo: Value(userTasks[i].assignedTo),
@@ -170,7 +171,7 @@ class TaskRepositoryImpl implements TaskRepository {
         );
       }
 
-      return tasks;
+      return allTasks;
     } else {
       log('locally fetch tasks');
 

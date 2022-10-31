@@ -1,6 +1,18 @@
+import 'dart:developer';
+
+import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/checklists_data_source.dart';
+import 'package:todo2/database/database_scheme/check_list_items_scheme.dart';
+import 'package:todo2/database/database_scheme/checklists_scheme.dart';
+import 'package:todo2/database/model/checklist_item_model.dart';
 import 'package:todo2/database/model/checklist_model.dart';
+import 'package:todo2/database/scheme/checklists/checklist/checklist_dao.dart';
+import 'package:todo2/database/scheme/checklists/checklist/checklist_database.dart';
+import 'package:todo2/database/scheme/checklists/checklist_item/checklist_item_dao.dart';
+import 'package:todo2/database/scheme/checklists/checklist_item/checklist_item_database.dart';
+import 'package:todo2/services/cache_service/cache_service.dart';
+import 'package:todo2/utils/extensions/color_extension/color_string_extension.dart';
 
 abstract class CheckListRepository {
   Future<CheckListModel> createCheckList({
@@ -26,10 +38,20 @@ abstract class CheckListRepository {
 }
 
 class CheckListRepositoryImpl extends CheckListRepository {
-  CheckListRepositoryImpl(
-      {required CheckListsDataSourceImpl checkListsDataSource})
-      : _checkListsDataSource = checkListsDataSource;
+  CheckListRepositoryImpl({
+    required CheckListsDataSourceImpl checkListsDataSource,
+    required CheckListDao checklistDao,
+    required CheckListItemDao checklistItemDao,
+    required InMemoryCache inMemoryCache,
+  })  : _checkListsDataSource = checkListsDataSource,
+        _checklistDao = checklistDao,
+        _checklistItemDao = checklistItemDao,
+        _inMemoryCache = inMemoryCache;
+
   final CheckListsDataSourceImpl _checkListsDataSource;
+  final InMemoryCache _inMemoryCache;
+  final CheckListDao _checklistDao;
+  final CheckListItemDao _checklistItemDao;
 
   @override
   Future<CheckListModel> createCheckList({
@@ -58,16 +80,82 @@ class CheckListRepositoryImpl extends CheckListRepository {
   Future<void> deleteCheckListItems({required List<String> items}) async =>
       await _checkListsDataSource.deleteCheckListItems(items: items);
 
-// TODO dont save key
   @override
   Future<List<CheckListModel>> fetchAllCheckLists() async {
-    final response = await _checkListsDataSource.fetchAllCheckLists();
-    List<CheckListModel> statsModels = [];
-    for (int i = 0; i < response.length; i++) {
-      statsModels.add(CheckListModel.fromJson(response[i]));
-    }
+    final List<Map<String, dynamic>> emptyList = [];
+    List<CheckListModel> checklistModels = [];
+    if (_inMemoryCache.shouldFetchOnlineData(
+      date: DateTime.now(),
+      key: CacheKeys.quick,
+      isSaveKey: false,
+    )) {
+      log('online checklist');
 
-    return statsModels;
+      final response = await _checkListsDataSource.fetchAllCheckLists();
+      await _checklistDao.deleteAllChecklists();
+      await _checklistItemDao.deleteAllChecklistItems();
+
+      for (int i = 0; i < response.length; i++) {
+        checklistModels.add(CheckListModel.fromJson(response[i]));
+        await _checklistDao.insertChecklist(
+          CheckListTableCompanion(
+            id: Value(checklistModels[i].id),
+            ownerId: Value(checklistModels[i].ownerId),
+            title: Value(checklistModels[i].title),
+            color: Value(checklistModels[i].color.toString().toStringColor()),
+            createdAt: Value(checklistModels[i].createdAt.toIso8601String()),
+          ),
+        );
+      }
+
+      for (var i = 0; i < checklistModels.length; i++) {
+        for (var element in checklistModels.elementAt(i).items) {
+          await _checklistItemDao.insertChecklistItem(
+            CheckListItemTableCompanion(
+              checklistId: Value(element.checklistId ?? ''),
+              content: Value(element.content),
+              isCompleted: Value(element.isCompleted),
+              id: Value(element.id ?? ''),
+              createdAt: Value(element.createdAt?.toIso8601String() ?? ''),
+            ),
+          );
+        }
+      }
+      return checklistModels;
+    } else {
+      log('offline checklist ');
+      final checklists = await _checklistDao.getChecklists();
+      final items = await _checklistItemDao.getChecklistItems();
+      log('get offline items len ${items.length}');
+
+      for (int i = 0; i < checklists.length; i++) {
+        log('i $i');
+        List<Map<String, dynamic>> mappedItems = [];
+        final listItemsById = items
+            .where((element) => element.checklistId == checklists[i].id)
+            .toList();
+        for (int j = 0; j < listItemsById.length; j++) {
+          log('j $j ');
+          mappedItems.add(listItemsById[j].toJson());
+        }
+        log('mapped items len ${mappedItems.length}');
+
+        checklistModels.add(
+          CheckListModel.fromJson({
+            CheckListsScheme.id: checklists[i].id,
+            CheckListsScheme.title: checklists[i].title,
+            CheckListsScheme.ownerId: checklists[i].ownerId,
+            CheckListsScheme.color: checklists[i].color,
+            CheckListsScheme.createdAt: checklists[i].createdAt,
+            CheckListsScheme.items:
+                listItemsById.isEmpty ? emptyList : mappedItems,
+          }),
+        );
+      }
+      log('checklist models ${checklistModels.length}');
+
+      return checklistModels;
+    }
   }
 
   @override

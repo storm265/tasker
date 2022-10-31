@@ -12,13 +12,13 @@ class CheckListItemTableData extends DataClass
   final String id;
   final String content;
   final bool isCompleted;
-  final String? checklistId;
+  final String checklistId;
   final String createdAt;
   const CheckListItemTableData(
       {required this.id,
       required this.content,
       required this.isCompleted,
-      this.checklistId,
+      required this.checklistId,
       required this.createdAt});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -26,9 +26,7 @@ class CheckListItemTableData extends DataClass
     map['id'] = Variable<String>(id);
     map['content'] = Variable<String>(content);
     map['is_completed'] = Variable<bool>(isCompleted);
-    if (!nullToAbsent || checklistId != null) {
-      map['checklist_id'] = Variable<String>(checklistId);
-    }
+    map['checklist_id'] = Variable<String>(checklistId);
     map['created_at'] = Variable<String>(createdAt);
     return map;
   }
@@ -38,9 +36,7 @@ class CheckListItemTableData extends DataClass
       id: Value(id),
       content: Value(content),
       isCompleted: Value(isCompleted),
-      checklistId: checklistId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(checklistId),
+      checklistId: Value(checklistId),
       createdAt: Value(createdAt),
     );
   }
@@ -52,7 +48,7 @@ class CheckListItemTableData extends DataClass
       id: serializer.fromJson<String>(json['id']),
       content: serializer.fromJson<String>(json['content']),
       isCompleted: serializer.fromJson<bool>(json['is_completed']),
-      checklistId: serializer.fromJson<String?>(json['checklist_id']),
+      checklistId: serializer.fromJson<String>(json['checklist_id']),
       createdAt: serializer.fromJson<String>(json['created_at']),
     );
   }
@@ -63,7 +59,7 @@ class CheckListItemTableData extends DataClass
       'id': serializer.toJson<String>(id),
       'content': serializer.toJson<String>(content),
       'is_completed': serializer.toJson<bool>(isCompleted),
-      'checklist_id': serializer.toJson<String?>(checklistId),
+      'checklist_id': serializer.toJson<String>(checklistId),
       'created_at': serializer.toJson<String>(createdAt),
     };
   }
@@ -72,13 +68,13 @@ class CheckListItemTableData extends DataClass
           {String? id,
           String? content,
           bool? isCompleted,
-          Value<String?> checklistId = const Value.absent(),
+          String? checklistId,
           String? createdAt}) =>
       CheckListItemTableData(
         id: id ?? this.id,
         content: content ?? this.content,
         isCompleted: isCompleted ?? this.isCompleted,
-        checklistId: checklistId.present ? checklistId.value : this.checklistId,
+        checklistId: checklistId ?? this.checklistId,
         createdAt: createdAt ?? this.createdAt,
       );
   @override
@@ -112,7 +108,7 @@ class CheckListItemTableCompanion
   final Value<String> id;
   final Value<String> content;
   final Value<bool> isCompleted;
-  final Value<String?> checklistId;
+  final Value<String> checklistId;
   final Value<String> createdAt;
   const CheckListItemTableCompanion({
     this.id = const Value.absent(),
@@ -125,11 +121,12 @@ class CheckListItemTableCompanion
     required String id,
     required String content,
     required bool isCompleted,
-    this.checklistId = const Value.absent(),
+    required String checklistId,
     required String createdAt,
   })  : id = Value(id),
         content = Value(content),
         isCompleted = Value(isCompleted),
+        checklistId = Value(checklistId),
         createdAt = Value(createdAt);
   static Insertable<CheckListItemTableData> custom({
     Expression<String>? id,
@@ -151,7 +148,7 @@ class CheckListItemTableCompanion
       {Value<String>? id,
       Value<String>? content,
       Value<bool>? isCompleted,
-      Value<String?>? checklistId,
+      Value<String>? checklistId,
       Value<String>? createdAt}) {
     return CheckListItemTableCompanion(
       id: id ?? this.id,
@@ -224,8 +221,8 @@ class $CheckListItemTableTable extends CheckListItemTable
       const VerificationMeta('checklistId');
   @override
   late final GeneratedColumn<String> checklistId = GeneratedColumn<String>(
-      'checklist_id', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
+      'checklist_id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
   final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
   @override
   late final GeneratedColumn<String> createdAt = GeneratedColumn<String>(
@@ -268,6 +265,8 @@ class $CheckListItemTableTable extends CheckListItemTable
           _checklistIdMeta,
           checklistId.isAcceptableOrUnknown(
               data['checklist_id']!, _checklistIdMeta));
+    } else if (isInserting) {
+      context.missing(_checklistIdMeta);
     }
     if (data.containsKey('created_at')) {
       context.handle(_createdAtMeta,
@@ -291,7 +290,7 @@ class $CheckListItemTableTable extends CheckListItemTable
       isCompleted: attachedDatabase.options.types
           .read(DriftSqlType.bool, data['${effectivePrefix}is_completed'])!,
       checklistId: attachedDatabase.options.types
-          .read(DriftSqlType.string, data['${effectivePrefix}checklist_id']),
+          .read(DriftSqlType.string, data['${effectivePrefix}checklist_id'])!,
       createdAt: attachedDatabase.options.types
           .read(DriftSqlType.string, data['${effectivePrefix}created_at'])!,
     );
