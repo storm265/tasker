@@ -3,7 +3,7 @@ import 'package:todo2/database/database_scheme/task_schemes/task_scheme.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
 import 'package:todo2/database/model/task_models/task_attachments_model.dart';
 
-class TaskModel {
+class TaskModel   {
   final String id;
   final String title;
   final DateTime dueDate;
@@ -101,4 +101,5 @@ class TaskModel {
       TaskScheme.members: members,
     };
   }
+
 }

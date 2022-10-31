@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:todo2/database/database_scheme/checklists_scheme.dart';
 import 'package:todo2/database/model/checklist_item_model.dart';

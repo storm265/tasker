@@ -8,7 +8,6 @@ import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/database/scheme/tasks/task_dao.dart';
 import 'package:todo2/database/scheme/tasks/task_database.dart';
 import 'package:todo2/services/cache_service/cache_service.dart';
-import 'package:todo2/services/error_service/error_service.dart';
 
 abstract class TaskRepository<T> {
   Future<TaskModel> createTask({
@@ -93,20 +92,16 @@ class TaskRepositoryImpl implements TaskRepository {
     List<Map<String, dynamic>>? attachments,
     List<String>? members,
   }) async {
-    try {
-      final response = await _taskDataSource.createTask(
-        title: title,
-        description: description,
-        assignedTo: assignedTo,
-        projectId: projectId,
-        dueDate: dueDate,
-        attachments: attachments,
-        members: members,
-      );
-      return TaskModel.fromJson(response);
-    } catch (e) {
-      throw Failure(e.toString());
-    }
+    final response = await _taskDataSource.createTask(
+      title: title,
+      description: description,
+      assignedTo: assignedTo,
+      projectId: projectId,
+      dueDate: dueDate,
+      attachments: attachments,
+      members: members,
+    );
+    return TaskModel.fromJson(response);
   }
 
   @override
@@ -148,25 +143,55 @@ class TaskRepositoryImpl implements TaskRepository {
     if (_inMemoryCache.shouldFetchOnlineData(
         date: DateTime.now(), key: CacheKeys.tasks)) {
       log('online fetch tasks');
+
       final userTasks = await fetchUserTasks();
+
       final assignedToTasks = await fetchAssignedToTasks();
+
       final participateInTasks = await fetchParticipateInTasks();
-      final allTasks = [...assignedToTasks, ...userTasks, ...participateInTasks];
+
+      List<TaskModel> allTasks = [
+        ...assignedToTasks,
+        ...userTasks,
+        ...participateInTasks
+      ]
+        ..toSet()
+        ..toList();
+             log('allTasks before clean len ${allTasks.length}');
+      //WTF 
+      final copiedList = allTasks;
+      for (var i = 0; i < allTasks.length; i++) {
+        if (allTasks[i].id == copiedList[i].id) {
+          // log('is equal ${allTasks[i].id}  - ${allTasks[i].id == copiedList[i].id} - ${copiedList[i].id}');
+          allTasks.removeAt(i);
+        }
+      }   for (var i = 0; i < allTasks.length; i++) {
+        if (allTasks[i].id == copiedList[i].id) {
+          // log('is equal ${allTasks[i].id}  - ${allTasks[i].id == copiedList[i].id} - ${copiedList[i].id}');
+          allTasks.removeAt(i);
+        }
+      }
+      log('userTasks ${userTasks.length}');
+      log('assignedToTasks ${assignedToTasks.length}');
+      log('participateInTasks ${participateInTasks.length}');
+      log('allTasks len ${allTasks.length}');
 
       await _taskDao.deleteAllTasks();
-      log('allTasks len ${allTasks.length}');
+
       for (int i = 0; i < allTasks.length; i++) {
+        log('i $i ${allTasks[i].id}');
+
         await _taskDao.insertTask(
           TaskTableCompanion(
-            assignedTo: Value(userTasks[i].assignedTo),
-            createdAt: Value(userTasks[i].createdAt.toIso8601String()),
-            description: Value(userTasks[i].description),
-            dueDate: Value(userTasks[i].dueDate.toIso8601String()),
-            id: Value(userTasks[i].id),
-            isCompleted: Value(userTasks[i].isCompleted),
-            ownerId: Value(userTasks[i].ownerId),
-            projectId: Value(userTasks[i].projectId),
-            title: Value(userTasks[i].title),
+            assignedTo: Value(allTasks.elementAt(i).assignedTo),
+            createdAt: Value(allTasks.elementAt(i).createdAt.toIso8601String()),
+            description: Value(allTasks.elementAt(i).description),
+            dueDate: Value(allTasks.elementAt(i).dueDate.toIso8601String()),
+            id: Value(allTasks.elementAt(i).id),
+            isCompleted: Value(allTasks.elementAt(i).isCompleted),
+            ownerId: Value(allTasks.elementAt(i).ownerId),
+            projectId: Value(allTasks.elementAt(i).projectId),
+            title: Value(allTasks.elementAt(i).title),
           ),
         );
       }
@@ -176,7 +201,7 @@ class TaskRepositoryImpl implements TaskRepository {
       log('locally fetch tasks');
 
       final list = await _taskDao.getTasks();
-      List<TaskModel> tasks = [];
+      final List<TaskModel> tasks = [];
       for (int i = 0; i < list.length; i++) {
         tasks.add(TaskModel.fromJson(list[i].toJson()));
       }
