@@ -90,6 +90,7 @@ class ProjectController extends ChangeNotifier with ConnectionCheckerMixin {
         message: LocaleKeys.no_internet.tr(),
         context: context,
       );
+      setClickedValue(true);
     }
   }
 

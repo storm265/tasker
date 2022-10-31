@@ -157,15 +157,17 @@ class TaskRepositoryImpl implements TaskRepository {
       ]
         ..toSet()
         ..toList();
-             log('allTasks before clean len ${allTasks.length}');
-      //WTF 
+      log('allTasks before clean len ${allTasks.length}');
+      //TODO WTF
       final copiedList = allTasks;
+
       for (var i = 0; i < allTasks.length; i++) {
         if (allTasks[i].id == copiedList[i].id) {
           // log('is equal ${allTasks[i].id}  - ${allTasks[i].id == copiedList[i].id} - ${copiedList[i].id}');
           allTasks.removeAt(i);
         }
-      }   for (var i = 0; i < allTasks.length; i++) {
+      }
+      for (var i = 0; i < allTasks.length; i++) {
         if (allTasks[i].id == copiedList[i].id) {
           // log('is equal ${allTasks[i].id}  - ${allTasks[i].id == copiedList[i].id} - ${copiedList[i].id}');
           allTasks.removeAt(i);
