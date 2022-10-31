@@ -31,8 +31,8 @@ class _DetailedPageState extends State<DetailedPage>
     secureStorage: SecureStorageSource(),
   );
 
-  final _taskSortControllerMonth = TaskSortController();
-  final _taskSortControllerToday = TaskSortController();
+  final _taskSortControllerMonth = TaskSortProvider();
+  final _taskSortControllerToday = TaskSortProvider();
 
   @override
   void initState() {

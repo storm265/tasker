@@ -17,7 +17,7 @@ import 'package:todo2/utils/assets_path.dart';
 class TaskListWidget extends StatefulWidget {
   final TaskMode calendarWorkMode;
   final TaskList taskController;
-  final TaskSortController taskSortController;
+  final TaskSortProvider taskSortController;
   const TaskListWidget({
     super.key,
     this.calendarWorkMode = TaskMode.selectedDay,

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
@@ -19,13 +17,14 @@ enum TasksSortMode {
 final monthPattern = DateFormat('yyyy-MM');
 final todayPattern = DateFormat('yyyy-MM-dd');
 
-// LocaleKeys.today.tr()
-// {LocaleKeys.tomorrow.tr()
-class TaskSortController {
-  final now = DateTime.now();
+class TaskSortProvider {
+  final _now = DateTime.now();
 
   List<TaskModel> sortList(
-      TaskMode calendarMode, List<TaskModel> list, DateTime? selectedDay) {
+    TaskMode calendarMode,
+    List<TaskModel> list,
+    DateTime? selectedDay,
+  ) {
     switch (calendarMode) {
       case TaskMode.fullMonth:
         return list
@@ -34,7 +33,7 @@ class TaskSortController {
                   monthPattern.format(element.dueDate) ==
                   monthPattern.format(
                     DateTime.utc(
-                      now.year,
+                      _now.year,
                       selectedDay!.month,
                     ),
                   ),
@@ -49,20 +48,19 @@ class TaskSortController {
       case TaskMode.todayTomorrow:
         return list
             .where((element) =>
-                todayPattern.format(element.dueDate) ==
-                    todayPattern.format(now) &&
-                monthPattern.format(element.dueDate) ==
-                    monthPattern
-                        .format(DateTime.utc(now.year, now.month, now.day + 1)))
+                _calculateDifferenceInDays(element.dueDate) == 0 &&
+                _calculateDifferenceInDays(element.dueDate) == 1)
+
             .toList();
     }
   }
 
-  List<TaskModel> sortedList = [];
   List<TaskModel> taskModeSort({
     required List<TaskModel> tasks,
     TasksSortMode taskSortMode = TasksSortMode.all,
   }) {
+    List<TaskModel> sortedList = [];
+
     switch (taskSortMode) {
       case TasksSortMode.all:
         return tasks;
@@ -82,27 +80,21 @@ class TaskSortController {
     return sortedList;
   }
 
-// TODO finish
-  bool isTomorrow(DateTime date) {
-    log('difference  $now ::: $date');
-    log('difference inDays ${date.difference(now).inDays}');
-    log('short equal ${(monthPattern.format(date) == monthPattern.format(now) && date.day == now.day + 1)}');
-    if (now.difference(date).inDays == 1) {
-      log('its tomorrow ');
-      return true;
-    } else {
-      log('not tomorrow ');
-      return false;
-    }
+  int _calculateDifferenceInDays(DateTime date) {
+    return DateTime(date.year, date.month, date.day)
+        .difference(DateTime(_now.year, _now.month, _now.day))
+        .inDays;
   }
 
   String formatDay(DateTime date) {
-    if (todayPattern.format(date) == todayPattern.format(now)) {
-      return LocaleKeys.today.tr();
-    } else if (isTomorrow(date)) {
-      return LocaleKeys.tomorrow.tr();
-    } else {
-      return '';
+    final result = _calculateDifferenceInDays(date);
+    switch (result) {
+      case 0:
+        return LocaleKeys.today.tr();
+      case 1:
+        return LocaleKeys.tomorrow.tr();
+      default:
+        return '';
     }
   }
 }
