@@ -6,7 +6,6 @@ import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/controller/menu_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/add_project_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/project_item_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/menu/widgets/project_shimmer_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/activity_indicator_widget.dart';
 import 'package:todo2/services/dependency_service/dependency_service.dart';
@@ -66,21 +65,17 @@ class MenuPageState extends State<MenuPage> {
                       crossAxisSpacing: 5.0,
                       mainAxisSpacing: 5.0,
                     ),
-                    itemBuilder: (_, i) {
-                      return projectsList.isEmpty
-                          ? ShimmerProjectItem()
-                          : ValueListenableBuilder<List<ProjectStatsModel>>(
-                              valueListenable: _projectController.projectStats,
-                              builder: (_, tasksNumber, __) =>
-                                  ProjectItemWidget(
-                                projectController: _projectController,
-                                selectedModel: projectsList[i],
-                                taskLength: tasksNumber.isEmpty
-                                    ? 0
-                                    : tasksNumber[i].tasksNumber,
-                              ),
-                            );
-                    },
+                    itemBuilder: (_, i) =>
+                        ValueListenableBuilder<List<ProjectStatsModel>>(
+                      valueListenable: _projectController.projectStats,
+                      builder: (_, tasksNumber, __) => ProjectItemWidget(
+                        projectController: _projectController,
+                        selectedModel: projectsList[i],
+                        taskLength: tasksNumber.isEmpty
+                            ? 0
+                            : tasksNumber[i].tasksNumber,
+                      ),
+                    ),
                   )),
           ),
         ),
