@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
@@ -73,7 +71,6 @@ class SignInController extends ChangeNotifier with ConnectionCheckerMixin {
       } finally {
         changeSignInButtonStatus(isActive: true);
       }
-      log('empty');
     } else {
       MessageService.displaySnackbar(
         message: LocaleKeys.no_internet.tr(),

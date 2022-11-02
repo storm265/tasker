@@ -24,8 +24,11 @@ class ConfirmButtonWidget extends StatelessWidget {
     return SizedBox(
       width: width,
       height: height,
-      child: CupertinoButton(
-        color: color,
+      child: OutlinedButton(
+        style: OutlinedButton.styleFrom(
+          backgroundColor: color,
+          side: BorderSide(width: 5.0, color: color),
+        ),
         onPressed: onPressed,
         child: Text(
           title,
