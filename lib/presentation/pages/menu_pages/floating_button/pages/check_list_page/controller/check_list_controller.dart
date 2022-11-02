@@ -180,8 +180,8 @@ class CheckListController extends ChangeNotifier with ConnectionCheckerMixin {
     checkBoxItems.value.add({
       CheckListItemsScheme.id: null,
       CheckListItemsScheme.content: checkBoxItems.value.isEmpty
-          ? 'List item $index'
-          : 'List item ${index + 1}',
+          ? '${LocaleKeys.list_item.tr()} $index'
+          : '${LocaleKeys.list_item.tr()} ${index + 1}',
       CheckListItemsScheme.isCompleted: false,
     });
     checkBoxItems.notifyListeners();
