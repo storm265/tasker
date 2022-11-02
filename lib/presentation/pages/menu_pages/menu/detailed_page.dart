@@ -16,7 +16,6 @@ import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/secure_storage_service.dart';
 import 'package:todo2/utils/assets_path.dart';
 
-
 class DetailedPage extends StatefulWidget {
   const DetailedPage({Key? key}) : super(key: key);
   @override

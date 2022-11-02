@@ -8,7 +8,7 @@ class DetailedController extends TaskList {
     required super.calendarProvider,
   });
 
-  Future<TaskModel> fetchProjectTasks(String projectId) async {
+  Future<List<TaskModel>> fetchProjectTasks(String projectId) async {
     return await taskRepository.fetchProjectTasks(projectId: projectId);
   }
 
@@ -17,7 +17,7 @@ class DetailedController extends TaskList {
     required VoidCallback callback,
     String? projectId,
   }) async {
-    tasks.value.add(await fetchProjectTasks(projectId ?? ''));
+    tasks.value = await fetchProjectTasks(projectId ?? '');
     tasks.notifyListeners();
     generateCalendarEvents();
     callback();

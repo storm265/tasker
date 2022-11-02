@@ -35,7 +35,7 @@ abstract class TaskRepository<T> {
 
   Future<TaskModel> fetchOneTask({required String projectId});
 
-  Future<TaskModel> fetchProjectTasks({required String projectId});
+  Future<List<TaskModel>> fetchProjectTasks({required String projectId});
 
   Future<List<TaskModel>> fetchUserTasks();
 
@@ -157,7 +157,6 @@ class TaskRepositoryImpl implements TaskRepository {
       ]
         ..toSet()
         ..toList();
-   
 
       log('userTasks ${userTasks.length}');
       log('assignedToTasks ${assignedToTasks.length}');
@@ -197,11 +196,16 @@ class TaskRepositoryImpl implements TaskRepository {
   }
 
   @override
-  Future<TaskModel> fetchProjectTasks({required String projectId}) async {
+  Future<List<TaskModel>> fetchProjectTasks({required String projectId}) async {
     final response =
         await _taskDataSource.fetchProjectTasks(projectId: projectId);
-    final listModel = response.map((json) => TaskModel.fromJson(json)).toList();
-    return listModel[0];
+    if (response.isEmpty) {
+      return [];
+    } else {
+      List<TaskModel> listModel =
+          response.map((json) => TaskModel.fromJson(json)).toList();
+      return listModel;
+    }
   }
 
   @override
