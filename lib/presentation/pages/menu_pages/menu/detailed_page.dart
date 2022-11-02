@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:todo2/presentation/pages/menu_pages/menu/controller/detailed_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/project_item_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/controller/task_list.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/task_sort_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/dialogs/tasks_filter_dialog.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/calendar_lib/controller.dart';
@@ -15,7 +15,8 @@ import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapp.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/secure_storage_service.dart';
 import 'package:todo2/utils/assets_path.dart';
-// TODO finish it 
+
+
 class DetailedPage extends StatefulWidget {
   const DetailedPage({Key? key}) : super(key: key);
   @override
@@ -26,7 +27,7 @@ class _DetailedPageState extends State<DetailedPage>
     with SingleTickerProviderStateMixin {
   late final _tabController = TabController(length: 2, vsync: this);
 
-  final _taskController = TaskList(
+  final _taskController = DetailedController(
     calendarProvider: CalendarProvider(),
     secureStorage: SecureStorageSource(),
   );

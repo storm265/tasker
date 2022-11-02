@@ -17,8 +17,8 @@ class DetailedController extends TaskList {
     required VoidCallback callback,
     String? projectId,
   }) async {
-    await getUserId();
-    await fetchProjectTasks(projectId ?? '');
+    tasks.value.add(await fetchProjectTasks(projectId ?? ''));
+    tasks.notifyListeners();
     generateCalendarEvents();
     callback();
   }
