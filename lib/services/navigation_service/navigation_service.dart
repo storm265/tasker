@@ -57,8 +57,7 @@ class NavigationService {
   ) async {
     switch (page) {
       case Pages.welcome:
-        await Navigator.pushNamedAndRemoveUntil(
-            context, Pages.welcome.type, ((_) => false));
+        await Navigator.pushNamed(context, Pages.welcome.type);
         break;
 
       case Pages.navigationReplacement:

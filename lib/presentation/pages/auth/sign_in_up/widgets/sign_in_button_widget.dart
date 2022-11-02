@@ -17,14 +17,8 @@ class SignButtonWidget extends StatelessWidget {
       alignment: Alignment.bottomCenter,
       child: TextButton(
         onPressed: () async => isSignInPage
-            ? await NavigationService.navigateTo(
-                context,
-                Pages.signInReplacement,
-              )
-            : await NavigationService.navigateTo(
-                context,
-                Pages.signUpReplacement,
-              ),
+            ? await NavigationService.navigateTo(context, Pages.signIn)
+            : await NavigationService.navigateTo(context, Pages.signIn),
         child: Text(
           buttonText,
           style: const TextStyle(

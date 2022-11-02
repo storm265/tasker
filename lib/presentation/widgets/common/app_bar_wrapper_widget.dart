@@ -34,6 +34,7 @@ class AppbarWrapWidget extends StatelessWidget with PreferredSizeWidget {
   final double preferredHeight;
   final bool? isWhite;
   final bool? isPopFromNavBar;
+  final bool isCustomRoute;
   final Pages navRoute;
   final bool? resizeToAvoidBottomInset;
   const AppbarWrapWidget({
@@ -50,6 +51,7 @@ class AppbarWrapWidget extends StatelessWidget with PreferredSizeWidget {
     this.isRedAppBar = true,
     this.isWhite,
     this.isPopFromNavBar,
+    this.isCustomRoute = false,
     this.navRoute = Pages.tasks,
     this.resizeToAvoidBottomInset,
   }) : super(key: key);
@@ -78,11 +80,16 @@ class AppbarWrapWidget extends StatelessWidget with PreferredSizeWidget {
                         padding: const EdgeInsets.only(left: 10),
                         child: GestureDetector(
                           onTap: () async {
-                            if (isPopFromNavBar == true) {
-                              FocusScope.of(context).unfocus();
-                              await navigationController.moveToPage(navRoute);
+                            if (!isCustomRoute) {
+                              if (isPopFromNavBar == true) {
+                                FocusScope.of(context).unfocus();
+                                await navigationController.moveToPage(navRoute);
+                              } else {
+                                Navigator.pop(context);
+                              }
                             } else {
-                              Navigator.pop(context);
+                              
+                          await     NavigationService.navigateTo(context, navRoute);
                             }
                           },
                           child: Icon(

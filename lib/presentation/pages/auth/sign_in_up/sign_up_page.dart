@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
@@ -14,6 +16,7 @@ import 'package:todo2/presentation/pages/auth/widgets/title_widget.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/activity_indicator_widget.dart';
 import 'package:todo2/services/dependency_service/dependency_service.dart';
+import 'package:todo2/services/navigation_service/navigation_service.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -31,6 +34,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   void dispose() {
+    log('SignUpPage disposed');
     _emailController.dispose();
     _passwordController.dispose();
     _usernameController.dispose();
@@ -43,6 +47,8 @@ class _SignUpPageState extends State<SignUpPage> {
     return AppbarWrapWidget(
       showLeadingButton: true,
       isRedAppBar: false,
+      isCustomRoute: true,
+      navRoute: Pages.welcome,
       child: DisabledGlowWidget(
         child: SingleChildScrollView(
           child: UnfocusWidget(
