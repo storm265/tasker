@@ -101,17 +101,6 @@ void setupDependencies() {
   getIt.registerFactory<AddEditTaskController>(
     () => AddEditTaskController(
       memberProvider: MemberProvider(),
-      projectController: ProjectController(
-        colorPalleteProvider: ColorPalleteProvider(),
-        projectsRepository: ProjectRepositoryImpl(
-          inMemoryCache: InMemoryCache(),
-          projectDao: projectDao,
-          projectDataSource: ProjectUserDataImpl(
-            secureStorageService: SecureStorageSource(),
-            network: NetworkSource(),
-          ),
-        ),
-      ),
       panelProvider: PanelProvider(),
       taskValidator: TaskValidator(),
       attachmentsProvider: AttachmentsProvider(

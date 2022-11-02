@@ -8,7 +8,7 @@ import 'package:todo2/presentation/pages/menu_pages/task/controller/task_list.da
 import 'package:todo2/presentation/pages/auth/widgets/unfocus_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/description_widgets/description_box_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/confirm_button.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/controller/access_token_mixin.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/secure_mixin.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/attachments/comment_attachment_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/attachments/task_attachament_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/controller/view_task_controller.dart';
@@ -20,7 +20,7 @@ import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/services/dependency_service/dependency_service.dart';
 
-class ViewTask extends StatefulWidget with AccessTokenMixin {
+class ViewTask extends StatefulWidget with SecureMixin {
   final TaskList taskController;
   final TaskModel pickedTask;
   const ViewTask({

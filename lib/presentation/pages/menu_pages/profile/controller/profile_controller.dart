@@ -9,7 +9,7 @@ import 'package:todo2/database/repository/notes_repository.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/controller/access_token_mixin.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/secure_mixin.dart';
 import 'package:todo2/presentation/providers/file_provider.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
@@ -17,7 +17,7 @@ import 'package:todo2/services/network_service/connection_checker.dart';
 import 'package:todo2/services/secure_storage_service.dart';
 
 class ProfileController extends ChangeNotifier
-    with AccessTokenMixin, ConnectionCheckerMixin {
+    with SecureMixin, ConnectionCheckerMixin {
   final SecureStorageSource _secureStorageService;
   final FileProvider fileProvider;
   final UserProfileRepositoryImpl userProfileRepository;

@@ -3,13 +3,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/add_task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/panel_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/circle_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/controller/base_tasks.dart';
 import 'package:todo2/presentation/widgets/common/activity_indicator_widget.dart';
 
 class ProjectPanelPickerWidget extends StatelessWidget {
-  final BaseTasks addEditTaskController;
+  final AddEditTaskController addEditTaskController;
   const ProjectPanelPickerWidget({
     Key? key,
     required this.addEditTaskController,
@@ -18,7 +18,7 @@ class ProjectPanelPickerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder<List<ProjectModel>>(
       initialData: const [],
-      future: addEditTaskController.projectController.searchProject(
+      future: addEditTaskController.searchProject(
           title: addEditTaskController.projectTextController.text),
       builder: (context, AsyncSnapshot<List<ProjectModel>> snapshot) {
         log('snapshot.data ${snapshot.data}');

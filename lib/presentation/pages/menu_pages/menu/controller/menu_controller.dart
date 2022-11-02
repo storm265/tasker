@@ -35,6 +35,7 @@ class ProjectController extends ChangeNotifier with ConnectionCheckerMixin {
 
   ProjectModel? selectedModel;
 
+
   void pickProject({required ProjectModel pickedModel}) {
     selectedModel = pickedModel;
     titleController.text = pickedModel.title;
@@ -94,6 +95,8 @@ class ProjectController extends ChangeNotifier with ConnectionCheckerMixin {
     }
   }
 
+
+
   Future<void> fetchProjectStats() async {
     projectStats.value = await _projectsRepository.fetchProjectStats();
     projectStats.notifyListeners();
@@ -115,9 +118,6 @@ class ProjectController extends ChangeNotifier with ConnectionCheckerMixin {
     projects.value.add(model);
     projects.notifyListeners();
   }
-
-  Future<List<ProjectModel>> searchProject({required String title}) async =>
-      _projectsRepository.searchProject(title: title);
 
   Future<void> updateProject({required ProjectModel projectModel}) async {
     final updatedModel = await _projectsRepository.updateProject(

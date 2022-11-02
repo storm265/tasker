@@ -2,24 +2,25 @@ import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
+import 'package:todo2/database/model/project_models/projects_model.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/controller/access_token_mixin.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/secure_mixin.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/base_tasks.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/network_service/connection_checker.dart';
+import 'package:todo2/services/secure_storage_service.dart';
 
 class AddEditTaskController extends BaseTasks
-    with AccessTokenMixin, ConnectionCheckerMixin {
+    with SecureMixin, ConnectionCheckerMixin {
   final UserProfileRepository _userRepository;
   final ProjectRepository _projectRepository;
   AddEditTaskController({
     required ProjectRepository projectRepository,
     required UserProfileRepository userRepository,
     required super.taskValidator,
-    required super.projectController,
     required super.attachmentsProvider,
     required super.secureStorage,
     required super.panelProvider,
@@ -29,6 +30,7 @@ class AddEditTaskController extends BaseTasks
 
   bool isEditMode = false;
   String taskId = '';
+  String? ownerId;
 
   void getEditData({
     required String id,
@@ -188,4 +190,15 @@ class AddEditTaskController extends BaseTasks
 
   Future<void> getAccessToken() async =>
       imageHeader = await getAccessHeader(secureStorage);
+
+  Future<void> getOwnerId() async {
+    ownerId = await secureStorage.getUserData(type: StorageDataType.id) ?? '';
+  }
+
+  Future<List<ProjectModel>> searchProject({required String title}) async {
+    final projects = await _projectRepository.searchProject(title: title);
+    final ownerProjects =
+        projects.where((element) => element.ownerId == ownerId).toList();
+    return ownerProjects;
+  }
 }

@@ -33,6 +33,7 @@ class _AddEditTaskPageState extends State<AddEditTaskPage> {
   @override
   void initState() {
     addEditTaskController.getAccessToken();
+    addEditTaskController.getOwnerId();
     super.initState();
   }
 

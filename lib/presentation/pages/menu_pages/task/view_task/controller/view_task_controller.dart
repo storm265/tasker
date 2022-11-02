@@ -11,14 +11,15 @@ import 'package:todo2/database/repository/user_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/attachments_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/member_provider.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/controller/access_token_mixin.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/controller/secure_mixin.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/tasks_mixin.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/network_service/connection_checker.dart';
 import 'package:todo2/services/secure_storage_service.dart';
 
 class ViewTaskController
-    with AccessTokenMixin, TasksMixin, ConnectionCheckerMixin, ChangeNotifier {
+    with SecureMixin, TasksMixin, ConnectionCheckerMixin, ChangeNotifier {
+      
   final UserProfileRepository _userRepository;
   final AttachmentsProvider attachmentsProvider;
   final SecureStorageSource _secureStorage;

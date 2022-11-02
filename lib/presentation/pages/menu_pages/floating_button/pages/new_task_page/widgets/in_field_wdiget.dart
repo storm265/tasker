@@ -57,9 +57,9 @@ class InFieldWidget extends StatelessWidget {
                     .changePanelStatus(newStatus: PanelStatus.hide);
                 FocusScope.of(context).unfocus();
               },
-              decoration: const InputDecoration(
-                hintText: ' Project',
-                hintStyle: TextStyle(
+              decoration: InputDecoration(
+                hintText: ' ${LocaleKeys.Project.tr()}',
+                hintStyle: const TextStyle(
                   fontWeight: FontWeight.w500,
                   color: Colors.black,
                   overflow: TextOverflow.ellipsis,
