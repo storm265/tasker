@@ -74,7 +74,7 @@ class SignUpController extends ChangeNotifier with ConnectionCheckerMixin {
         );
       } catch (e) {
         if (!e.toString().contains('Scaffold')) {
-          throw MessageService.displaySnackbar(
+          MessageService.displaySnackbar(
             message: e.toString(),
             context: context,
           );
