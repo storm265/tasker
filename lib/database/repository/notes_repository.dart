@@ -74,7 +74,7 @@ class NoteRepositoryImpl implements NoteRepository {
           color: Value(notes[i].color.toString().toStringColor()),
           isCompleted: Value(notes[i].isCompleted),
           createdAt: Value(notes[i].createdAt.toIso8601String()),
-        ));
+        ),);
       }
 
       return notes;

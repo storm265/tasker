@@ -199,6 +199,7 @@ void setupDependencies() {
 
   getIt.registerSingleton<NewNoteController>(
     NewNoteController(
+      colorPalleteProvider: ColorPalleteProvider(),
       addNoteRepository: NoteRepositoryImpl(
         noteDao: noteDao,
         inMemoryCache: InMemoryCache(),

@@ -123,19 +123,15 @@ class CheckListRepositoryImpl extends CheckListRepository {
       log('offline checklist ');
       final checklists = await _checklistDao.getChecklists();
       final items = await _checklistItemDao.getChecklistItems();
-      log('get offline items len ${items.length}');
 
       for (int i = 0; i < checklists.length; i++) {
-        log('i $i');
         List<Map<String, dynamic>> mappedItems = [];
         final listItemsById = items
             .where((element) => element.checklistId == checklists[i].id)
             .toList();
         for (int j = 0; j < listItemsById.length; j++) {
-          log('j $j ');
           mappedItems.add(listItemsById[j].toJson());
         }
-        log('mapped items len ${mappedItems.length}');
 
         checklistModels.add(
           CheckListModel.fromJson({
@@ -149,7 +145,6 @@ class CheckListRepositoryImpl extends CheckListRepository {
           }),
         );
       }
-      log('checklist models ${checklistModels.length}');
 
       return checklistModels;
     }

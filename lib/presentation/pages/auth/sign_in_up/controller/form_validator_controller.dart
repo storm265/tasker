@@ -12,7 +12,7 @@ class FormValidatorController {
     if (email.isEmpty) {
       return LocaleKeys.enter_field.tr();
     } else if (!regex.hasMatch(email)|| email.trim().isEmpty ) {
-      return 'Incorrect email';
+      return LocaleKeys.incorrectEmail.tr();
     }
     return null;
   }
@@ -23,8 +23,8 @@ class FormValidatorController {
       return LocaleKeys.enter_field.tr();
     } else if (!regex.hasMatch(password) || password.trim().isEmpty) {
       return isSignIn
-          ? 'Incorrect password'
-          : 'Minimum 8 characters, at least 1 letter and 1 number';
+          ? LocaleKeys.incorrectPassword.tr()
+          : LocaleKeys.minimumCharacters.tr();
     } else {
       return null;
     }
@@ -37,7 +37,7 @@ class FormValidatorController {
     if (username.isEmpty) {
       return LocaleKeys.enter_field.tr();
     } else if (!regex.hasMatch(username)|| username.trim().isEmpty) {
-      return 'Incorrent username';
+      return LocaleKeys.incorrentUsername.tr();
     }
     return null;
   }

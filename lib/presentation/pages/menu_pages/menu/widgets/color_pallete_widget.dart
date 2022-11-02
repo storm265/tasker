@@ -78,7 +78,7 @@ class ColorPalleteWidget extends StatelessWidget {
                       right: 15,
                     ),
                     child: Text(
-                      colorController.isNotPicked,
+                      LocaleKeys.please_pick_color.tr(),
                       style: TextStyle(
                         fontSize: 12,
                         fontStyle: FontStyle.italic,

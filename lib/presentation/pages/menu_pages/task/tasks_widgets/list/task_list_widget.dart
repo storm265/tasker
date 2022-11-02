@@ -5,6 +5,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
+import 'package:todo2/presentation/pages/auth/splash_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/task_list.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/task_sort_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/list/task_item_widget.dart';
@@ -93,7 +94,7 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                               padding: const EdgeInsets.all(8.0),
                               child: HeaderWidget(
                                 text:
-                                    '${widget.taskSortController.formatDay(value)} ${DateFormat('MMM').format(value)} ${value.day}/${value.year}',
+                                    '${widget.taskSortController.formatDay(value)} ${DateFormat('MMM', locale).format(value)} ${value.day}/${value.year}',
                               ),
                             ),
                             itemBuilder: (_, element) {

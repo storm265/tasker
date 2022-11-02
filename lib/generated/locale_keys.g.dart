@@ -2,20 +2,21 @@
 
 // ignore_for_file: constant_identifier_names
 
-abstract class LocaleKeys {
+abstract class  LocaleKeys {
   static const get_started = 'get_started';
   static const welcome_to_todoList = 'welcome_to_todoList';
-  static const whats_going_to_happen_tomorrow =
-      'whats_going_to_happen_tomorrow';
+  static const whats_going_to_happen_tomorrow = 'whats_going_to_happen_tomorrow';
   static const work_happens = 'work_happens';
-  static const get_notified_when_work_happens =
-      'get_notified_when_work_happens';
+  static const get_notified_when_work_happens = 'get_notified_when_work_happens';
   static const tasks_and_assign = 'tasks_and_assign';
-  static const task_and_assign_them_to_colleagues =
-      'task_and_assign_them_to_colleagues';
+  static const task_and_assign_them_to_colleagues = 'task_and_assign_them_to_colleagues';
   static const welcome = 'welcome';
   static const sign_up_to_continue = 'sign_up_to_continue';
   static const sign_in_to_continue = 'sign_in_to_continue';
+  static const incorrectEmail = 'incorrectEmail';
+  static const incorrectPassword = 'incorrectPassword';
+  static const incorrentUsername = 'incorrentUsername';
+  static const minimumCharacters = 'minimumCharacters';
   static const username = 'username';
   static const password = 'password';
   static const email = 'email';
@@ -34,6 +35,8 @@ abstract class LocaleKeys {
   static const tomorrow = 'tomorrow';
   static const month = 'month';
   static const my_tasks = 'my_tasks';
+  static const new_task = 'new_task';
+  static const update_task = 'update_task';
   static const menu = 'menu';
   static const quick = 'quick';
   static const profile = 'profile';
@@ -48,8 +51,6 @@ abstract class LocaleKeys {
   static const delete_project = 'delete_project';
   static const update_project = 'update_project';
   static const add_project = 'add_project';
-  static const new_task = 'new_task';
-  static const update_task = 'update_task';
   static const forr = 'forr';
   static const In = 'In';
   static const title = 'title';
@@ -64,9 +65,8 @@ abstract class LocaleKeys {
   static const assigned_to = 'assigned_to';
   static const members = 'members';
   static const tag = 'tag';
-  static const comments = 'comments';
   static const complete_task = 'complete_task';
-  static const comment = 'comment';
+  static const comments = 'comments';
   static const write_a_comment = 'write_a_comment';
   static const days = 'days';
   static const day = 'day';
@@ -105,4 +105,5 @@ abstract class LocaleKeys {
   static const please_select_project = 'please_select_project';
   static const no_internet = 'no_internet';
   static const no_tasks = 'no_tasks';
+
 }

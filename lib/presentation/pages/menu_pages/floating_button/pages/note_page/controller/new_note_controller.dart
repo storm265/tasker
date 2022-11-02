@@ -14,12 +14,13 @@ import 'package:todo2/services/network_service/connection_checker.dart';
 
 class NewNoteController extends ChangeNotifier with ConnectionCheckerMixin {
   final NoteRepository _addNoteRepository;
-  NewNoteController({required NoteRepository addNoteRepository})
-      : _addNoteRepository = addNoteRepository;
+  final ColorPalleteProvider colorPalleteProvider;
+  NewNoteController({
+    required NoteRepository addNoteRepository,
+    required this.colorPalleteProvider,
+  }) : _addNoteRepository = addNoteRepository;
 
   final descriptionTextController = TextEditingController();
-
-  final colorPalleteController = ColorPalleteProvider();
 
   final isButtonClicked = ValueNotifier(true);
 
@@ -50,7 +51,7 @@ class NewNoteController extends ChangeNotifier with ConnectionCheckerMixin {
 
   void clearData() {
     descriptionTextController.clear();
-    colorPalleteController.changeSelectedIndex(99);
+    colorPalleteProvider.changeSelectedIndex(99);
     changeEditValueStatus(false);
   }
 
@@ -60,7 +61,7 @@ class NewNoteController extends ChangeNotifier with ConnectionCheckerMixin {
     _pickedModel.notifyListeners();
     for (int i = 0; i < colors.length; i++) {
       if (colors[i] == notesModel.color) {
-        colorPalleteController.changeSelectedIndex(i);
+        colorPalleteProvider.changeSelectedIndex(i);
         break;
       }
     }
@@ -76,7 +77,7 @@ class NewNoteController extends ChangeNotifier with ConnectionCheckerMixin {
     if (await isConnected()) {
       try {
         if (formKey.currentState!.validate() &&
-            !colorPalleteController.isNotPickerColor) {
+            !colorPalleteProvider.isNotPickerColor) {
           FocusScope.of(context).unfocus();
 
           log('isEdit $isEdit');
@@ -112,7 +113,7 @@ class NewNoteController extends ChangeNotifier with ConnectionCheckerMixin {
 
   Future<void> createNote() async {
     final model = await _addNoteRepository.createNote(
-      color: colors[colorPalleteController.selectedIndex.value],
+      color: colors[colorPalleteProvider.selectedIndex.value],
       description: descriptionTextController.text,
     );
     userNotesList.add(model);
@@ -142,7 +143,7 @@ class NewNoteController extends ChangeNotifier with ConnectionCheckerMixin {
 
   Future<void> updateNote() async {
     final updatedModel = await _addNoteRepository.updateNote(
-      color: colors[colorPalleteController.selectedIndex.value],
+      color: colors[colorPalleteProvider.selectedIndex.value],
       noteModel: _pickedModel.value,
       description: descriptionTextController.text,
     );
