@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:todo2/database/database_scheme/task_schemes/task_scheme.dart';
@@ -108,7 +108,7 @@ class TaskDataSourceImpl implements TaskDataSource {
     List<String>? members,
   }) async {
     final ownerId = await _secureStorage.getUserData(type: StorageDataType.id);
-    log('due data $dueDate');
+
     final response = await _network.post(
       path: _tasks,
       data: {
@@ -124,9 +124,7 @@ class TaskDataSourceImpl implements TaskDataSource {
       },
       options: await _network.getLocalRequestOptions(useContentType: true),
     );
-    log('data ${response.data}');
-    log('createTask ${response.statusMessage}');
-    log('createTask ${response.statusCode}');
+
     return NetworkErrorService.isSuccessful(response)
         ? (response.data[TaskScheme.data] as Map<String, dynamic>)
         : throw Failure(
@@ -161,9 +159,7 @@ class TaskDataSourceImpl implements TaskDataSource {
       },
       options: await _network.getLocalRequestOptions(useContentType: true),
     );
-    log('updateTask ${response.data}');
-    log('updateTask ${response.statusMessage}');
-    log('updateTask ${response.statusCode}');
+
     return NetworkErrorService.isSuccessful(response)
         ? (response.data[TaskScheme.data] as Map<String, dynamic>)
         : throw Failure(
@@ -171,15 +167,11 @@ class TaskDataSourceImpl implements TaskDataSource {
   }
 
   @override
-  Future<void> deleteTask({required String projectId}) async {
-    final response = await _network.delete(
-      path: '$_tasks/$projectId',
-      options: await _network.getLocalRequestOptions(),
-    );
-    log('response ${response.data}');
-    log('deleteTask ${response.statusMessage}');
-    log('deleteTask ${response.statusCode}');
-  }
+  Future<void> deleteTask({required String projectId}) async =>
+      await _network.delete(
+        path: '$_tasks/$projectId',
+        options: await _network.getLocalRequestOptions(),
+      );
 
   @override
   Future<Map<String, dynamic>> fetchOneTask({required String projectId}) async {
@@ -188,8 +180,6 @@ class TaskDataSourceImpl implements TaskDataSource {
       options: await _network.getLocalRequestOptions(),
     );
 
-    log('fetchOneTask ${response.statusMessage}');
-    log('fetchOneTask ${response.statusCode}');
     return NetworkErrorService.isSuccessful(response)
         ? (response.data![TaskScheme.data] as Map<String, dynamic>)
         : throw Failure('Error: Get fetchOneTask error');
@@ -245,8 +235,7 @@ class TaskDataSourceImpl implements TaskDataSource {
       path: '$_participateInTasks/$ownerId',
       options: await _network.getLocalRequestOptions(),
     );
-    log('response ${response.data}');
-    log('response ${response.statusMessage}');
+
     if (NetworkErrorService.isSuccessful(response)) {
       return (response.data![TaskScheme.data] as List<dynamic>);
     } else {
@@ -273,32 +262,13 @@ class TaskDataSourceImpl implements TaskDataSource {
         TaskScheme.taskId: taskId,
       },
     );
-    final response = await _network.post(
+    await _network.post(
       path: _tasksAttachments,
       formData: formData,
       isFormData: true,
       options: await _network.getLocalRequestOptions(),
     );
-
-    log('uploadTaskAttachment ${response.statusMessage}');
-    log('uploadTaskAttachment ${response.statusCode}');
   }
-
-  //   @override
-  // Future<List<dynamic>> downloadTaskAttachment(
-  //     {required String attachmentsId}) async {
-
-  //     final response = await _network.get(
-  //       path: '$_tasksAttachments/$attachmentsId',
-  //       options: await _network.getLocalRequestOptions(),
-  //     );
-  //     log('downloadTaskAttachment ${response.statusMessage}');
-  //     log('downloadTaskAttachment ${response.statusCode}');
-  //     return NetworkErrorService.isSuccessful(response)
-  //         ? (response.data![TaskScheme.data] as List<dynamic>)
-  //         : throw Failure('Error: fetchAssignedToTask error');
-
-  // }
 
   @override
   Future<Map<String, dynamic>> createTaskComment({
@@ -316,7 +286,7 @@ class TaskDataSourceImpl implements TaskDataSource {
       },
       options: await _network.getLocalRequestOptions(useContentType: true),
     );
-    log('createTaskComment ${response.statusCode}');
+
     return NetworkErrorService.isSuccessful(response)
         ? (response.data![TaskScheme.data] as Map<String, dynamic>)
         : throw Failure('Error: createTaskComment error');
@@ -346,15 +316,11 @@ class TaskDataSourceImpl implements TaskDataSource {
   }
 
   @override
-  Future<void> deleteTaskComment({required String taskId}) async {
-    final response = await _network.delete(
-      path: '$_comments/$taskId',
-      options: await _network.getLocalRequestOptions(),
-    );
-
-    log('deleteTaskComment ${response.statusMessage}');
-    log('deleteTaskComment ${response.statusCode}');
-  }
+  Future<void> deleteTaskComment({required String taskId}) async =>
+      await _network.delete(
+        path: '$_comments/$taskId',
+        options: await _network.getLocalRequestOptions(),
+      );
 
   @override
   Future<void> uploadTaskCommentAttachment({
@@ -375,14 +341,11 @@ class TaskDataSourceImpl implements TaskDataSource {
       },
     );
 
-    final response = await _network.post(
+    await _network.post(
       path: _commentsAttachments,
       formData: formData,
       isFormData: true,
       options: await _network.getLocalRequestOptions(),
     );
-    log('uploadTaskCommentAttachment ${response.data}');
-    log('uploadTaskCommentAttachment ${response.statusMessage}');
-    log('uploadTaskCommentAttachment ${response.statusCode}');
   }
 }

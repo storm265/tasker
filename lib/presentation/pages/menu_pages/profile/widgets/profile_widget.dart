@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -13,8 +13,8 @@ import 'package:todo2/presentation/pages/menu_pages/profile/dialogs/settings_dia
 import 'package:todo2/presentation/widgets/common/add_photo_widget.dart';
 import 'package:todo2/utils/assets_path.dart';
 
-  const   _avatarmaxSize = 64;
-  
+const _avatarmaxSize = 64;
+
 class ProfileWidget extends StatefulWidget {
   final int completedTasks;
   final int createdTask;
@@ -37,7 +37,6 @@ class _ProfileWidgetState extends State<ProfileWidget>
   Future<void> fetchData() async {
     await widget.profileController.fetchProfileInfo();
   }
-
 
   @override
   void initState() {
@@ -68,9 +67,7 @@ class _ProfileWidgetState extends State<ProfileWidget>
               child: IconButton(
                 splashRadius: 20,
                 onPressed: () => showSettingsDialog(
-                  callback: () => setState(() {
-                    log('set state');
-                  }),
+                  callback: () => setState(() {}),
                   context: context,
                   profileController: widget.profileController,
                   imageController: widget.fileProvider,
@@ -111,19 +108,21 @@ class _ProfileWidgetState extends State<ProfileWidget>
                                         backgroundImage: imageProvider);
                                   },
                                   placeholder: ((_, url) => SizedBox(
-                                        width: double.parse(_avatarmaxSize.toString()),
-                                        height:
-                                            double.parse(_avatarmaxSize.toString()),
+                                        width: double.parse(
+                                            _avatarmaxSize.toString()),
+                                        height: double.parse(
+                                            _avatarmaxSize.toString()),
                                         child: const CircleAvatar(
                                           backgroundColor: Color(0xffC4C4C4),
                                           child: addPhotoWidget,
                                         ),
                                       )),
                                   errorWidget: (_, url, error) {
-                                    log('errorWidget error $error');
                                     return SizedBox(
-                                      width: double.parse(_avatarmaxSize.toString()),
-                                      height: double.parse(_avatarmaxSize.toString()),
+                                      width: double.parse(
+                                          _avatarmaxSize.toString()),
+                                      height: double.parse(
+                                          _avatarmaxSize.toString()),
                                       child: const CircleAvatar(
                                         backgroundColor: Color(0xffC4C4C4),
                                         child: addPhotoWidget,

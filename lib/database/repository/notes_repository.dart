@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 
 import 'package:drift/drift.dart';
 import 'package:flutter/cupertino.dart';
@@ -60,26 +60,25 @@ class NoteRepositoryImpl implements NoteRepository {
     List<NotesModel> notes = [];
     if (_inMemoryCache.shouldFetchOnlineData(
         date: DateTime.now(), key: CacheKeys.quick)) {
-      log('online notes');
-
       final response = await _noteDataSource.fetchUserNotes();
 
       await _noteDao.deleteAllNotes();
       for (int i = 0; i < response.length; i++) {
         notes.add(NotesModel.fromJson(response[i]));
-        await _noteDao.insertNote(NoteTableCompanion(
-          id: Value(notes[i].id),
-          description: Value(notes[i].description),
-          ownerId: Value(notes[i].ownerId),
-          color: Value(notes[i].color.toString().toStringColor()),
-          isCompleted: Value(notes[i].isCompleted),
-          createdAt: Value(notes[i].createdAt.toIso8601String()),
-        ),);
+        await _noteDao.insertNote(
+          NoteTableCompanion(
+            id: Value(notes[i].id),
+            description: Value(notes[i].description),
+            ownerId: Value(notes[i].ownerId),
+            color: Value(notes[i].color.toString().toStringColor()),
+            isCompleted: Value(notes[i].isCompleted),
+            createdAt: Value(notes[i].createdAt.toIso8601String()),
+          ),
+        );
       }
 
       return notes;
     } else {
-      log('offline notes');
       final list = await _noteDao.getNotes();
       for (int i = 0; i < list.length; i++) {
         notes.add(NotesModel.fromJson(list[i].toJson()));

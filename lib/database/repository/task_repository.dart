@@ -1,6 +1,5 @@
-import 'dart:developer';
-import 'dart:io';
-import 'package:drift/drift.dart';
+
+import 'dart:io';import 'package:drift/drift.dart';
 import 'package:todo2/database/data_source/task_data_source.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
 import 'package:todo2/database/model/task_models/comment_model.dart';
@@ -142,14 +141,14 @@ class TaskRepositoryImpl implements TaskRepository {
   Future<List<TaskModel>> fetchAllTasks() async {
     if (_inMemoryCache.shouldFetchOnlineData(
         date: DateTime.now(), key: CacheKeys.tasks)) {
-      log('online fetch tasks');
+    
 
       final userTasks = await fetchUserTasks();
 
       final assignedToTasks = await fetchAssignedToTasks();
 
       final participateInTasks = await fetchParticipateInTasks();
-// TODO why Set  not removed dublicates ?
+
       List<TaskModel> allTasks = [
         ...assignedToTasks,
         ...userTasks,
@@ -158,10 +157,7 @@ class TaskRepositoryImpl implements TaskRepository {
         ..toSet()
         ..toList();
 
-      log('userTasks ${userTasks.length}');
-      log('assignedToTasks ${assignedToTasks.length}');
-      log('participateInTasks ${participateInTasks.length}');
-      log('allTasks len ${allTasks.length}');
+
 
       await _taskDao.deleteAllTasks();
 
@@ -183,7 +179,7 @@ class TaskRepositoryImpl implements TaskRepository {
 
       return allTasks;
     } else {
-      log('locally fetch tasks');
+    
 
       final list = await _taskDao.getTasks();
       final List<TaskModel> tasks = [];

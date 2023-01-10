@@ -2,10 +2,7 @@
 
 part of 'checklist_dao.dart';
 
-// **************************************************************************
-// DaoGenerator
-// **************************************************************************
-
+// ignore_for_file: type=lint
 mixin _$CheckListDaoImplMixin on DatabaseAccessor<CheckListDatabase> {
   $CheckListTableTable get checkListTable => attachedDatabase.checkListTable;
 }

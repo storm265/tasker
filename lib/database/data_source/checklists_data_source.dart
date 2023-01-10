@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:todo2/database/database_scheme/checklists_scheme.dart';
 import 'package:todo2/database/model/checklist_model.dart';
@@ -85,8 +84,7 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
       },
       options: await _network.getLocalRequestOptions(useContentType: true),
     );
-    log('update status ${response.statusCode}');
-    log('update status ${response.statusMessage}');
+
     return NetworkErrorService.isSuccessful(response)
         ? (response.data[CheckListsScheme.data] as Map<String, dynamic>)
         : throw Failure(
@@ -94,36 +92,29 @@ class CheckListsDataSourceImpl extends CheckListsDataSource {
   }
 
   @override
-  Future<void> deleteCheckListItem({required String checkListId}) async {
-    final response = await _network.delete(
-      path: '$_checklistsItems/$checkListId',
-      options: await _network.getLocalRequestOptions(),
-    );
-    log('deleteCheckList ${response.statusCode}');
-  }
+  Future<void> deleteCheckListItem({required String checkListId}) async =>
+      await _network.delete(
+        path: '$_checklistsItems/$checkListId',
+        options: await _network.getLocalRequestOptions(),
+      );
 
   @override
-  Future<void> deleteCheckListItems({required List<String>? items}) async {
-    final response = await _network.delete(
-      path: _checklistsItems,
-      data: {
-        CheckListsScheme.items: items ?? {},
-      },
-      options: await _network.getLocalRequestOptions(useContentType: true),
-    );
-    log('deleteCheckListItems ${response.data}');
-    log('deleteCheckListItems ${response.statusMessage}');
-  }
+  Future<void> deleteCheckListItems({required List<String>? items}) async =>
+      await _network.delete(
+        path: _checklistsItems,
+        data: {
+          CheckListsScheme.items: items ?? {},
+        },
+        options: await _network.getLocalRequestOptions(useContentType: true),
+      );
 
   @override
-  Future<void> deleteCheckList({required CheckListModel checkListModel}) async {
-    log('id ${checkListModel.id}');
-    final response = await _network.delete(
-      path: '$_checklists/${checkListModel.id}',
-      options: await _network.getLocalRequestOptions(),
-    );
-    log('deleteCheckList ${response.statusCode}');
-  }
+  Future<void> deleteCheckList(
+          {required CheckListModel checkListModel}) async =>
+      await _network.delete(
+        path: '$_checklists/${checkListModel.id}',
+        options: await _network.getLocalRequestOptions(),
+      );
 
   @override
   Future<List<dynamic>> fetchAllCheckLists() async {

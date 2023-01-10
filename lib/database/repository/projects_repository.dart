@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
@@ -58,7 +57,6 @@ class ProjectRepositoryImpl implements ProjectRepository {
     List<ProjectModel> projects = [];
     if (_inMemoryCache.shouldFetchOnlineData(
         date: DateTime.now(), key: CacheKeys.menu)) {
-      log('online');
       final response = await _projectDataSource.fetchAllProjects();
 
       await _projectDao.deleteAllProjects();
@@ -77,11 +75,9 @@ class ProjectRepositoryImpl implements ProjectRepository {
 
       return projects;
     } else {
-      log('offline');
       final list = await _projectDao.getProjects();
 
       for (int i = 0; i < list.length; i++) {
-        log('list date ${list[i].toJson()}');
         projects.add(ProjectModel.fromJson(list[i].toJson()));
       }
 

@@ -2,10 +2,7 @@
 
 part of 'task_dao.dart';
 
-// **************************************************************************
-// DaoGenerator
-// **************************************************************************
-
+// ignore_for_file: type=lint
 mixin _$TaskDaoImplMixin on DatabaseAccessor<TaskDatabase> {
   $TaskTableTable get taskTable => attachedDatabase.taskTable;
 }

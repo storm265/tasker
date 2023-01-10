@@ -2,10 +2,7 @@
 
 part of 'project_dao.dart';
 
-// **************************************************************************
-// DaoGenerator
-// **************************************************************************
-
+// ignore_for_file: type=lint
 mixin _$ProjectDaoImplMixin on DatabaseAccessor<ProjectDatabase> {
   $ProjectTableTable get projectTable => attachedDatabase.projectTable;
 }

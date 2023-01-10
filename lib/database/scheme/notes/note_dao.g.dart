@@ -2,10 +2,7 @@
 
 part of 'note_dao.dart';
 
-// **************************************************************************
-// DaoGenerator
-// **************************************************************************
-
+// ignore_for_file: type=lint
 mixin _$NoteDaoImplMixin on DatabaseAccessor<NoteDatabase> {
   $NoteTableTable get noteTable => attachedDatabase.noteTable;
 }

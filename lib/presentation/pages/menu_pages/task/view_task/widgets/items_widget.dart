@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -76,7 +76,6 @@ class ItemsWidget extends StatelessWidget {
                           valueListenable:
                               viewTaskController.memberProvider.taskMembers,
                           builder: (context, members, child) {
-                            log('members items ${members.length}');
                             return members.isEmpty
                                 ? const SizedBox()
                                 : ListView.builder(

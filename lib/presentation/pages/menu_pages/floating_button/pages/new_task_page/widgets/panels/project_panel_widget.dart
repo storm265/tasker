@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/project_models/projects_model.dart';
@@ -21,7 +21,6 @@ class ProjectPanelPickerWidget extends StatelessWidget {
       future: addEditTaskController.searchProject(
           title: addEditTaskController.projectTextController.text),
       builder: (context, AsyncSnapshot<List<ProjectModel>> snapshot) {
-        log('snapshot.data ${snapshot.data}');
         return (!snapshot.hasData || snapshot.data == null)
             ? Center(
                 child: ActivityIndicatorWidget(

@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -232,13 +232,11 @@ class _AdvancedCalendarState extends State<AdvancedCalendar>
                                 });
 
                                 if (widget.calendarProvider.isMonthMode) {
-                                  log('month mode');
                                   widget.calendarProvider
                                       .updateTaskWorkMode(TaskMode.fullMonth);
                                   await _animationController.forward();
                                   _animationValue = 1.0;
                                 } else {
-                                  log('selectedDay mode');
                                   widget.calendarProvider
                                       .updateTaskWorkMode(TaskMode.selectedDay);
                                   await _animationController.reverse();
@@ -282,7 +280,6 @@ class _AdvancedCalendarState extends State<AdvancedCalendar>
                             ).evaluate(_animationController),
                             child: PageView.builder(
                               onPageChanged: (pageIndex) {
-                                log('onHorizontalDrag ${_monthRangeList[pageIndex].firstDay}');
                                 if (widget.onHorizontalDrag != null) {
                                   widget.onHorizontalDrag!(
                                     _monthRangeList[pageIndex].firstDay,
@@ -338,7 +335,6 @@ class _AdvancedCalendarState extends State<AdvancedCalendar>
                                     height: widget.weekLineHeight,
                                     child: PageView.builder(
                                       onPageChanged: (indexPage) {
-                                        log('month changed ${_weekRangeList[indexPage].first.month}');
                                         final pageIndex =
                                             _monthRangeList.indexWhere(
                                           (index) =>
@@ -399,7 +395,7 @@ class _AdvancedCalendarState extends State<AdvancedCalendar>
 
   void _handleDateChanged(DateTime date) {
     _controller.value = date;
-    log('date changed');
+
     widget.calendarProvider.onChangeMonth(date);
     widget.calendarProvider.updateTaskWorkMode(TaskMode.selectedDay);
   }

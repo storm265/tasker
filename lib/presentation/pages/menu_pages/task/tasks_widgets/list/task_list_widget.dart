@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
@@ -43,14 +43,8 @@ class _TaskListWidgetState extends State<TaskListWidget> {
     return ValueListenableBuilder(
       valueListenable: widget.taskController.tasks,
       builder: (_, tasks, __) {
-        log('tasks len ${tasks.length}');
-
         return ValueListenableBuilder(
-          // incomplete,
-          // completed,
-          // all,
           valueListenable: widget.taskController.sortMode,
-
           builder: ((_, sortMode, __) {
             final sortedModeList =
                 widget.taskSortController.taskModeSort(tasks: tasks);
@@ -60,9 +54,6 @@ class _TaskListWidgetState extends State<TaskListWidget> {
                   widget.taskController.calendarProvider.selectedMonth,
               builder: (_, selectedMonth, __) {
                 return ValueListenableBuilder(
-                  // todayTomorrow
-                  // selectedDay
-                  // fullMonth
                   valueListenable:
                       widget.taskController.calendarProvider.calendarMode,
                   builder: (__, calendarMode, _) {

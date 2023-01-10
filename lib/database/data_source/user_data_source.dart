@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
@@ -106,7 +106,6 @@ class UserProfileDataSourceImpl implements UserProfileDataSource {
             'null',
       ),
     );
-    log('uploadAvatar  ${response.data}');
 
     return NetworkErrorService.isSuccessful(response)
         ? response.data[UserDataScheme.data] as Map<String, dynamic>

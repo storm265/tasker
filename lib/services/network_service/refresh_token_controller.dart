@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
@@ -10,7 +10,7 @@ enum States {
   tomorrow,
 }
 
-abstract   class TaskItems {
+abstract class TaskItems {
   TaskModel model;
 
   States state;
@@ -36,7 +36,6 @@ class RefreshTokenController {
         type: StorageDataType.accessToken);
     if (accessToken != null) {
       if (_is401Already) {
-        log('LOGOUT');
         await _secureStorageSource.removeAllUserData();
         _is401Already = false;
         await navigatorKey.currentState?.pushNamedAndRemoveUntil(
@@ -45,7 +44,7 @@ class RefreshTokenController {
         );
       } else {
         _is401Already = true;
-        log('_is401Already $_is401Already');
+
         final model = await _authRepository.refreshToken();
         await _secureStorageSource.saveData(
           type: StorageDataType.accessToken,
@@ -55,7 +54,7 @@ class RefreshTokenController {
           type: StorageDataType.refreshToken,
           value: model.refreshToken,
         );
-        log('updated');
+
         callback();
       }
     }

@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -113,7 +113,7 @@ class _DescriptionBoxWidgetState extends State<DescriptionBoxWidget> {
                                         .createTaskComment(
                                       taskId: widget.pickedTask!.id,
                                     );
-                                    log('comment id ${commentModel.id}');
+
                                     widget.textController.clear();
                                     await widget.viewTaskController!
                                         .uploadTaskCommentAttachment(
