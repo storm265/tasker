@@ -5,13 +5,11 @@ class ThemeDataService {
   final themeData = ThemeData(
     fontFamily: 'Roboto',
     textTheme: const TextTheme(
-      bodyText1: TextStyle(color: darkGrey),
-      bodyText2: TextStyle(color: darkGrey),
-      headline4: TextStyle(color: darkGrey),
-      headline5: TextStyle(color: darkGrey),
-      headline6: TextStyle(color: darkGrey),
-      
-
+      bodyLarge: TextStyle(color: darkGrey),
+      bodyMedium: TextStyle(color: darkGrey),
+      headlineMedium: TextStyle(color: darkGrey),
+      headlineSmall: TextStyle(color: darkGrey),
+      titleLarge: TextStyle(color: darkGrey),
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
@@ -22,11 +20,13 @@ class ThemeDataService {
       ),
     ),
     primarySwatch: Colors.red,
-    bottomAppBarColor: Palette.red,
     bottomNavigationBarTheme: const BottomNavigationBarThemeData(
       backgroundColor: Color(0xFF292E4E),
       selectedItemColor: Colors.white,
       unselectedItemColor: Colors.grey,
+    ),
+    bottomAppBarTheme: const BottomAppBarTheme(
+      color: Palette.red,
     ),
   );
 }

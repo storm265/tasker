@@ -82,7 +82,7 @@ class ColorPalleteWidget extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 12,
                         fontStyle: FontStyle.italic,
-                        color: Theme.of(context).errorColor,
+                        color: Theme.of(context).colorScheme.error,
                       ),
                     ),
                   ),

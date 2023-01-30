@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/project_models/project_stats_model.dart';
@@ -34,7 +36,6 @@ class ProjectController extends ChangeNotifier with ConnectionCheckerMixin {
   final projectStats = ValueNotifier<List<ProjectStatsModel>>([]);
 
   ProjectModel? selectedModel;
-
 
   void pickProject({required ProjectModel pickedModel}) {
     selectedModel = pickedModel;
@@ -94,8 +95,6 @@ class ProjectController extends ChangeNotifier with ConnectionCheckerMixin {
       setClickedValue(true);
     }
   }
-
-
 
   Future<void> fetchProjectStats() async {
     projectStats.value = await _projectsRepository.fetchProjectStats();

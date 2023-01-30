@@ -2,11 +2,122 @@
 
 part of 'checklist_item_database.dart';
 
-// **************************************************************************
-// DriftDatabaseGenerator
-// **************************************************************************
-
 // ignore_for_file: type=lint
+class $CheckListItemTableTable extends CheckListItemTable
+    with TableInfo<$CheckListItemTableTable, CheckListItemTableData> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $CheckListItemTableTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+      'id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _contentMeta =
+      const VerificationMeta('content');
+  @override
+  late final GeneratedColumn<String> content = GeneratedColumn<String>(
+      'content', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _isCompletedMeta =
+      const VerificationMeta('isCompleted');
+  @override
+  late final GeneratedColumn<bool> isCompleted =
+      GeneratedColumn<bool>('is_completed', aliasedName, false,
+          type: DriftSqlType.bool,
+          requiredDuringInsert: true,
+          defaultConstraints: GeneratedColumn.constraintsDependsOnDialect({
+            SqlDialect.sqlite: 'CHECK ("is_completed" IN (0, 1))',
+            SqlDialect.mysql: '',
+            SqlDialect.postgres: '',
+          }));
+  static const VerificationMeta _checklistIdMeta =
+      const VerificationMeta('checklistId');
+  @override
+  late final GeneratedColumn<String> checklistId = GeneratedColumn<String>(
+      'checklist_id', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  static const VerificationMeta _createdAtMeta =
+      const VerificationMeta('createdAt');
+  @override
+  late final GeneratedColumn<String> createdAt = GeneratedColumn<String>(
+      'created_at', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, content, isCompleted, checklistId, createdAt];
+  @override
+  String get aliasedName => _alias ?? 'check_list_item_table';
+  @override
+  String get actualTableName => 'check_list_item_table';
+  @override
+  VerificationContext validateIntegrity(
+      Insertable<CheckListItemTableData> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('content')) {
+      context.handle(_contentMeta,
+          content.isAcceptableOrUnknown(data['content']!, _contentMeta));
+    } else if (isInserting) {
+      context.missing(_contentMeta);
+    }
+    if (data.containsKey('is_completed')) {
+      context.handle(
+          _isCompletedMeta,
+          isCompleted.isAcceptableOrUnknown(
+              data['is_completed']!, _isCompletedMeta));
+    } else if (isInserting) {
+      context.missing(_isCompletedMeta);
+    }
+    if (data.containsKey('checklist_id')) {
+      context.handle(
+          _checklistIdMeta,
+          checklistId.isAcceptableOrUnknown(
+              data['checklist_id']!, _checklistIdMeta));
+    } else if (isInserting) {
+      context.missing(_checklistIdMeta);
+    }
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    } else if (isInserting) {
+      context.missing(_createdAtMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  CheckListItemTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return CheckListItemTableData(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
+      content: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}content'])!,
+      isCompleted: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}is_completed'])!,
+      checklistId: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}checklist_id'])!,
+      createdAt: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}created_at'])!,
+    );
+  }
+
+  @override
+  $CheckListItemTableTable createAlias(String alias) {
+    return $CheckListItemTableTable(attachedDatabase, alias);
+  }
+}
+
 class CheckListItemTableData extends DataClass
     implements Insertable<CheckListItemTableData> {
   final String id;
@@ -193,115 +304,6 @@ class CheckListItemTableCompanion
   }
 }
 
-class $CheckListItemTableTable extends CheckListItemTable
-    with TableInfo<$CheckListItemTableTable, CheckListItemTableData> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  $CheckListItemTableTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
-  @override
-  late final GeneratedColumn<String> id = GeneratedColumn<String>(
-      'id', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  final VerificationMeta _contentMeta = const VerificationMeta('content');
-  @override
-  late final GeneratedColumn<String> content = GeneratedColumn<String>(
-      'content', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  final VerificationMeta _isCompletedMeta =
-      const VerificationMeta('isCompleted');
-  @override
-  late final GeneratedColumn<bool> isCompleted = GeneratedColumn<bool>(
-      'is_completed', aliasedName, false,
-      type: DriftSqlType.bool,
-      requiredDuringInsert: true,
-      defaultConstraints: 'CHECK ("is_completed" IN (0, 1))');
-  final VerificationMeta _checklistIdMeta =
-      const VerificationMeta('checklistId');
-  @override
-  late final GeneratedColumn<String> checklistId = GeneratedColumn<String>(
-      'checklist_id', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
-  @override
-  late final GeneratedColumn<String> createdAt = GeneratedColumn<String>(
-      'created_at', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  @override
-  List<GeneratedColumn> get $columns =>
-      [id, content, isCompleted, checklistId, createdAt];
-  @override
-  String get aliasedName => _alias ?? 'check_list_item_table';
-  @override
-  String get actualTableName => 'check_list_item_table';
-  @override
-  VerificationContext validateIntegrity(
-      Insertable<CheckListItemTableData> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    } else if (isInserting) {
-      context.missing(_idMeta);
-    }
-    if (data.containsKey('content')) {
-      context.handle(_contentMeta,
-          content.isAcceptableOrUnknown(data['content']!, _contentMeta));
-    } else if (isInserting) {
-      context.missing(_contentMeta);
-    }
-    if (data.containsKey('is_completed')) {
-      context.handle(
-          _isCompletedMeta,
-          isCompleted.isAcceptableOrUnknown(
-              data['is_completed']!, _isCompletedMeta));
-    } else if (isInserting) {
-      context.missing(_isCompletedMeta);
-    }
-    if (data.containsKey('checklist_id')) {
-      context.handle(
-          _checklistIdMeta,
-          checklistId.isAcceptableOrUnknown(
-              data['checklist_id']!, _checklistIdMeta));
-    } else if (isInserting) {
-      context.missing(_checklistIdMeta);
-    }
-    if (data.containsKey('created_at')) {
-      context.handle(_createdAtMeta,
-          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
-    } else if (isInserting) {
-      context.missing(_createdAtMeta);
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  CheckListItemTableData map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return CheckListItemTableData(
-      id: attachedDatabase.options.types
-          .read(DriftSqlType.string, data['${effectivePrefix}id'])!,
-      content: attachedDatabase.options.types
-          .read(DriftSqlType.string, data['${effectivePrefix}content'])!,
-      isCompleted: attachedDatabase.options.types
-          .read(DriftSqlType.bool, data['${effectivePrefix}is_completed'])!,
-      checklistId: attachedDatabase.options.types
-          .read(DriftSqlType.string, data['${effectivePrefix}checklist_id'])!,
-      createdAt: attachedDatabase.options.types
-          .read(DriftSqlType.string, data['${effectivePrefix}created_at'])!,
-    );
-  }
-
-  @override
-  $CheckListItemTableTable createAlias(String alias) {
-    return $CheckListItemTableTable(attachedDatabase, alias);
-  }
-}
-
 abstract class _$CheckListItemDatabase extends GeneratedDatabase {
   _$CheckListItemDatabase(QueryExecutor e) : super(e);
   late final $CheckListItemTableTable checkListItemTable =
@@ -309,7 +311,7 @@ abstract class _$CheckListItemDatabase extends GeneratedDatabase {
   late final CheckListItemDaoImpl checkListItemDaoImpl =
       CheckListItemDaoImpl(this as CheckListItemDatabase);
   @override
-  Iterable<TableInfo<Table, dynamic>> get allTables =>
+  Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [checkListItemTable];

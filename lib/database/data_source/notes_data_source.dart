@@ -15,8 +15,6 @@ abstract class NotesDataSource {
 
   Future<void> deleteNote({required String projectId});
 
-  // Future<Map<String, dynamic>> fetchOneNote({required String projectId});
-
   Future<List<dynamic>> fetchUserNotes();
 
   Future<Map<String, dynamic>> updateNote({
@@ -105,19 +103,4 @@ class NotesDataSourceImpl implements NotesDataSource {
         : throw Failure(
             'Error: ${response.data[NotesScheme.data][NotesScheme.message]}');
   }
-
-  // @override
-  // here need note ID not project
-  // Future<Map<String, dynamic>> fetchOneNote({required String projectId}) async {
-
-  //     final response = await _network.dio.get(
-  //       '$_notes/$projectId',
-  //       options: await _network.getLocalRequestOptions(),
-  //     );
-  //     return NetworkErrorService.isSuccessful(response)
-  //         ? (response.data[NotesScheme.data] as Map<String, dynamic>)
-  //         : throw Failure(
-  //             'Error: ${response.data[NotesScheme.data][NotesScheme.message]}');
-
-  // }
 }
