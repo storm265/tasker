@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
@@ -21,7 +21,6 @@ class UserPanelPickerWidget extends StatelessWidget {
         userName: addEditTaskController.userTextController.text,
       ),
       builder: (context, AsyncSnapshot<List<UserProfileModel>> snapshot) {
-        log('data  : ${snapshot.data}');
         return (!snapshot.hasData || snapshot.data == null)
             ? Center(
                 child: ActivityIndicatorWidget(

@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/task_models/comment_model.dart';
 import 'package:todo2/database/model/task_models/task_model.dart';
@@ -27,7 +27,7 @@ class CommentAttachmentWidget extends StatelessWidget {
         builder: ((_, AsyncSnapshot<List<CommentModel>> snapshot) {
           final list = snapshot.data ?? [];
           list.sort((a, b) => b.createdAt.compareTo(a.createdAt));
-          log('comments ${list.length}');
+
           return ListView.builder(
             itemCount: list.length,
             shrinkWrap: true,

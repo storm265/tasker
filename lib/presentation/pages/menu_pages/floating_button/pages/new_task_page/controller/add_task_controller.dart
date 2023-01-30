@@ -1,6 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
-import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/profile_models/users_profile_model.dart';
@@ -103,7 +100,7 @@ class AddEditTaskController extends BaseTasks
                     .format(calendarController.value),
                 members: members,
               );
-          log('dueDate time ${model.dueDate}');
+
           attachmentsProvider.hasAttachments()
               ? await attachmentsProvider.uploadTaskAttachment(taskId: model.id)
               : null;

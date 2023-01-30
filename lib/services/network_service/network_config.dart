@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:todo2/database/data_source/auth_data_source.dart';
@@ -38,7 +38,6 @@ class NetworkSource {
     ..interceptors.add(
       InterceptorsWrapper(
         onResponse: (response, handler) async {
-          log('onResponse status statusMessage ${response.statusMessage}');
           if (response.statusCode == 401) {
             await _refreshToken.updateToken(
               callback: () async => handler.resolve(
@@ -46,7 +45,7 @@ class NetworkSource {
               ),
             );
           }
-          log('next');
+
           return handler.next(response);
         },
       ),

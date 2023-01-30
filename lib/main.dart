@@ -10,7 +10,6 @@ import 'package:todo2/presentation/pages/navigation/controllers/status_bar_contr
 import 'package:todo2/services/dependency_service/dependency_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/network_service/refresh_token_controller.dart';
-import 'package:todo2/services/network_service/set_charles_network_support.dart';
 import 'package:todo2/services/system_service/system_chrome.dart';
 import 'services/theme_service/theme_data_controller.dart';
 
@@ -21,7 +20,6 @@ void main() async {
   setupDependencies();
   await dotenv.load(fileName: '.env');
   await SystemChromeProvider.setSystemChrome();
-  await setCharles(useCharles: true);
   runApp(
     EasyLocalization(
       supportedLocales: const [Locale('en'), Locale('ru')],

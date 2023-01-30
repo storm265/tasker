@@ -21,9 +21,6 @@ class CheckListModel {
   });
 
   factory CheckListModel.fromJson(Map<String, dynamic> json) {
-    // log('fromJson $json with type ${json[CheckListsScheme.items].runtimeType}');
-    // log(' as List<dynamic> runtimeType ${(json[CheckListsScheme.items] as List<dynamic>).runtimeType}');
-
     return CheckListModel(
       id: json[CheckListsScheme.id],
       title: json[CheckListsScheme.title],

@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/data_source/checklists_data_source.dart';
@@ -86,8 +86,6 @@ class CheckListRepositoryImpl extends CheckListRepository {
       key: CacheKeys.quick,
       isSaveKey: false,
     )) {
-      log('online checklist');
-
       final response = await _checkListsDataSource.fetchAllCheckLists();
       await _checklistDao.deleteAllChecklists();
       await _checklistItemDao.deleteAllChecklistItems();
@@ -120,7 +118,6 @@ class CheckListRepositoryImpl extends CheckListRepository {
       }
       return checklistModels;
     } else {
-      log('offline checklist ');
       final checklists = await _checklistDao.getChecklists();
       final items = await _checklistItemDao.getChecklistItems();
 

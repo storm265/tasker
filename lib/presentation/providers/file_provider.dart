@@ -1,6 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
-import 'dart:developer';
 import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
@@ -120,8 +117,6 @@ class FileProvider extends ChangeNotifier with ConnectionCheckerMixin {
         await pickAvatar(context: context);
         if (isValidImageFormat(pickedFile.value.extension ?? '') &&
             pickedFile.value.name.isNotEmpty) {
-          log('image is valid!');
-
           await uploadAvatar().then((_) {
             MessageService.displaySnackbar(
               context: context,

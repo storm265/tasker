@@ -1,6 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
-import 'dart:developer';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/model/notes_model.dart';
@@ -82,7 +79,6 @@ class NewNoteController extends ChangeNotifier with ConnectionCheckerMixin {
             !colorPalleteProvider.isNotPickerColor) {
           FocusScope.of(context).unfocus();
 
-          log('isEdit $isEdit');
           if (isEdit.value) {
             await updateNote();
             MessageService.displaySnackbar(

@@ -1,4 +1,4 @@
-import 'dart:developer';
+
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +34,6 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   void dispose() {
-    log('SignUpPage disposed');
     _emailController.dispose();
     _passwordController.dispose();
     _usernameController.dispose();
