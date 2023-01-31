@@ -63,8 +63,9 @@ class _AddQuickNoteState extends State<AddQuickNote> {
                     Column(
                       children: [
                         ColorPalleteWidget(
-                            colorController:
-                                _addNoteController.colorPalleteProvider),
+                          colorController:
+                              _addNoteController.colorPalleteProvider,
+                        ),
                         const SizedBox(height: 50),
                         ValueListenableBuilder<bool>(
                           valueListenable: _addNoteController.isEdit,

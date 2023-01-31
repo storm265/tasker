@@ -6,6 +6,7 @@ import 'package:todo2/services/message_service/message_service.dart';
 
 class TaskValidator {
   final _now = DateTime.now();
+
   Future<bool> tryValidate({
     required BuildContext context,
     required GlobalKey<FormState> formKey,
@@ -15,12 +16,17 @@ class TaskValidator {
     FocusScope.of(context).unfocus();
 
     if (formKey.currentState!.validate() &&
-        isPickedProject(pickedProject: pickedProject) && isValidPickedDate(pickedDate, context, true,)) {
+        isPickedProject(pickedProject: pickedProject) &&
+        isValidPickedDate(
+          pickedDate,
+          context,
+          true,
+        )) {
       return true;
     } else {
       MessageService.displaySnackbar(
         context: context,
-        message:LocaleKeys.please_select_project.tr(),
+        message: LocaleKeys.please_select_project.tr(),
       );
       await Future.delayed(const Duration(seconds: 3));
       return false;
@@ -46,7 +52,7 @@ class TaskValidator {
       useMessage
           ? MessageService.displaySnackbar(
               context: context,
-              message:LocaleKeys.you_cant_pick_date_debore_now.tr(),
+              message: LocaleKeys.you_cant_pick_date_debore_now.tr(),
             )
           : null;
       return false;

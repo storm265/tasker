@@ -18,6 +18,7 @@ class AddEditTaskController extends BaseTasks
     with SecureMixin, ConnectionCheckerMixin {
   final UserProfileRepository _userRepository;
   final ProjectRepository _projectRepository;
+
   AddEditTaskController({
     required ProjectRepository projectRepository,
     required UserProfileRepository userRepository,

@@ -133,7 +133,7 @@ class NewNoteController extends ChangeNotifier with ConnectionCheckerMixin {
 
     userNotesList.removeWhere((element) => element.id == notesModel.id);
 
-    quickController.fetchNotesLocally();
+    await quickController.fetchNotesLocally();
 
     MessageService.displaySnackbar(
       context: context,
