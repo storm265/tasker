@@ -12,10 +12,6 @@ import 'package:todo2/services/network_service/connection_checker.dart';
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/services/secure_storage_service.dart';
 
-const _jpeg = 'jpeg';
-const _png = 'png';
-const _jpg = 'jpg';
-
 class FileProvider extends ChangeNotifier with ConnectionCheckerMixin {
   final UserProfileRepositoryImpl _userRepository = UserProfileRepositoryImpl(
     userProfileDataSource: UserProfileDataSourceImpl(
@@ -24,13 +20,17 @@ class FileProvider extends ChangeNotifier with ConnectionCheckerMixin {
     ),
   );
 
+  final _jpeg = 'jpeg';
+  final _png = 'png';
+  final _jpg = 'jpg';
+
   final _emptyImage = PlatformFile(
     name: '',
     size: 0,
     path: '',
   );
 
-  var pickedFile = ValueNotifier(
+  final pickedFile = ValueNotifier(
     PlatformFile(
       name: '',
       size: 0,
@@ -38,13 +38,10 @@ class FileProvider extends ChangeNotifier with ConnectionCheckerMixin {
     ),
   );
 
-  bool isValidImageFormat(String image) {
-    if (image.endsWith(_jpeg) || image.endsWith(_png) || image.endsWith(_jpg)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  bool isValidImageFormat(String image) =>
+      image.endsWith(_jpeg) || image.endsWith(_png) || image.endsWith(_jpg)
+          ? true
+          : false;
 
   final _maxImageSize = 5000 * 1024; // 5mb
   final _maxFileSize = 26000 * 1024; // 26mb
