@@ -30,6 +30,7 @@ class NetworkSource {
   NetworkSource._internal();
 
   static final Dio _dio = Dio(BaseOptions(
+    // TODO set up your api url
     baseUrl: dotenv.env[EnvScheme.apiUrl] ?? 'null',
     connectTimeout: 5 * 1000, // 5 sec
     receiveTimeout: 5 * 1000,
