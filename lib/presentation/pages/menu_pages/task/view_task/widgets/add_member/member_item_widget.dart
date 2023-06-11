@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/database/model/profile_models/users_profile_model.dart';
+import 'package:todo2/domain/model/profile_models/users_profile_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/controller/view_task_controller.dart';
 
 class MemberItemWidget extends StatefulWidget {

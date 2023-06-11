@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/database/model/task_models/task_model.dart';
+import 'package:todo2/domain/model/task_models/task_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/task_sort_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/tasks_mixin.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/calendar_lib/controller.dart';

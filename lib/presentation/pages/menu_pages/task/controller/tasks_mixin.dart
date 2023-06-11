@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/database/model/profile_models/users_profile_model.dart';
+import 'package:todo2/domain/model/profile_models/users_profile_model.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/services/dependency_service/dependency_service.dart';
 

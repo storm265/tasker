@@ -1,10 +1,10 @@
 import 'package:get_it/get_it.dart';
-import 'package:todo2/database/data_source/auth_data_source.dart';
-import 'package:todo2/database/data_source/checklists_data_source.dart';
-import 'package:todo2/database/data_source/notes_data_source.dart';
-import 'package:todo2/database/data_source/projects_data_source.dart';
-import 'package:todo2/database/data_source/task_data_source.dart';
-import 'package:todo2/database/data_source/user_data_source.dart';
+import 'package:todo2/data/data_source/auth/auth_data_source_impl.dart';
+import 'package:todo2/data/data_source/checklist/checklist_data_source_impl.dart';
+import 'package:todo2/data/data_source/notes/notes_data_source_impl.dart';
+import 'package:todo2/data/data_source/project/project_data_source_impl.dart';
+import 'package:todo2/data/data_source/task/task_data_source_impl.dart';
+import 'package:todo2/data/data_source/user/user_data_source_impl.dart';
 import 'package:todo2/database/repository/auth_repository.dart';
 import 'package:todo2/database/repository/checklist_repository.dart';
 import 'package:todo2/database/repository/notes_repository.dart';
@@ -118,7 +118,7 @@ void setupDependencies() {
       projectRepository: ProjectRepositoryImpl(
         inMemoryCache: InMemoryCache(),
         projectDao: projectDao,
-        projectDataSource: ProjectUserDataImpl(
+        projectDataSource: ProjectUserDataSourceImpl(
           secureStorageService: SecureStorageSource(),
           network: NetworkSource(),
         ),
@@ -146,7 +146,7 @@ void setupDependencies() {
       projectRepository: ProjectRepositoryImpl(
         inMemoryCache: InMemoryCache(),
         projectDao: projectDao,
-        projectDataSource: ProjectUserDataImpl(
+        projectDataSource: ProjectUserDataSourceImpl(
           secureStorageService: SecureStorageSource(),
           network: NetworkSource(),
         ),
@@ -178,7 +178,7 @@ void setupDependencies() {
         checklistDao: checklistDao,
         checklistItemDao: checklistItemDao,
         inMemoryCache: InMemoryCache(),
-        checkListsDataSource: CheckListsDataSourceImpl(
+        checkListsDataSource: CheckListDataSourceImpl(
           network: NetworkSource(),
           secureStorage: SecureStorageSource(),
         ),
@@ -206,7 +206,7 @@ void setupDependencies() {
       projectsRepository: ProjectRepositoryImpl(
         inMemoryCache: InMemoryCache(),
         projectDao: projectDao,
-        projectDataSource: ProjectUserDataImpl(
+        projectDataSource: ProjectUserDataSourceImpl(
           secureStorageService: SecureStorageSource(),
           network: NetworkSource(),
         ),

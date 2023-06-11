@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:todo2/database/database_scheme/task_schemes/task_scheme.dart';
-import 'package:todo2/database/model/profile_models/users_profile_model.dart';
-import 'package:todo2/database/model/task_models/task_attachments_model.dart';
+import 'package:todo2/domain/model/profile_models/users_profile_model.dart';
+import 'package:todo2/domain/model/task_models/task_attachments_model.dart';
 
 class TaskModel   {
   final String id;

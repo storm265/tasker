@@ -1,9 +1,7 @@
-
-
 import 'package:drift/drift.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:todo2/database/data_source/notes_data_source.dart';
-import 'package:todo2/database/model/notes_model.dart';
+import 'package:todo2/data/data_source/notes/notes_data_source_impl.dart';
+import 'package:todo2/domain/model/notes_model.dart';
 import 'package:todo2/database/scheme/notes/note_dao.dart';
 import 'package:todo2/database/scheme/notes/note_database.dart';
 import 'package:todo2/services/cache_service/cache_service.dart';

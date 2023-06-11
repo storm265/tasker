@@ -1,39 +1,18 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:todo2/data/data_source/checklist/checklist_data_source.dart';
 import 'package:todo2/database/database_scheme/checklists_scheme.dart';
-import 'package:todo2/database/model/checklist_model.dart';
+import 'package:todo2/domain/model/checklist_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/navigation_service/network_error_service.dart';
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/services/secure_storage_service.dart';
 import 'package:todo2/utils/extensions/color_extension/color_string_extension.dart';
 
-abstract class CheckListsDataSource {
-  Future<void> createCheckList({
-    required String title,
-    required Color color,
-    List<Map<String, dynamic>>? items,
-  });
-
-  Future<void> updateCheckList({
-    required String checklistId,
-    List<Map<String, dynamic>>? items,
-    required String title,
-    required Color color,
-  });
-  Future<void> deleteCheckList({required CheckListModel checkListModel});
-
-  Future<void> deleteCheckListItem({required String checkListId});
-
-  Future<void> deleteCheckListItems({required List<String>? items});
-
-  Future<List<dynamic>> fetchAllCheckLists();
-}
-
-class CheckListsDataSourceImpl extends CheckListsDataSource {
+class CheckListDataSourceImpl extends CheckListDataSource {
   final NetworkSource _network;
   final SecureStorageSource _secureStorage;
 
-  CheckListsDataSourceImpl({
+  CheckListDataSourceImpl({
     required NetworkSource network,
     required SecureStorageSource secureStorage,
   })  : _network = network,

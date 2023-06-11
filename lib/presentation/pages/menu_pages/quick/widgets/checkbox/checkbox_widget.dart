@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:todo2/database/model/checklist_model.dart';
+import 'package:todo2/domain/model/checklist_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/controller/check_list_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/checkbox/checkbox_item_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/common_widgets/color_line_widget.dart';

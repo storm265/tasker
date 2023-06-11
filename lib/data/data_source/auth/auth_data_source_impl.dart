@@ -1,24 +1,11 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:todo2/data/data_source/auth/auth_data_source.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/navigation_service/network_error_service.dart';
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/services/secure_storage_service.dart';
-
-abstract class AuthDataSource {
-  Future<Map<String, dynamic>> signUp({
-    required String email,
-    required String password,
-    required String nickname,
-  });
-  Future<Map<String, dynamic>> signIn({
-    required String email,
-    required String password,
-  });
-  Future<void> signOut();
-  Future<Map<String, dynamic>> refreshToken();
-}
 
 class AuthDataSourceImpl implements AuthDataSource {
   final SecureStorageSource _secureStorageService;

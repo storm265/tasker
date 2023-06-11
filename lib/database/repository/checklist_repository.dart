@@ -1,9 +1,9 @@
 
 import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
-import 'package:todo2/database/data_source/checklists_data_source.dart';
+import 'package:todo2/data/data_source/checklist/checklist_data_source_impl.dart';
 import 'package:todo2/database/database_scheme/checklists_scheme.dart';
-import 'package:todo2/database/model/checklist_model.dart';
+import 'package:todo2/domain/model/checklist_model.dart';
 import 'package:todo2/database/scheme/checklists/checklist/checklist_dao.dart';
 import 'package:todo2/database/scheme/checklists/checklist/checklist_database.dart';
 import 'package:todo2/database/scheme/checklists/checklist_item/checklist_item_dao.dart';
@@ -36,7 +36,7 @@ abstract class CheckListRepository {
 
 class CheckListRepositoryImpl extends CheckListRepository {
   CheckListRepositoryImpl({
-    required CheckListsDataSourceImpl checkListsDataSource,
+    required CheckListDataSourceImpl checkListsDataSource,
     required CheckListDao checklistDao,
     required CheckListItemDao checklistItemDao,
     required InMemoryCache inMemoryCache,
@@ -45,7 +45,7 @@ class CheckListRepositoryImpl extends CheckListRepository {
         _checklistItemDao = checklistItemDao,
         _inMemoryCache = inMemoryCache;
 
-  final CheckListsDataSourceImpl _checkListsDataSource;
+  final CheckListDataSourceImpl _checkListsDataSource;
   final InMemoryCache _inMemoryCache;
   final CheckListDao _checklistDao;
   final CheckListItemDao _checklistItemDao;

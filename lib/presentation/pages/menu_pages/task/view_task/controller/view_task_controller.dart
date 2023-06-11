@@ -3,10 +3,10 @@
 import 'dart:io';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:todo2/database/model/profile_models/users_profile_model.dart';
-import 'package:todo2/database/model/project_models/projects_model.dart';
-import 'package:todo2/database/model/task_models/comment_model.dart';
-import 'package:todo2/database/model/task_models/task_model.dart';
+import 'package:todo2/domain/model/profile_models/users_profile_model.dart';
+import 'package:todo2/domain/model/project_models/projects_model.dart';
+import 'package:todo2/domain/model/task_models/comment_model.dart';
+import 'package:todo2/domain/model/task_models/task_model.dart';
 import 'package:todo2/database/repository/projects_repository.dart';
 import 'package:todo2/database/repository/task_repository.dart';
 import 'package:todo2/database/repository/user_repository.dart';

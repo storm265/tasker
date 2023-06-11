@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:todo2/database/model/notes_model.dart';
+import 'package:todo2/domain/model/notes_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/controller/new_note_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/common_widgets/color_line_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/quick/widgets/common_widgets/shadow_decoration.dart';

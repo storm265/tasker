@@ -1,44 +1,20 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:todo2/data/data_source/project/project_data_source.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/database/database_scheme/project_schemes/project_user_scheme.dart';
-import 'package:todo2/database/model/project_models/projects_model.dart';
+import 'package:todo2/domain/model/project_models/projects_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/navigation_service/network_error_service.dart';
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/services/secure_storage_service.dart';
 import 'package:todo2/utils/extensions/color_extension/color_string_extension.dart';
 
-abstract class ProjectUserData {
-  Future<void> updateProject({
-    required ProjectModel projectModel,
-    required Color color,
-    required String title,
-  });
-
-  Future<void> deleteProject({
-    required ProjectModel projectModel,
-  });
-
-  Future<Map<String, dynamic>> createProject({
-    required Color color,
-    required String title,
-  });
-
-  Future<List<dynamic>> searchProject({required String title});
-
-  Future<Map<String, dynamic>> fetchOneProject({required String projectId});
-
-  Future<List<dynamic>> fetchAllProjects();
-
-  Future<List<dynamic>> fetchProjectStats();
-}
-
-class ProjectUserDataImpl implements ProjectUserData {
+class ProjectUserDataSourceImpl implements ProjectUserDataSource {
   final SecureStorageSource _secureStorageService;
   final NetworkSource _network;
 
-  ProjectUserDataImpl({
+  ProjectUserDataSourceImpl({
     required SecureStorageSource secureStorageService,
     required NetworkSource network,
   })  : _secureStorageService = secureStorageService,

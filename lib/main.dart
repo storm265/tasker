@@ -14,7 +14,6 @@ import 'services/theme_service/theme_data_controller.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
-  EasyLocalization.logger.defaultLevel == DiagnosticLevel.hidden;
   setupDependencies();
   await dotenv.load(fileName: '.env');
   await SystemChromeProvider.setSystemChrome();

@@ -1,6 +1,6 @@
 import 'package:todo2/database/database_scheme/task_schemes/comment_attachment_scheme.dart';
-import 'package:todo2/database/model/profile_models/users_profile_model.dart';
-import 'package:todo2/database/model/task_models/comment_attachment_model.dart';
+import 'package:todo2/domain/model/profile_models/users_profile_model.dart';
+import 'package:todo2/domain/model/task_models/comment_attachment_model.dart';
 
 class CommentModel {
   final String id;

@@ -3,7 +3,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/database/database_scheme/check_list_items_scheme.dart';
-import 'package:todo2/database/model/checklist_model.dart';
+import 'package:todo2/domain/model/checklist_model.dart';
 import 'package:todo2/database/repository/checklist_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/providers/color_pallete_provider/color_pallete_provider.dart';

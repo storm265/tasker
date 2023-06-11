@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/database/model/profile_models/users_profile_model.dart';
-import 'package:todo2/database/model/project_models/projects_model.dart';
+import 'package:todo2/domain/model/profile_models/users_profile_model.dart';
+import 'package:todo2/domain/model/project_models/projects_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/attachments_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/member_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/panel_provider.dart';

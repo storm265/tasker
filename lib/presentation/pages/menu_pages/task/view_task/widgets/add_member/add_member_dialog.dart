@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:todo2/database/model/profile_models/users_profile_model.dart';
+import 'package:todo2/domain/model/profile_models/users_profile_model.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/confirm_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/controller/view_task_controller.dart';

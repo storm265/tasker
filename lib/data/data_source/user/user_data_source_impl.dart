@@ -1,26 +1,12 @@
-
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:todo2/data/data_source/user/user_data_source.dart';
 import 'package:todo2/database/database_scheme/auth_scheme.dart';
 import 'package:todo2/database/database_scheme/user_data_scheme..dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/navigation_service/network_error_service.dart';
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/services/secure_storage_service.dart';
-
-abstract class UserProfileDataSource {
-  Future<Map<String, dynamic>> fetchCurrentUser({
-    required String id,
-    required String accessToken,
-  });
-  Future<Map<String, dynamic>> fetchUserStatistics();
-
-  Future<Map<String, dynamic>> uploadAvatar({
-    required String name,
-    required File file,
-  });
-  Future<Map<String, dynamic>> fetchUser({required String id});
-}
 
 class UserProfileDataSourceImpl implements UserProfileDataSource {
   final SecureStorageSource _secureStorageService;

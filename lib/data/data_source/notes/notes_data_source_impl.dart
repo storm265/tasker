@@ -1,28 +1,12 @@
 import 'package:flutter/cupertino.dart';
+import 'package:todo2/data/data_source/notes/notes_data_source.dart';
 import 'package:todo2/database/database_scheme/notes_scheme.dart';
-import 'package:todo2/database/model/notes_model.dart';
+import 'package:todo2/domain/model/notes_model.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/navigation_service/network_error_service.dart';
 import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/services/secure_storage_service.dart';
 import 'package:todo2/utils/extensions/color_extension/color_string_extension.dart';
-
-abstract class NotesDataSource {
-  Future<void> createNote({
-    required Color color,
-    required String description,
-  });
-
-  Future<void> deleteNote({required String projectId});
-
-  Future<List<dynamic>> fetchUserNotes();
-
-  Future<Map<String, dynamic>> updateNote({
-    required NotesModel noteModel,
-    required String description,
-    required Color color,
-  });
-}
 
 class NotesDataSourceImpl implements NotesDataSource {
   final NetworkSource _network;

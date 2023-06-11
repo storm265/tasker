@@ -1,9 +1,8 @@
-
 import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
-import 'package:todo2/database/data_source/projects_data_source.dart';
-import 'package:todo2/database/model/project_models/project_stats_model.dart';
-import 'package:todo2/database/model/project_models/projects_model.dart';
+import 'package:todo2/data/data_source/project/project_data_source_impl.dart';
+import 'package:todo2/domain/model/project_models/project_stats_model.dart';
+import 'package:todo2/domain/model/project_models/projects_model.dart';
 import 'package:todo2/database/scheme/projects/project_dao.dart';
 import 'package:todo2/database/scheme/projects/project_database.dart';
 import 'package:todo2/services/cache_service/cache_service.dart';
@@ -35,9 +34,9 @@ abstract class ProjectRepository {
 class ProjectRepositoryImpl implements ProjectRepository {
   final InMemoryCache _inMemoryCache;
   final ProjectDao _projectDao;
-  final ProjectUserDataImpl _projectDataSource;
+  final ProjectUserDataSourceImpl _projectDataSource;
   ProjectRepositoryImpl({
-    required ProjectUserDataImpl projectDataSource,
+    required ProjectUserDataSourceImpl projectDataSource,
     required ProjectDao projectDao,
     required InMemoryCache inMemoryCache,
   })  : _projectDataSource = projectDataSource,

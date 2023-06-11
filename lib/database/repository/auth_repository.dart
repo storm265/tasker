@@ -1,5 +1,5 @@
-import 'package:todo2/database/data_source/auth_data_source.dart';
-import 'package:todo2/database/model/auth_model.dart';
+import 'package:todo2/data/data_source/auth/auth_data_source.dart';
+import 'package:todo2/domain/model/auth_model.dart';
 
 abstract class AuthRepository {
   Future<AuthModel> signUp({

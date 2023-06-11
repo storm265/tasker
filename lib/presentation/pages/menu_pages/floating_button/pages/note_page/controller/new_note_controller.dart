@@ -2,7 +2,7 @@
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:todo2/database/model/notes_model.dart';
+import 'package:todo2/domain/model/notes_model.dart';
 import 'package:todo2/database/repository/notes_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/providers/color_pallete_provider/color_pallete_provider.dart';

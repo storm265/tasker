@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/database/model/checklist_item_model.dart';
+import 'package:todo2/domain/model/checklist_item_model.dart';
 
 class CheckBoxWidget extends StatelessWidget {
   final List<CheckListItemModel> data;
