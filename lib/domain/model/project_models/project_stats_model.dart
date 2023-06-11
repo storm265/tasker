@@ -1,4 +1,4 @@
-import 'package:todo2/database/database_scheme/project_schemes/project_stats_scheme.dart';
+import 'package:todo2/schemas/database_scheme/project_schemes/project_stats_scheme.dart';
 
 class ProjectStatsModel {
   final String projectId;

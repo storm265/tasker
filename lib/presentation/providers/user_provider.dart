@@ -1,6 +1,6 @@
 import 'package:todo2/domain/model/profile_models/stats_model.dart';
 import 'package:todo2/domain/model/profile_models/users_profile_model.dart';
-import 'package:todo2/database/repository/user_repository.dart';
+import 'package:todo2/domain/repository/user_repository.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 
 class UserProvider {

@@ -4,7 +4,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/data/data_source/user/user_data_source_impl.dart';
-import 'package:todo2/database/repository/user_repository.dart';
+import 'package:todo2/data/repository/user_repository_impl.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
 import 'package:todo2/services/message_service/message_service.dart';

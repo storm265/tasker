@@ -1,35 +1,13 @@
 import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/data/data_source/project/project_data_source_impl.dart';
-import 'package:todo2/database/schemas/projects/project_dao.dart';
-import 'package:todo2/database/schemas/projects/project_database.dart';
 import 'package:todo2/domain/model/project_models/project_stats_model.dart';
 import 'package:todo2/domain/model/project_models/projects_model.dart';
+import 'package:todo2/domain/repository/projects_repository.dart';
+import 'package:todo2/schemas/projects/project_dao.dart';
+import 'package:todo2/schemas/projects/project_database.dart';
 import 'package:todo2/services/cache_service/cache_service.dart';
 import 'package:todo2/utils/extensions/color_extension/color_string_extension.dart';
-
-abstract class ProjectRepository {
-  Future<ProjectModel> fetchOneProject({required String projectId});
-
-  Future<List<ProjectModel>> fetchAllProjects();
-
-  Future<ProjectModel> createProject({
-    required Color color,
-    required String title,
-  });
-
-  Future<void> deleteProject({required ProjectModel projectModel});
-
-  Future<ProjectModel> updateProject({
-    required ProjectModel projectModel,
-    required String title,
-    required Color color,
-  });
-
-  Future<List<ProjectStatsModel>> fetchProjectStats();
-
-  Future<List<ProjectModel>> searchProject({required String title});
-}
 
 class ProjectRepositoryImpl implements ProjectRepository {
   final InMemoryCache _inMemoryCache;

@@ -1,21 +1,7 @@
 import 'package:todo2/data/data_source/auth/auth_data_source.dart';
 import 'package:todo2/domain/model/auth_model.dart';
 
-abstract class AuthRepository {
-  Future<AuthModel> signUp({
-    required String email,
-    required String password,
-    required String nickname,
-  });
-
-  Future<AuthModel> signIn({
-    required String email,
-    required String password,
-  });
-
-  Future<void> signOut();
-  Future<AuthModel> refreshToken();
-}
+import '../../domain/repository/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl({required AuthDataSource authDataSource})

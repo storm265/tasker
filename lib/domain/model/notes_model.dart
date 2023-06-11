@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/database/database_scheme/notes_scheme.dart';
+import 'package:todo2/schemas/database_scheme/notes_scheme.dart';
 import 'package:todo2/utils/extensions/color_extension/color_string_extension.dart';
 
 class NotesModel {

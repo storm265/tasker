@@ -2,7 +2,7 @@
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:todo2/database/repository/auth_repository.dart';
+import 'package:todo2/data/repository/auth_repository_impl.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/providers/file_provider.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';

@@ -3,13 +3,16 @@ import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
-import 'package:todo2/database/schemas/projects/project_dao.dart';
-import 'package:todo2/database/schemas/projects/project_table.dart';
-part 'project_database.g.dart';
+import 'package:todo2/schemas/tasks/task_dao.dart';
 
-@DriftDatabase(tables: [ProjectTable], daos: [ProjectDaoImpl])
-class ProjectDatabase extends _$ProjectDatabase {
-  ProjectDatabase() : super(_database());
+import 'task_table.dart';
+
+part 'task_database.g.dart';
+
+@DriftDatabase(tables: [TaskTable], daos: [TaskDaoImpl])
+class TaskDatabase extends _$TaskDatabase {
+ TaskDatabase() : super(_database());
+
 
   @override
   int get schemaVersion => 1;
@@ -18,7 +21,7 @@ class ProjectDatabase extends _$ProjectDatabase {
 LazyDatabase _database() {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
-    final dbFile = File(join(dbFolder.path, "project.db"));
+    final dbFile = File(join(dbFolder.path, "task.db"));
     return NativeDatabase(dbFile);
   });
 }

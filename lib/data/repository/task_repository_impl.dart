@@ -1,72 +1,13 @@
-
-import 'dart:io';import 'package:drift/drift.dart';
+import 'dart:io';
+import 'package:drift/drift.dart';
 import 'package:todo2/data/data_source/task/task_data_source.dart';
-import 'package:todo2/database/schemas/tasks/task_dao.dart';
-import 'package:todo2/database/schemas/tasks/task_database.dart';
 import 'package:todo2/domain/model/profile_models/users_profile_model.dart';
 import 'package:todo2/domain/model/task_models/comment_model.dart';
 import 'package:todo2/domain/model/task_models/task_model.dart';
+import 'package:todo2/domain/repository/task_repository.dart';
+import 'package:todo2/schemas/tasks/task_dao.dart';
+import 'package:todo2/schemas/tasks/task_database.dart';
 import 'package:todo2/services/cache_service/cache_service.dart';
-
-abstract class TaskRepository<T> {
-  Future<TaskModel> createTask({
-    required String title,
-    required String description,
-    required String? assignedTo,
-    required String projectId,
-    required String? dueDate,
-    List<Map<String, dynamic>>? attachments,
-    List<String>? members,
-  });
-
-  Future<void> deleteTask({required String taskId});
-
-  Future<TaskModel> updateTask({
-    required String title,
-    required String description,
-    required String? assignedTo,
-    required String projectId,
-    required String taskId,
-    required bool isCompleted,
-    required String? dueDate,
-    List<String>? members,
-  });
-
-  Future<TaskModel> fetchOneTask({required String projectId});
-
-  Future<List<TaskModel>> fetchProjectTasks({required String projectId});
-
-  Future<List<TaskModel>> fetchUserTasks();
-
-  Future<List<TaskModel>> fetchAssignedToTasks();
-
-  Future<List<TaskModel>> fetchParticipateInTasks();
-
-  Future<CommentModel> createTaskComment({
-    required String content,
-    required String taskId,
-  });
-
-  Future<void> uploadTaskAttachment({
-    required String name,
-    required File file,
-    required String taskId,
-    required bool isFile,
-  });
-  Future<List<CommentModel>> fetchTaskComments({required String taskId});
-
-  Future<List<UserProfileModel>> taskMemberSearch({required String nickname});
-
-  Future<void> deleteTaskComment({required String taskId});
-
-  Future<void> uploadTaskCommentAttachment({
-    required File file,
-    required String taskId,
-    required bool isFile,
-  });
-
-  Future<List<TaskModel>> fetchAllTasks();
-}
 
 class TaskRepositoryImpl implements TaskRepository {
   final InMemoryCache _inMemoryCache;
@@ -141,8 +82,6 @@ class TaskRepositoryImpl implements TaskRepository {
   Future<List<TaskModel>> fetchAllTasks() async {
     if (_inMemoryCache.shouldFetchOnlineData(
         date: DateTime.now(), key: CacheKeys.tasks)) {
-    
-
       final userTasks = await fetchUserTasks();
 
       final assignedToTasks = await fetchAssignedToTasks();
@@ -156,8 +95,6 @@ class TaskRepositoryImpl implements TaskRepository {
       ]
         ..toSet()
         ..toList();
-
-
 
       await _taskDao.deleteAllTasks();
 
@@ -179,8 +116,6 @@ class TaskRepositoryImpl implements TaskRepository {
 
       return allTasks;
     } else {
-    
-
       final list = await _taskDao.getTasks();
       final List<TaskModel> tasks = [];
       for (int i = 0; i < list.length; i++) {

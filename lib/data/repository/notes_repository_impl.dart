@@ -1,28 +1,12 @@
 import 'package:drift/drift.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:todo2/data/data_source/notes/notes_data_source_impl.dart';
-import 'package:todo2/database/schemas/notes/note_dao.dart';
-import 'package:todo2/database/schemas/notes/note_database.dart';
 import 'package:todo2/domain/model/notes_model.dart';
+import 'package:todo2/domain/repository/notes_repository.dart';
+import 'package:todo2/schemas/notes/note_dao.dart';
+import 'package:todo2/schemas/notes/note_database.dart';
 import 'package:todo2/services/cache_service/cache_service.dart';
 import 'package:todo2/utils/extensions/color_extension/color_string_extension.dart';
-
-abstract class NoteRepository {
-  Future<NotesModel> createNote({
-    required Color color,
-    required String description,
-  });
-
-  Future<void> deleteNote({required String projectId});
-
-  Future<List<NotesModel>> fetchUserNotes();
-
-  Future<NotesModel> updateNote({
-    required NotesModel noteModel,
-    required String description,
-    required Color color,
-  });
-}
 
 class NoteRepositoryImpl implements NoteRepository {
   final InMemoryCache _inMemoryCache;

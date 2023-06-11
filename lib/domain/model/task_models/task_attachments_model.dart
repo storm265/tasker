@@ -1,4 +1,4 @@
-import 'package:todo2/database/database_scheme/task_schemes/attachment_scheme.dart';
+import 'package:todo2/schemas/database_scheme/task_schemes/attachment_scheme.dart';
 
 class TaskAttachmentModel {
   final String id;

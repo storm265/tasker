@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:todo2/data/data_source/task/task_data_source.dart';
-import 'package:todo2/database/database_scheme/task_schemes/task_scheme.dart';
+import 'package:todo2/schemas/database_scheme/task_schemes/task_scheme.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 import 'package:todo2/services/navigation_service/network_error_service.dart';
 import 'package:todo2/services/network_service/network_config.dart';

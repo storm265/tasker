@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:todo2/data/data_source/auth/auth_data_source_impl.dart';
-import 'package:todo2/database/database_scheme/env_scheme.dart';
-import 'package:todo2/database/repository/auth_repository.dart';
+import 'package:todo2/data/repository/auth_repository_impl.dart';
+import 'package:todo2/schemas/database_scheme/env_scheme.dart';
 import 'package:todo2/services/network_service/refresh_token_controller.dart';
 import 'package:todo2/services/secure_storage_service.dart';
 

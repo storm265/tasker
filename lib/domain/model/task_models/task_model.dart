@@ -1,9 +1,9 @@
 import 'package:intl/intl.dart';
-import 'package:todo2/database/database_scheme/task_schemes/task_scheme.dart';
 import 'package:todo2/domain/model/profile_models/users_profile_model.dart';
 import 'package:todo2/domain/model/task_models/task_attachments_model.dart';
+import 'package:todo2/schemas/database_scheme/task_schemes/task_scheme.dart';
 
-class TaskModel   {
+class TaskModel {
   final String id;
   final String title;
   final DateTime dueDate;
@@ -101,5 +101,4 @@ class TaskModel   {
       TaskScheme.members: members,
     };
   }
-
 }

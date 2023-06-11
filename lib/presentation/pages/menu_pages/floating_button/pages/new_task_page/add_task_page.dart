@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:todo2/database/database_scheme/task_schemes/task_scheme.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/auth/widgets/unfocus_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/add_task_controller.dart';
@@ -18,6 +17,7 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widge
 import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/white_box_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/activity_indicator_widget.dart';
+import 'package:todo2/schemas/database_scheme/task_schemes/task_scheme.dart';
 import 'package:todo2/services/dependency_service/dependency_service.dart';
 
 class AddEditTaskPage extends StatefulWidget {

@@ -1,38 +1,15 @@
-
 import 'package:drift/drift.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/data/data_source/checklist/checklist_data_source_impl.dart';
-import 'package:todo2/database/database_scheme/checklists_scheme.dart';
-import 'package:todo2/database/schemas/checklists/checklist/checklist_dao.dart';
-import 'package:todo2/database/schemas/checklists/checklist/checklist_database.dart';
-import 'package:todo2/database/schemas/checklists/checklist_item/checklist_item_dao.dart';
-import 'package:todo2/database/schemas/checklists/checklist_item/checklist_item_database.dart';
 import 'package:todo2/domain/model/checklist_model.dart';
+import 'package:todo2/domain/repository/checklist_repository.dart';
+import 'package:todo2/schemas/checklists/checklist/checklist_dao.dart';
+import 'package:todo2/schemas/checklists/checklist/checklist_database.dart';
+import 'package:todo2/schemas/checklists/checklist_item/checklist_item_dao.dart';
+import 'package:todo2/schemas/checklists/checklist_item/checklist_item_database.dart';
+import 'package:todo2/schemas/database_scheme/checklists_scheme.dart';
 import 'package:todo2/services/cache_service/cache_service.dart';
 import 'package:todo2/utils/extensions/color_extension/color_string_extension.dart';
-
-abstract class CheckListRepository {
-  Future<CheckListModel> createCheckList({
-    required String title,
-    required Color color,
-    List<Map<String, dynamic>>? items,
-  });
-
-  Future<void> deleteCheckList({required CheckListModel checkListModel});
-
-  Future<void> deleteCheckListItem({required String checkListId});
-
-  Future<void> deleteCheckListItems({required List<String> items});
-
-  Future<List<CheckListModel>> fetchAllCheckLists();
-
-  Future<CheckListModel> updateCheckList({
-    required String checklistId,
-    List<Map<String, dynamic>>? items,
-    required String title,
-    required Color color,
-  });
-}
 
 class CheckListRepositoryImpl extends CheckListRepository {
   CheckListRepositoryImpl({

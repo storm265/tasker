@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
-import 'package:todo2/database/schemas/checklists/checklist/checklist_database.dart';
-import 'package:todo2/database/schemas/checklists/checklist/checklist_table.dart';
+import 'package:todo2/schemas/checklists/checklist/checklist_database.dart';
+import 'package:todo2/schemas/checklists/checklist/checklist_table.dart';
 
 part 'checklist_dao.g.dart';
 

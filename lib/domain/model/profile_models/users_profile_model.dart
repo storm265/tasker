@@ -1,4 +1,4 @@
-import 'package:todo2/database/database_scheme/user_data_scheme..dart';
+import 'package:todo2/schemas/database_scheme/user_data_scheme..dart';
 
 class UserProfileModel {
   final String id;

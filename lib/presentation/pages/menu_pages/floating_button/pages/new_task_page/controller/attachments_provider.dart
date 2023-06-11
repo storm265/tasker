@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:todo2/database/repository/task_repository.dart';
+import 'package:todo2/domain/repository/task_repository.dart';
 import 'package:todo2/presentation/providers/file_provider.dart';
 
 class AttachmentsProvider extends ChangeNotifier {

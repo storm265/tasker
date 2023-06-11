@@ -1,4 +1,5 @@
-import 'package:todo2/database/database_scheme/auth_scheme.dart';
+
+import 'package:todo2/schemas/database_scheme/auth_scheme.dart';
 
 class AuthModel {
   String userId;

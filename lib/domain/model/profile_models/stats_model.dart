@@ -1,4 +1,4 @@
-import 'package:todo2/database/database_scheme/stats_scheme.dart';
+import 'package:todo2/schemas/database_scheme/stats_scheme.dart';
 
 class StatsModel {
   final int createdTasks;

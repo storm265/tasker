@@ -1,4 +1,4 @@
-import 'package:todo2/database/database_scheme/check_list_items_scheme.dart';
+import 'package:todo2/schemas/database_scheme/check_list_items_scheme.dart';
 
 class CheckListItemModel {
   final String? id;

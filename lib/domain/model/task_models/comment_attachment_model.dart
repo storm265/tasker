@@ -1,4 +1,4 @@
-import 'package:todo2/database/database_scheme/task_schemes/comment_attachment_scheme.dart';
+import 'package:todo2/schemas/database_scheme/task_schemes/comment_attachment_scheme.dart';
 
 class CommentAttachmentModel {
   final String id;
