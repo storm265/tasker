@@ -21,7 +21,7 @@ const _redBar = SystemUiOverlayStyle(
   statusBarBrightness: Brightness.light,
 );
 
-class AppbarWrapWidget extends StatelessWidget with PreferredSizeWidget {
+class AppbarWrapWidget extends StatelessWidget  {
   final PreferredSizeWidget? bottom;
   final Widget? floatingActionButton;
   final FloatingActionButtonLocation? floatingActionButtonLocation;
@@ -56,7 +56,7 @@ class AppbarWrapWidget extends StatelessWidget with PreferredSizeWidget {
     this.resizeToAvoidBottomInset,
   }) : super(key: key);
 
-  @override
+
   Size get preferredSize => Size(double.infinity, preferredHeight);
 
   @override
