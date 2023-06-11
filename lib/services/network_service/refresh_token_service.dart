@@ -1,29 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/data/repository/auth_repository_impl.dart';
-import 'package:todo2/domain/model/task_models/task_model.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/secure_storage_service.dart';
 
-enum States {
-  today,
-  tomorrow,
-}
-
-abstract class TaskItems {
-  TaskModel model;
-
-  States state;
-
-  TaskItems(this.model, this.state);
-}
-
 final navigatorKey = GlobalKey<NavigatorState>();
 
-class RefreshTokenController {
+class RefreshTokenService {
   final AuthRepositoryImpl _authRepository;
   final SecureStorageSource _secureStorageSource;
 
-  RefreshTokenController({
+  RefreshTokenService({
     required AuthRepositoryImpl authRepository,
     required SecureStorageSource secureStorageSource,
   })  : _authRepository = authRepository,
