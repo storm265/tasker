@@ -3,8 +3,8 @@ import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
-import 'package:todo2/database/scheme/checklists/checklist_item/checklist_item_dao.dart';
-import 'package:todo2/database/scheme/checklists/checklist_item/checklist_item_table.dart';
+import 'checklist_item_dao.dart';
+import 'checklist_item_table.dart';
 
 part 'checklist_item_database.g.dart';
 

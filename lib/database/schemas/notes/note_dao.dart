@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
-import 'package:todo2/database/scheme/notes/note_database.dart';
-import 'package:todo2/database/scheme/notes/note_table.dart';
+import 'note_database.dart';
+import 'note_table.dart';
 part 'note_dao.g.dart';
 
 abstract class NoteDao {

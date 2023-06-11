@@ -1,6 +1,6 @@
 import 'package:drift/drift.dart';
-import 'package:todo2/database/scheme/checklists/checklist_item/checklist_item_database.dart';
-import 'package:todo2/database/scheme/checklists/checklist_item/checklist_item_table.dart';
+import 'package:todo2/database/schemas/checklists/checklist_item/checklist_item_database.dart';
+import 'package:todo2/database/schemas/checklists/checklist_item/checklist_item_table.dart';
 part 'checklist_item_dao.g.dart';
 
 abstract class CheckListItemDao {

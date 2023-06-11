@@ -1,6 +1,7 @@
 import 'package:drift/drift.dart';
-import 'package:todo2/database/scheme/tasks/task_database.dart';
-import 'package:todo2/database/scheme/tasks/task_table.dart';
+
+import 'task_database.dart';
+import 'task_table.dart';
 
 part 'task_dao.g.dart';
 

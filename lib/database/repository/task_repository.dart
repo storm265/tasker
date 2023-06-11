@@ -1,11 +1,11 @@
 
 import 'dart:io';import 'package:drift/drift.dart';
 import 'package:todo2/data/data_source/task/task_data_source.dart';
+import 'package:todo2/database/schemas/tasks/task_dao.dart';
+import 'package:todo2/database/schemas/tasks/task_database.dart';
 import 'package:todo2/domain/model/profile_models/users_profile_model.dart';
 import 'package:todo2/domain/model/task_models/comment_model.dart';
 import 'package:todo2/domain/model/task_models/task_model.dart';
-import 'package:todo2/database/scheme/tasks/task_dao.dart';
-import 'package:todo2/database/scheme/tasks/task_database.dart';
 import 'package:todo2/services/cache_service/cache_service.dart';
 
 abstract class TaskRepository<T> {

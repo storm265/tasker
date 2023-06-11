@@ -3,14 +3,15 @@ import 'package:drift/drift.dart';
 import 'package:drift/native.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
-import 'package:todo2/database/scheme/notes/note_dao.dart';
-import 'package:todo2/database/scheme/notes/note_table.dart';
 
-part 'note_database.g.dart';
+import 'checklist_dao.dart';
+import 'checklist_table.dart';
 
-@DriftDatabase(tables: [NoteTable], daos: [NoteDaoImpl])
-class NoteDatabase extends _$NoteDatabase {
-  NoteDatabase() : super(_database());
+part 'checklist_database.g.dart';
+
+@DriftDatabase(tables: [CheckListTable], daos: [CheckListDaoImpl])
+class CheckListDatabase extends _$CheckListDatabase {
+  CheckListDatabase() : super(_database());
 
   @override
   int get schemaVersion => 1;
@@ -19,7 +20,7 @@ class NoteDatabase extends _$NoteDatabase {
 LazyDatabase _database() {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory(); //internal
-    final dbFile = File(join(dbFolder.path, "note.db"));
+    final dbFile = File(join(dbFolder.path, "checklist.db"));
     return NativeDatabase(dbFile);
   });
 }
