@@ -14,21 +14,22 @@ class RefreshTokenService {
     required SecureStorageSource secureStorageSource,
   })  : _authRepository = authRepository,
         _secureStorageSource = secureStorageSource;
-  bool _is401Already = false;
-  int i = 0;
+
+  bool _is401ErrorAlready = false;
+
   Future<void> updateToken({required VoidCallback callback}) async {
     final accessToken = await _secureStorageSource.getUserData(
         type: StorageDataType.accessToken);
     if (accessToken != null) {
-      if (_is401Already) {
+      if (_is401ErrorAlready) {
         await _secureStorageSource.removeAllUserData();
-        _is401Already = false;
+        _is401ErrorAlready = false;
         await navigatorKey.currentState?.pushNamedAndRemoveUntil(
           Pages.signIn.type,
           (_) => false,
         );
       } else {
-        _is401Already = true;
+        _is401ErrorAlready = true;
 
         final model = await _authRepository.refreshToken();
         await _secureStorageSource.saveData(
