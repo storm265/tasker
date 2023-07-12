@@ -32,8 +32,8 @@ class NetworkSource {
   static final Dio _dio = Dio(BaseOptions(
     // TODO set up your api url
     baseUrl: dotenv.env[EnvScheme.apiUrl] ?? 'null',
-    connectTimeout: 5 * 1000, // 5 sec
-    receiveTimeout: 5 * 1000,
+    connectTimeout: const Duration(seconds: 5),
+    receiveTimeout: const Duration(seconds: 5),
   ))
     ..interceptors.add(
       InterceptorsWrapper(

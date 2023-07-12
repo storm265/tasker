@@ -16,7 +16,7 @@ dependencies:
   percent_indicator:
   flutter_slidable:
   file_picker: ^5.2.0
-  dio:
+  dio: 5.2.1
   easy_localization: ^3.0.1
   flutter_svg:
   flutter_dotenv:
