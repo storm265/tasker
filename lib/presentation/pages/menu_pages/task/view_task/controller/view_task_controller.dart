@@ -20,13 +20,6 @@ import 'package:todo2/services/secure_storage_service.dart';
 
 class ViewTaskController
     with SecureMixin, TasksMixin, ConnectionCheckerMixin, ChangeNotifier {
-      
-  final UserProfileRepository _userRepository;
-  final AttachmentsProvider attachmentsProvider;
-  final SecureStorageSource _secureStorage;
-  final ProjectRepository _projectRepository;
-  final TaskRepository _taskRepository;
-  final MemberProvider memberProvider;
   ViewTaskController({
     required UserProfileRepository userRepository,
     required ProjectRepository projectRepository,
@@ -38,6 +31,13 @@ class ViewTaskController
         _taskRepository = taskRepository,
         _projectRepository = projectRepository,
         _secureStorage = secureStorage;
+
+  final UserProfileRepository _userRepository;
+  final AttachmentsProvider attachmentsProvider;
+  final SecureStorageSource _secureStorage;
+  final ProjectRepository _projectRepository;
+  final TaskRepository _taskRepository;
+  final MemberProvider memberProvider;
 
   bool isShowComments = false;
 
@@ -51,6 +51,21 @@ class ViewTaskController
 
   Map<String, String>? imageHeader;
 
+  Future<void> _getAccessToken() async =>
+      imageHeader = await getAccessHeader(_secureStorage);
+
+  Future<void> _fetchDetailedUser(String? ownerId) async {
+    if (ownerId != null) {
+      String id =
+          await _secureStorage.getUserData(type: StorageDataType.id) ?? '';
+      user = await _userRepository.fetchUser(id: id);
+    }
+  }
+
+  Future<void> _fetchProject(String projectId) async {
+    project = await _projectRepository.fetchOneProject(projectId: projectId);
+  }
+
   Future<void> fetchInitialData({
     required String projectId,
     required String? assignedTo,
@@ -58,9 +73,9 @@ class ViewTaskController
     required TaskModel pickedTask,
   }) async {
     await Future.wait([
-      getAccessToken(),
-      fetchProject(projectId),
-      fetchDetailedUser(assignedTo),
+      _getAccessToken(),
+      _fetchProject(projectId),
+      _fetchDetailedUser(assignedTo),
     ]);
     if (pickedTask.members != null) {
       for (int i = 0; i < pickedTask.members!.length; i++) {
@@ -69,14 +84,6 @@ class ViewTaskController
     }
 
     callback();
-  }
-
-  Future<void> fetchDetailedUser(String? ownerId) async {
-    if (ownerId != null) {
-      String id =
-          await _secureStorage.getUserData(type: StorageDataType.id) ?? '';
-      user = await _userRepository.fetchUser(id: id);
-    }
   }
 
   Future<TaskModel> updateTask(
@@ -125,10 +132,6 @@ class ViewTaskController
     }
   }
 
-  Future<void> fetchProject(String projectId) async {
-    project = await _projectRepository.fetchOneProject(projectId: projectId);
-  }
-
   Future<List<CommentModel>> fetchTaskComments({required String taskId}) async {
     return await _taskRepository.fetchTaskComments(taskId: taskId);
   }
@@ -137,9 +140,6 @@ class ViewTaskController
     isActiveSubmitButton.value = newValue;
     isActiveSubmitButton.notifyListeners();
   }
-
-  Future<void> getAccessToken() async =>
-      imageHeader = await getAccessHeader(_secureStorage);
 
   Future<CommentModel> createTaskComment({required String taskId}) async {
     final model = await _taskRepository.createTaskComment(

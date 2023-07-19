@@ -32,6 +32,7 @@ class NavBarItem extends StatelessWidget {
                 const SizedBox(),
                 SvgPicture.asset(
                   'assets/images/nav_bar_icons/$icon.svg',
+                  // ignore: deprecated_member_use
                   color: iconColor,
                 ),
                 FittedBox(

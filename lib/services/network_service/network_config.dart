@@ -29,6 +29,17 @@ class NetworkSource {
   }
   NetworkSource._internal();
 
+  final String _tokenType = 'Bearer';
+
+  final _storageSource = SecureStorageSource().storageApi;
+
+  final Options authOptions = Options(
+    validateStatus: (_) => true,
+    headers: {
+      _contentType: _jsonApp,
+    },
+  );
+
   static final Dio _dio = Dio(BaseOptions(
     // TODO set up your api url
     baseUrl: dotenv.env[EnvScheme.apiUrl] ?? 'null',
@@ -51,39 +62,27 @@ class NetworkSource {
       ),
     );
 
-  final String _tokenType = 'Bearer';
-
-  final Options authOptions = Options(
-    validateStatus: (_) => true,
-    headers: {
-      _contentType: _jsonApp,
-    },
-  );
-  final _storageSource = SecureStorageSource().storageApi;
-
   Future<Response<dynamic>> get({
     required String path,
     Map<String, dynamic>? queryParameters,
     Options? options,
-  }) async {
-    return _dio.get(
-      path,
-      queryParameters: queryParameters,
-      options: options,
-    );
-  }
+  }) =>
+      _dio.get(
+        path,
+        queryParameters: queryParameters,
+        options: options,
+      );
 
   Future<Response<dynamic>> put({
     required String path,
     Map<String, dynamic>? data,
     Options? options,
-  }) async {
-    return _dio.put(
-      path,
-      data: data,
-      options: options,
-    );
-  }
+  }) =>
+      _dio.put(
+        path,
+        data: data,
+        options: options,
+      );
 
   Future<Response<dynamic>> post({
     required String path,
@@ -91,27 +90,25 @@ class NetworkSource {
     Options? options,
     FormData? formData,
     bool isFormData = false,
-  }) async {
-    return _dio.post(
-      path,
-      data: isFormData ? formData : data,
-      options: options,
-    );
-  }
+  }) =>
+      _dio.post(
+        path,
+        data: isFormData ? formData : data,
+        options: options,
+      );
 
   Future<Response<dynamic>> delete({
     required String path,
     Map<String, dynamic>? queryParameters,
     Map<String, dynamic>? data,
     Options? options,
-  }) async {
-    return _dio.delete(
-      path,
-      queryParameters: queryParameters,
-      data: data,
-      options: options,
-    );
-  }
+  }) =>
+      _dio.delete(
+        path,
+        queryParameters: queryParameters,
+        data: data,
+        options: options,
+      );
 
   Future<Options> getLocalRequestOptions({bool useContentType = false}) async {
     final accessToken =
@@ -130,17 +127,15 @@ class NetworkSource {
     required String accessToken,
     bool useMultiPart = false,
     bool useContentType = false,
-  }) {
-    return Options(
-      validateStatus: (_) => true,
-      headers: {
-        _authorization: '$_tokenType $accessToken',
-        useContentType ? _contentType : _jsonApp: null,
-        useMultiPart ? _multipartForm : _jsonApp: null,
-      },
-    );
-  }
-
+  }) =>
+      Options(
+        validateStatus: (_) => true,
+        headers: {
+          _authorization: '$_tokenType $accessToken',
+          useContentType ? _contentType : _jsonApp: null,
+          useMultiPart ? _multipartForm : _jsonApp: null,
+        },
+      );
   static Future<Response<dynamic>> _retry(RequestOptions requestOptions) async {
     final options = Options(
       method: requestOptions.method,

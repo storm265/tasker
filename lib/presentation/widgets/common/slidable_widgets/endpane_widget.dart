@@ -40,6 +40,7 @@ class EndPageWidget extends StatelessWidget {
                 )
               : SvgPicture.asset(
                   iconPath!,
+                  // ignore: deprecated_member_use
                   color: color,
                 ),
           onPressed: () async {
