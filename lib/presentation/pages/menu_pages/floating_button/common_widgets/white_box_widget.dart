@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 
 class WhiteBoxWidget extends StatelessWidget {
-  final Widget child;
-  final double height;
-  final VoidCallback? onClick;
-  final ScrollController? scrollController;
   const WhiteBoxWidget({
     Key? key,
     required this.child,
@@ -13,6 +9,14 @@ class WhiteBoxWidget extends StatelessWidget {
     this.onClick,
     this.height = 470,
   }) : super(key: key);
+
+  final Widget child;
+
+  final double height;
+
+  final VoidCallback? onClick;
+
+  final ScrollController? scrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +49,3 @@ class WhiteBoxWidget extends StatelessWidget {
     );
   }
 }
-
-
-

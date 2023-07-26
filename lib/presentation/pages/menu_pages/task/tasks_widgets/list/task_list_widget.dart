@@ -5,7 +5,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:todo2/domain/model/task_models/task_model.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
-import 'package:todo2/presentation/pages/auth/splash_page.dart';
+import 'package:todo2/presentation/pages/auth/splash/splash_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/task_list.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/task_sort_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/list/task_item_widget.dart';

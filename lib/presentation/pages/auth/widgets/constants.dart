@@ -1,1 +1,1 @@
-double minFactor = 0.00001;
+double minPaddingFactor = 0.00001;

@@ -47,8 +47,8 @@ class _SignInPageState extends State<SignInPage> {
       resizeToAvoidBottomInset: false,
       child: UnfocusWidget(
         child: SizedBox(
-          width: size.width - minFactor,
-          height: size.height - minFactor,
+          width: size.width - minPaddingFactor,
+          height: size.height - minPaddingFactor,
           child: Form(
             key: _signInController.formKey,
             autovalidateMode: AutovalidateMode.onUserInteraction,

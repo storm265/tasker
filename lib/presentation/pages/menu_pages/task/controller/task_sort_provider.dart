@@ -20,6 +20,12 @@ final todayPattern = DateFormat('yyyy-MM-dd');
 class TaskSortProvider {
   final _now = DateTime.now();
 
+  int _calculateDifferenceInDays(DateTime date) {
+    return DateTime(date.year, date.month, date.day)
+        .difference(DateTime(_now.year, _now.month, _now.day))
+        .inDays;
+  }
+
   List<TaskModel> sortList(
     TaskMode calendarMode,
     List<TaskModel> list,
@@ -50,7 +56,6 @@ class TaskSortProvider {
             .where((element) =>
                 _calculateDifferenceInDays(element.dueDate) == 0 &&
                 _calculateDifferenceInDays(element.dueDate) == 1)
-
             .toList();
     }
   }
@@ -78,12 +83,6 @@ class TaskSortProvider {
       default:
     }
     return sortedList;
-  }
-
-  int _calculateDifferenceInDays(DateTime date) {
-    return DateTime(date.year, date.month, date.day)
-        .difference(DateTime(_now.year, _now.month, _now.day))
-        .inDays;
   }
 
   String formatDay(DateTime date) {

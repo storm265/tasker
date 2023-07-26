@@ -4,7 +4,7 @@ import 'package:todo2/domain/model/profile_models/users_profile_model.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/controller/add_task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/add_member_widget/member_item_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/confirm_button.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/confirm_button_widget.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/activity_indicator_widget.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';

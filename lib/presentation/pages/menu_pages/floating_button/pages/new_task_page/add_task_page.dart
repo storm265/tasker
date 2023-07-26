@@ -12,8 +12,8 @@ import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_ta
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/common/fake_nav_bar.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/date_widgets/pick_time_field_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/new_task_page/widgets/panels/selected_panel_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/confirm_button.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/red_app_bar.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/confirm_button_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/red_app_bar_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/white_box_widget.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
 import 'package:todo2/presentation/widgets/common/activity_indicator_widget.dart';
@@ -72,7 +72,7 @@ class _AddEditTaskPageState extends State<AddEditTaskPage> {
       isPopFromNavBar: false,
       child: Stack(
         children: [
-          const FakeAppBar(),
+          const ReadAppBarWidget(),
           const FakeNavBarWidget(),
           Form(
             key: addEditTaskController.formKey,

@@ -2,8 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/controller/new_note_controller.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/confirm_button.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/red_app_bar.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/confirm_button_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/red_app_bar_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/title_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/white_box_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/color_pallete_widget.dart';
@@ -43,7 +43,7 @@ class _AddQuickNoteState extends State<AddQuickNote> {
       navRoute: Pages.quick,
       child: Stack(
         children: [
-          const FakeAppBar(),
+          const ReadAppBarWidget(),
           WhiteBoxWidget(
             height: 600,
             child: Padding(

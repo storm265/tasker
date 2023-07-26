@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 
-class CommentButton extends StatelessWidget {
+class CommentButtonWidget extends StatelessWidget {
   final VoidCallback onClickedCallback;
-  const CommentButton({
+  const CommentButtonWidget({
     Key? key,
     required this.onClickedCallback,
   }) : super(key: key);

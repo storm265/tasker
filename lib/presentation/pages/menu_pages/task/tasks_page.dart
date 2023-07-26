@@ -23,7 +23,10 @@ class TasksPage extends StatefulWidget {
 
 class _TasksPageState extends State<TasksPage>
     with SingleTickerProviderStateMixin {
-  late final _tabController = TabController(length: 2, vsync: this);
+  late final _tabController = TabController(
+    length: 2,
+    vsync: this,
+  );
 
   final _taskController = TaskListController(
     calendarProvider: CalendarProvider(),

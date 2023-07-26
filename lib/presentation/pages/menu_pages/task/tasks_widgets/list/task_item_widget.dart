@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo2/domain/model/task_models/task_model.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/task_list.dart';
-import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/circle_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/circle_painter.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/view_task.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';

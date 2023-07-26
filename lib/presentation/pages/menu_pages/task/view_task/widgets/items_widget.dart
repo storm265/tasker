@@ -1,10 +1,8 @@
-
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/domain/model/task_models/task_model.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
-import 'package:todo2/presentation/pages/auth/splash_page.dart';
+import 'package:todo2/presentation/pages/auth/splash/splash_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/controller/view_task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/detailed/detailed_item_widget.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';

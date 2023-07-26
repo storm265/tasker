@@ -6,12 +6,14 @@ import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/calendar_
 import 'package:todo2/services/secure_storage_service.dart';
 
 class TaskList with TasksMixin, ChangeNotifier {
-  final SecureStorageSource _secureStorage;
-  final CalendarProvider calendarProvider;
   TaskList({
     required SecureStorageSource secureStorage,
     required this.calendarProvider,
   }) : _secureStorage = secureStorage;
+
+  final SecureStorageSource _secureStorage;
+
+  final CalendarProvider calendarProvider;
 
   String userId = '';
 

@@ -1,13 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/add_text_field.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/add_text_field_widget.dart';
 
 class TitleWidget extends StatelessWidget {
-  final String title;
-  final int maxLength;
-  final int? maxLines;
-  final VoidCallback? onEdiditionCompleteCallback;
-  final TextEditingController textController;
-  final TextInputType? textInputType;
   const TitleWidget({
     Key? key,
     required this.textController,
@@ -17,6 +11,18 @@ class TitleWidget extends StatelessWidget {
     this.textInputType,
     this.onEdiditionCompleteCallback,
   }) : super(key: key);
+
+  final String title;
+
+  final int maxLength;
+
+  final int? maxLines;
+
+  final VoidCallback? onEdiditionCompleteCallback;
+
+  final TextEditingController textController;
+
+  final TextInputType? textInputType;
 
   @override
   Widget build(BuildContext context) {

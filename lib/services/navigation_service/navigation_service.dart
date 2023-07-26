@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/sign_in_page.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/sign_up_page.dart';
-import 'package:todo2/presentation/pages/auth/splash_page.dart';
+import 'package:todo2/presentation/pages/auth/splash/splash_page.dart';
 import 'package:todo2/presentation/pages/auth/welcome/welcome_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/checklist_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/note_page/note_page.dart';

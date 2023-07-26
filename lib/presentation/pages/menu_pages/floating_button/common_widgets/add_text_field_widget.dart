@@ -3,12 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 
 class AddTextFieldWidget extends StatelessWidget {
-  final String? hintText;
-  final TextEditingController titleController;
-  final VoidCallback? onTap;
-  final VoidCallback? onEdiditionCompleteCallback;
-  final int maxLength;
-  final TextInputType? textInputType;
   const AddTextFieldWidget({
     Key? key,
     required this.titleController,
@@ -18,6 +12,18 @@ class AddTextFieldWidget extends StatelessWidget {
     this.onEdiditionCompleteCallback,
     this.hintText,
   }) : super(key: key);
+
+  final String? hintText;
+
+  final TextEditingController titleController;
+
+  final VoidCallback? onTap;
+
+  final VoidCallback? onEdiditionCompleteCallback;
+
+  final int maxLength;
+
+  final TextInputType? textInputType;
 
   @override
   Widget build(BuildContext context) {

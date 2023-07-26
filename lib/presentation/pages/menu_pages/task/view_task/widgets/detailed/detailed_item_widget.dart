@@ -2,13 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class DetailedItemWidget extends StatelessWidget {
-  final Widget? customSubtitle;
-  final String? subtitle;
-  final Widget? leading;
-  final String? imageIcon;
-  final String title;
-  final bool isBlackTextColor;
-
   const DetailedItemWidget({
     Key? key,
     this.isBlackTextColor = false,
@@ -18,6 +11,18 @@ class DetailedItemWidget extends StatelessWidget {
     this.imageIcon,
     required this.title,
   }) : super(key: key);
+
+  final Widget? customSubtitle;
+
+  final String? subtitle;
+
+  final Widget? leading;
+
+  final String? imageIcon;
+
+  final String title;
+
+  final bool isBlackTextColor;
 
   final String assetsPath = 'assets/images/detailed_task';
 

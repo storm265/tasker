@@ -4,8 +4,8 @@ import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/controller/check_list_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/widgets/add_item_button.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/pages/check_list_page/widgets/check_box_widget.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/confirm_button.dart';
-import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/red_app_bar.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/confirm_button_widget.dart';
+import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/red_app_bar_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/title_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/floating_button/common_widgets/white_box_widget.dart';
 import 'package:todo2/presentation/pages/menu_pages/menu/widgets/color_pallete_widget.dart';
@@ -48,7 +48,7 @@ class _CheckListPageState extends State<CheckListPage> {
       isPopFromNavBar: true,
       child: Stack(
         children: [
-          const FakeAppBar(),
+          const ReadAppBarWidget(),
           WhiteBoxWidget(
             scrollController: _scrollController,
             height: 500,

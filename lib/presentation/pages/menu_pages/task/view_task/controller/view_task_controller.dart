@@ -33,10 +33,15 @@ class ViewTaskController
         _secureStorage = secureStorage;
 
   final UserProfileRepository _userRepository;
+
   final AttachmentsProvider attachmentsProvider;
+
   final SecureStorageSource _secureStorage;
+
   final ProjectRepository _projectRepository;
+
   final TaskRepository _taskRepository;
+  
   final MemberProvider memberProvider;
 
   bool isShowComments = false;

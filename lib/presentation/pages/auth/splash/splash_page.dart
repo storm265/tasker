@@ -1,4 +1,3 @@
-
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/widgets/common/app_bar_wrapper_widget.dart';
@@ -8,12 +7,13 @@ import 'package:todo2/utils/assets_path.dart';
 
 String? locale;
 
+// TODO move logic into controller
 class SplashPage extends StatelessWidget {
   SplashPage({Key? key}) : super(key: key);
 
   final _secureStorageService = SecureStorageSource();
 
-  Future<void> isAuthenticated(BuildContext context) async {
+  Future<void> isUserAuthenticated(BuildContext context) async {
     final accessToken = await _secureStorageService.getUserData(
         type: StorageDataType.accessToken);
     await Future.delayed(
@@ -33,7 +33,7 @@ class SplashPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    isAuthenticated(context);
+    isUserAuthenticated(context);
     setLocale(context);
     return AppbarWrapWidget(
       isRedAppBar: false,

@@ -9,12 +9,11 @@ mixin TasksMixin {
   Future<void> deleteTask({
     required String taskId,
     VoidCallback? callback,
-  }) async =>
-      await taskRepository.deleteTask(taskId: taskId).then(
+  }) =>
+      taskRepository.deleteTask(taskId: taskId).then(
             (_) => callback != null ? callback() : null,
           );
 
-  Future<List<UserProfileModel>> taskMemberSearch(
-          {required String userName}) async =>
-      await taskRepository.taskMemberSearch(nickname: userName);
+  Future<List<UserProfileModel>> taskMemberSearch({required String userName}) =>
+      taskRepository.taskMemberSearch(nickname: userName);
 }

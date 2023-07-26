@@ -2,12 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 class ConfirmButtonWidget extends StatelessWidget {
-  final double width;
-  final double height;
-  final String title;
-  final Color color;
-  final bool useAlign;
-  final VoidCallback? onPressed;
   const ConfirmButtonWidget({
     Key? key,
     required this.onPressed,
@@ -17,6 +11,18 @@ class ConfirmButtonWidget extends StatelessWidget {
     this.height = 48,
     this.useAlign = false,
   }) : super(key: key);
+
+  final double width;
+
+  final double height;
+
+  final String title;
+
+  final Color color;
+
+  final bool useAlign;
+
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {

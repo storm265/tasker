@@ -10,12 +10,6 @@ import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/calendar_
 import 'package:todo2/services/secure_storage_service.dart';
 
 abstract class BaseTasks extends ChangeNotifier with TasksMixin {
-  final AttachmentsProvider attachmentsProvider;
-  final TaskValidator taskValidator;
-  final PanelProvider panelProvider;
-  final MemberProvider memberProvider;
-
-  final SecureStorageSource secureStorage;
   BaseTasks({
     required this.taskValidator,
     required this.attachmentsProvider,
@@ -23,6 +17,16 @@ abstract class BaseTasks extends ChangeNotifier with TasksMixin {
     required this.panelProvider,
     required this.memberProvider,
   });
+
+  final AttachmentsProvider attachmentsProvider;
+
+  final TaskValidator taskValidator;
+
+  final PanelProvider panelProvider;
+
+  final MemberProvider memberProvider;
+
+  final SecureStorageSource secureStorage;
 
   final formKey = GlobalKey<FormState>();
 
@@ -67,6 +71,4 @@ abstract class BaseTasks extends ChangeNotifier with TasksMixin {
     FocusScope.of(context).unfocus();
     panelProvider.changePanelStatus(newStatus: PanelStatus.hide);
   }
-
-  
 }
