@@ -7,13 +7,10 @@ import 'package:todo2/domain/model/task_models/task_model.dart';
 import 'package:todo2/domain/repository/task_repository.dart';
 import 'package:todo2/schemas/tasks/task_dao.dart';
 import 'package:todo2/schemas/tasks/task_database.dart';
+import 'package:todo2/services/cache_service/cache_keys.dart';
 import 'package:todo2/services/cache_service/cache_service.dart';
 
 class TaskRepositoryImpl implements TaskRepository {
-  final InMemoryCache _inMemoryCache;
-  final TaskDao _taskDao;
-  final TaskDataSource _taskDataSource;
-
   TaskRepositoryImpl({
     required TaskDao taskDao,
     required InMemoryCache inMemoryCache,
@@ -21,6 +18,12 @@ class TaskRepositoryImpl implements TaskRepository {
   })  : _taskDataSource = taskDataSource,
         _taskDao = taskDao,
         _inMemoryCache = inMemoryCache;
+
+  final InMemoryCache _inMemoryCache;
+
+  final TaskDao _taskDao;
+
+  final TaskDataSource _taskDataSource;
 
   @override
   Future<TaskModel> createTask({
@@ -45,9 +48,8 @@ class TaskRepositoryImpl implements TaskRepository {
   }
 
   @override
-  Future<void> deleteTask({required String taskId}) async {
-    await _taskDataSource.deleteTask(projectId: taskId);
-  }
+  Future<void> deleteTask({required String taskId}) =>
+      _taskDataSource.deleteTask(projectId: taskId);
 
   @override
   Future<TaskModel> updateTask({
@@ -221,16 +223,16 @@ class TaskRepositoryImpl implements TaskRepository {
   }
 
   @override
-  Future<void> deleteTaskComment({required String taskId}) async =>
-      await _taskDataSource.deleteTaskComment(taskId: taskId);
+  Future<void> deleteTaskComment({required String taskId}) =>
+      _taskDataSource.deleteTaskComment(taskId: taskId);
 
   @override
   Future<void> uploadTaskCommentAttachment({
     required File file,
     required String taskId,
     required bool isFile,
-  }) async =>
-      await _taskDataSource.uploadTaskCommentAttachment(
+  }) =>
+      _taskDataSource.uploadTaskCommentAttachment(
         file: file,
         commentId: taskId,
         isFile: isFile,

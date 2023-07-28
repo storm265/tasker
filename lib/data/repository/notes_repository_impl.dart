@@ -5,14 +5,11 @@ import 'package:todo2/domain/model/notes_model.dart';
 import 'package:todo2/domain/repository/notes_repository.dart';
 import 'package:todo2/schemas/notes/note_dao.dart';
 import 'package:todo2/schemas/notes/note_database.dart';
+import 'package:todo2/services/cache_service/cache_keys.dart';
 import 'package:todo2/services/cache_service/cache_service.dart';
 import 'package:todo2/utils/extensions/color_extension/color_string_extension.dart';
 
 class NoteRepositoryImpl implements NoteRepository {
-  final InMemoryCache _inMemoryCache;
-  final NoteDao _noteDao;
-  final NotesDataSourceImpl _noteDataSource;
-
   NoteRepositoryImpl({
     required NotesDataSourceImpl noteDataSource,
     required NoteDao noteDao,
@@ -20,6 +17,12 @@ class NoteRepositoryImpl implements NoteRepository {
   })  : _noteDataSource = noteDataSource,
         _noteDao = noteDao,
         _inMemoryCache = inMemoryCache;
+
+  final InMemoryCache _inMemoryCache;
+
+  final NoteDao _noteDao;
+
+  final NotesDataSourceImpl _noteDataSource;
 
   @override
   Future<NotesModel> createNote({
@@ -34,8 +37,8 @@ class NoteRepositoryImpl implements NoteRepository {
   }
 
   @override
-  Future<void> deleteNote({required String projectId}) async =>
-      await _noteDataSource.deleteNote(projectId: projectId);
+  Future<void> deleteNote({required String projectId}) =>
+      _noteDataSource.deleteNote(projectId: projectId);
 
   @override
   Future<List<NotesModel>> fetchUserNotes() async {

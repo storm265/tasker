@@ -6,13 +6,11 @@ import 'package:todo2/domain/model/project_models/projects_model.dart';
 import 'package:todo2/domain/repository/projects_repository.dart';
 import 'package:todo2/schemas/projects/project_dao.dart';
 import 'package:todo2/schemas/projects/project_database.dart';
+import 'package:todo2/services/cache_service/cache_keys.dart';
 import 'package:todo2/services/cache_service/cache_service.dart';
 import 'package:todo2/utils/extensions/color_extension/color_string_extension.dart';
 
 class ProjectRepositoryImpl implements ProjectRepository {
-  final InMemoryCache _inMemoryCache;
-  final ProjectDao _projectDao;
-  final ProjectUserDataSourceImpl _projectDataSource;
   ProjectRepositoryImpl({
     required ProjectUserDataSourceImpl projectDataSource,
     required ProjectDao projectDao,
@@ -20,6 +18,12 @@ class ProjectRepositoryImpl implements ProjectRepository {
   })  : _projectDataSource = projectDataSource,
         _projectDao = projectDao,
         _inMemoryCache = inMemoryCache;
+
+  final InMemoryCache _inMemoryCache;
+
+  final ProjectDao _projectDao;
+
+  final ProjectUserDataSourceImpl _projectDataSource;
 
   @override
   Future<ProjectModel> fetchOneProject({required String projectId}) async {
