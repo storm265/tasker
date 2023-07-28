@@ -4,9 +4,10 @@ import 'package:todo2/domain/repository/user_repository.dart';
 import 'package:todo2/services/error_service/error_service.dart';
 
 class UserProvider {
-  final UserProfileRepository _userProfileRepository;
   UserProvider({required UserProfileRepository userProfileRepository})
       : _userProfileRepository = userProfileRepository;
+
+  final UserProfileRepository _userProfileRepository;
 
   StatsModel stats = StatsModel(
     createdTasks: 0,

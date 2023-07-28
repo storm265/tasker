@@ -9,14 +9,15 @@ import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/services/secure_storage_service.dart';
 
 class UserProfileDataSourceImpl implements UserProfileDataSource {
-  final SecureStorageSource _secureStorageService;
-  final NetworkSource _network;
-
   UserProfileDataSourceImpl({
     required SecureStorageSource secureStorageService,
     required NetworkSource network,
   })  : _secureStorageService = secureStorageService,
         _network = network;
+
+  final SecureStorageSource _secureStorageService;
+
+  final NetworkSource _network;
 
   final _userPath = '/users';
   final _userStats = '/users-statistics';

@@ -12,14 +12,15 @@ import 'package:todo2/services/secure_storage_service.dart';
 import 'package:todo2/utils/extensions/color_extension/color_string_extension.dart';
 
 class ProjectUserDataSourceImpl implements ProjectUserDataSource {
-  final SecureStorageSource _secureStorageService;
-  final NetworkSource _network;
-
   ProjectUserDataSourceImpl({
     required SecureStorageSource secureStorageService,
     required NetworkSource network,
   })  : _secureStorageService = secureStorageService,
         _network = network;
+
+  final SecureStorageSource _secureStorageService;
+
+  final NetworkSource _network;
 
   final _userProjects = '/user-projects';
   final _projects = '/projects';

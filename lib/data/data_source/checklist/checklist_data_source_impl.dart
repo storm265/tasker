@@ -9,14 +9,15 @@ import 'package:todo2/services/secure_storage_service.dart';
 import 'package:todo2/utils/extensions/color_extension/color_string_extension.dart';
 
 class CheckListDataSourceImpl extends CheckListDataSource {
-  final NetworkSource _network;
-  final SecureStorageSource _secureStorage;
-
   CheckListDataSourceImpl({
     required NetworkSource network,
     required SecureStorageSource secureStorage,
   })  : _network = network,
         _secureStorage = secureStorage;
+
+  final NetworkSource _network;
+
+  final SecureStorageSource _secureStorage;
 
   final _userChecklists = '/user-checklists';
   final _checklists = '/checklists';

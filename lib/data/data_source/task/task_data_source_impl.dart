@@ -9,6 +9,12 @@ import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/services/secure_storage_service.dart';
 
 class TaskDataSourceImpl implements TaskDataSource {
+  TaskDataSourceImpl({
+    required NetworkSource network,
+    required SecureStorageSource secureStorage,
+  })  : _network = network,
+        _secureStorage = secureStorage;
+
   final _tasks = '/tasks';
 
   final _projectTasks = '/project-tasks';
@@ -32,12 +38,6 @@ class TaskDataSourceImpl implements TaskDataSource {
   final NetworkSource _network;
 
   final SecureStorageSource _secureStorage;
-
-  TaskDataSourceImpl({
-    required NetworkSource network,
-    required SecureStorageSource secureStorage,
-  })  : _network = network,
-        _secureStorage = secureStorage;
 
   @override
   Future<Map<String, dynamic>> createTask({

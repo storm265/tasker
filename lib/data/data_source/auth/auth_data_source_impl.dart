@@ -8,14 +8,15 @@ import 'package:todo2/services/network_service/network_config.dart';
 import 'package:todo2/services/secure_storage_service.dart';
 
 class AuthDataSourceImpl implements AuthDataSource {
-  final SecureStorageSource _secureStorageService;
-  final NetworkSource _networkSource;
-
   AuthDataSourceImpl({
     required SecureStorageSource secureStorageService,
     required NetworkSource network,
   })  : _secureStorageService = secureStorageService,
         _networkSource = network;
+
+  final SecureStorageSource _secureStorageService;
+
+  final NetworkSource _networkSource;
 
   final _signInUrl = '/sign-in';
   final _signUpUrl = '/sign-up';

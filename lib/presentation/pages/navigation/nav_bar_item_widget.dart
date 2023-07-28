@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-class NavBarItem extends StatelessWidget {
-  final String? icon;
-  final Color? iconColor;
-  final String label;
-  final VoidCallback onTap;
-  const NavBarItem({
+class NavBarItemWidget extends StatelessWidget {
+  const NavBarItemWidget({
     Key? key,
     required this.icon,
     required this.iconColor,
     required this.label,
     required this.onTap,
   }) : super(key: key);
+
+  final String? icon;
+
+  final Color? iconColor;
+
+  final String label;
+
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
