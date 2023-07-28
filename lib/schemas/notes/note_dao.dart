@@ -26,29 +26,27 @@ class NoteDaoImpl extends DatabaseAccessor<NoteDatabase>
   NoteDaoImpl(NoteDatabase noteDatabase) : super(noteDatabase);
 
   @override
-  Future<List<Note>> getNotes() async => await select(noteTable).get();
+  Future<List<Note>> getNotes() => select(noteTable).get();
 
   @override
   Stream<List<Note>> getNotesStream() => select(noteTable).watch();
 
   @override
-  Future<Note> getNote(String id) async =>
-      await (select(noteTable)..where((tbl) => tbl.id.equals(id))).getSingle();
+  Future<Note> getNote(String id) =>
+      (select(noteTable)..where((tbl) => tbl.id.equals(id))).getSingle();
 
   @override
-  Future<bool> updateNote(NoteTableCompanion entity) async =>
-      await update(noteTable).replace(entity);
+  Future<bool> updateNote(NoteTableCompanion entity) =>
+      update(noteTable).replace(entity);
 
   @override
-  Future<int> insertNote(NoteTableCompanion entity) async =>
-      await into(noteTable).insert(entity);
+  Future<int> insertNote(NoteTableCompanion entity) =>
+      into(noteTable).insert(entity);
 
   @override
-  Future<int> deleteNote(String id) async =>
-      await (delete(noteTable)..where((tbl) => tbl.id.equals(id))).go();
+  Future<int> deleteNote(String id) =>
+      (delete(noteTable)..where((tbl) => tbl.id.equals(id))).go();
 
   @override
-  Future<int> deleteAllNotes() async {
-    return await (delete(noteTable)).go();
-  }
+  Future<int> deleteAllNotes() => (delete(noteTable)).go();
 }
