@@ -6,7 +6,7 @@ import 'package:todo2/presentation/pages/menu_pages/task/controller/task_list.da
 import 'package:todo2/presentation/pages/menu_pages/task/tasks_widgets/circle_painter.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/view_task.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
-import 'package:todo2/services/theme_service/theme_data_controller.dart';
+import 'package:todo2/utils/theme_util.dart';
 
 final timeNow = DateTime.now();
 

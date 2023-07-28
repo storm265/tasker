@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
-import 'package:todo2/services/theme_service/theme_data_controller.dart';
+import 'package:todo2/utils/theme_util.dart';
 
 enum StatusBarColors {
   red,

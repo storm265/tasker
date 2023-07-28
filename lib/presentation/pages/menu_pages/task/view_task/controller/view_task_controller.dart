@@ -16,7 +16,7 @@ import 'package:todo2/presentation/pages/menu_pages/task/controller/secure_mixin
 import 'package:todo2/presentation/pages/menu_pages/task/controller/tasks_mixin.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/network_service/connection_checker.dart';
-import 'package:todo2/services/secure_storage_service.dart';
+import 'package:todo2/services/secure_storage_service/secure_storage_service.dart';
 
 class ViewTaskController
     with SecureMixin, TasksMixin, ConnectionCheckerMixin, ChangeNotifier {

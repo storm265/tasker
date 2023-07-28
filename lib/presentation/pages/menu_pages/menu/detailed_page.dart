@@ -13,7 +13,7 @@ import 'package:todo2/presentation/pages/navigation/controllers/inherited_naviga
 import 'package:todo2/presentation/widgets/common/colors.dart';
 import 'package:todo2/presentation/widgets/common/will_pop_scope_wrapp.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
-import 'package:todo2/services/secure_storage_service.dart';
+import 'package:todo2/services/secure_storage_service/secure_storage_service.dart';
 import 'package:todo2/utils/assets_path.dart';
 
 class DetailedPage extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
 
-class ThemeDataService {
+class ThemeUtil {
   final themeData = ThemeData(
     fontFamily: 'Roboto',
     textTheme: const TextTheme(

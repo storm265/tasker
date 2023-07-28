@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:todo2/data/repository/auth_repository_impl.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
-import 'package:todo2/services/secure_storage_service.dart';
+import 'package:todo2/services/secure_storage_service/secure_storage_service.dart';
+import 'package:todo2/services/secure_storage_service/storage_data_type.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 

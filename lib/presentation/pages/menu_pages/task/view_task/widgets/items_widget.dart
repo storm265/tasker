@@ -6,7 +6,7 @@ import 'package:todo2/presentation/pages/auth/splash/splash_page.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/controller/view_task_controller.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/detailed/detailed_item_widget.dart';
 import 'package:todo2/presentation/widgets/common/colors.dart';
-import 'package:todo2/services/theme_service/theme_data_controller.dart';
+import 'package:todo2/utils/theme_util.dart';
 
 class ItemsWidget extends StatelessWidget {
   final TaskModel pickedTask;

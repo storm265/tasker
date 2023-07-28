@@ -13,7 +13,7 @@ import 'package:todo2/presentation/pages/menu_pages/task/controller/base_tasks.d
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/network_service/connection_checker.dart';
-import 'package:todo2/services/secure_storage_service.dart';
+import 'package:todo2/services/secure_storage_service/secure_storage_service.dart';
 
 class AddEditTaskController extends BaseTasks
     with SecureMixin, ConnectionCheckerMixin {

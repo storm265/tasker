@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:todo2/presentation/providers/file_provider.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/constants/profile_dialog_items.dart';
 import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_controller.dart';
-import 'package:todo2/services/theme_service/theme_data_controller.dart';
+import 'package:todo2/utils/theme_util.dart';
 
 Future<void> showSettingsDialog({
   required BuildContext context,

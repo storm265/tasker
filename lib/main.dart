@@ -9,7 +9,7 @@ import 'package:todo2/services/dependency_service/dependency_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/network_service/refresh_token_service.dart';
 import 'package:todo2/services/system_service/system_chrome.dart';
-import 'services/theme_service/theme_data_controller.dart';
+import 'utils/theme_util.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,7 +36,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final _themeDataController = ThemeDataService();
+  final _themeDataController = ThemeUtil();
   final _navigationController = NavigationController();
   final _statusBarController = StatusBarController();
 

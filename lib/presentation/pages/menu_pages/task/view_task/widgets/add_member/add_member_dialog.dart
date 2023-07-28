@@ -7,7 +7,7 @@ import 'package:todo2/presentation/pages/menu_pages/task/view_task/controller/vi
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/widgets/add_member/member_item_widget.dart';
 import 'package:todo2/presentation/widgets/common/disabled_scroll_glow_widget.dart';
 import 'package:todo2/presentation/widgets/common/activity_indicator_widget.dart';
-import 'package:todo2/services/theme_service/theme_data_controller.dart';
+import 'package:todo2/utils/theme_util.dart';
 
 class AddMemberDialog extends StatefulWidget {
   final ViewTaskController viewTaskController;

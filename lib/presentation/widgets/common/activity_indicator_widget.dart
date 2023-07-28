@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:todo2/services/theme_service/theme_data_controller.dart';
+import 'package:todo2/utils/theme_util.dart';
 
 class ActivityIndicatorWidget extends StatelessWidget {
   final String? text;

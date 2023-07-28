@@ -39,7 +39,7 @@ import 'package:todo2/schemas/tasks/task_dao.dart';
 import 'package:todo2/schemas/tasks/task_database.dart';
 import 'package:todo2/services/cache_service/cache_service.dart';
 import 'package:todo2/services/network_service/network_config.dart';
-import 'package:todo2/services/secure_storage_service.dart';
+import 'package:todo2/services/secure_storage_service/secure_storage_service.dart';
 
 final getIt = GetIt.instance;
 

@@ -1,17 +1,5 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
-enum StorageDataType {
-  email('email'),
-  password('password'),
-  username('username'),
-  accessToken('accessToken'),
-  refreshToken('refreshToken'),
-  id('id'),
-  avatarUrl('avatarUrl');
-
-  final String type;
-  const StorageDataType(this.type);
-}
+import 'package:todo2/services/secure_storage_service/storage_data_type.dart';
 
 class SecureStorageSource {
   static final SecureStorageSource _storage = SecureStorageSource._internal();
