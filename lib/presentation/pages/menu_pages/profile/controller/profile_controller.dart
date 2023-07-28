@@ -1,12 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:todo2/data/repository/auth_repository_impl.dart';
 import 'package:todo2/data/repository/user_repository_impl.dart';
 import 'package:todo2/domain/model/task_models/task_model.dart';
+import 'package:todo2/domain/repository/auth_repository.dart';
 import 'package:todo2/domain/repository/notes_repository.dart';
 import 'package:todo2/domain/repository/task_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
@@ -17,16 +16,10 @@ import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/network_service/connection_checker.dart';
 import 'package:todo2/services/secure_storage_service/secure_storage_service.dart';
+import 'package:todo2/services/secure_storage_service/storage_data_type.dart';
 
 class ProfileController extends ChangeNotifier
     with SecureMixin, ConnectionCheckerMixin {
-  final SecureStorageSource _secureStorageService;
-  final FileProvider fileProvider;
-  final UserProfileRepositoryImpl userProfileRepository;
-  final AuthRepositoryImpl authRepository;
-  final TaskRepository _taskRepository;
-  final NoteRepository _notesRepository;
-
   ProfileController({
     required this.fileProvider,
     required NoteRepository notesRepository,
@@ -38,17 +31,37 @@ class ProfileController extends ChangeNotifier
         _notesRepository = notesRepository,
         _taskRepository = taskRepository;
 
+  final SecureStorageSource _secureStorageService;
+
+  final FileProvider fileProvider;
+
+  final UserProfileRepositoryImpl userProfileRepository;
+
+  final AuthRepository authRepository;
+
+  final TaskRepository _taskRepository;
+
+  final NoteRepository _notesRepository;
+
   late String username = '';
+
   late Map<String, String> imageHeader = {};
+
   final imageUrl = ValueNotifier<String>('');
+
   late String email = '';
+
   late AnimationController iconAnimationController;
 
   // ignore: prefer_final_fields
   List<TaskModel> _tasks = [];
+
   int _eventsLength = 0;
+
   int _todoLength = 0;
+
   int _quickNotesLength = 0;
+
   List<int> cardLength = [0, 0, 0];
 
   Future<void> clearImage() async {

@@ -6,20 +6,16 @@ import 'package:todo2/domain/model/profile_models/users_profile_model.dart';
 import 'package:todo2/domain/model/project_models/projects_model.dart';
 import 'package:todo2/domain/repository/projects_repository.dart';
 import 'package:todo2/domain/repository/user_repository.dart';
-
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/secure_mixin.dart';
 import 'package:todo2/presentation/pages/menu_pages/task/controller/base_tasks.dart';
 import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/network_service/connection_checker.dart';
-import 'package:todo2/services/secure_storage_service/secure_storage_service.dart';
+import 'package:todo2/services/secure_storage_service/storage_data_type.dart';
 
 class AddEditTaskController extends BaseTasks
     with SecureMixin, ConnectionCheckerMixin {
-  final UserProfileRepository _userRepository;
-  final ProjectRepository _projectRepository;
-
   AddEditTaskController({
     required ProjectRepository projectRepository,
     required UserProfileRepository userRepository,
@@ -30,6 +26,10 @@ class AddEditTaskController extends BaseTasks
     required super.memberProvider,
   })  : _userRepository = userRepository,
         _projectRepository = projectRepository;
+
+  final UserProfileRepository _userRepository;
+
+  final ProjectRepository _projectRepository;
 
   bool isEditMode = false;
   String taskId = '';

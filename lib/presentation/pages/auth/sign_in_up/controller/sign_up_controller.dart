@@ -2,7 +2,7 @@
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:todo2/data/repository/auth_repository_impl.dart';
+import 'package:todo2/domain/repository/auth_repository.dart';
 import 'package:todo2/generated/locale_keys.g.dart';
 import 'package:todo2/presentation/providers/file_provider.dart';
 import 'package:todo2/presentation/pages/auth/sign_in_up/controller/form_validator_controller.dart';
@@ -10,15 +10,16 @@ import 'package:todo2/services/message_service/message_service.dart';
 import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/network_service/connection_checker.dart';
 import 'package:todo2/services/secure_storage_service/secure_storage_service.dart';
+import 'package:todo2/services/secure_storage_service/storage_data_type.dart';
 
 class SignUpController extends ChangeNotifier with ConnectionCheckerMixin {
-  final AuthRepositoryImpl _authRepository;
+  final AuthRepository _authRepository;
   final FormValidatorController formValidatorController;
   final FileProvider fileController;
   final SecureStorageSource _storageSource;
 
   SignUpController({
-    required AuthRepositoryImpl authRepository,
+    required AuthRepository authRepository,
     required this.formValidatorController,
     required this.fileController,
     required SecureStorageSource storageSource,

@@ -12,16 +12,6 @@ const _authorization = 'Authorization';
 const _jsonApp = 'application/json';
 const _multipartForm = 'multipart/form-data';
 
-final _refreshToken = RefreshTokenService(
-  authRepository: AuthRepositoryImpl(
-    authDataSource: AuthDataSourceImpl(
-      network: NetworkSource(),
-      secureStorageService: SecureStorageSource(),
-    ),
-  ),
-  secureStorageSource: SecureStorageSource(),
-);
-
 class NetworkSource {
   static final NetworkSource _instance = NetworkSource._internal();
 
@@ -41,6 +31,16 @@ class NetworkSource {
     },
   );
 
+  static final _refreshTokenService = RefreshTokenService(
+    authRepository: AuthRepositoryImpl(
+      authDataSource: AuthDataSourceImpl(
+        network: NetworkSource(),
+        secureStorageService: SecureStorageSource(),
+      ),
+    ),
+    secureStorageSource: SecureStorageSource(),
+  );
+
   static final Dio _dio = Dio(BaseOptions(
     // TODO set up your api url
     baseUrl: dotenv.env[EnvScheme.apiUrl] ?? 'null',
@@ -51,7 +51,7 @@ class NetworkSource {
       InterceptorsWrapper(
         onResponse: (response, handler) async {
           if (response.statusCode == 401) {
-            await _refreshToken.updateToken(
+            await _refreshTokenService.updateToken(
               callback: () async => handler.resolve(
                 await _retry(response.requestOptions),
               ),
@@ -137,14 +137,17 @@ class NetworkSource {
           useMultiPart ? _multipartForm : _jsonApp: null,
         },
       );
+
   static Future<Response<dynamic>> _retry(RequestOptions requestOptions) async {
     final options = Options(
       method: requestOptions.method,
       headers: requestOptions.headers,
     );
-    return _dio.request<dynamic>(requestOptions.path,
-        data: requestOptions.data,
-        queryParameters: requestOptions.queryParameters,
-        options: options);
+    return _dio.request<dynamic>(
+      requestOptions.path,
+      data: requestOptions.data,
+      queryParameters: requestOptions.queryParameters,
+      options: options,
+    );
   }
 }
