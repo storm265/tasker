@@ -45,9 +45,13 @@ final getIt = GetIt.instance;
 
 void setupDependencies() {
   final projectDao = ProjectDaoImpl(ProjectDatabase());
+
   final taskDao = TaskDaoImpl(TaskDatabase());
+
   final noteDao = NoteDaoImpl(NoteDatabase());
+
   final checklistDao = CheckListDaoImpl(CheckListDatabase());
+
   final checklistItemDao = CheckListItemDaoImpl(CheckListItemDatabase());
 
   getIt.registerFactory<FormValidatorController>(

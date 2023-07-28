@@ -1,4 +1,3 @@
-
 import 'package:todo2/domain/model/auth_model.dart';
 
 abstract class AuthRepository {
@@ -14,5 +13,6 @@ abstract class AuthRepository {
   });
 
   Future<void> signOut();
+
   Future<AuthModel> refreshToken();
 }
