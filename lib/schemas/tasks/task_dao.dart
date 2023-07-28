@@ -28,38 +28,27 @@ class TaskDaoImpl extends DatabaseAccessor<TaskDatabase>
   TaskDaoImpl(TaskDatabase taskDatabase) : super(taskDatabase);
 
   @override
-  Future<List<Task>> getTasks() async {
-    return await select(taskTable).get();
-  }
+  Future<List<Task>> getTasks() => select(taskTable).get();
 
   @override
-  Stream<List<Task>> getTasksStream() {
-    return select(taskTable).watch();
-  }
+  Stream<List<Task>> getTasksStream() => select(taskTable).watch();
 
   @override
-  Future<Task> getTask(String id) async {
-    return await (select(taskTable)..where((tbl) => tbl.id.equals(id)))
-        .getSingle();
-  }
+  Future<Task> getTask(String id) =>
+      (select(taskTable)..where((tbl) => tbl.id.equals(id))).getSingle();
 
   @override
-  Future<bool> updateTask(TaskTableCompanion entity) async {
-    return await update(taskTable).replace(entity);
-  }
+  Future<bool> updateTask(TaskTableCompanion entity) =>
+      update(taskTable).replace(entity);
 
   @override
-  Future<int> insertTask(TaskTableCompanion entity) async {
-    return await into(taskTable).insert(entity,mode: InsertMode.insertOrReplace);
-  }
+  Future<int> insertTask(TaskTableCompanion entity) =>
+      into(taskTable).insert(entity, mode: InsertMode.insertOrReplace);
 
   @override
-  Future<int> deleteTask(String id) async {
-    return await (delete(taskTable)..where((tbl) => tbl.id.equals(id))).go();
-  }
+  Future<int> deleteTask(String id) =>
+      (delete(taskTable)..where((tbl) => tbl.id.equals(id))).go();
 
   @override
-  Future<int> deleteAllTasks() async {
-    return await (delete(taskTable)).go();
-  }
+  Future<int> deleteAllTasks() => (delete(taskTable)).go();
 }
