@@ -5,7 +5,6 @@ import 'package:todo2/domain/model/task_models/comment_model.dart';
 import 'package:todo2/domain/model/task_models/task_model.dart';
 
 abstract class TaskRepository {
-  
   Future<TaskModel> createTask({
     required String title,
     required String description,

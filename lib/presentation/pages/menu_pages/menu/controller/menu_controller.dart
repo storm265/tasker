@@ -18,11 +18,12 @@ enum ProjectDialogStatus {
 }
 
 class ProjectController extends ChangeNotifier with ConnectionCheckerMixin {
-  final ProjectRepository _projectsRepository;
   ProjectController({
     required this.colorPalleteProvider,
     required ProjectRepository projectsRepository,
   }) : _projectsRepository = projectsRepository;
+
+  final ProjectRepository _projectsRepository;
 
   final ColorPalleteProvider colorPalleteProvider;
 
@@ -33,6 +34,7 @@ class ProjectController extends ChangeNotifier with ConnectionCheckerMixin {
   final titleController = TextEditingController();
 
   final projects = ValueNotifier<List<ProjectModel>>([]);
+
   final projectStats = ValueNotifier<List<ProjectStatsModel>>([]);
 
   ProjectModel? selectedModel;

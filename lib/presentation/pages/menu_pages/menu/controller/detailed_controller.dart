@@ -8,9 +8,8 @@ class DetailedController extends TaskList {
     required super.calendarProvider,
   });
 
-  Future<List<TaskModel>> fetchProjectTasks(String projectId) async {
-    return await taskRepository.fetchProjectTasks(projectId: projectId);
-  }
+  Future<List<TaskModel>> fetchProjectTasks(String projectId) =>
+      taskRepository.fetchProjectTasks(projectId: projectId);
 
   @override
   Future<void> getInitData({

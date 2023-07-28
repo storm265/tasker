@@ -1,12 +1,6 @@
 import 'package:flutter/material.dart';
+
 class TextFieldWidget extends StatelessWidget {
-  final TextEditingController textController;
-  final String title;
-  final String labelText;
-  final bool isEmail;
-  final bool isObcecure;
-  final double top;
-  final Function(String? text)? validateCallback;
   const TextFieldWidget({
     Key? key,
     required this.validateCallback,
@@ -14,9 +8,20 @@ class TextFieldWidget extends StatelessWidget {
     required this.textController,
     required this.title,
     this.isObcecure = false,
-    this.top = 0,
     required this.isEmail,
   }) : super(key: key);
+
+  final TextEditingController textController;
+
+  final String title;
+
+  final String labelText;
+
+  final bool isEmail;
+
+  final bool isObcecure;
+
+  final Function(String? text)? validateCallback;
 
   @override
   Widget build(BuildContext context) {

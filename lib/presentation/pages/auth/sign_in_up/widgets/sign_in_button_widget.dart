@@ -3,13 +3,15 @@ import 'package:todo2/services/navigation_service/navigation_service.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 class SignButtonWidget extends StatelessWidget {
-  final String buttonText;
-  final bool isSignInPage;
   const SignButtonWidget({
     Key? key,
     required this.buttonText,
     required this.isSignInPage,
   }) : super(key: key);
+
+  final String buttonText;
+
+  final bool isSignInPage;
 
   @override
   Widget build(BuildContext context) {

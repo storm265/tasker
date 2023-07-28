@@ -2,11 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:todo2/services/theme_service/theme_data_controller.dart';
 
 class SubmitUpButtonWidget extends StatelessWidget {
-  final String buttonText;
-  final Alignment alignment;
-  final VoidCallback? onPressed;
-  final Color backgroundColor;
-  final Color textColor;
   const SubmitUpButtonWidget({
     Key? key,
     required this.onPressed,
@@ -15,6 +10,16 @@ class SubmitUpButtonWidget extends StatelessWidget {
     this.backgroundColor = Palette.red,
     this.textColor = Colors.white,
   }) : super(key: key);
+
+  final String buttonText;
+
+  final Alignment alignment;
+
+  final VoidCallback? onPressed;
+
+  final Color backgroundColor;
+
+  final Color textColor;
 
   @override
   Widget build(BuildContext context) {
