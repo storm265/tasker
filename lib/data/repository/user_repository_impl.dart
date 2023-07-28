@@ -6,11 +6,11 @@ import 'package:todo2/domain/repository/user_repository.dart';
 import 'package:todo2/schemas/database_scheme/auth_scheme.dart';
 
 class UserProfileRepositoryImpl implements UserProfileRepository {
-  final UserProfileDataSourceImpl _userProfileDataSource;
-
   UserProfileRepositoryImpl(
       {required UserProfileDataSourceImpl userProfileDataSource})
       : _userProfileDataSource = userProfileDataSource;
+
+  final UserProfileDataSourceImpl _userProfileDataSource;
 
   @override
   Future<UserProfileModel> fetchUser({required String id}) async {
