@@ -1,13 +1,6 @@
 // ignore_for_file: prefer_final_fields
 
-enum CacheKeys {
-  tasks('tasks'),
-  menu('menu'),
-  quick('quick');
-
-  final String type;
-  const CacheKeys(this.type);
-}
+import 'package:todo2/services/cache_service/cache_keys.dart';
 
 class InMemoryCache {
   static final InMemoryCache _instance = InMemoryCache._internal();
