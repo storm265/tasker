@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:todo2/data/data_source/checklist/checklist_data_source_impl.dart';
 import 'package:todo2/domain/model/checklist_model.dart';
 import 'package:todo2/domain/repository/checklist_repository.dart';
-import 'package:todo2/schemas/checklists/checklist/checklist_dao.dart';
+import 'package:todo2/schemas/checklists/checklist/checklist_dao_impl.dart';
 import 'package:todo2/schemas/checklists/checklist/checklist_database.dart';
 import 'package:todo2/schemas/checklists/checklist_item/checklist_item_dao.dart';
 import 'package:todo2/schemas/checklists/checklist_item/checklist_item_database.dart';
@@ -23,8 +23,11 @@ class CheckListRepositoryImpl extends CheckListRepository {
         _inMemoryCache = inMemoryCache;
 
   final CheckListDataSourceImpl _checkListsDataSource;
+
   final InMemoryCache _inMemoryCache;
+
   final CheckListDao _checklistDao;
+
   final CheckListItemDao _checklistItemDao;
 
   @override

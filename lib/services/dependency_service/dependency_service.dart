@@ -27,7 +27,7 @@ import 'package:todo2/presentation/pages/menu_pages/profile/controller/profile_c
 import 'package:todo2/presentation/pages/menu_pages/task/view_task/controller/view_task_controller.dart';
 import 'package:todo2/presentation/providers/file_provider.dart';
 import 'package:todo2/presentation/providers/user_provider.dart';
-import 'package:todo2/schemas/checklists/checklist/checklist_dao.dart';
+import 'package:todo2/schemas/checklists/checklist/checklist_dao_impl.dart';
 import 'package:todo2/schemas/checklists/checklist/checklist_database.dart';
 import 'package:todo2/schemas/checklists/checklist_item/checklist_item_dao.dart';
 import 'package:todo2/schemas/checklists/checklist_item/checklist_item_database.dart';

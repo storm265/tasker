@@ -4,7 +4,7 @@ import 'package:drift/native.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 
-import 'checklist_dao.dart';
+import 'checklist_dao_impl.dart';
 import 'checklist_table.dart';
 
 part 'checklist_database.g.dart';

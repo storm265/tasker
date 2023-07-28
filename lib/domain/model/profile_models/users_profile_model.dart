@@ -1,12 +1,6 @@
 import 'package:todo2/schemas/database_scheme/user_data_scheme..dart';
 
 class UserProfileModel {
-  final String id;
-  final String email;
-  final String username;
-  final String avatarUrl;
-  final DateTime createdAt;
-
   UserProfileModel({
     required this.id,
     required this.username,
@@ -14,6 +8,16 @@ class UserProfileModel {
     required this.avatarUrl,
     required this.createdAt,
   });
+
+  final String id;
+
+  final String email;
+
+  final String username;
+
+  final String avatarUrl;
+
+  final DateTime createdAt;
 
   factory UserProfileModel.fromJson(Map<String, dynamic> json) =>
       UserProfileModel(

@@ -28,39 +28,28 @@ class CheckListDaoImpl extends DatabaseAccessor<CheckListDatabase>
       : super(checklistDatabase);
 
   @override
-  Future<List<Checklist>> getChecklists() async {
-    return await select(checkListTable).get();
-  }
+  Future<List<Checklist>> getChecklists() => select(checkListTable).get();
 
   @override
-  Stream<List<Checklist>> getChecklistsStream() {
-    return select(checkListTable).watch();
-  }
+  Stream<List<Checklist>> getChecklistsStream() =>
+      select(checkListTable).watch();
 
   @override
-  Future<Checklist> getChecklist(String id) async {
-    return await (select(checkListTable)..where((tbl) => tbl.id.equals(id)))
-        .getSingle();
-  }
+  Future<Checklist> getChecklist(String id) =>
+      (select(checkListTable)..where((tbl) => tbl.id.equals(id))).getSingle();
 
   @override
-  Future<bool> updateChecklist(CheckListTableCompanion entity) async {
-    return await update(checkListTable).replace(entity);
-  }
+  Future<bool> updateChecklist(CheckListTableCompanion entity) =>
+      update(checkListTable).replace(entity);
 
   @override
-  Future<int> insertChecklist(CheckListTableCompanion entity) async {
-    return await into(checkListTable).insert(entity);
-  }
+  Future<int> insertChecklist(CheckListTableCompanion entity) =>
+      into(checkListTable).insert(entity);
 
   @override
-  Future<int> deleteChecklist(String id) async {
-    return await (delete(checkListTable)..where((tbl) => tbl.id.equals(id)))
-        .go();
-  }
+  Future<int> deleteChecklist(String id) =>
+      (delete(checkListTable)..where((tbl) => tbl.id.equals(id))).go();
 
   @override
-  Future<int> deleteAllChecklists() async {
-    return await (delete(checkListTable)).go();
-  }
+  Future<int> deleteAllChecklists() => (delete(checkListTable)).go();
 }
