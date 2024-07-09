@@ -1,4 +1,5 @@
-# Flutter todo 2 app. 
+# Tasker flutter app. 
+Task app
 Note: current api has been disabled, so your api key is required.
 
 
